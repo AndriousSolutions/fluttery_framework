@@ -116,8 +116,9 @@ class DeviceInfo {
   static String get isPhysicalDevice =>
       _deviceParameters['isPhysicalDevice'] ?? '';
 
-  /// The Android hardware device ID that is unique between the device + user and app signing.
-  static String get androidId => _deviceParameters['androidId'] ?? '';
+  /// Removed from version 4.0.0 to avoid Google Play policies violations.
+  // /// The Android hardware device ID that is unique between the device + user and app signing.
+  // static String get androidId => _deviceParameters['androidId'] ?? '';
 
   /// The base OS build the product is based on.
   static String get versionBaseOs => _deviceParameters['versionBaseOs'] ?? '';
@@ -185,7 +186,7 @@ class DeviceInfo {
 
   static void _loadAndroidParameters(AndroidDeviceInfo androidDeviceInfo) {
     _deviceParameters['id'] = androidDeviceInfo.id;
-    _deviceParameters['androidId'] = androidDeviceInfo.androidId;
+    // _deviceParameters['androidId'] = androidDeviceInfo.androidId;
     _deviceParameters['board'] = androidDeviceInfo.board;
     _deviceParameters['bootloader'] = androidDeviceInfo.bootloader;
     _deviceParameters['brand'] = androidDeviceInfo.brand;
