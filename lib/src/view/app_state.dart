@@ -47,9 +47,11 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   AppState({
     this.key,
     this.home,
-    AppController? con,
+    AppController? controller,
     super.controllers,
     super.object,
+    super.materialApp,
+    super.cupertinoApp,
     super.navigatorKey,
     super.routeInformationProvider,
     super.routeInformationParser,
@@ -97,6 +99,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     super.errorHandler,
     super.errorScreen,
     super.errorReport,
+    this.inInitAsync,
     this.inHome,
     this.inRouteInformationProvider,
     this.inRouteInformationParser,
@@ -133,7 +136,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     this.inInheritedMediaQuery,
     this.inError,
     this.inAsyncError,
-  }) : super(con: con ?? AppController()) {
+  }) : super(con: controller ?? AppController()) {
     // In case null was explicitly passed in.
     useMaterial ??= false;
     useCupertino ??= false;
@@ -191,6 +194,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   /// Is using the Cupertino Design UI.
   bool? get isCupertino => _isCupertino;
   bool? _isCupertino;
+
+  /// Perform asynchronous operations
+  final Future<bool> Function()? inInitAsync;
 
   /// Returns the home screen if any.
   final Widget Function()? inHome;
@@ -325,6 +331,11 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   /// The app's representation
   v.App? _app;
 
+  /// You need to be able access the widget.
+  @override
+  // ignore: avoid_as
+  T get widget => parentState?.widget as T;
+
   /// Supply a GlobalKey to the CupertinoApp and the MaterialApp
   @override
   void initState() {
@@ -371,8 +382,11 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     }
 
     if (useCupertino!) {
-      //
-      if (_routerDelegate == null || _routeInformationParser == null) {
+      // A CupertinoApp object has been supplied.
+      if (cupertinoApp != null) {
+        app = cupertinoApp!;
+        //
+      } else if (_routerDelegate == null || _routeInformationParser == null) {
         //
         app = CupertinoApp(
           key: key ?? cupertinoKey,
@@ -456,8 +470,11 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
         );
       }
     } else {
-      //
-      if (_routerDelegate == null || _routeInformationParser == null) {
+      // A MaterialApp object has been supplied.
+      if (materialApp != null) {
+        app = materialApp!;
+        //
+      } else if (_routerDelegate == null || _routeInformationParser == null) {
         app = MaterialApp(
           key: key ?? materialKey,
           navigatorKey: navigatorKey ?? onNavigatorKey(),
@@ -568,6 +585,11 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   //   _navigatorKey = null;
   //   super.dispose();
   // }
+
+  /// Used to complete asynchronous operations
+  @override
+  Future<bool> initAsync() =>
+      inInitAsync != null ? inInitAsync!() : super.initAsync();
 
   /// Override if you like to customize error handling.
   @override
@@ -811,6 +833,8 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     this.con,
     super.controllers,
     super.object,
+    this.materialApp,
+    this.cupertinoApp,
     this.navigatorKey,
     this.routeInformationProvider,
     this.routeInformationParser,
@@ -897,6 +921,10 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   }
   final AppController? con;
   v.AppErrorHandler? _errorHandler;
+
+  /// The MaterialApp and CupertinoApp if provided.
+  MaterialApp? materialApp;
+  CupertinoApp? cupertinoApp;
 
   /// All the fields found in the widgets, MaterialApp and CupertinoApp
   GlobalKey<NavigatorState>? navigatorKey;

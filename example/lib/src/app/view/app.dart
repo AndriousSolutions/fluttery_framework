@@ -16,7 +16,7 @@ class TemplateApp extends AppStatefulWidget {
 class TemplateView extends AppState {
   TemplateView()
       : super(
-          con: TemplateController(),
+          controller: TemplateController(),
           controllers: [ContactsController()],
           inTitle: () => 'Demo App'.tr,
           debugShowCheckedModeBanner: false,

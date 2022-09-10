@@ -49,6 +49,7 @@ abstract class AppStatefulWidget extends StatefulWidget {
   AppStatefulWidget({
     Key? key,
     this.loadingScreen,
+    this.circularProgressIndicator = true,
     FlutterExceptionHandler? errorHandler,
     ErrorWidgetBuilder? errorScreen,
     v.ReportErrorHandler? errorReport,
@@ -59,10 +60,18 @@ abstract class AppStatefulWidget extends StatefulWidget {
           errorReport: errorReport,
           allowNewHandlers: allowNewHandlers,
         ),
-        super(key: key ?? GlobalKey<_StateApp>()); // Allows app calling app
+        super(key: key ?? GlobalKey<_StateApp>()) {
+    // defer displaying anything while starting up
+    if (circularProgressIndicator == null || !circularProgressIndicator!) {
+      WidgetsFlutterBinding.ensureInitialized().deferFirstFrame();
+    }
+  } // Allows app calling app
 
   /// A simple screen displayed then starting up.
   final Widget? loadingScreen;
+
+  /// Whether CircularProgressIndicator is displayed or not
+  final bool? circularProgressIndicator;
 
   // /// Reference to the 'app' object.
   // v.App? get app => _app;
@@ -206,6 +215,13 @@ class _StateApp extends State<AppStatefulWidget> {
     if (snapshot.hasData &&
         snapshot.data! &&
         (v.App.isInit != null && v.App.isInit!)) {
+      // Is the CircularProgressIndicator displayed
+      final circularProgressIndicator =
+          widget.circularProgressIndicator ?? false;
+
+      if (!circularProgressIndicator) {
+        WidgetsFlutterBinding.ensureInitialized().allowFirstFrame();
+      }
       // Supply a GlobalKey so the 'App' State object is not disposed of if moved in Widget tree.
       return _AppStatefulWidget(key: _appGlobalKey, appState: _appState!);
       //
