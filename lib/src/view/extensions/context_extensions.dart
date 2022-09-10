@@ -25,7 +25,7 @@
 import 'package:fluttery_framework/view.dart';
 
 /// An extension on BuildContext
-extension ContextExtensionss on BuildContext {
+extension ContextExtension on BuildContext {
   /// The same of [MediaQuery.of(context).size]
   Size get mediaQuerySize => MediaQuery.of(this).size;
 

@@ -1,4 +1,8 @@
 
+## 1.2.0
+September 10, 2022
+- Correct typo: extension ContextExtensionss
+
 ## 1.1.0
 September 10, 2022
 - AppState class now with controller, materialApp, and cupertinoApp parameter
