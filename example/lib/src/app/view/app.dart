@@ -1,6 +1,8 @@
 //
 import 'package:fluttery_framework_example/src/controller.dart';
 
+import 'package:fluttery_framework_example/src/model.dart';
+
 import 'package:fluttery_framework_example/src/view.dart';
 
 /// App
@@ -21,10 +23,21 @@ class TemplateView extends AppState {
           inTitle: () => 'Demo App'.tr,
           debugShowCheckedModeBanner: false,
           switchUI: Prefs.getBool('switchUI'),
-          locale: AppTrs.textLocale,
-          supportedLocales: AppTrs.supportedLocales,
+          locale: L10n.locale,
+          inSupportedLocales: () {
+            /// The app's translations
+            L10n.translations = {
+              const Locale('zh', 'CN'): zhCN,
+              const Locale('fr', 'FR'): frFR,
+              const Locale('de', 'DE'): deDE,
+              const Locale('he', 'IL'): heIL,
+              const Locale('ru', 'RU'): ruRU,
+              const Locale('es', 'AR'): esAR,
+            };
+            return L10n.supportedLocales;
+          },
           localizationsDelegates: [
-            AppTrs.delegate!,
+            L10n.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,

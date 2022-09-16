@@ -91,10 +91,10 @@ class PopMenu extends AppPopupMenu<String> {
             supportedLocales: locales,
             onSelectedItemChanged: (int index) async {
               // Retrieve the available locales.
-              final locale = AppTrs.getLocale(index);
+              final locale = L10n.getLocale(index);
               if (locale != null) {
                 App.locale = locale;
-                App.refresh();
+                App.setState(() {});
               }
             });
 

@@ -99,6 +99,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     super.errorHandler,
     super.errorScreen,
     super.errorReport,
+    this.inInitState,
     this.inInitAsync,
     this.inHome,
     this.inRouteInformationProvider,
@@ -197,6 +198,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
 
   /// Perform asynchronous operations
   final Future<bool> Function()? inInitAsync;
+
+  /// Perform synchronous initialization
+  final void Function()? inInitState;
 
   /// Returns the home screen if any.
   final Widget Function()? inHome;
@@ -336,12 +340,27 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   // ignore: avoid_as
   T get widget => parentState?.widget as T;
 
+  /// Used to complete asynchronous operations
+  @override
+  Future<bool> initAsync() async {
+    var init = await super.initAsync();
+    if (init && inInitAsync != null) {
+      init = await inInitAsync!();
+    }
+    return init;
+  }
+
   /// Supply a GlobalKey to the CupertinoApp and the MaterialApp
   @override
+  @mustCallSuper
   void initState() {
     super.initState();
     cupertinoKey = GlobalKey();
     materialKey = GlobalKey();
+    // If some inline initState() is defined.
+    if (inInitState != null) {
+      inInitState!();
+    }
   }
 
   /// Key for the CupertinoApp
@@ -410,7 +429,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
               localeListResolutionCallback ?? onLocaleListResolutionCallback(),
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback(),
-          supportedLocales: supportedLocales ?? onSupportedLocales(),
+          supportedLocales: v.App.supportedLocales ??=
+              supportedLocales ?? onSupportedLocales(),
           showPerformanceOverlay:
               showPerformanceOverlay ?? onShowPerformanceOverlay(),
           checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
@@ -450,7 +470,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
               localeListResolutionCallback ?? onLocaleListResolutionCallback(),
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback(),
-          supportedLocales: supportedLocales ?? onSupportedLocales(),
+          supportedLocales: v.App.supportedLocales =
+              supportedLocales ?? onSupportedLocales(),
           showPerformanceOverlay:
               showPerformanceOverlay ?? onShowPerformanceOverlay(),
           checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
@@ -500,7 +521,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
               localeListResolutionCallback ?? onLocaleListResolutionCallback(),
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback(),
-          supportedLocales: supportedLocales ?? onSupportedLocales(),
+          supportedLocales: v.App.supportedLocales =
+              supportedLocales ?? onSupportedLocales(),
           debugShowMaterialGrid:
               debugShowMaterialGrid ?? onDebugShowMaterialGrid(),
           showPerformanceOverlay:
@@ -542,7 +564,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
               localeListResolutionCallback ?? onLocaleListResolutionCallback(),
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback(),
-          supportedLocales: supportedLocales ?? onSupportedLocales(),
+          supportedLocales: v.App.supportedLocales =
+              supportedLocales ?? onSupportedLocales(),
           debugShowMaterialGrid:
               debugShowMaterialGrid ?? onDebugShowMaterialGrid(),
           showPerformanceOverlay:
@@ -585,11 +608,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   //   _navigatorKey = null;
   //   super.dispose();
   // }
-
-  /// Used to complete asynchronous operations
-  @override
-  Future<bool> initAsync() =>
-      inInitAsync != null ? inInitAsync!() : super.initAsync();
 
   /// Override if you like to customize error handling.
   @override

@@ -1,4 +1,9 @@
 
+## 1.3.0
+- Removed deprecated refresh() and buildInherited().
+- Introduced L10n.locale in example app.
+- Introduced initAsync() and inInitState(). 
+
 ## 1.2.0
 September 10, 2022
 - Correct typo: extension ContextExtensionss

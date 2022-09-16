@@ -370,8 +370,11 @@ class App {
   /// Set the App's Locale
   /// If 'supportedLocales' are specified, this Locale must be among them.
   static set locale(Locale? locale) {
-    if (locale != null && v.L10n.setLocale(locale)) {
-      _appState?.locale = locale;
+    if (locale != null) {
+      v.L10n.locale = locale;
+      if (v.L10n.locale != v.L10n.prevLocale) {
+        _appState?.locale = locale;
+      }
     }
   }
 
@@ -431,10 +434,18 @@ class App {
 
   /// getter, supportedLocales, returns a List of the App's locales.
   /// More flexible than an iteration.
-  static List<Locale>? get supportedLocales => _appState?.supportedLocales;
-  static set supportedLocales(List<Locale>? v) {
-    if (v != null) {
-      _appState?.supportedLocales = v;
+  static List<Locale>? get supportedLocales =>
+      _appState?.supportedLocales ??= v.L10n.supportedLocales;
+  static set supportedLocales(List<Locale>? locales) {
+    if (locales != null) {
+      if (v.L10n.supportedLocales.isEmpty) {
+        v.L10n.supportedLocales = _appState?.supportedLocales ??= locales;
+      } else {
+        final appLocales = _appState?.supportedLocales ?? [];
+        if (appLocales.isEmpty) {
+          _appState?.supportedLocales?.addAll(v.L10n.supportedLocales);
+        }
+      }
     }
   }
 
@@ -565,10 +576,18 @@ class App {
   static void setState(VoidCallback fn) => _appState?.setState(fn);
 
   /// Refresh the root State object.
+  @Deprecated('Replace by the recognized setState()')
   static void refresh() => _appState?.refresh();
 
-  /// Rebuild the InheritedWidget of the 'closes' InheritedStateMVC object if any.
+  /// Link a widget to a InheritedWidget in the root State object.
+  static void dependOnInheritedWidget(BuildContext? context) =>
+      _appState?.dependOnInheritedWidget(context);
+
+  /// Rebuild dependencies to the root State object's InheritedWidget
   static void buildInherited() => _appState?.buildInherited();
+
+  /// same as above. Rebuild dependencies to the root State object's InheritedWidget
+  static void notifyClients() => _appState?.notifyClients();
 
   /// Display the SnackBar
   static void snackBar({

@@ -1,5 +1,7 @@
 import 'package:fluttery_framework_example/src/controller.dart';
 
+import 'package:fluttery_framework_example/src/view.dart';
+
 import 'package:fluttery_framework/view.dart' as s;
 
 /// A Spinner listing the available Locales.
@@ -11,7 +13,7 @@ class ISOSpinner extends StatefulWidget {
   final int? initialItem;
 
   /// Retrieve the available locales.
-  List<Locale> locales() => AppTrs.supportedLocales;
+  List<Locale> locales() => L10n.supportedLocales;
 
   /// Assign the specified Locale.
   Future<void> onSelectedItemChanged(int index) async {
@@ -19,7 +21,7 @@ class ISOSpinner extends StatefulWidget {
     if (localesList != null) {
       s.App.locale = localesList[index];
       await s.Prefs.setString('locale', localesList[index].toLanguageTag());
-      s.App.refresh();
+      s.App.setState(() {});
     }
   }
 
