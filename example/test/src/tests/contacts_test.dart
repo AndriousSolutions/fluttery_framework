@@ -16,11 +16,10 @@ Future<void> contactsTest(WidgetTester tester) async {
 
   // Find a list of word pairs
   Finder finder = find.byType(TextFormField);
-
   // The text form fields should be available.
   expect(finder, findsWidgets, reason: _location);
 
-  for (var cnt = 0; cnt < 7; cnt++) {
+  for (var cnt = 0; cnt < 6; cnt++) {
     //
     final field = finder.at(cnt);
 

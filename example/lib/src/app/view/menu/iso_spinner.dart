@@ -1,5 +1,3 @@
-import 'package:fluttery_framework_example/src/controller.dart';
-
 import 'package:fluttery_framework_example/src/view.dart';
 
 import 'package:fluttery_framework/view.dart' as s;

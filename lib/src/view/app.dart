@@ -443,6 +443,7 @@ class App {
       } else {
         final appLocales = _appState?.supportedLocales ?? [];
         if (appLocales.isEmpty) {
+          // Note v.L10n.supportedLocales precedes locales
           _appState?.supportedLocales?.addAll(v.L10n.supportedLocales);
         }
       }
@@ -584,7 +585,7 @@ class App {
       _appState?.dependOnInheritedWidget(context);
 
   /// Rebuild dependencies to the root State object's InheritedWidget
-  static void buildInherited() => _appState?.buildInherited();
+  static void buildInherited() => _appState?.notifyClients();
 
   /// same as above. Rebuild dependencies to the root State object's InheritedWidget
   static void notifyClients() => _appState?.notifyClients();

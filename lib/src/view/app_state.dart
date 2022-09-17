@@ -429,7 +429,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
               localeListResolutionCallback ?? onLocaleListResolutionCallback(),
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback(),
-          supportedLocales: v.App.supportedLocales ??=
+          supportedLocales: v.App.supportedLocales =
               supportedLocales ?? onSupportedLocales(),
           showPerformanceOverlay:
               showPerformanceOverlay ?? onShowPerformanceOverlay(),

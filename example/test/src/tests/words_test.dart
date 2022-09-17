@@ -48,16 +48,16 @@ Future<void> wordsTest(WidgetTester tester) async {
     return;
   }
 
-  /// Go to the 'Saved Suggestions' page
-  finder = find.byKey(const Key('listSaved')); // find.bytype(IconButton);
-
-  expect(finder, findsWidgets, reason: _location);
-
-  await tester.tap(finder.first);
-  await tester.pump();
-
-  /// Rebuild the Widget after the state has changed
-  await tester.pumpAndSettle();
+  // /// Go to the 'Saved Suggestions' page
+  // finder = find.byKey(const Key('listSaved')); // find.bytype(IconButton);
+  //
+  // expect(finder, findsWidgets, reason: _location);
+  //
+  // await tester.tap(finder.first);
+  // await tester.pump();
+  //
+  // /// Rebuild the Widget after the state has changed
+  // await tester.pumpAndSettle();
 
   final model = WordPairsModel();
 
@@ -68,19 +68,19 @@ Future<void> wordsTest(WidgetTester tester) async {
     expect(model.saved.length, equals(3), reason: _location);
   }
 
-  if (App.useMaterial) {
-    finder = find.byType(IconButton);
-
-    expect(finder, findsOneWidget, reason: _location);
-
-    /// Find the 'back button' and return
-    await tester.tap(finder.first);
-  } else {
-    final con = WordPairsController();
-    final state = con.state;
-    Navigator.of(state!.context).pop();
-  }
-
-  /// Wait a frame after the state has changed;
-  await tester.pump();
+  // if (App.useMaterial) {
+  //   finder = find.byType(IconButton);
+  //
+  //   expect(finder, findsOneWidget, reason: _location);
+  //
+  //   /// Find the 'back button' and return
+  //   await tester.tap(finder.first);
+  // } else {
+  //   final con = WordPairsController();
+  //   final state = con.state;
+  //   Navigator.of(state!.context).pop();
+  // }
+  //
+  // /// Wait a frame after the state has changed;
+  // await tester.pump();
 }

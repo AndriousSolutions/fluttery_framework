@@ -14,10 +14,11 @@ Future<bool> openPopupMenu(WidgetTester tester,
     final popup = find.byKey(const Key('appMenuButton'), skipOffstage: false);
     expect(popup, findsOneWidget, reason: _location);
     await tester.tap(popup);
+    // final app = popup.at(0);
+    // await tester.tap(app);
 
     /// Wait for the transition in the Interface
-    await tester.pumpAndSettle();
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(milliseconds: 200));
   } catch (err) {
     opened = false;
     collectError(err);

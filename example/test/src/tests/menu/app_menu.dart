@@ -16,9 +16,6 @@ Future<void> openApplicationMenu(WidgetTester tester) async {
     return;
   }
 
-  /// Wait for the transition in the Interface
-  await tester.pumpAndSettle();
-
   /// Switch the application
   final application =
       find.byKey(const Key('applicationMenuItem'), skipOffstage: false);
@@ -27,5 +24,5 @@ Future<void> openApplicationMenu(WidgetTester tester) async {
 
   await tester.tap(application);
 
-  await tester.pumpAndSettle();
+  await tester.pumpAndSettle(const Duration(milliseconds: 800));
 }

@@ -31,7 +31,6 @@ void testMyApp() {
 
     final con = TemplateController();
 
-//    for (var interface = 1; interface <= 2; interface++) {
     //
     int cnt = 1;
 
@@ -55,12 +54,9 @@ void testMyApp() {
       }
 
       /// Switch the app programmatically.
-      // con.changeApp();
+//      con.changeApp();
       /// Switch the app through the popupmenu
       await openApplicationMenu(tester);
-
-      /// Wait for the transition in the Interface
-      await tester.pumpAndSettle();
 
       cnt++;
     }
@@ -73,7 +69,6 @@ void testMyApp() {
 
     /// Switch the Interface
     await openInterfaceMenu(tester);
-//    }
 
     /// Unit testing does not involve integration or widget testing.
 
