@@ -55,7 +55,7 @@ dependencies:
   #    path: ../../packages/state_extended
 
   # https://pub.dev/packages/timezone
-  timezone: any
+  timezone: ^0.9.0
 
   # https://pub.dev/packages/universal_html/
   universal_html: ^2.0.0
