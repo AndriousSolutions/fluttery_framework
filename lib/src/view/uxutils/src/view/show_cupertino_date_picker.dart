@@ -151,9 +151,6 @@ void showCupertinoDatePicker(
             key: key,
             mode: mode,
             onDateTimeChanged: (DateTime value) {
-              if (onDateTimeChanged == null) {
-                return;
-              }
               if (mode == CupertinoDatePickerMode.time) {
                 onDateTimeChanged(
                     DateTime(0000, 01, 01, value.hour, value.minute));

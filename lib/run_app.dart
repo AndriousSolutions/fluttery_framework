@@ -18,11 +18,11 @@
 
 /// At times, you may need to explicitly supply the custom runApp function:
 ///
-///       import 'package:mvc_application/run_app.dart';
+///       import 'package:fluttery_framework/run_app.dart';
 ///
 /// Otherwise, it's supplied by the view.dart export file.
 ///
 export 'package:fluttery_framework/src/conditional_export.dart'
-    if (dart.library.html) 'package:mvc_application/src/view/platforms/run_webapp.dart'
-    if (dart.library.io) 'package:mvc_application/src/view/platforms/run_app.dart'
+    if (dart.library.html) 'package:fluttery_framework/src/view/platforms/run_webapp.dart'
+    if (dart.library.io) 'package:fluttery_framework/src/view/platforms/run_app.dart'
     show runApp;

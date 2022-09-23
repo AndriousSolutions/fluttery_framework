@@ -585,6 +585,7 @@ class App {
       _appState?.dependOnInheritedWidget(context);
 
   /// Rebuild dependencies to the root State object's InheritedWidget
+  @Deprecated('Replace by the recognized notifyClients()')
   static void buildInherited() => _appState?.notifyClients();
 
   /// same as above. Rebuild dependencies to the root State object's InheritedWidget

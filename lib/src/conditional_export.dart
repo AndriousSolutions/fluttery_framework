@@ -26,15 +26,15 @@ import 'package:flutter/foundation.dart' show FlutterExceptionHandler;
 import 'package:fluttery_framework/view.dart' show ReportErrorHandler;
 
 /// Used in the conditional export statement:
-/// Found in 'package:mvc_application/view.dart'
+/// Found in 'package:fluttery_framework/view.dart'
 /// For example:
-/// export 'package:mvc_application/src/conditional_export.dart'
+/// export 'package:fluttery_framework/src/conditional_export.dart'
 /// if (dart.library.html) 'package:flutter/material.dart'
-/// if (dart.library.io) 'package:mvc_application/src/controller/app.dart' show runApp;
+/// if (dart.library.io) 'package:fluttery_framework/src/controller/app.dart' show runApp;
 
 /// This of course is fake. Merely to satisfy the Dart Analysis tool.
-/// if (dart.library.html) 'package:mvc_application/src/view/platforms/run_webapp.dart'
-/// if (dart.library.io) 'package:mvc_application/src/view/platforms/run_app.dart'
+/// if (dart.library.html) 'package:fluttery_framework/src/view/platforms/run_webapp.dart'
+/// if (dart.library.io) 'package:fluttery_framework/src/view/platforms/run_app.dart'
 void runApp(
   Widget app, {
   FlutterExceptionHandler? errorHandler,

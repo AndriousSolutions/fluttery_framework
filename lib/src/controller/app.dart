@@ -18,7 +18,7 @@
 
 import 'package:flutter/foundation.dart' show FlutterErrorDetails;
 
-//import 'package:mvc_application/controller.dart' show HandleError;
+//import 'package:fluttery_framework/controller.dart' show HandleError;
 
 import 'package:fluttery_framework/view.dart'
     show App, ConnectivityListener, ConnectivityResult;
@@ -50,7 +50,7 @@ class AppController extends StateXController implements ConnectivityListener {
   /// Override if you like to customize your error handling.
   void onError(FlutterErrorDetails details) {
     // Call the App's 'current' error handler.
-    App?.onError(details);
+    App.onError(details);
   }
 
   /// If the device's connectivity changes.
@@ -60,10 +60,10 @@ class AppController extends StateXController implements ConnectivityListener {
 
 // /// Your 'working' class most concerned with the app's functionality.
 // /// Incorporates an Error Handler.
-// class StateController extends mvc.StateController with HandleError {
+// class StateController extends mvc.StateXController with HandleError {
 //   /// Optionally supply a 'State' object to be linked to this State Controller.
 //   StateController([v.StateC? state]) : super(state);
 //
-//   /// The current StateMVC object from mvc_application/view.dart
-//   v.StateC? get stateMVC => state as v.StateC?;
+//   /// The current StateX object from fluttery_framework/view.dart
+//   v.StateC? get stateX => state as v.StateC?;
 // }

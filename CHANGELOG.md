@@ -1,9 +1,11 @@
 
+## 1.4.1
+- conditional export corrected: dart.library.io) 'package:fluttery_framework
+
 ## 1.4.0
 - Class ScheduleNotifications removed dropping dependency to flutter_local_notifications
 - supportedLocales: v.App.supportedLocales = supportedLocales ?? onSupportedLocales()
 - Updated widget_test.dart
-- 
 
 ## 1.3.0
 - Removed deprecated refresh() and buildInherited().
