@@ -1,6 +1,8 @@
 
-## 1.4.1
+## 1.4.1+01
 - conditional export corrected: dart.library.io) 'package:fluttery_framework
+- Lengthened pubspec.yaml description field
+- Removed StateX InheritedStateMixin reference from lib\view.dart
 
 ## 1.4.0
 - Class ScheduleNotifications removed dropping dependency to flutter_local_notifications

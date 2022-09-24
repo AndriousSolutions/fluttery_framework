@@ -37,7 +37,7 @@ export 'package:flutter/foundation.dart' show kIsWeb, mustCallSuper, protected;
 
 /// StateX
 export 'package:state_extended/state_extended.dart'
-    show AppStateX, InheritedStateMixin, InheritedStateX, SetState, StateX;
+    show AppStateX, InheritedStateX, SetState, StateX;
 
 /// App
 export 'package:fluttery_framework/src/view/app.dart';
