@@ -242,22 +242,22 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   final GenerateAppTitle? inGenerateTitle;
 
   /// Returns the App's [ThemeData] if any.
-  final ThemeData Function()? inTheme;
+  final ThemeData? Function()? inTheme;
 
   /// Returns the App's [CupertinoThemeData] if any.
-  final CupertinoThemeData Function()? iniOSTheme;
+  final CupertinoThemeData? Function()? iniOSTheme;
 
   /// Returns the App's 'Dark Theme' [ThemeData] if any.
-  final ThemeData Function()? inDarkTheme;
+  final ThemeData? Function()? inDarkTheme;
 
   /// Returns the App's [ThemeMode] if any.
-  final ThemeMode Function()? inThemeMode;
+  final ThemeMode? Function()? inThemeMode;
 
   /// Returns the App's [Color] if any.
-  final Color Function()? inColor;
+  final Color? Function()? inColor;
 
   /// Returns current [Locale] if any.
-  final Locale Function()? inLocale;
+  final Locale? Function()? inLocale;
 
   /// Returns the 'Localization Delegates' if any.
   final Iterable<LocalizationsDelegate<dynamic>> Function()?
@@ -270,46 +270,46 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   final LocaleResolutionCallback? inLocaleResolutionCallback;
 
   /// Returns the Locale Iteration if any.
-  final List<Locale> Function()? inSupportedLocales;
+  final List<Locale>? Function()? inSupportedLocales;
 
   /// Returns 'Show Material Grid' boolean indicator if any.
-  final bool Function()? inDebugShowMaterialGrid;
+  final bool? Function()? inDebugShowMaterialGrid;
 
   /// Returns 'Show Performance Overlay' boolean indicator if any.
-  final bool Function()? inShowPerformanceOverlay;
+  final bool? Function()? inShowPerformanceOverlay;
 
   /// Returns 'Raster Cache Checkerboard' boolean indicator if any.
-  final bool Function()? inCheckerboardRasterCacheImages;
+  final bool? Function()? inCheckerboardRasterCacheImages;
 
   /// Returns 'Off Screen Layers Checkerboard' boolean indicator if any.
-  final bool Function()? inCheckerboardOffscreenLayers;
+  final bool? Function()? inCheckerboardOffscreenLayers;
 
   /// Returns 'Show Semantics' boolean indicator if any.
-  final bool Function()? inShowSemanticsDebugger;
+  final bool? Function()? inShowSemanticsDebugger;
 
   /// Returns 'Show Debug Banner' boolean indicator if any.
-  final bool Function()? inDebugShowCheckedModeBanner;
+  final bool? Function()? inDebugShowCheckedModeBanner;
 
   /// Returns Map of 'LogicalKeySets' if any.
-  final Map<LogicalKeySet, Intent> Function()? inShortcuts;
+  final Map<LogicalKeySet, Intent>? Function()? inShortcuts;
 
   /// Returns Map of 'Intent Actions' if any.
-  final Map<Type, Action<Intent>> Function()? inActions;
+  final Map<Type, Action<Intent>>? Function()? inActions;
 
   /// Returns the 'Restore Scope Id' routine if any.
-  final String Function()? inRestorationScopeId;
+  final String? Function()? inRestorationScopeId;
 
   /// Returns the App's [ScrollBehavior] if any.
-  final ScrollBehavior Function()? inScrollBehavior;
+  final ScrollBehavior? Function()? inScrollBehavior;
 
   /// Returns the App's 'Inherited Media Query' routine if any.
-  final bool Function()? inInheritedMediaQuery;
+  final bool? Function()? inInheritedMediaQuery;
 
   /// Returns the App's 'Error Handler' if any.
   final void Function(FlutterErrorDetails details)? inError;
 
   /// Returns the App's 'Async Error Handler' if any.
-  final bool Function(FlutterErrorDetails details)? inAsyncError;
+  final bool? Function(FlutterErrorDetails details)? inAsyncError;
 
   // The error flag.
   bool _inError = false;
@@ -429,24 +429,28 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
               localeListResolutionCallback ?? onLocaleListResolutionCallback(),
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback(),
-          supportedLocales: v.App.supportedLocales =
-              supportedLocales ?? onSupportedLocales(),
+          supportedLocales: v.App.supportedLocales = supportedLocales ??
+              onSupportedLocales() ??
+              const <Locale>[Locale('en', 'US')],
           showPerformanceOverlay:
-              showPerformanceOverlay ?? onShowPerformanceOverlay(),
+              showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
           checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
-              onCheckerboardRasterCacheImages(),
-          checkerboardOffscreenLayers:
-              checkerboardOffscreenLayers ?? onCheckerboardOffscreenLayers(),
+              onCheckerboardRasterCacheImages() ??
+              false,
+          checkerboardOffscreenLayers: checkerboardOffscreenLayers ??
+              onCheckerboardOffscreenLayers() ??
+              false,
           showSemanticsDebugger:
-              showSemanticsDebugger ?? onShowSemanticsDebugger(),
-          debugShowCheckedModeBanner:
-              debugShowCheckedModeBanner ?? onDebugShowCheckedModeBanner(),
+              showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
+          debugShowCheckedModeBanner: debugShowCheckedModeBanner ??
+              onDebugShowCheckedModeBanner() ??
+              false,
           shortcuts: shortcuts ?? onShortcuts(),
           actions: actions ?? onActions(),
           restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
           scrollBehavior: scrollBehavior ?? onScrollBehavior(),
           useInheritedMediaQuery:
-              useInheritedMediaQuery ?? onInheritedMediaQuery(),
+              useInheritedMediaQuery ?? onInheritedMediaQuery() ?? false,
           // Let the parameters run before the home parameter.
           home: home ?? onHome(),
         );
@@ -470,24 +474,28 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
               localeListResolutionCallback ?? onLocaleListResolutionCallback(),
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback(),
-          supportedLocales: v.App.supportedLocales =
-              supportedLocales ?? onSupportedLocales(),
+          supportedLocales: v.App.supportedLocales = supportedLocales ??
+              onSupportedLocales() ??
+              const <Locale>[Locale('en', 'US')],
           showPerformanceOverlay:
-              showPerformanceOverlay ?? onShowPerformanceOverlay(),
+              showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
           checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
-              onCheckerboardRasterCacheImages(),
-          checkerboardOffscreenLayers:
-              checkerboardOffscreenLayers ?? onCheckerboardOffscreenLayers(),
+              onCheckerboardRasterCacheImages() ??
+              false,
+          checkerboardOffscreenLayers: checkerboardOffscreenLayers ??
+              onCheckerboardOffscreenLayers() ??
+              false,
           showSemanticsDebugger:
-              showSemanticsDebugger ?? onShowSemanticsDebugger(),
-          debugShowCheckedModeBanner:
-              debugShowCheckedModeBanner ?? onDebugShowCheckedModeBanner(),
+              showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
+          debugShowCheckedModeBanner: debugShowCheckedModeBanner ??
+              onDebugShowCheckedModeBanner() ??
+              false,
           shortcuts: shortcuts ?? onShortcuts(),
           actions: actions ?? onActions(),
           restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
           scrollBehavior: scrollBehavior ?? onScrollBehavior(),
           useInheritedMediaQuery:
-              useInheritedMediaQuery ?? onInheritedMediaQuery(),
+              useInheritedMediaQuery ?? onInheritedMediaQuery() ?? false,
         );
       }
     } else {
@@ -514,33 +522,37 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           color: color ?? onColor() ?? Colors.white,
           theme: v.App.themeData ??= theme ?? onTheme(),
           darkTheme: darkTheme ?? onDarkTheme(),
-          themeMode: themeMode ?? onThemeMode(),
+          themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
           locale: locale ?? onLocale(),
           localizationsDelegates: onLocalizationsDelegates(),
           localeListResolutionCallback:
               localeListResolutionCallback ?? onLocaleListResolutionCallback(),
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback(),
-          supportedLocales: v.App.supportedLocales =
-              supportedLocales ?? onSupportedLocales(),
+          supportedLocales: v.App.supportedLocales = supportedLocales ??
+              onSupportedLocales() ??
+              const <Locale>[Locale('en', 'US')],
           debugShowMaterialGrid:
-              debugShowMaterialGrid ?? onDebugShowMaterialGrid(),
+              debugShowMaterialGrid ?? onDebugShowMaterialGrid() ?? false,
           showPerformanceOverlay:
-              showPerformanceOverlay ?? onShowPerformanceOverlay(),
+              showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
           checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
-              onCheckerboardRasterCacheImages(),
-          checkerboardOffscreenLayers:
-              checkerboardOffscreenLayers ?? onCheckerboardOffscreenLayers(),
+              onCheckerboardRasterCacheImages() ??
+              false,
+          checkerboardOffscreenLayers: checkerboardOffscreenLayers ??
+              onCheckerboardOffscreenLayers() ??
+              false,
           showSemanticsDebugger:
-              showSemanticsDebugger ?? onShowSemanticsDebugger(),
-          debugShowCheckedModeBanner:
-              debugShowCheckedModeBanner ?? onDebugShowCheckedModeBanner(),
+              showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
+          debugShowCheckedModeBanner: debugShowCheckedModeBanner ??
+              onDebugShowCheckedModeBanner() ??
+              false,
           shortcuts: shortcuts ?? onShortcuts(),
           actions: actions ?? onActions(),
           restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
           scrollBehavior: scrollBehavior ?? onScrollBehavior(),
           useInheritedMediaQuery:
-              useInheritedMediaQuery ?? onInheritedMediaQuery(),
+              useInheritedMediaQuery ?? onInheritedMediaQuery() ?? false,
           // Let the parameters run before the home parameter.
           home: home ?? onHome(),
         );
@@ -557,33 +569,37 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           color: color ?? onColor() ?? Colors.white,
           theme: v.App.themeData ??= theme ?? onTheme(),
           darkTheme: darkTheme ?? onDarkTheme(),
-          themeMode: themeMode ?? onThemeMode(),
+          themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
           locale: locale ?? onLocale(),
           localizationsDelegates: onLocalizationsDelegates(),
           localeListResolutionCallback:
               localeListResolutionCallback ?? onLocaleListResolutionCallback(),
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback(),
-          supportedLocales: v.App.supportedLocales =
-              supportedLocales ?? onSupportedLocales(),
+          supportedLocales: v.App.supportedLocales = supportedLocales ??
+              onSupportedLocales() ??
+              const <Locale>[Locale('en', 'US')],
           debugShowMaterialGrid:
-              debugShowMaterialGrid ?? onDebugShowMaterialGrid(),
+              debugShowMaterialGrid ?? onDebugShowMaterialGrid() ?? false,
           showPerformanceOverlay:
-              showPerformanceOverlay ?? onShowPerformanceOverlay(),
+              showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
           checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
-              onCheckerboardRasterCacheImages(),
-          checkerboardOffscreenLayers:
-              checkerboardOffscreenLayers ?? onCheckerboardOffscreenLayers(),
+              onCheckerboardRasterCacheImages() ??
+              false,
+          checkerboardOffscreenLayers: checkerboardOffscreenLayers ??
+              onCheckerboardOffscreenLayers() ??
+              false,
           showSemanticsDebugger:
-              showSemanticsDebugger ?? onShowSemanticsDebugger(),
-          debugShowCheckedModeBanner:
-              debugShowCheckedModeBanner ?? onDebugShowCheckedModeBanner(),
+              showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
+          debugShowCheckedModeBanner: debugShowCheckedModeBanner ??
+              onDebugShowCheckedModeBanner() ??
+              false,
           shortcuts: shortcuts ?? onShortcuts(),
           actions: actions ?? onActions(),
           restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
           scrollBehavior: scrollBehavior ?? onScrollBehavior(),
           useInheritedMediaQuery:
-              useInheritedMediaQuery ?? onInheritedMediaQuery(),
+              useInheritedMediaQuery ?? onInheritedMediaQuery() ?? false,
           routeInformationProvider:
               routeInformationProvider ?? onRouteInformationProvider(),
           routeInformationParser: _routeInformationParser!,
@@ -753,7 +769,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   ThemeData? onDarkTheme() => inDarkTheme != null ? inDarkTheme!() : null;
 
   /// Returns the App's [ThemeMode] if any.
-  ThemeMode onThemeMode() =>
+  ThemeMode? onThemeMode() =>
       inThemeMode != null ? inThemeMode!() : ThemeMode.system;
 
   /// Returns the App's [Color] if any.
@@ -764,7 +780,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
 
   /// Returns the 'Localization Delegates' if any.
   @mustCallSuper
-  Iterable<LocalizationsDelegate<dynamic>> onLocalizationsDelegates() sync* {
+  Iterable<LocalizationsDelegate<dynamic>>? onLocalizationsDelegates() sync* {
     if (localizationsDelegates != null) {
       yield* localizationsDelegates!;
     }
@@ -783,22 +799,22 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
       inLocaleResolutionCallback; // ?? v.L10n.localeResolutionCallback;
 
   /// Returns the Locale Iteration if any.
-  List<Locale> onSupportedLocales() => inSupportedLocales != null
+  List<Locale>? onSupportedLocales() => inSupportedLocales != null
       ? inSupportedLocales!()
       : const <Locale>[Locale('en', 'US')];
 
   /// Returns 'Show Material Grid' boolean indicator if any.
-  bool onDebugShowMaterialGrid() =>
+  bool? onDebugShowMaterialGrid() =>
       // ignore: avoid_bool_literals_in_conditional_expressions
       inDebugShowMaterialGrid != null ? inDebugShowMaterialGrid!() : false;
 
   /// Returns 'Show Performance Overlay' boolean indicator if any.
-  bool onShowPerformanceOverlay() =>
+  bool? onShowPerformanceOverlay() =>
       // ignore: avoid_bool_literals_in_conditional_expressions
       inShowPerformanceOverlay != null ? inShowPerformanceOverlay!() : false;
 
   /// Returns 'Raster Cache Checkerboard' boolean indicator if any.
-  bool onCheckerboardRasterCacheImages() =>
+  bool? onCheckerboardRasterCacheImages() =>
       // ignore: avoid_bool_literals_in_conditional_expressions
       inCheckerboardRasterCacheImages != null
           ? inCheckerboardRasterCacheImages!()
@@ -806,18 +822,18 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
 
   /// Returns 'Off Screen Layers Checkerboard' boolean indicator if any.
   // ignore: avoid_bool_literals_in_conditional_expressions
-  bool onCheckerboardOffscreenLayers() => inCheckerboardOffscreenLayers != null
+  bool? onCheckerboardOffscreenLayers() => inCheckerboardOffscreenLayers != null
       ? inCheckerboardOffscreenLayers!()
       : false;
 
   /// Returns 'Show Semantics' boolean indicator if any.
-  bool onShowSemanticsDebugger() =>
+  bool? onShowSemanticsDebugger() =>
       // ignore: avoid_bool_literals_in_conditional_expressions
       inShowSemanticsDebugger != null ? inShowSemanticsDebugger!() : false;
 
   /// Returns 'Show Debug Banner' boolean indicator if any.
   // ignore: avoid_bool_literals_in_conditional_expressions
-  bool onDebugShowCheckedModeBanner() => inDebugShowCheckedModeBanner != null
+  bool? onDebugShowCheckedModeBanner() => inDebugShowCheckedModeBanner != null
       ? inDebugShowCheckedModeBanner!()
       : true;
 
@@ -838,7 +854,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
       inScrollBehavior != null ? inScrollBehavior!() : null;
 
   /// Returns the App's 'Inherited Media Query' routine if any.
-  bool onInheritedMediaQuery() =>
+  bool? onInheritedMediaQuery() =>
       // ignore: avoid_bool_literals_in_conditional_expressions
       inInheritedMediaQuery != null ? inInheritedMediaQuery!() : false;
 }

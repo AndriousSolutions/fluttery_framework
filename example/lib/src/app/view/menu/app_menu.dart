@@ -82,6 +82,7 @@ class PopMenu extends AppPopupMenu<String> {
         _con.changeApp();
         break;
       case 'locale':
+        //
         final locales = App.supportedLocales!;
 
         final initialItem = locales.indexOf(App.locale!);

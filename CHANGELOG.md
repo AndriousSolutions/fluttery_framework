@@ -1,4 +1,7 @@
 
+## 1.4.2
+- Allow 'in' functions to return null  e.g. ThemeData? Function()? inTheme
+
 ## 1.4.1+01
 - conditional export corrected: dart.library.io) 'package:fluttery_framework
 - Lengthened pubspec.yaml description field
