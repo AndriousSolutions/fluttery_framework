@@ -105,7 +105,7 @@ class TemplateController extends AppController {
   /// Working with the ColorPicker to change the app's color theme
   void onColorPicker([ColorSwatch<int?>? value]) {
     //
-    App.setThemeData(value);
+    App.setThemeData(swatch: value);
     App.setState(() {});
   }
 
@@ -157,4 +157,11 @@ class TemplateController extends AppController {
 
   /// Cancel the timer
   void cancelTimer() => wordPairsTimer.cancelTimer();
+
+  /// Clear itself
+  @override
+  void dispose() {
+    _this = null;
+    super.dispose();
+  }
 }

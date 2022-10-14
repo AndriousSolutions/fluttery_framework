@@ -608,13 +608,19 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
       }
     }
 
-    // The theme may not have been set. This property must have a value.
-    // Assign Flutter's current theme default
-    v.App.themeData ??= ThemeData.light();
-
-    // Supply the iOS theme if necessary.
-    v.App.iOSTheme ??=
-        MaterialBasedCupertinoThemeData(materialTheme: v.App.themeData!);
+//     // The theme may not have been set. This property must have a value.
+//     // Assign Flutter's current theme default
+// //    v.App.themeData ??= ThemeData.light();
+//     if (v.App.themeData == null) {
+//       v.App.themeData = ThemeData.light();
+//       // If a color is already stored in preferences, don't overwrite.
+//       v.App.preferredTheme(
+//           color: v.App.themeData!.primaryColor, overWrite: false);
+//     }
+//
+//     // Supply the iOS theme if necessary.
+//     v.App.iOSTheme ??=
+//         MaterialBasedCupertinoThemeData(materialTheme: v.App.themeData!);
 
     return app;
   }
@@ -950,7 +956,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     if (errorHandler != null || errorScreen != null || errorReport != null) {
       // Supply a customized error handling.
       _errorHandler = v.AppErrorHandler(
-          handler: errorHandler, builder: errorScreen, report: errorReport);
+          handler: errorHandler, screen: errorScreen, report: errorReport);
     }
   }
   final AppController? con;

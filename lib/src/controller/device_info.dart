@@ -20,12 +20,14 @@
 ///
 //import 'dart:io' show Platform;
 // Replace 'dart:io' for Web applications
-import 'package:universal_platform/universal_platform.dart';
-
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:device_info_plus/device_info_plus.dart'
     show AndroidDeviceInfo, DeviceInfoPlugin, IosDeviceInfo;
+
+/// Gets the ANDROID_ID for android and identifierForVendor for iOS platforms.
+import 'package:unique_identifier/unique_identifier.dart';
+
+import 'package:universal_platform/universal_platform.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Supplies the devices information.
@@ -36,26 +38,32 @@ class DeviceInfo {
 
   /// Collect all the Device's information.
   static Future<Map<String, dynamic>> initAsync() async {
+    //
     if (_init) {
       return _deviceParameters;
     }
     _init = true;
-    // Running in the Web.
-    if (kIsWeb) {
-      return _deviceParameters;
-    }
+
+    // Supply the device's unique identifier.
+    _deviceId = await UniqueIdentifier.serial;
+
     if (UniversalPlatform.isAndroid) {
       final info = await DeviceInfoPlugin().androidInfo;
       _loadAndroidParameters(info);
     } else if (UniversalPlatform.isIOS) {
       final info = await DeviceInfoPlugin().iosInfo;
       _loadiOSParameters(info);
+    } else if (UniversalPlatform.isWeb) {
     } else if (UniversalPlatform.isWindows) {
     } else if (UniversalPlatform.isFuchsia) {
     } else if (UniversalPlatform.isLinux) {
     } else if (UniversalPlatform.isMacOS) {}
     return _deviceParameters;
   }
+
+  /// The unique identifier of the device
+  static String get deviceId => _deviceId ?? '';
+  static String? _deviceId;
 
   // Android
 

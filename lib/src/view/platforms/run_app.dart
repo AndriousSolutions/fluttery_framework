@@ -38,7 +38,7 @@ void runApp(
   // Instantiate the app's error handler.
   final handler = v.AppErrorHandler(
       handler: errorHandler,
-      builder: errorScreen,
+      screen: errorScreen,
       report: errorReport,
       allowNewHandlers: allowNewHandlers);
 

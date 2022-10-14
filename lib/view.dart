@@ -53,8 +53,8 @@ export 'package:fluttery_framework/src/view/app_state.dart';
 export 'package:fluttery_framework/src/view/utils/app_settings.dart';
 
 /// Error Handling
-export 'package:fluttery_framework/src/view/utils/error_handler.dart'
-    show AppErrorHandler, ReportErrorHandler;
+export 'package:fluttery_framework/src/view/utils/error_handler.dart';
+//    show AppErrorHandler, displayErrorWidgetChild, ReportErrorHandler;
 
 /// Screens
 export 'package:fluttery_framework/src/view/utils/loading_screen.dart';

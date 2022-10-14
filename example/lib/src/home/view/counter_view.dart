@@ -22,6 +22,7 @@ class _CounterPageState extends StateX<CounterPage> {
   void initState() {
     super.initState();
     appCon = TemplateController();
+    con.timer.initTimer();
   }
 
   late TemplateController appCon;

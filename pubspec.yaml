@@ -36,6 +36,9 @@ dependencies:
   flutter_test:
     sdk: flutter
 
+  # https://pub.dev/packages/http/
+  http: ^0.13.0
+
   # https://pub.dev/packages/i10n_translator/
   l10n_translator: ^4.0.0
 #      path: ../../packages/l10n_translator
@@ -56,6 +59,9 @@ dependencies:
 
   # https://pub.dev/packages/timezone
   timezone: ^0.9.0
+
+  # https://pub.dev/packages/unique_identifier
+  unique_identifier: ^0.2.0
 
   # https://pub.dev/packages/universal_html/
   universal_html: ^2.0.0

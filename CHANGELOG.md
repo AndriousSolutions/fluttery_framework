@@ -1,4 +1,12 @@
 
+
+## 1.5.0
+- Static Color? setThemeData({ColorSwatch<int?>? swatch, Color? color,}) {
+  // Reset if there was a 'hot reload'.
+- v.App.hotReload = false;
+- unique_identifier: ^0.2.0
+- AppErrorHandler({   ,ErrorWidgetBuilder? screen,
+
 ## 1.4.2
 - Allow 'in' functions to return null  e.g. ThemeData? Function()? inTheme
 

@@ -9,7 +9,9 @@ import 'package:fluttery_framework_example/src/view.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class ColorPicker {
+  //
   static Color get color => _color;
+
   static set color(Color? color) {
     if (color != null) {
       _color = color;

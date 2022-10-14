@@ -212,6 +212,8 @@ class _StateApp extends State<AppStatefulWidget> {
   /// completed before the app proceeds.
   Widget _futureBuilder(AsyncSnapshot<bool> snapshot, Widget? loading) {
     //
+    Widget _widget;
+
     if (snapshot.hasData &&
         snapshot.data! &&
         (v.App.isInit != null && v.App.isInit!)) {
@@ -223,7 +225,7 @@ class _StateApp extends State<AppStatefulWidget> {
         WidgetsFlutterBinding.ensureInitialized().allowFirstFrame();
       }
       // Supply a GlobalKey so the 'App' State object is not disposed of if moved in Widget tree.
-      return _AppStatefulWidget(key: _appGlobalKey, appState: _appState!);
+      _widget = _AppStatefulWidget(key: _appGlobalKey, appState: _appState!);
       //
     } else if (snapshot.hasError) {
       //
@@ -239,15 +241,15 @@ class _StateApp extends State<AppStatefulWidget> {
       var handled = false;
 
       if (_appState != null) {
-        //
+        // May have its own error handler for Asynchronous operations.
         handled = _appState!.onAsyncError(details);
       }
 
       if (!handled) {
-        //
+        // Have the framework handle the asynchronous error.
         widget._app.onAsyncError(snapshot);
       }
-      return v.App.errorHandler!.displayError(details);
+      _widget = v.App.errorHandler!.displayError(details);
       //
     } else if (snapshot.connectionState == ConnectionState.done &&
         snapshot.hasData &&
@@ -261,26 +263,30 @@ class _StateApp extends State<AppStatefulWidget> {
 
       FlutterError.reportError(details);
 
-      return ErrorWidget.builder(details);
+      _widget = ErrorWidget.builder(details);
     } else {
-      //
-      Widget widget;
+      // //
+      // Widget widget;
 
       if (loading != null) {
         //
-        widget = loading;
+        _widget = loading;
       } else {
         //
         if (UniversalPlatform.isAndroid || UniversalPlatform.isWeb) {
           //
-          widget = const Center(child: CircularProgressIndicator());
+          _widget = const Center(child: CircularProgressIndicator());
         } else {
           //
-          widget = const Center(child: CupertinoActivityIndicator());
+          _widget = const Center(child: CupertinoActivityIndicator());
         }
       }
-      return widget;
+//      return widget;
     }
+    // Reset if there was a 'hot reload'.
+    v.App.hotReload = false;
+
+    return _widget;
   }
 }
 

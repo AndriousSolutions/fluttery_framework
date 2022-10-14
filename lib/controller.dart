@@ -33,10 +33,6 @@ export 'package:fluttery_framework/src/view/app.dart' show App, AppDrawer;
 //App's Controller
 export 'package:fluttery_framework/src/controller/app.dart' show AppController;
 
-// Error Handler
-export 'package:fluttery_framework/src/controller/util/handle_error.dart'
-    show HandleError;
-
 // Notifications
 export 'package:fluttery_framework/src/controller/schedule_notificaitons.dart';
 
@@ -49,6 +45,10 @@ export 'package:fluttery_framework/src/controller/assets/assets.dart';
 
 // Get Utils
 export 'package:fluttery_framework/src/controller/get_utils/get_utils.dart';
+
+// Error Handler
+export 'package:fluttery_framework/src/controller/util/handle_error.dart'
+    show HandleError;
 
 // Preferences
 export 'package:prefs/prefs.dart' show Prefs, SharedPreferences;

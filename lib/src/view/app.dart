@@ -57,7 +57,7 @@ class App {
   ) {
     _errorHandler = v.AppErrorHandler(
       handler: errorHandler,
-      builder: errorScreen,
+      screen: errorScreen,
       report: errorReport,
       allowNewHandlers: allowNewHandlers,
     );
@@ -318,37 +318,176 @@ class App {
     }
   }
 
-  /// Set the App's general color theme supplying a [ColorSwatch] value.
-  static ColorSwatch<int?>? setThemeData([ColorSwatch<int?>? value]) {
+  // /// Set the App's general color theme supplying a [ColorSwatch] value.
+  // static ColorSwatch<int?>? setThemeData([ColorSwatch<int?>? swatch]) {
+  //   //
+  //   if (!Prefs.ready()) {
+  //     return swatch;
+  //   }
+  //
+  //   if (swatch != null) {
+  //     Prefs.setInt(
+  //       'colorTheme',
+  //       Colors.primaries.indexOf(swatch as MaterialColor),
+  //     );
+  //   } else {
+  //     final index = Prefs.getInt('colorTheme', -1);
+  //     // If never set in the first place, ignore
+  //     if (index > -1) {
+  //       swatch = Colors.primaries[index];
+  //     }
+  //   }
+  //
+  //   if (swatch != null) {
+  //     /// Assign the colour to the floating button as well.
+  //     themeData = ThemeData(
+  //       primarySwatch: swatch as MaterialColor,
+  //       floatingActionButtonTheme: FloatingActionButtonThemeData(
+  //         backgroundColor: swatch,
+  //       ),
+  //     );
+  //     iOSTheme = swatch;
+  //   }
+  //   return swatch;
+  // }
+
+  /// Set the App's general color theme supplying a [Color] value.
+  static Color? setThemeData({
+    ColorSwatch<int?>? swatch,
+    Color? color,
+  }) {
     //
+    int? value = color?.value ?? swatch?.value;
+
     if (!Prefs.ready()) {
-      return value;
+      return value == null ? null : Color(value);
     }
 
     if (value != null) {
-      Prefs.setInt(
-        'colorTheme',
-        Colors.primaries.indexOf(value as MaterialColor),
-      );
+      Prefs.setInt('primaryColor', value);
+      color = Color(value);
     } else {
-      final swatch = Prefs.getInt('colorTheme', -1);
+      value = Prefs.getInt('primaryColor', -1);
       // If never set in the first place, ignore
-      if (swatch > -1) {
-        value = Colors.primaries[swatch];
+      if (value > -1) {
+        color = Color(value);
+      } else {
+        color = Colors.blue;
+        Prefs.setInt('primaryColor', color.value);
       }
     }
 
-    if (value != null) {
-      /// Assign the colour to the floating button as well.
-      themeData = ThemeData(
-        primarySwatch: value as MaterialColor,
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: value,
-        ),
-      );
-      iOSTheme = value;
+    MaterialColor? materialColor;
+
+    if (swatch == null) {
+      materialColor = _materialColor(color);
+    } else {
+      materialColor = swatch as MaterialColor;
     }
-    return value;
+
+    final index = Colors.primaries.indexOf(materialColor!);
+
+    if (index > -1) {
+      materialColor = Colors.primaries[index];
+    }
+
+    /// Assign the colour to the floating button as well.
+    themeData = ThemeData(
+//      primaryColor: color,
+      primarySwatch: materialColor,
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: color,
+      ),
+    );
+    iOSTheme = color;
+    return color;
+  }
+
+  // /// Return the Color Swatch stored with Preferences.
+  // static Color? preferredTheme({
+  //   ColorSwatch<int>? swatch,
+  //   Color? color,
+  //   bool? overWrite,
+  // }) {
+  //   //
+  //   final int? value = color?.value ?? swatch?.value;
+  //
+  //   if (color != null) {
+  //     final m1 = _materialColor(color);
+  //
+  //     final m2 = getMaterialColor(color);
+  //   }
+  //
+  //   if (Prefs.ready()) {
+  //     final primaryColor = Prefs.getInt('primaryColor', -1);
+  //     // A value was pasted
+  //     if (value != null) {
+  //       // Default is to overwrite
+  //       overWrite ??= true;
+  //       // If not set yet or overwrite anyway.
+  //       if (primaryColor == -1 || overWrite) {
+  //         Prefs.setInt(
+  //           'primaryColor',
+  //           value,
+  //         );
+  //       }
+  //     } else {
+  //       // If never set in the first place, ignore
+  //       if (primaryColor > -1) {
+  //         color = Color(primaryColor);
+  //       } else {
+  //         color = null;
+  //       }
+  //     }
+  //   }
+  //   return color;
+  // }
+
+  ///
+  static MaterialColor? _materialColor(Color? color) {
+    //
+    if (color == null) {
+      return null;
+    }
+    final strengths = <double>[.05];
+    final swatch = <int, Color>{};
+    final int r = color.red, g = color.green, b = color.blue;
+    for (int i = 1; i < 10; i++) {
+      strengths.add(double.parse((0.1 * i).toStringAsFixed(2)));
+    }
+    int cnt = 0;
+    for (final strength in strengths) {
+      final double ds = 0.5 - strength;
+      cnt = cnt + 1;
+      swatch[(strength * 1000).round()] = Color.fromRGBO(
+        r + ((ds < 0 ? r : (255 - r)) * ds).round(),
+        g + ((ds < 0 ? g : (255 - g)) * ds).round(),
+        b + ((ds < 0 ? b : (255 - b)) * ds).round(),
+        0.1 * cnt,
+      );
+    }
+    return MaterialColor(color.value, swatch);
+  }
+
+  ///
+  static MaterialColor getMaterialColor(Color color) {
+    final int red = color.red;
+    final int green = color.green;
+    final int blue = color.blue;
+
+    final Map<int, Color> shades = {
+      50: Color.fromRGBO(red, green, blue, .1),
+      100: Color.fromRGBO(red, green, blue, .2),
+      200: Color.fromRGBO(red, green, blue, .3),
+      300: Color.fromRGBO(red, green, blue, .4),
+      400: Color.fromRGBO(red, green, blue, .5),
+      500: Color.fromRGBO(red, green, blue, .6),
+      600: Color.fromRGBO(red, green, blue, .7),
+      700: Color.fromRGBO(red, green, blue, .8),
+      800: Color.fromRGBO(red, green, blue, .9),
+      900: Color.fromRGBO(red, green, blue, 1),
+    };
+    return MaterialColor(color.value, shades);
   }
 
   /// Returns the Color passed to the App's View.
