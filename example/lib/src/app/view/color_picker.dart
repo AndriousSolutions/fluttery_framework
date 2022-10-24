@@ -1,8 +1,4 @@
-///
-///          Created  09 Feb 2019
-///          Andrious Solutions
-///
-
+//
 /// Import the interface
 import 'package:fluttery_framework_example/src/view.dart';
 

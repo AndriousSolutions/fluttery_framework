@@ -55,7 +55,7 @@ Future<bool> showBox({
   RouteSettings? routeSettings,
 }) async {
   button01 ??= OKOption();
-  button02 ??= CancelOption();
+//  button02 ??= CancelOption();
   bool? result;
   if (App.useMaterial) {
     result = await showDialog<bool>(
@@ -87,18 +87,19 @@ Future<bool> showBox({
           shape: shape,
           scrollable: scrollable ?? false,
           actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                if (press02 != null) {
-                  press02();
-                }
-                if (button02!.onPressed != null) {
-                  button02.onPressed!();
-                }
-                Navigator.pop(context, button02.result ?? false);
-              },
-              child: Text(button02!.text ?? 'Cancel'),
-            ),
+            if (button02 != null)
+              TextButton(
+                onPressed: () {
+                  if (press02 != null) {
+                    press02();
+                  }
+                  if (button02.onPressed != null) {
+                    button02.onPressed!();
+                  }
+                  Navigator.pop(context, button02.result ?? false);
+                },
+                child: Text(button02.text ?? 'Cancel'),
+              ),
             TextButton(
               onPressed: () {
                 if (press01 != null) {
@@ -118,18 +119,19 @@ Future<bool> showBox({
       context: context,
       builder: (BuildContext context) =>
           CupertinoAlertDialog(content: Text(text ?? ' '), actions: <Widget>[
-        CupertinoDialogAction(
-          onPressed: () {
-            if (press02 != null) {
-              press02();
-            }
-            if (button02!.onPressed != null) {
-              button02.onPressed!();
-            }
-            Navigator.pop(context, button02.result ?? false);
-          },
-          child: Text(button02!.text ?? 'Cancel'),
-        ),
+        if (button02 != null)
+          CupertinoDialogAction(
+            onPressed: () {
+              if (press02 != null) {
+                press02();
+              }
+              if (button02.onPressed != null) {
+                button02.onPressed!();
+              }
+              Navigator.pop(context, button02.result ?? false);
+            },
+            child: Text(button02.text ?? 'Cancel'),
+          ),
         CupertinoDialogAction(
           onPressed: () {
             if (press01 != null) {

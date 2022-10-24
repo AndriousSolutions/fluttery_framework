@@ -1,7 +1,7 @@
 // application's main app
 export 'package:fluttery_framework_example/src/app/view/app.dart';
 
-// application's menu bar
+// App's menu
 export 'package:fluttery_framework_example/src/app/view/menu/app_menu.dart';
 
 // Language Spinner

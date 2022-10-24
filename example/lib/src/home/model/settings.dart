@@ -23,24 +23,17 @@ class Settings {
     return Prefs.setBool(setting, value);
   }
 
-  static bool getOrder() {
-    return Prefs.getBool('order_of_items', false);
-  }
+  static bool getOrder() => Prefs.getBool('order_of_items', false);
 
-  static Future<bool> setOrder(bool value) {
-    return Prefs.setBool('order_of_items', value);
-  }
+  static Future<bool> setOrder(bool value) =>
+      Prefs.setBool('order_of_items', value);
 
-  static bool getLeftHanded() {
-    return Prefs.getBool('left_handed', false);
-  }
+  static bool getLeftHanded() => Prefs.getBool('left_handed', false);
 
-  static Future<bool> setLeftHanded(bool value) {
-    return Prefs.setBool('left_handed', value);
-  }
+  static Future<bool> setLeftHanded(bool value) =>
+      Prefs.setBool('left_handed', value);
 
   static StatelessWidget tapText(String text, VoidCallback onTap,
-      {TextStyle? style}) {
-    return AppSettings.tapText(text, onTap, style: style);
-  }
+          {TextStyle? style}) =>
+      AppSettings.tapText(text, onTap, style: style);
 }

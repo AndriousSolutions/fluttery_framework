@@ -78,7 +78,7 @@ export 'package:fluttery_framework/src/view/utils/inherited_state.dart'
 
 /// Menus
 export 'package:fluttery_framework/src/view/app_menu.dart'
-    show AppMenu, AppPopupMenu, Menu;
+    show AppMenu, PopupMenu;
 
 /// Extensions
 export 'package:fluttery_framework/src/view/extensions/_extensions_view.dart';

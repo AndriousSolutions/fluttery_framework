@@ -1,3 +1,4 @@
+//
 Map<String, String> frFR = {
   'Demo App': 'Application de démonstration',
   'Counter Page Demo': 'Démo de la page de compteur',

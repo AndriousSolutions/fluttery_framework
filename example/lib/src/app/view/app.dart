@@ -23,7 +23,6 @@ class TemplateView extends AppState {
           inTitle: () => 'Demo App'.tr,
           debugShowCheckedModeBanner: false,
           switchUI: Prefs.getBool('switchUI'),
-          locale: L10n.locale,
           inSupportedLocales: () {
             /// The app's translations
             L10n.translations = {
@@ -45,5 +44,10 @@ class TemplateView extends AppState {
         );
 
   @override
-  Widget onHome() => (con as TemplateController).onHome();
+  Locale? onLocale() {
+    return (controller as TemplateController).appLocale();
+  }
+
+  @override
+  Widget onHome() => (controller as TemplateController).onHome();
 }

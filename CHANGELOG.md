@@ -1,4 +1,14 @@
 
+## 1.6.0
+- _AppState.con property was removed (StateX.controller will do)
+- New class, AppMenu
+- class PopupMenu<T> extends StatelessWidget {
+- static v.AppMenu<String> get menu =>   /// A mutable menu
+- showBox() function improved.
+- sdk: '>=2.18.1 <3.0.0'
+- locale: locale ?? onLocale(), to locale: onLocale() ?? locale,
+- localeListResolutionCallback ?? onLocaleListResolutionCallback,
+- localeResolutionCallback ?? onLocaleResolutionCallback,
 
 ## 1.5.0
 - Static Color? setThemeData({ColorSwatch<int?>? swatch, Color? color,}) {

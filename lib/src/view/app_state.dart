@@ -137,7 +137,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     this.inInheritedMediaQuery,
     this.inError,
     this.inAsyncError,
-  }) : super(con: controller ?? AppController()) {
+  }) : super(controller: controller ?? AppController()) {
     // In case null was explicitly passed in.
     useMaterial ??= false;
     useCupertino ??= false;
@@ -422,13 +422,14 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
           color: color ?? onColor() ?? Colors.blue,
           theme: v.App.iOSTheme ??= iOSTheme ?? oniOSTheme(),
-          locale: locale ?? onLocale(),
+          locale:
+              onLocale() ?? locale, // locale gets assigned elsewhere so switch
           localizationsDelegates:
               localizationsDelegates ?? onLocalizationsDelegates(),
           localeListResolutionCallback:
-              localeListResolutionCallback ?? onLocaleListResolutionCallback(),
+              localeListResolutionCallback ?? onLocaleListResolutionCallback,
           localeResolutionCallback:
-              localeResolutionCallback ?? onLocaleResolutionCallback(),
+              localeResolutionCallback ?? onLocaleResolutionCallback,
           supportedLocales: v.App.supportedLocales = supportedLocales ??
               onSupportedLocales() ??
               const <Locale>[Locale('en', 'US')],
@@ -467,13 +468,14 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           title: title = onTitle(),
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
           color: color ?? onColor() ?? Colors.blue,
-          locale: locale ?? onLocale(),
+          locale:
+              onLocale() ?? locale, // locale gets assigned elsewhere so switch
           localizationsDelegates:
               localizationsDelegates ?? onLocalizationsDelegates(),
           localeListResolutionCallback:
-              localeListResolutionCallback ?? onLocaleListResolutionCallback(),
+              localeListResolutionCallback ?? onLocaleListResolutionCallback,
           localeResolutionCallback:
-              localeResolutionCallback ?? onLocaleResolutionCallback(),
+              localeResolutionCallback ?? onLocaleResolutionCallback,
           supportedLocales: v.App.supportedLocales = supportedLocales ??
               onSupportedLocales() ??
               const <Locale>[Locale('en', 'US')],
@@ -523,12 +525,13 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           theme: v.App.themeData ??= theme ?? onTheme(),
           darkTheme: darkTheme ?? onDarkTheme(),
           themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
-          locale: locale ?? onLocale(),
+          locale:
+              onLocale() ?? locale, // locale gets assigned elsewhere so switch
           localizationsDelegates: onLocalizationsDelegates(),
           localeListResolutionCallback:
-              localeListResolutionCallback ?? onLocaleListResolutionCallback(),
+              localeListResolutionCallback ?? onLocaleListResolutionCallback,
           localeResolutionCallback:
-              localeResolutionCallback ?? onLocaleResolutionCallback(),
+              localeResolutionCallback ?? onLocaleResolutionCallback,
           supportedLocales: v.App.supportedLocales = supportedLocales ??
               onSupportedLocales() ??
               const <Locale>[Locale('en', 'US')],
@@ -570,12 +573,13 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           theme: v.App.themeData ??= theme ?? onTheme(),
           darkTheme: darkTheme ?? onDarkTheme(),
           themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
-          locale: locale ?? onLocale(),
+          locale:
+              onLocale() ?? locale, // locale gets assigned elsewhere so switch
           localizationsDelegates: onLocalizationsDelegates(),
           localeListResolutionCallback:
-              localeListResolutionCallback ?? onLocaleListResolutionCallback(),
+              localeListResolutionCallback ?? onLocaleListResolutionCallback,
           localeResolutionCallback:
-              localeResolutionCallback ?? onLocaleResolutionCallback(),
+              localeResolutionCallback ?? onLocaleResolutionCallback,
           supportedLocales: v.App.supportedLocales = supportedLocales ??
               onSupportedLocales() ??
               const <Locale>[Locale('en', 'US')],
@@ -640,8 +644,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     }
     _inError = true;
     // Note, the AppController's Error Handler takes precedence if any.
-    if (con != null) {
-      con!.onError(details);
+    if (controller != null && controller is AppController) {
+      (controller! as AppController).onError(details);
     } else if (inError != null) {
       inError!(details);
     } else {
@@ -796,18 +800,24 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   }
 
   /// Returns 'Locale Resolutions' routine if any.
-  LocaleListResolutionCallback? onLocaleListResolutionCallback() =>
-      inLocaleListResolutionCallback;
+  Locale? onLocaleListResolutionCallback(
+          List<Locale>? locales, Iterable<Locale> supportedLocales) =>
+      inLocaleListResolutionCallback == null
+          ? null
+          : inLocaleListResolutionCallback!(locales, supportedLocales);
 
   /// Returns 'Local Resolution' routine if any.
   /// Turn to the I10n class to provide the locale.
-  LocaleResolutionCallback? onLocaleResolutionCallback() =>
-      inLocaleResolutionCallback; // ?? v.L10n.localeResolutionCallback;
+  Locale? onLocaleResolutionCallback(
+          Locale? locale, Iterable<Locale> supportedLocales) =>
+      inLocaleResolutionCallback == null
+          ? null
+          : inLocaleResolutionCallback!(
+              locale, supportedLocales); // ?? v.L10n.localeResolutionCallback;
 
   /// Returns the Locale Iteration if any.
-  List<Locale>? onSupportedLocales() => inSupportedLocales != null
-      ? inSupportedLocales!()
-      : const <Locale>[Locale('en', 'US')];
+  List<Locale>? onSupportedLocales() =>
+      inSupportedLocales != null ? inSupportedLocales!() : null;
 
   /// Returns 'Show Material Grid' boolean indicator if any.
   bool? onDebugShowMaterialGrid() =>
@@ -870,7 +880,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
 abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   //
   _AppState({
-    this.con,
+    AppController? controller,
     super.controllers,
     super.object,
     this.materialApp,
@@ -919,9 +929,9 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     FlutterExceptionHandler? errorHandler,
     ErrorWidgetBuilder? errorScreen,
     v.ReportErrorHandler? errorReport,
-  }) : super(controller: con) {
+  }) : super(controller: controller) {
     // Listen to the device's connectivity.
-    v.App.addConnectivityListener(con);
+    v.App.addConnectivityListener(controller);
     // In case null was explicitly passed in.
     routes ??= const <String, WidgetBuilder>{};
     navigatorObservers ??= const <NavigatorObserver>[];
@@ -959,7 +969,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
           handler: errorHandler, screen: errorScreen, report: errorReport);
     }
   }
-  final AppController? con;
+//  final AppController? con;
   v.AppErrorHandler? _errorHandler;
 
   /// The MaterialApp and CupertinoApp if provided.

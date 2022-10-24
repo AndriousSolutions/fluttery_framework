@@ -40,7 +40,6 @@ class _RandomWordsAndroid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    final widget = state.widget;
     final con = state.con;
     final appCon = state.appCon;
     return Scaffold(
@@ -52,7 +51,8 @@ class _RandomWordsAndroid extends StatelessWidget {
             icon: const Icon(Icons.list),
             onPressed: _pushSaved,
           ),
-          appCon.popupMenu(),
+          AppMenu().popupMenuButton,
+//          appCon.menu,
         ],
       ),
       body: ListView.builder(
@@ -105,9 +105,8 @@ class _RandomWordsiOS extends StatelessWidget {
   final _WordPairsState state;
   @override
   Widget build(BuildContext context) {
-//    final widget = state.widget;
     final con = state.con;
-    final appCon = state.appCon;
+//    final appCon = state.appCon;
     return CupertinoPageScaffold(
       child: CustomScrollView(
         slivers: <Widget>[
@@ -122,7 +121,8 @@ class _RandomWordsiOS extends StatelessWidget {
                   onPressed: _pushSaved,
                   child: const Icon(Icons.list),
                 ),
-                appCon.popupMenu(),
+                AppMenu().popupMenuButton,
+//                appCon.menu,
               ],
             ),
           ),

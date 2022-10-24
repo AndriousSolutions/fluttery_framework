@@ -51,7 +51,8 @@ Widget _buildAndroid(_ContactListState state) {
           },
           child: const Icon(Icons.sort_by_alpha, color: Colors.white),
         ),
-        appCon.popupMenu(),
+        AppMenu().popupMenuButton,
+//        appCon.menu,
       ],
     ),
     floatingActionButton: FloatingActionButton(
@@ -151,7 +152,8 @@ Widget _buildiOS(_ContactListState state) {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              appCon.popupMenu(),
+              AppMenu().popupMenuButton,
+//              appCon.menu,
             ],
           ),
         ),

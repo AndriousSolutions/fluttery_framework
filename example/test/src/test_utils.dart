@@ -1,3 +1,4 @@
+//
 String _errorMessage = '';
 
 void collectError(Object error) {

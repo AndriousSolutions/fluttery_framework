@@ -70,6 +70,7 @@ class App {
 
   /// Dispose the App properties.
   void dispose() {
+    _menu = null;
     _connectivitySubscription?.cancel();
     _connectivitySubscription = null;
     _packageInfo = null;
@@ -266,6 +267,13 @@ class App {
       _appState?.onGenerateTitle = v;
     }
   }
+
+  /// A mutable menu
+  static v.AppMenu<String> get menu => _menu ??= v.AppMenu(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        position: PopupMenuPosition.under,
+      );
+  static v.AppMenu<String>? _menu;
 
   // Allow it to be assigned null.
   /// The App's current Material theme.
@@ -498,9 +506,9 @@ class App {
     }
   }
 
-  /// Returns the App's current locale.
+  /// Returns the device's every changing Locale.
   static Locale? get locale =>
-      _appState?.locale ??= Localizations.maybeLocaleOf(context!) ??
+      _appState?.locale = Localizations.maybeLocaleOf(context!) ??
           _resolveLocales(
             mainWindow.locales,
             _appState?.supportedLocales,
@@ -525,8 +533,11 @@ class App {
     // Attempt to use localeListResolutionCallback.
     if (_appState?.localeListResolutionCallback != null) {
       final locales = _appState?.supportedLocales;
-      final locale =
-          _appState?.localeListResolutionCallback!(preferredLocales, locales!);
+      Locale? locale;
+      if (locales != null) {
+        locale =
+            _appState?.localeListResolutionCallback!(preferredLocales, locales);
+      }
       if (locale != null) {
         return locale;
       }
@@ -539,10 +550,10 @@ class App {
     // localeListResolutionCallback failed, falling back to localeResolutionCallback.
     if (_appState?.localeResolutionCallback != null) {
       final locales = _appState?.supportedLocales;
-      final locale = _appState?.localeResolutionCallback!(
-        preferred,
-        locales!,
-      );
+      Locale? locale;
+      if (locales != null) {
+        locale = _appState?.localeResolutionCallback!(preferred, locales);
+      }
       if (locale != null) {
         return locale;
       }

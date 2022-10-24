@@ -177,14 +177,14 @@ class _BuildAndroid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    final widget = state.widget;
     final con = state.con;
     final appCon = state.appCon;
     return Scaffold(
       appBar: AppBar(
         title: Text('Counter Page Demo'.tr),
         actions: [
-          appCon.popupMenu(),
+          AppMenu().popupMenuButton,
+          // appCon.menu,
         ],
       ),
       body: Center(
@@ -222,13 +222,13 @@ class _BuildiOS extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    final widget = state.widget;
     final con = state.con;
     final appCon = state.appCon;
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text('Counter Page Demo'.tr),
-        trailing: appCon.popupMenu(),
+        trailing: AppMenu().popupMenuButton, // mutable menu object
+//        trailing: appCon.menu,                // immutable menu object
       ),
       child: SafeArea(
         child: Padding(

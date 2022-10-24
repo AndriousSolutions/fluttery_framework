@@ -37,11 +37,8 @@ class _SpinnerState extends State<ISOSpinner> {
   @override
   void initState() {
     super.initState();
-
     locales = widget.supportedLocales;
-
     int? index;
-
     if (widget.initialItem != null && widget.initialItem! > -1) {
       index = widget.initialItem!;
     } else if (widget.locale != null) {

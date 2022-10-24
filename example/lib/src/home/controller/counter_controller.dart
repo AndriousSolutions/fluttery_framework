@@ -1,6 +1,6 @@
 //
 import 'package:fluttery_framework_example/src/controller.dart'
-    show App, AppController, State, TemplateController, Widget, WordPairsTimer;
+    show AppController, WordPairsTimer;
 
 import 'package:fluttery_framework_example/src/model.dart'
     show CounterModel, State, Widget;
@@ -9,7 +9,7 @@ class CounterController extends AppController {
   factory CounterController() => _this ??= CounterController._();
   CounterController._() : super() {
     //
-    _model = CounterModel(); // CounterModel(useDouble: true);
+    _model = CounterModel();
 
     /// Provide the 'timer' controller to the interface.
     wordPairsTimer = WordPairsTimer();
@@ -57,8 +57,8 @@ class CounterController extends AppController {
   /// The 'Controller' is calling the 'View' to call setState()
 //  void onPressed() => setState(() => _model.onPressed());
 
-  /// Retrieve the app's own controller.
-  TemplateController get appController =>
-      _appController ??= App.state!.con as TemplateController;
-  TemplateController? _appController;
+  // /// Retrieve the app's own controller.
+  // TemplateController get appController =>
+  //     _appController ??= App.state!.controller as TemplateController;
+  // TemplateController? _appController;
 }
