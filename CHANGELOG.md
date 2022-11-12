@@ -1,4 +1,8 @@
 
+## 1.6.1
+- theme: v.App.themeData = theme ?? onTheme(),
+- Introduces https://pub.dev/packages/sizer
+
 ## 1.6.0
 - _AppState.con property was removed (StateX.controller will do)
 - New class, AppMenu

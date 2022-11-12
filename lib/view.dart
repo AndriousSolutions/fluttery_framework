@@ -94,3 +94,6 @@ export 'package:prefs/prefs.dart' show Prefs;
 
 /// Translations
 export 'package:l10n_translator/l10n.dart';
+
+/// Responsive UI
+export 'package:sizer/sizer.dart';

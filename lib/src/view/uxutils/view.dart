@@ -10,6 +10,8 @@ export 'package:fluttery_framework/src/view/uxutils/src/view/custom_scroll_physi
 
 export 'package:fluttery_framework/src/view/uxutils/src/view/variable_string.dart';
 
+export 'package:fluttery_framework/src/view/uxutils/src/view/white_black_foreground.dart';
+
 export 'package:fluttery_framework/src/view/uxutils/src/view/common_widgets/custom_raised_button.dart';
 
 export 'package:fluttery_framework/src/view/uxutils/src/view/nav_bottom_bar.dart';

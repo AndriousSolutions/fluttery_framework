@@ -36,7 +36,8 @@ import 'package:fluttery_framework/view.dart' as v
         AppRouteInformationParser,
         AppStateX,
         L10n,
-        ReportErrorHandler;
+        ReportErrorHandler,
+        Sizer;
 
 /// Highlights UI while debugging.
 import 'package:flutter/rendering.dart' as debug;
@@ -383,7 +384,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
 
   /// Override build to avoid the built-in Future Builder. It's been run.
   @override
-  Widget build(BuildContext context) => buildWidget(context);
+  Widget build(BuildContext context) => v.Sizer(
+      builder: (context, orientation, deviceType) => buildWidget(context));
 
   /// Override to impose your own WidgetsApp (like CupertinoApp or MaterialApp)
   @override
@@ -421,7 +423,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           title: title = onTitle(),
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
           color: color ?? onColor() ?? Colors.blue,
-          theme: v.App.iOSTheme ??= iOSTheme ?? oniOSTheme(),
+          theme: v.App.iOSTheme = iOSTheme ?? oniOSTheme(),
           locale:
               onLocale() ?? locale, // locale gets assigned elsewhere so switch
           localizationsDelegates:
@@ -463,7 +465,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
               routeInformationProvider ?? onRouteInformationProvider(),
           routeInformationParser: _routeInformationParser!,
           routerDelegate: _routerDelegate!,
-          theme: v.App.iOSTheme ??= iOSTheme ?? oniOSTheme(),
+          theme: v.App.iOSTheme = iOSTheme ?? oniOSTheme(),
           builder: builder ?? onBuilder(),
           title: title = onTitle(),
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
@@ -522,7 +524,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           title: title = onTitle(),
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
           color: color ?? onColor() ?? Colors.white,
-          theme: v.App.themeData ??= theme ?? onTheme(),
+          theme: v.App.themeData = theme ?? onTheme(),
           darkTheme: darkTheme ?? onDarkTheme(),
           themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
           locale:
@@ -570,7 +572,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           title: title = onTitle(),
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
           color: color ?? onColor() ?? Colors.white,
-          theme: v.App.themeData ??= theme ?? onTheme(),
+          theme: v.App.themeData = theme ?? onTheme(),
           darkTheme: darkTheme ?? onDarkTheme(),
           themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
           locale:
