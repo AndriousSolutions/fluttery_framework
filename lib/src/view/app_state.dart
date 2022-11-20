@@ -57,6 +57,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     super.routeInformationProvider,
     super.routeInformationParser,
     super.routerDelegate,
+    super.routerConfig,
     super.backButtonDispatcher,
     super.scaffoldMessengerKey,
     super.routes,
@@ -106,6 +107,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     this.inRouteInformationProvider,
     this.inRouteInformationParser,
     this.inRouterDelegate,
+    this.inRouterConfig,
     this.inBackButtonDispatcher,
     this.inRoutes,
     this.inInitialRoute,
@@ -214,6 +216,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
 
   /// Returns the Route Delegate if any.
   final RouterDelegate<Object> Function()? inRouterDelegate;
+
+  /// Returns the Route Config if any.
+  final RouterConfig<Object>? Function()? inRouterConfig;
 
   /// Returns the 'Back Button' routine if any.
   final BackButtonDispatcher Function()? inBackButtonDispatcher;
@@ -393,8 +398,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     //
     Widget app;
 
-    _routerDelegate = routerDelegate ?? onRouterDelegate();
-    _routeInformationParser =
+    final _routerDelegate = routerDelegate ?? onRouterDelegate();
+    final _routerConfig = routerConfig ?? onRouterConfig();
+    var _routeInformationParser =
         routeInformationParser ?? onRouteInformationParser();
     // Supply the appropriate parser for the developer.
     if (_routerDelegate is v.AppRouterDelegate &&
@@ -407,7 +413,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
       if (cupertinoApp != null) {
         app = cupertinoApp!;
         //
-      } else if (_routerDelegate == null || _routeInformationParser == null) {
+      } else if (_routerDelegate == null ||
+          _routerConfig == null ||
+          _routeInformationParser == null) {
         //
         app = CupertinoApp(
           key: key ?? cupertinoKey,
@@ -423,7 +431,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           title: title = onTitle(),
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
           color: color ?? onColor() ?? Colors.blue,
-          theme: v.App.iOSTheme = iOSTheme ?? oniOSTheme(),
+          theme: _iosThemeData(),
           locale:
               onLocale() ?? locale, // locale gets assigned elsewhere so switch
           localizationsDelegates:
@@ -463,9 +471,10 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           key: key ?? cupertinoKey,
           routeInformationProvider:
               routeInformationProvider ?? onRouteInformationProvider(),
-          routeInformationParser: _routeInformationParser!,
-          routerDelegate: _routerDelegate!,
-          theme: v.App.iOSTheme = iOSTheme ?? oniOSTheme(),
+          routeInformationParser: _routeInformationParser,
+          routerDelegate: _routerDelegate,
+          routerConfig: _routerConfig,
+          theme: _iosThemeData(),
           builder: builder ?? onBuilder(),
           title: title = onTitle(),
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
@@ -507,7 +516,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
       if (materialApp != null) {
         app = materialApp!;
         //
-      } else if (_routerDelegate == null || _routeInformationParser == null) {
+      } else if (_routerDelegate == null ||
+          _routerConfig == null ||
+          _routeInformationParser == null) {
         app = MaterialApp(
           key: key ?? materialKey,
           navigatorKey: navigatorKey ?? onNavigatorKey(),
@@ -524,7 +535,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           title: title = onTitle(),
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
           color: color ?? onColor() ?? Colors.white,
-          theme: v.App.themeData = theme ?? onTheme(),
+          theme: _themeData(),
           darkTheme: darkTheme ?? onDarkTheme(),
           themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
           locale:
@@ -564,15 +575,20 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
       } else {
         app = MaterialApp.router(
           key: key ?? materialKey,
-          backButtonDispatcher:
-              backButtonDispatcher ?? onBackButtonDispatcher(),
           scaffoldMessengerKey:
               scaffoldMessengerKey ?? onScaffoldMessengerKey(),
+          routeInformationProvider:
+              routeInformationProvider ?? onRouteInformationProvider(),
+          routeInformationParser: _routeInformationParser,
+          routerDelegate: _routerDelegate,
+          routerConfig: _routerConfig,
+          backButtonDispatcher:
+              backButtonDispatcher ?? onBackButtonDispatcher(),
           builder: builder ?? onBuilder(),
           title: title = onTitle(),
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
           color: color ?? onColor() ?? Colors.white,
-          theme: v.App.themeData = theme ?? onTheme(),
+          theme: _themeData(),
           darkTheme: darkTheme ?? onDarkTheme(),
           themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
           locale:
@@ -606,10 +622,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           scrollBehavior: scrollBehavior ?? onScrollBehavior(),
           useInheritedMediaQuery:
               useInheritedMediaQuery ?? onInheritedMediaQuery() ?? false,
-          routeInformationProvider:
-              routeInformationProvider ?? onRouteInformationProvider(),
-          routeInformationParser: _routeInformationParser!,
-          routerDelegate: _routerDelegate!,
         );
       }
     }
@@ -629,6 +641,18 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
 //         MaterialBasedCupertinoThemeData(materialTheme: v.App.themeData!);
 
     return app;
+  }
+
+  CupertinoThemeData? _iosThemeData() {
+    // ignore: join_return_with_assignment
+    v.App.iOSTheme = iOSTheme ?? oniOSTheme();
+    return v.App.iOSTheme;
+  }
+
+  ThemeData? _themeData() {
+    // ignore: join_return_with_assignment
+    v.App.themeData = theme ?? onTheme();
+    return v.App.themeData;
   }
 
   // @override
@@ -727,13 +751,13 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   RouteInformationParser<Object>? onRouteInformationParser() =>
       inRouteInformationParser != null ? inRouteInformationParser!() : null;
 
-  RouteInformationParser<Object>? _routeInformationParser;
-
   /// Returns the Route Delegate if any.
   RouterDelegate<Object>? onRouterDelegate() =>
       inRouterDelegate != null ? inRouterDelegate!() : null;
 
-  RouterDelegate<Object>? _routerDelegate;
+  /// Returns the Route Config if any.
+  RouterConfig<Object>? onRouterConfig() =>
+      inRouterConfig != null ? inRouterConfig!() : null;
 
   /// Returns the 'Back Button' routine if any.
   BackButtonDispatcher? onBackButtonDispatcher() =>
@@ -891,6 +915,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     this.routeInformationProvider,
     this.routeInformationParser,
     this.routerDelegate,
+    this.routerConfig,
     this.backButtonDispatcher,
     this.scaffoldMessengerKey,
     this.routes,
@@ -983,6 +1008,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   RouteInformationProvider? routeInformationProvider;
   RouteInformationParser<Object>? routeInformationParser;
   RouterDelegate<Object>? routerDelegate;
+  RouterConfig<Object>? routerConfig;
   BackButtonDispatcher? backButtonDispatcher;
   GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
   Map<String, WidgetBuilder>? routes;

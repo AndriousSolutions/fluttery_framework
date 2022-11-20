@@ -467,6 +467,7 @@ MaterialPage<dynamic> _materialPage(
   Object? arguments,
   String? restorationId,
 }) {
+  //
   Widget? widget;
 
   try {
@@ -484,23 +485,19 @@ MaterialPage<dynamic> _materialPage(
     name: name ?? path,
     arguments: arguments,
     restorationId: restorationId,
-    child: widget ?? Container(),
+    child: widget ?? const SizedBox(),
   );
 }
 
 class _WebPage extends Page<void> {
   const _WebPage({
-    LocalKey? key,
-    String? name,
-    Object? arguments,
-    String? restorationId,
+    super.key,
+    super.name,
+    super.arguments,
+    super.restorationId,
     this.builder,
-  }) : super(
-          key: key,
-          name: name,
-          arguments: arguments,
-          restorationId: restorationId,
-        );
+  });
+  //
   final WidgetBuilder? builder;
 
   @override

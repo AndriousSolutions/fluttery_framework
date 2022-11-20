@@ -708,6 +708,9 @@ class App {
   // Application information
   static PackageInfo? _packageInfo;
 
+  /// The package info.
+  static PackageInfo? get packageInfo => _packageInfo;
+
   /// The Name of the App.
   static String? get appName => _packageInfo?.appName;
 

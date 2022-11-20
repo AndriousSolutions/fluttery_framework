@@ -145,9 +145,9 @@ class _StateApp extends State<AppStatefulWidget> {
       _widget._app.setAppState(_appState);
 
       // Collect the device's information but not in certain platforms
-      if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
-        await v.App.getDeviceInfo();
-      }
+//      if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
+      await v.App.getDeviceInfo();
+//      }
 
       // Perform any asynchronous operations.
       await _appState!.initAsync();

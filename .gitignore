@@ -19,7 +19,7 @@ out/
 .dart_tool/
 .pub-cache/
 # Ignore API documentation directory created by dartdoc:
-doc/api/
+/doc/api/
 
 # Android Studio
 /*.iml
@@ -46,7 +46,7 @@ lcov.info
 .metadata
 
 # Miscellaneous
-tmp/
+/tmp/
 *.tmp
 *.bak
 *.swp
@@ -87,6 +87,7 @@ app.*.map.json
 mapping.txt
 seeds.txt
 unused.txt
+
 /obfuscate/
 
 # Android related

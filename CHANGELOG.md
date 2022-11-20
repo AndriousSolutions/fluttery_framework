@@ -1,5 +1,12 @@
 
+## 1.6.2
+November 19, 2022
+- theme: themeData(),
+- _routerConfig = routerConfig ?? onRouterConfig();
+- DeviceInfoPlugin().deviceInfo;
+
 ## 1.6.1
+November 11, 2022
 - theme: v.App.themeData = theme ?? onTheme(),
 - Introduces https://pub.dev/packages/sizer
 
