@@ -413,9 +413,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
       if (cupertinoApp != null) {
         app = cupertinoApp!;
         //
-      } else if (_routerDelegate == null ||
-          _routerConfig == null ||
-          _routeInformationParser == null) {
+      } else if (_routerDelegate == null) {
         //
         app = CupertinoApp(
           key: key ?? cupertinoKey,
@@ -516,9 +514,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
       if (materialApp != null) {
         app = materialApp!;
         //
-      } else if (_routerDelegate == null ||
-          _routerConfig == null ||
-          _routeInformationParser == null) {
+      } else if (_routerDelegate == null) {
         app = MaterialApp(
           key: key ?? materialKey,
           navigatorKey: navigatorKey ?? onNavigatorKey(),

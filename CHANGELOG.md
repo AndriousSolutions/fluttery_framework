@@ -1,9 +1,10 @@
 
-## 1.6.2
+## 1.6.2+01
 November 19, 2022
 - theme: themeData(),
 - _routerConfig = routerConfig ?? onRouterConfig();
 - DeviceInfoPlugin().deviceInfo;
+- if (_routerDelegate == null)
 
 ## 1.6.1
 November 11, 2022
