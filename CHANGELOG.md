@@ -1,4 +1,9 @@
 
+## 1.6.3
+November 25, 2022
+- get INSTANCE
+- Corrected setNewRoutePath()
+
 ## 1.6.2+01
 November 19, 2022
 - theme: themeData(),

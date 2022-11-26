@@ -34,6 +34,10 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
     _routes = _mapPages(routes);
   }
 
+  /// Supply an instance
+  // ignore: non_constant_identifier_names
+  static AppRouterDelegate? get INSTANCE => _this;
+
   //
   static AppRouterDelegate? _this;
 
@@ -91,7 +95,7 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
 
           if (pop) {
             //
-            _currentConfiguration = _previousPath();
+            _currentConfiguration = _previousRoute();
 
             // Notify Navigator 2.0
             notifyListeners();
@@ -106,39 +110,39 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
   Future<void> setNewRoutePath(AppRoutePath configuration) async {
     //
     if (configuration.isHomePage) {
+      //
       _currentConfiguration = configuration;
-    } else
-    // If not a recognized path
-    if (!_addPage(configuration.path)) {
+
+      // This is a hack! There must be a better way.
+    } else if (_backButtonPushed(configuration.path!)) {
+      //
+      _currentConfiguration = _previousRoute();
+
+      // If not a recognized path
+    } else if (!_findPage(configuration.path)) {
       //
       _addUnknown(configuration.path);
 
       _currentConfiguration = AppRoutePath.unknown(configuration.path);
-      // This is a hack! There must be a better way.
-    } else if (_backButtonPushed(configuration.path!)) {
-      //
-      _currentConfiguration = _previousPath();
     } else {
+      //
       _currentConfiguration = AppRoutePath.page(configuration.path);
     }
   }
 
-  /// Supply the next route
-  static bool nextRoute(String? path) {
+  /// Supply the new route
+  static bool newRoute(String? path) {
     //
-    final next = _this!._addPage(path);
+    final next = _this!._findPage(path);
 
     if (next) {
-      _calledNextRoute = true;
-      _currentConfiguration = AppRoutePath.page(path);
-      _this!.notifyListeners();
-      _calledNextRoute = false;
+      nextPath(path);
     }
     return next;
   }
 
-  /// Add the next page route
-  bool _addPage(String? path) {
+  /// Find the next page route
+  bool _findPage(String? path) {
     //
     if (path == null) {
       return false;
@@ -160,25 +164,63 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
     final add = pageBuilder != null;
 
     if (add) {
-      // Don't repeatedly add a page. .last will error if empty.
-      if (_pages.isEmpty || _pages.last != pageBuilder) {
-        _pages.add(pageBuilder);
-      }
+      _addPage(pageBuilder);
     }
     return add;
+  }
+
+  void _addPage(Page<dynamic>? page) {
+    // Don't repeatedly add a page. .last will error if empty.
+    if (page != null && (_pages.isEmpty || _pages.last != page)) {
+      _pages.add(page);
+    }
+  }
+
+  /// The next URL
+  static void nextPath(String? path) {
+    _calledNextRoute = true;
+    _currentConfiguration = AppRoutePath.page(path);
+    _this!.notifyListeners();
+    _calledNextRoute = false;
+  }
+
+  /// Supply something not a listed route.
+  void offRoute(String routeName, WidgetBuilder builder) {
+    var path = _currentConfiguration.path;
+    path = '$path/$routeName';
+    _addPage(pageWrapper(path, builder));
+    nextPath(path);
+  }
+
+  /// Retreat to the previous route.
+  AppRoutePath _previousRoute() {
+    //
+    if (_pages.isNotEmpty) {
+      _pages.removeLast();
+    }
+    return _previousPath();
   }
 
   /// Retreat to the previous path.
   AppRoutePath _previousPath() {
     //
-    if (_pages.isNotEmpty) {
-      _pages.removeLast();
-    }
-
     final path = _pages.isEmpty ? '/' : _pages.last.name;
-
     return path == '/' ? AppRoutePath.home() : AppRoutePath.page(path);
   }
+
+  /// Supply a subdirectory
+  static void subRoute(String? subdirectory) {
+    if (subdirectory == null) {
+      return;
+    }
+    final path = _currentConfiguration.path;
+    nextPath('$path/$subdirectory');
+  }
+
+  // static void restorePath() {
+  //   final routePath = _previousPath();
+  //   nextPath(routePath.path);
+  // }
 
   /// Explicitly add a route.
   bool _addRoute(String? path, WidgetBuilder? builder) {
@@ -198,7 +240,7 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
       return true;
     }
 
-    final newPage = _webPage(path, builder);
+    final newPage = pageWrapper(path, builder);
 
     // Test if already added.
     final page = _routes[path];
@@ -238,7 +280,7 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
     final Map<String, Page<dynamic>> pages = {};
 
     routes.forEach((path, builder) {
-      pages[path] = _webPage(
+      pages[path] = pageWrapper(
         path,
         builder,
       );
@@ -251,7 +293,7 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
   bool _addUnknown(String? path) {
     bool add = _addRoute(path, (_) => _UnknownScreen());
     if (add) {
-      add = _addPage(path);
+      add = _findPage(path);
     }
     return add;
   }
@@ -439,7 +481,7 @@ class AppRouteInformationProvider extends PlatformRouteInformationProvider {
 }
 
 /// Returns a Page object.
-Page<dynamic> _webPage(
+Page<dynamic> pageWrapper(
   String path,
   WidgetBuilder builder, {
   LocalKey? key,
