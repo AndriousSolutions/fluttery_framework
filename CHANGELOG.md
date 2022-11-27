@@ -1,8 +1,9 @@
 
-## 1.6.3
+## 1.6.3+01
 November 25, 2022
 - get INSTANCE
 - Corrected setNewRoutePath()
+- hyperlink.dart & webpage_wrapper.dart
 
 ## 1.6.2+01
 November 19, 2022

@@ -89,6 +89,10 @@ export 'package:fluttery_framework/src/view/app_navigator.dart';
 /// UX Utils
 export 'package:fluttery_framework/src/view/uxutils/view.dart';
 
+/// Web
+export 'package:fluttery_framework/src/view/web/hyperlink.dart';
+export 'package:fluttery_framework/src/view/web/webpage_wrapper.dart';
+
 /// Preferences
 export 'package:prefs/prefs.dart' show Prefs;
 
