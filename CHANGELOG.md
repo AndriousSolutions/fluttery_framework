@@ -1,4 +1,10 @@
 
+## 1.6.4
+December 30, 2022
+- Return boolean init from appState initAsync()
+- value is! Color in getter iOSTheme
+- Default iOSTheme to CupertinoThemeData(brightness: Brightness.light);
+
 ## 1.6.3+01
 November 25, 2022
 - get INSTANCE

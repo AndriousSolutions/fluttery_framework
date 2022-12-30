@@ -641,7 +641,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
 
   CupertinoThemeData? _iosThemeData() {
     // ignore: join_return_with_assignment
-    v.App.iOSTheme = iOSTheme ?? oniOSTheme();
+    v.App.iOSTheme = iOSTheme ??
+        oniOSTheme() ??
+        const CupertinoThemeData(brightness: Brightness.light);
     return v.App.iOSTheme;
   }
 

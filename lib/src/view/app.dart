@@ -313,7 +313,7 @@ class App {
       _iOSTheme = value;
     } else if (value is ThemeData) {
       _iOSTheme = MaterialBasedCupertinoThemeData(materialTheme: value);
-    } else if (value is! ColorSwatch) {
+    } else if (value is! Color) {
       // Ignore the value
     } else if (_iOSTheme == null) {
       _iOSTheme = CupertinoThemeData(

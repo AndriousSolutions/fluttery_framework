@@ -150,7 +150,7 @@ class _StateApp extends State<AppStatefulWidget> {
 //      }
 
       // Perform any asynchronous operations.
-      await _appState!.initAsync();
+      init = await _appState!.initAsync();
       //
     } catch (e) {
       init = false;
