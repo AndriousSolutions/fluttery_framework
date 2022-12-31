@@ -865,7 +865,9 @@ class App {
   static String? _connectivityStatus;
 
   /// Indicates if the app has access to the Internet.
-  static bool get isOnline => _connectivityStatus != 'none';
+  /// Assume we're online if null
+  static bool get isOnline =>
+      _connectivityStatus == null || !_connectivityStatus!.contains('none');
 
   /// Connectivity listeners.
   static final Set<ConnectivityListener> _listeners = {};
