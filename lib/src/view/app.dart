@@ -39,7 +39,7 @@ import 'package:fluttery_framework/controller.dart' show DeviceInfo;
 
 /// This class is available throughout the app
 /// Readily supplies static properties about the App.
-class App {
+class App with ConnectivityListener {
   /// Supply an error handler to the App.
   factory App({
     FlutterExceptionHandler? errorHandler,
@@ -61,6 +61,8 @@ class App {
       report: errorReport,
       allowNewHandlers: allowNewHandlers,
     );
+    // Monitor the device's connectivity to the Internet.
+    addConnectivityListener(this);
   }
   static App? _this;
 
@@ -869,6 +871,12 @@ class App {
   static bool get isOnline =>
       _connectivityStatus == null || !_connectivityStatus!.contains('none');
 
+  ///
+  @override
+  void onConnectivityChanged(ConnectivityResult result) {
+    _connectivityStatus = result.name;
+  }
+
   /// Connectivity listeners.
   static final Set<ConnectivityListener> _listeners = {};
 
@@ -910,7 +918,7 @@ class App {
       }
     });
 
-    await _initConnectivity().then((status) {
+    await _initConnectivity().then((String status) {
       _connectivityStatus = status;
     }).catchError((e) {
       _connectivityStatus = 'none';
@@ -934,7 +942,7 @@ class App {
     try {
       connectionStatus = (await _connectivity.checkConnectivity()).toString();
     } catch (ex) {
-      connectionStatus = 'Failed to get connectivity.';
+      connectionStatus = 'Failed to determine connectivity';
     }
     return connectionStatus;
   }
