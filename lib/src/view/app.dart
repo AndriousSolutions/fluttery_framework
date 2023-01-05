@@ -853,14 +853,14 @@ class App with ConnectivityListener {
     return smallScreen;
   }
 
+  /// The local directory for this App.
+  static String? get filesDir => _path;
+  static String? _path;
+
   /// Determine the connectivity.
   static final Connectivity _connectivity = Connectivity();
 
   static StreamSubscription<ConnectivityResult>? _connectivitySubscription;
-
-  /// The local directory for this App.
-  static String? get filesDir => _path;
-  static String? _path;
 
   /// Returns the connection status of the device.
   static String? get connectivity => _connectivityStatus;
@@ -871,10 +871,36 @@ class App with ConnectivityListener {
   static bool get isOnline =>
       _connectivityStatus == null || !_connectivityStatus!.contains('none');
 
+  /// Was off but now turned on connectivity
+  static bool get turnedOnInternet => _turnedOnInternet;
+  static bool _turnedOnInternet = true;
+  bool _wasOffline = false;
+
+  /// Was on but now turned off connectivity
+  static bool get turnedOffInternet => _turnedOffInternet;
+  static bool _turnedOffInternet = false;
+
   ///
   @override
+  @mustCallSuper
   void onConnectivityChanged(ConnectivityResult result) {
     _connectivityStatus = result.name;
+    final nowOnline = App.isOnline;
+    // Connectivity was turned on
+    if (_wasOffline && nowOnline) {
+      _wasOffline = false;
+      _turnedOnInternet = true;
+      _turnedOffInternet = false;
+    } else
+    // Connectivity was turned off
+    if (!_wasOffline && !nowOnline) {
+      _wasOffline = true;
+      _turnedOnInternet = false;
+      _turnedOffInternet = true;
+    } else {
+      _turnedOnInternet = false;
+      _turnedOffInternet = false;
+    }
   }
 
   /// Connectivity listeners.
@@ -898,8 +924,8 @@ class App with ConnectivityListener {
     return remove;
   }
 
-  /// Clear Connectivity listeners.
-  static void clearConnectivityListener() => _listeners.clear();
+  // /// Clear Connectivity listeners.
+  // static void clearConnectivityListener() => _listeners.clear();
 
   /// The id for this App's particular installation.
   static Future<String?> getInstallNum() => InstallFile.id();
@@ -920,6 +946,7 @@ class App with ConnectivityListener {
 
     await _initConnectivity().then((String status) {
       _connectivityStatus = status;
+      _wasOffline = status.contains('none');
     }).catchError((e) {
       _connectivityStatus = 'none';
     });
