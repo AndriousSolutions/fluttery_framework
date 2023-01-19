@@ -53,6 +53,7 @@ class GivenName extends FieldWidgets<Contact> with FormFields {
   GivenName([dynamic value])
       : super(
           label: 'First Name'.tr,
+          textCapitalization: TextCapitalization.sentences,
           value: value,
           validator: notEmpty,
           keyboardType: TextInputType.name,
@@ -63,6 +64,7 @@ class MiddleName extends FieldWidgets<Contact> with FormFields {
   MiddleName([dynamic value])
       : super(
           label: 'Middle Name'.tr,
+          textCapitalization: TextCapitalization.sentences,
           value: value,
           keyboardType: TextInputType.name,
         );
@@ -72,6 +74,7 @@ class FamilyName extends FieldWidgets<Contact> with FormFields {
   FamilyName([dynamic value])
       : super(
           label: 'Last Name'.tr,
+          textCapitalization: TextCapitalization.sentences,
           value: value,
           validator: notEmpty,
           keyboardType: TextInputType.name,
@@ -82,6 +85,7 @@ class Company extends FieldWidgets<Contact> with FormFields {
   Company([dynamic value])
       : super(
           label: 'Company'.tr,
+          textCapitalization: TextCapitalization.sentences,
           value: value,
           keyboardType: TextInputType.name,
         );
@@ -91,6 +95,7 @@ class JobTitle extends FieldWidgets<Contact> with FormFields {
   JobTitle([dynamic value])
       : super(
           label: 'Job'.tr,
+          textCapitalization: TextCapitalization.sentences,
           value: value,
           keyboardType: TextInputType.name,
         );

@@ -1,4 +1,9 @@
 
+## 1.6.5
+January 19, 2023
+- **BUG FIX** Removed: routes ??= const <String, WidgetBuilder>{};
+- Upgrade to state_extended: ^2.0.0
+
 ## 1.6.4+03
 December 30, 2022
 - Return boolean init from appState initAsync()

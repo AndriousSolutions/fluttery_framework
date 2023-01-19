@@ -957,9 +957,6 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   }) : super(controller: controller) {
     // Listen to the device's connectivity.
     v.App.addConnectivityListener(controller);
-    // In case null was explicitly passed in.
-    routes ??= const <String, WidgetBuilder>{};
-    navigatorObservers ??= const <NavigatorObserver>[];
 //    title ??= '';
 //    color ??= Colors.blue;
     debugShowMaterialGrid ??= false;

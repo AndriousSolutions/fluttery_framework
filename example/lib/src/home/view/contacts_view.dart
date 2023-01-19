@@ -40,7 +40,6 @@ class _ContactListState extends StateX<ContactsList> {
 Widget _buildAndroid(_ContactListState state) {
   //
   final con = state.con;
-  final appCon = state.appCon;
   return Scaffold(
     appBar: AppBar(
       title: Text(state._title ?? state.widget.title),
@@ -49,7 +48,8 @@ Widget _buildAndroid(_ContactListState state) {
           onPressed: () {
             con.sort();
           },
-          child: const Icon(Icons.sort_by_alpha, color: Colors.white),
+          child: Icon(con.sortedAlpha ? Icons.sort : Icons.sort_by_alpha,
+              color: Colors.white),
         ),
         AppMenu().popupMenuButton,
 //        appCon.menu,
@@ -76,21 +76,13 @@ Widget _buildAndroid(_ContactListState state) {
               itemBuilder: (_, int index) {
                 final contact = con.itemAt(index);
                 return contact!.displayName.onDismissible(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(),
-                    ),
-                    child: ListTile(
-                      onTap: () async {
-                        await Navigator.of(con.state!.context)
-                            .push(MaterialPageRoute<void>(
-                          builder: (_) => ContactDetails(contact: contact),
-                        ));
-                        await con.getContacts();
-                        con.state!.setState(() {});
-                      },
-                      leading: contact.displayName.circleAvatar,
-                      title: contact.displayName.text,
+                  background: Container(
+                    color: Colors.red,
+                    child: const ListTile(
+                      leading:
+                          Icon(Icons.delete, color: Colors.white, size: 36),
+                      trailing:
+                          Icon(Icons.delete, color: Colors.white, size: 36),
                     ),
                   ),
                   dismissed: (DismissDirection direction) {
@@ -109,6 +101,23 @@ Widget _buildAndroid(_ContactListState state) {
                           }),
                     );
                   },
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      border: Border(),
+                    ),
+                    child: ListTile(
+                      onTap: () async {
+                        await Navigator.of(con.state!.context)
+                            .push(MaterialPageRoute<void>(
+                          builder: (_) => ContactDetails(contact: contact),
+                        ));
+                        await con.getContacts();
+                        con.state!.setState(() {});
+                      },
+                      leading: contact.displayName.circleAvatar,
+                      title: contact.displayName.text,
+                    ),
+                  ),
                 );
               },
             ),
@@ -119,7 +128,6 @@ Widget _buildAndroid(_ContactListState state) {
 Widget _buildiOS(_ContactListState state) {
   //
   final con = state.con;
-  final appCon = state.appCon;
   final widget = state.widget;
   final _theme = App.themeData;
   return CupertinoPageScaffold(
@@ -130,7 +138,7 @@ Widget _buildiOS(_ContactListState state) {
           largeTitle: Text(state._title ?? widget.title),
           leading: Material(
             child: IconButton(
-              icon: const Icon(Icons.sort_by_alpha),
+              icon: Icon(con.sortedAlpha ? Icons.sort : Icons.sort_by_alpha),
               onPressed: () {
                 con.sort();
               },
@@ -167,6 +175,33 @@ Widget _buildiOS(_ContactListState state) {
               (_, int index) {
                 final contact = con.itemAt(index);
                 return contact?.displayName.onDismissible(
+                  background: Material(
+                    child: Container(
+                      color: Colors.red,
+                      child: const ListTile(
+                        leading:
+                            Icon(Icons.delete, color: Colors.white, size: 40),
+                        trailing:
+                            Icon(Icons.delete, color: Colors.white, size: 40),
+                      ),
+                    ),
+                  ),
+                  dismissed: (DismissDirection direction) {
+                    con.deleteItem(index);
+                    final action = (direction == DismissDirection.endToStart)
+                        ? 'deleted'
+                        : 'archived';
+                    App.snackBar(
+                      duration: const Duration(milliseconds: 8000),
+                      content: Text('You $action an item.'),
+                      action: SnackBarAction(
+                          label: 'UNDO',
+                          onPressed: () {
+                            contact.undelete();
+                            state.setState(() {});
+                          }),
+                    );
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       color: _theme?.canvasColor,
@@ -187,22 +222,6 @@ Widget _buildiOS(_ContactListState state) {
                       },
                     ),
                   ),
-                  dismissed: (DismissDirection direction) {
-                    con.deleteItem(index);
-                    final action = (direction == DismissDirection.endToStart)
-                        ? 'deleted'
-                        : 'archived';
-                    App.snackBar(
-                      duration: const Duration(milliseconds: 8000),
-                      content: Text('You $action an item.'),
-                      action: SnackBarAction(
-                          label: 'UNDO',
-                          onPressed: () {
-                            contact.undelete();
-                            state.setState(() {});
-                          }),
-                    );
-                  },
                 );
               },
               childCount: con.items?.length,

@@ -28,7 +28,10 @@ class ContactsController extends AppController {
     return init;
   }
 
-  static late bool _sortedAlpha;
+  /// Indicate if the records are sorted
+  bool get sortedAlpha => _sortedAlpha;
+  late bool _sortedAlpha;
+
   static const String sortKEY = 'sort_by_alpha';
 
   @override

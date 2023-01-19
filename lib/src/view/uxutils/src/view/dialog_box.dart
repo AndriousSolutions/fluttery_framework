@@ -20,7 +20,7 @@ import 'package:fluttery_framework/view.dart';
 
 /// A high-level function
 /// Displays a String passing specific one to two button options
-/// and their corresponding fucntion calls.
+/// and their corresponding function calls.
 /// Displays a particular dialogue box depending on platform.
 Future<bool> showBox({
   required BuildContext context,

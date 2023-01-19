@@ -14,7 +14,8 @@ class TemplateApp extends AppStatefulWidget {
   AppState createAppState() => TemplateView();
 }
 
-// This is the 'View' of the application. The 'look and feel' of the app.
+/// This is the 'View' of the application.
+/// The 'look and behavior' of the app.
 class TemplateView extends AppState {
   TemplateView()
       : super(
