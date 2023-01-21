@@ -98,6 +98,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     super.debugPaintPointersEnabled,
     super.debugPaintLayerBordersEnabled,
     super.debugRepaintRainbowEnabled,
+    super.debugRepaintTextRainbowEnabled,
     super.errorHandler,
     super.errorScreen,
     super.errorReport,
@@ -397,6 +398,19 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   Widget buildChild(BuildContext context) {
     //
     Widget app;
+
+    assert(() {
+      /// Highlights UI while debugging.
+      debug.debugPaintSizeEnabled = debugPaintSizeEnabled ?? false;
+      debug.debugPaintBaselinesEnabled = debugPaintBaselinesEnabled ?? false;
+      debug.debugPaintPointersEnabled = debugPaintPointersEnabled ?? false;
+      debug.debugPaintLayerBordersEnabled =
+          debugPaintLayerBordersEnabled ?? false;
+      debug.debugRepaintRainbowEnabled = debugRepaintRainbowEnabled ?? false;
+      debug.debugRepaintTextRainbowEnabled =
+          debugRepaintTextRainbowEnabled ?? false;
+      return true;
+    }());
 
     final _routerDelegate = routerDelegate ?? onRouterDelegate();
     final _routerConfig = routerConfig ?? onRouterConfig();
@@ -951,6 +965,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     this.debugPaintPointersEnabled,
     this.debugPaintLayerBordersEnabled,
     this.debugRepaintRainbowEnabled,
+    this.debugRepaintTextRainbowEnabled,
     FlutterExceptionHandler? errorHandler,
     ErrorWidgetBuilder? errorScreen,
     v.ReportErrorHandler? errorReport,
@@ -971,19 +986,20 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     debugPaintPointersEnabled ??= false;
     debugPaintLayerBordersEnabled ??= false;
     debugRepaintRainbowEnabled ??= false;
+    debugRepaintTextRainbowEnabled ??= false;
 
-    assert(() {
-      /// Highlights UI while debugging.
-      debug.debugPaintSizeEnabled = debugPaintSizeEnabled ?? false;
-      debug.debugPaintBaselinesEnabled = debugPaintBaselinesEnabled ?? false;
-      debug.debugPaintPointersEnabled = debugPaintPointersEnabled ?? false;
-      debug.debugPaintLayerBordersEnabled =
-          debugPaintLayerBordersEnabled ?? false;
-      debug.debugRepaintRainbowEnabled = debugRepaintRainbowEnabled ?? false;
-      debug.debugRepaintTextRainbowEnabled =
-          debugRepaintRainbowEnabled ?? false;
-      return true;
-    }());
+    // assert(() {
+    //   /// Highlights UI while debugging.
+    //   debug.debugPaintSizeEnabled = debugPaintSizeEnabled ?? false;
+    //   debug.debugPaintBaselinesEnabled = debugPaintBaselinesEnabled ?? false;
+    //   debug.debugPaintPointersEnabled = debugPaintPointersEnabled ?? false;
+    //   debug.debugPaintLayerBordersEnabled =
+    //       debugPaintLayerBordersEnabled ?? false;
+    //   debug.debugRepaintRainbowEnabled = debugRepaintRainbowEnabled ?? false;
+    //   debug.debugRepaintTextRainbowEnabled =
+    //       debugRepaintRainbowEnabled ?? false;
+    //   return true;
+    // }());
 
     if (errorHandler != null || errorScreen != null || errorReport != null) {
       // Supply a customized error handling.
@@ -1014,8 +1030,8 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   TransitionBuilder? builder;
   String? title;
   GenerateAppTitle? onGenerateTitle;
-  final ThemeData? theme;
-  final CupertinoThemeData? iOSTheme;
+  ThemeData? theme;
+  CupertinoThemeData? iOSTheme;
   ThemeData? darkTheme;
   ThemeMode? themeMode;
   Color? color;
@@ -1043,6 +1059,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   bool? debugPaintPointersEnabled;
   bool? debugPaintLayerBordersEnabled;
   bool? debugRepaintRainbowEnabled;
+  bool? debugRepaintTextRainbowEnabled;
 
   @override
   @mustCallSuper

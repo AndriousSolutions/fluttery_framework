@@ -1,4 +1,11 @@
 
+## 1.7.0
+January 21, 2023
+- Removed 'final' from Appstate property: theme
+- Introduced debugRepaintTextRainbowEnabled
+- Moved debug.debugPaintSizeEnabled to buildChild()
+- Upgrade unique_identifier: ^0.3.0
+
 ## 1.6.5
 January 19, 2023
 - **BUG FIX** Removed: routes ??= const <String, WidgetBuilder>{};
