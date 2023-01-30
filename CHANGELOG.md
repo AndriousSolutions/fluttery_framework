@@ -1,5 +1,5 @@
 
-## 1.8.0
+## 1.8.0+01
 January 30, 2023
 With Flutter 3.7.0 release:
 - class CupertinoListTile finally replaces my own version
@@ -9,6 +9,7 @@ New Lint rules:
 - use_build_context_synchronously
 - library_private_types_in_public_api
 - A value for optional parameter isn't ever given
+- // ignore_for_file: unused_element
 
 
 ## 1.7.0

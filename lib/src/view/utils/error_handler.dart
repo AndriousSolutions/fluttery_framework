@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 ///
 /// Copyright (C) 2020 Andrious Solutions
 ///
@@ -307,7 +309,7 @@ class AppErrorHandler {
 class _ErrorRenderObjectWidget extends LeafRenderObjectWidget {
   /// Supply an error message to display and or a Error object.
   const _ErrorRenderObjectWidget({
-    super.key,
+    Key? key,
     this.message,
     this.error,
     this.paragraphStyle,
@@ -315,7 +317,7 @@ class _ErrorRenderObjectWidget extends LeafRenderObjectWidget {
     this.padding,
     this.minimumWidth,
     this.backgroundColor,
-  });
+  }) : super(key: key);
 
   /// The message to display.
   final String? message;
