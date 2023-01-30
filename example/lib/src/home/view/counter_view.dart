@@ -178,7 +178,7 @@ class _BuildAndroid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final con = state.con;
-    final appCon = state.appCon;
+//    final appCon = state.appCon;
     return Scaffold(
       appBar: AppBar(
         title: Text('Counter Page Demo'.tr),
@@ -197,7 +197,7 @@ class _BuildAndroid extends StatelessWidget {
                 style: const TextStyle(fontSize: 15)),
             Text(
               con.data,
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
@@ -223,7 +223,7 @@ class _BuildiOS extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final con = state.con;
-    final appCon = state.appCon;
+//    final appCon = state.appCon;
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text('Counter Page Demo'.tr),

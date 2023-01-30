@@ -90,14 +90,15 @@ Future<void> _deleteContact(WidgetTester tester) async {
   } else {
     //
     finder = find.byWidgetPredicate(
-        (Widget widget) => widget is GestureDetector && widget.child is Row,
+        (Widget widget) =>
+            widget is CupertinoListTile, // && widget.child is Row,
         description: 'a CupertinoListTile widget',
         skipOffstage: false);
 
     expect(finder, findsWidgets, reason: _location);
 
     // Retrieve the widget
-    final tile = tester.firstWidget<GestureDetector>(finder);
+    final tile = tester.firstWidget<CupertinoListTile>(finder);
 
     tile.onTap!();
   }

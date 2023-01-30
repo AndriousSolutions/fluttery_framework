@@ -14,6 +14,7 @@ class WordPairsModel extends StateXController {
     onPressed();
   }
   static WordPairsModel? _this;
+  // ignore: library_private_types_in_public_api
   late _EnglishWords words;
   late int _counter;
 
@@ -78,7 +79,7 @@ class WordPairsModel extends StateXController {
       twoWords.asString,
       style: TextStyle(
         color: Colors.red,
-        fontSize: Theme.of(state!.context).textTheme.headline4!.fontSize,
+        fontSize: Theme.of(state!.context).textTheme.headlineMedium!.fontSize,
       ),
     );
   }
@@ -114,6 +115,7 @@ class _EnglishWords {
 
   void onTap(int i) {
     final int index = i ~/ 2;
+    // ignore: unnecessary_nullable_for_final_variable_declarations
     final WordPair? pair = _suggestions[index];
     if (pair == null) {
       return;

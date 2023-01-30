@@ -56,6 +56,7 @@ class _BuildAndroid extends StatelessWidget {
               final pop = await contact.onPressed();
               if (pop) {
                 await contact.model.getContacts();
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pop();
               }
             },
@@ -108,6 +109,7 @@ class _BuildiOS extends StatelessWidget {
               final pop = await contact.onPressed();
               if (pop) {
                 await contact.model.getContacts();
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pop();
               }
             },

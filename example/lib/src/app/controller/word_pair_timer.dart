@@ -103,7 +103,7 @@ class WordPairsTimer extends StateXController {
             obj,
             style: TextStyle(
               color: Colors.red,
-              fontSize: Theme.of(context).textTheme.headline4!.fontSize,
+              fontSize: Theme.of(context).textTheme.headlineMedium!.fontSize,
             ),
           );
         } else {
@@ -181,32 +181,32 @@ class WordPairsTimer extends StateXController {
 
     _initTimer = true;
 
-    Duration _duration;
-    void Function() _callback;
+    Duration? duration;
+    void Function()? callback;
 
     /// Supply a 'default' duration if one is not provided.
     if (duration == null) {
-      int _seconds;
+      int? seconds;
       if (seconds == null) {
-        _seconds = 5;
+        seconds = 5;
       } else {
-        _seconds = seconds!;
+        seconds = seconds;
       }
-      _duration = Duration(seconds: _seconds);
+      duration = Duration(seconds: seconds);
     } else {
-      _duration = duration!;
+      duration = duration;
     }
 
     /// Supply a 'default' callback function
     if (callback == null) {
-      _callback = _getWordPair;
+      callback = _getWordPair;
     } else {
-      _callback = callback!;
+      callback = callback;
     }
 
     timer = Timer.periodic(
-      _duration,
-      (timer) => _callback(),
+      duration,
+      (timer) => callback!(),
     );
   }
 }
@@ -235,7 +235,7 @@ class _WordPair extends StatelessWidget {
       con._wordPair, //data,
       style: TextStyle(
         color: Colors.red,
-        fontSize: Theme.of(context).textTheme.headline4!.fontSize,
+        fontSize: Theme.of(context).textTheme.headlineMedium!.fontSize,
       ),
     );
   }

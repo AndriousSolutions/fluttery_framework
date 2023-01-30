@@ -41,7 +41,7 @@ class _RandomWordsAndroid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final con = state.con;
-    final appCon = state.appCon;
+//    final appCon = state.appCon;
     return Scaffold(
       appBar: AppBar(
         title: Text('Startup Name Generator'.tr),

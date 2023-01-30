@@ -16,6 +16,7 @@ class ISOSpinner extends StatefulWidget {
 
   /// Assign the specified Locale.
   Future<void> onSelectedItemChanged(int index) async {
+    // ignore: unnecessary_nullable_for_final_variable_declarations
     final List<Locale>? localesList = locales();
     if (localesList != null) {
       s.App.locale = localesList[index];

@@ -1,7 +1,15 @@
 
 ## 1.8.0
 January 30, 2023
-- CupertinoListTile released with Flutter 3.7.0 finally replacing my own
+With Flutter 3.7.0 release:
+- class CupertinoListTile finally replaces my own version
+- TextStyle, headline4, is deprecated
+- Lint rule, invariant_booleans, is deprecated
+New Lint rules:
+- use_build_context_synchronously
+- library_private_types_in_public_api
+- A value for optional parameter isn't ever given
+
 
 ## 1.7.0
 January 21, 2023

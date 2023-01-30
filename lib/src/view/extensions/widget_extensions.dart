@@ -26,15 +26,18 @@ import 'package:flutter/widgets.dart';
 
 /// add Padding Property to widget
 extension WidgetPaddingX on Widget {
+  /// Padding on all sides
   Widget paddingAll(double padding) =>
       Padding(padding: EdgeInsets.all(padding), child: this);
 
+  /// Padding horizontally and vertically
   Widget paddingSymmetric({double horizontal = 0.0, double vertical = 0.0}) =>
       Padding(
           padding:
               EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
           child: this);
 
+  /// Padding only on specified sides
   Widget paddingOnly({
     double left = 0.0,
     double top = 0.0,
@@ -46,20 +49,24 @@ extension WidgetPaddingX on Widget {
               top: top, left: left, right: right, bottom: bottom),
           child: this);
 
+  /// No padding at all
   Widget get paddingZero => Padding(padding: EdgeInsets.zero, child: this);
 }
 
 /// Add margin property to widget
 extension WidgetMarginX on Widget {
+  /// Add specified margin to all sides.
   Widget marginAll(double margin) =>
       Container(margin: EdgeInsets.all(margin), child: this);
 
+  /// Add Horizontally and Vertically
   Widget marginSymmetric({double horizontal = 0.0, double vertical = 0.0}) =>
       Container(
           margin:
               EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
           child: this);
 
+  /// Add a Margin only on specified sides
   Widget marginOnly({
     double left = 0.0,
     double top = 0.0,
@@ -71,10 +78,12 @@ extension WidgetMarginX on Widget {
               top: top, left: left, right: right, bottom: bottom),
           child: this);
 
+  /// Add on margins at all.
   Widget get marginZero => Container(margin: EdgeInsets.zero, child: this);
 }
 
 /// Allows you to insert widgets inside a CustomScrollView
 extension WidgetSliverBoxX on Widget {
+  /// Add to a BoxAdapter
   Widget get sliverBox => SliverToBoxAdapter(child: this);
 }

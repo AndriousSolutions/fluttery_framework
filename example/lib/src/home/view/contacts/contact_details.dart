@@ -68,7 +68,7 @@ class _BuildAndroid extends StatelessWidget {
             if (delete) {
               //
               await contact.delete();
-
+              // ignore: use_build_context_synchronously
               Navigator.of(context).pop();
             }
             // // A 'then' clause implementation.

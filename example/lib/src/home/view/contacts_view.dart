@@ -129,7 +129,7 @@ Widget _buildiOS(_ContactListState state) {
   //
   final con = state.con;
   final widget = state.widget;
-  final _theme = App.themeData;
+  final theme = App.themeData;
   return CupertinoPageScaffold(
     child: CustomScrollView(
       semanticChildCount: 5,
@@ -204,9 +204,9 @@ Widget _buildiOS(_ContactListState state) {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: _theme?.canvasColor,
+                      color: theme?.canvasColor,
                       border: Border(
-                        bottom: BorderSide(color: _theme!.dividerColor),
+                        bottom: BorderSide(color: theme!.dividerColor),
                       ),
                     ),
                     child: CupertinoListTile(

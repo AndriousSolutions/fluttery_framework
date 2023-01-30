@@ -95,9 +95,7 @@ class ContactsDB extends SQLiteDB {
       map['emails'] =
           emails.map((m) => DataFieldItem.fromMap(m, value: 'email')).toList();
 
-      final _contact = Contact.fromMap(map);
-
-      contactList.add(_contact);
+      contactList.add(Contact.fromMap(map));
     }
 
     return contactList;
