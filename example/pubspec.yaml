@@ -23,7 +23,7 @@ dependencies:
   cupertino_icons: ^1.0.0
 
   # https://pub.dev/packages/dbutils
-  dbutils: ^5.0.0
+  dbutils: ^6.0.0
 
   # Generates English word pairs
   # https://pub.dev/packages/english_words
@@ -47,10 +47,10 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.0
 
   # https://pub.dartlang.org/packages/state_extended
-  state_extended: #^1.0.0
+  state_extended: ^2.0.0
 #    path: ../../../packages/state_extended
 
 # For information on the generic Dart part of this file, see the

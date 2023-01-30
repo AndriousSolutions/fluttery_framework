@@ -1469,88 +1469,88 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
 
 /// Cupertino needs a ListTile equivalent
 /// https://github.com/flutter/flutter/issues/50668
-class CupertinoListTile extends StatefulWidget {
-  ///
-  const CupertinoListTile({
-    Key? key,
-    this.leading,
-    this.title,
-    this.subtitle,
-    this.trailing,
-    this.onTap,
-  }) : super(key: key);
-
-  ///
-  final Widget? leading;
-
-  ///
-  final Widget? title;
-
-  ///
-  final Widget? subtitle;
-
-  ///
-  final Widget? trailing;
-
-  ///
-  final Function? onTap;
-  @override
-  _StatefulStateCupertino createState() => _StatefulStateCupertino();
-}
-
-class _StatefulStateCupertino extends State<CupertinoListTile> {
-  @override
-  Widget build(BuildContext context) {
-    late Widget leading;
-    if (widget.leading == null) {
-      leading = const SizedBox();
-    } else {
-      leading = widget.leading!;
-    }
-    Widget trailing;
-    if (widget.trailing == null) {
-      trailing = const SizedBox();
-    } else {
-      trailing = widget.trailing!;
-    }
-    return GestureDetector(
-      onTap: () {
-        if (widget.onTap != null) {
-          widget.onTap!();
-        }
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: leading),
-              const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: columnChildren(context),
-              ),
-            ],
-          ),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: trailing),
-        ],
-      ),
-    );
-  }
-
-  List<Widget> columnChildren(BuildContext context) {
-    final children = <Widget>[];
-    children.add(widget.title ?? const SizedBox());
-    if (widget.subtitle != null) {
-      children.add(widget.subtitle!);
-    }
-    return children;
-  }
-}
+// class CupertinoListTile extends StatefulWidget {
+//   ///
+//   const CupertinoListTile({
+//     Key? key,
+//     this.leading,
+//     this.title,
+//     this.subtitle,
+//     this.trailing,
+//     this.onTap,
+//   }) : super(key: key);
+//
+//   ///
+//   final Widget? leading;
+//
+//   ///
+//   final Widget? title;
+//
+//   ///
+//   final Widget? subtitle;
+//
+//   ///
+//   final Widget? trailing;
+//
+//   ///
+//   final Function? onTap;
+//   @override
+//   _StatefulStateCupertino createState() => _StatefulStateCupertino();
+// }
+//
+// class _StatefulStateCupertino extends State<CupertinoListTile> {
+//   @override
+//   Widget build(BuildContext context) {
+//     late Widget leading;
+//     if (widget.leading == null) {
+//       leading = const SizedBox();
+//     } else {
+//       leading = widget.leading!;
+//     }
+//     Widget trailing;
+//     if (widget.trailing == null) {
+//       trailing = const SizedBox();
+//     } else {
+//       trailing = widget.trailing!;
+//     }
+//     return GestureDetector(
+//       onTap: () {
+//         if (widget.onTap != null) {
+//           widget.onTap!();
+//         }
+//       },
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: <Widget>[
+//           Row(
+//             children: <Widget>[
+//               Padding(
+//                   padding: const EdgeInsets.symmetric(horizontal: 10),
+//                   child: leading),
+//               const SizedBox(width: 10),
+//               Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: columnChildren(context),
+//               ),
+//             ],
+//           ),
+//           Padding(
+//               padding: const EdgeInsets.symmetric(horizontal: 30),
+//               child: trailing),
+//         ],
+//       ),
+//     );
+//   }
+//
+//   List<Widget> columnChildren(BuildContext context) {
+//     final children = <Widget>[];
+//     children.add(widget.title ?? const SizedBox());
+//     if (widget.subtitle != null) {
+//       children.add(widget.subtitle!);
+//     }
+//     return children;
+//   }
+// }
 
 /// Item class used for fields
 class DataFieldItem {
@@ -1762,7 +1762,7 @@ class _LIstItemsState<T> extends State<ListItems<T>> {
         );
       } else {
         tile = CupertinoListTile(
-          subtitle: Text(widget.title!),
+          title: Text(widget.title!),
           onTap: widget.onTap,
         );
       }

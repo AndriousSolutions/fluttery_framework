@@ -1,4 +1,8 @@
 
+## 1.8.0
+January 30, 2023
+- CupertinoListTile released with Flutter 3.7.0 finally replacing my own
+
 ## 1.7.0
 January 21, 2023
 - Removed 'final' from Appstate property: theme
