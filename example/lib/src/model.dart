@@ -1,4 +1,4 @@
-// The MVC application framework.
+// The fluttery framework
 export 'package:fluttery_framework/model.dart';
 
 /// Data to be used throughout the app.

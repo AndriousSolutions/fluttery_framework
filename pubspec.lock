@@ -551,10 +551,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_foundation
-      sha256: "1ffa239043ab8baf881ec3094a3c767af9d10399b2839020b9e4d44c0bb23951"
+      sha256: "2b55c18636a4edc529fa5cd44c03d3f3100c00513f518c5127c951978efcccd0"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.3"
   shared_preferences_linux:
     dependency: transitive
     description:
@@ -636,10 +636,10 @@ packages:
     dependency: "direct main"
     description:
       name: state_extended
-      sha256: "225a1cf610e640fc05a603269e54732a568dd6681bcc2427cbcd8c845a2e57ae"
+      sha256: a0d602a1b2e78aa7f5698dd36038f70cb2ee448ea7ea0349ef9ee3fbf1b6e057
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   stream_channel:
     dependency: transitive
     description:
@@ -865,5 +865,5 @@ packages:
     source: hosted
     version: "6.2.2"
 sdks:
-  dart: ">=2.18.5 <4.0.0"
+  dart: ">=2.18.5 <3.0.0"
   flutter: ">=3.3.0"

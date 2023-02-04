@@ -99,7 +99,7 @@ class App with ConnectivityListener {
 
   /// The App State object.
   static v.AppState? get state => _appState;
-  //todo: Change to 'late' instead and redo everything reference.
+  // todo: Change to 'late' instead and redo every reference.
   static v.AppState? _appState;
 
   /// App-level error handling.
@@ -731,8 +731,7 @@ class App with ConnectivityListener {
   /// Refresh the root State object with the passed function.
   static void setState(VoidCallback fn) => _appState?.setState(fn);
 
-  /// Refresh the root State object.
-  @Deprecated('Replace by the recognized setState()')
+  /// Refresh the 'current/latest' State object and 'root/first' State object.
   static void refresh() => _appState?.refresh();
 
   /// Link a widget to a InheritedWidget in the root State object.

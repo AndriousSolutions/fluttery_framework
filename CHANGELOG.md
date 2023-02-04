@@ -1,4 +1,9 @@
 
+## 1.9.0
+February 04, 2023
+- // Refresh the 'current/latest' State object and 'root/first' State object.
+- static refresh() in class App
+
 ## 1.8.0+01
 January 30, 2023
 With Flutter 3.7.0 release:

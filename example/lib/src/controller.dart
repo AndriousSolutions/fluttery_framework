@@ -1,4 +1,4 @@
-// The app framework.
+// The fluttery framework
 export 'package:fluttery_framework/controller.dart';
 
 // The controller for the app as a whole.

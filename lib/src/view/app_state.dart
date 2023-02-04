@@ -692,7 +692,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     _inError = false;
   }
 
-  /// Refresh the most 'recent' app.
+  /// Rebuild the 'latest/current' State object and the 'root/first' State object
   /// This is to address the possibility an App has called another App.
   void refresh() {
     _AppState? _state;
@@ -700,6 +700,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
       _state = lastContext?.findAncestorStateOfType<_AppState>();
     }
     if (_state == null) {
+      // Rebuild 'latest' State object if any.
+      refreshLastState();
       // Refresh the 'root' State object.
       super.setState(() {});
     } else {
