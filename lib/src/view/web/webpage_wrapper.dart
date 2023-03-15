@@ -400,7 +400,7 @@ class _WebPageWrapperState extends State<WebPageWrapper> {
         context: ErrorDescription('class WebPageWrapper failed'),
       ));
       // Make the error known if under development.
-      if (App.inDebugger) {
+      if (App.inDebugMode) {
         rethrow;
       }
     }

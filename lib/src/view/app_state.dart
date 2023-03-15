@@ -391,6 +391,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   /// Override build to avoid the built-in Future Builder. It's been run.
   @override
   Widget build(BuildContext context) => v.Sizer(
+      // ignore: deprecated_member_use
       builder: (context, orientation, deviceType) => buildWidget(context));
 
   /// Override to impose your own WidgetsApp (like CupertinoApp or MaterialApp)

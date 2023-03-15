@@ -18,7 +18,7 @@
 
 import 'package:flutter/foundation.dart' show FlutterErrorDetails;
 
-import 'package:fluttery_framework/controller.dart' show HandleError, StateXController;
+import 'package:fluttery_framework/controller.dart' show StateXController;
 
 import 'package:fluttery_framework/view.dart'
     show ConnectivityListener, ConnectivityResult, StateX;

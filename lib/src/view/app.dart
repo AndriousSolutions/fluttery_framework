@@ -1,4 +1,3 @@
-
 ///
 /// Copyright (C) 2019 Andrious Solutions
 ///
@@ -44,7 +43,7 @@ class App with ConnectivityListener {
   /// Supply an error handler to the App.
   // The parameters are deprecated.
   factory App({
-   // ignore: avoid_unused_constructor_parameters
+    // ignore: avoid_unused_constructor_parameters
     FlutterExceptionHandler? errorHandler,
     // ignore: avoid_unused_constructor_parameters
     ErrorWidgetBuilder? errorScreen,
@@ -838,7 +837,7 @@ class App with ConnectivityListener {
   static Size get screenSize => MediaQueryData.fromWindow(mainWindow).size;
 
   /// Set whether the app is to use a 'small screen' or not.
-  static bool get asSmallScreen => App.inDebugger && false;
+  static bool get asSmallScreen => App.inDebugMode && false;
 
   /// Return the bool value indicating if running in a small screen or not.
   static bool get inSmallScreen {
