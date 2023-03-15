@@ -20,7 +20,7 @@
 ///
 import 'dart:ui' as i
     show
-        Paragraph,
+//        Paragraph,
         ParagraphBuilder,
         ParagraphConstraints,
         ParagraphStyle,
@@ -508,6 +508,7 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   _ErrorBox({
     String? message,
     i.ParagraphStyle? paragraphStyle,
+    // ignore: avoid_unused_constructor_parameters
     i.TextStyle? textStyle,
     EdgeInsets? padding,
     double? minimumWidth,
@@ -520,7 +521,7 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
           textAlign: TextAlign.left,
         );
 
-    _textStyle = textStyle ?? _initTextStyle();
+//    _textStyle = textStyle ?? _initTextStyle();  // Not used??
 
     _padding = padding ?? const EdgeInsets.fromLTRB(34, 96, 34, 12);
 
@@ -561,14 +562,14 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   /// The message to attempt to display at paint time.
   late String? _message;
 
-  late i.Paragraph _paragraph;
+//  late i.Paragraph _paragraph;  // Not used??
 
   /// The paragraph style to use when painting [RenderBox] objects.
   late i.ParagraphStyle _paragraphStyle;
 
   /// The text style to use when painting [RenderBox] objects.
   /// a dark gray sans-serif font.
-  late i.TextStyle _textStyle;
+//  late i.TextStyle _textStyle;  // Not used??
 
   /// The distance to place around the text.
   ///

@@ -586,5 +586,5 @@ extension WebContextExtension on BuildContext {
 
   /// Set whether the app is to use a 'small screen' or not.
   /// Determine if running on a desktop or on a phone or tablet
-  bool get asSmallScreen => App.inDebugger && false;
+  bool get asSmallScreen => App.inDebugMode && false;
 }

@@ -1,5 +1,5 @@
 
-## 2.0.0+1
+## 2.0.0+2
 March 15, 2023
 - Widget buildChild(BuildContext context) { renamed  Widget buildIn(BuildContext context) {
 - field_widgets.dart updated to some 40+ more fields in Flutter

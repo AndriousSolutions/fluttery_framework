@@ -740,7 +740,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     }
     if (_state == null) {
       // Rebuild 'latest' State object if any.
-      rebuildLastState();
+      //rebuildLastState();
+      endState?.setState(() {});
       // Refresh the 'root' State object.
       super.setState(() {});
     } else {
