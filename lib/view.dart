@@ -33,11 +33,11 @@ export 'package:fluttery_framework/src/conditional_export.dart'
 export 'package:universal_platform/universal_platform.dart';
 
 /// Flutter Framework's Foundation
-export 'package:flutter/foundation.dart' show kIsWeb, mustCallSuper, protected;
+export 'package:flutter/foundation.dart'; // show kDebugMode, kIsWeb, mustCallSuper, protected;
 
 /// StateX
 export 'package:state_extended/state_extended.dart'
-    show AppStateX, InheritedStateX, SetState, StateX;
+    show AppStateX, InheritedStateX, SetState;
 
 /// App
 export 'package:fluttery_framework/src/view/app.dart';

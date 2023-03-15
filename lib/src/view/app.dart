@@ -1,3 +1,4 @@
+
 ///
 /// Copyright (C) 2019 Andrious Solutions
 ///
@@ -41,26 +42,22 @@ import 'package:fluttery_framework/controller.dart' show DeviceInfo;
 /// Readily supplies static properties about the App.
 class App with ConnectivityListener {
   /// Supply an error handler to the App.
+  // The parameters are deprecated.
   factory App({
+   // ignore: avoid_unused_constructor_parameters
     FlutterExceptionHandler? errorHandler,
+    // ignore: avoid_unused_constructor_parameters
     ErrorWidgetBuilder? errorScreen,
+    // ignore: avoid_unused_constructor_parameters
     v.ReportErrorHandler? errorReport,
-    bool allowNewHandlers = true,
+    bool? allowNewHandlers = true,
   }) =>
-      _this ??= App._(errorHandler, errorScreen, errorReport, allowNewHandlers);
+      _this ??= App._(allowNewHandlers ?? true);
 
   App._(
-    FlutterExceptionHandler? errorHandler,
-    ErrorWidgetBuilder? errorScreen,
-    v.ReportErrorHandler? errorReport,
     bool allowNewHandlers,
   ) {
-    _errorHandler = v.AppErrorHandler(
-      handler: errorHandler,
-      screen: errorScreen,
-      report: errorReport,
-      allowNewHandlers: allowNewHandlers,
-    );
+    _errorHandler = v.AppErrorHandler(newErrorHandlers: allowNewHandlers);
     // Monitor the device's connectivity to the Internet.
     addConnectivityListener(this);
   }
@@ -403,7 +400,6 @@ class App with ConnectivityListener {
 
     /// Assign the colour to the floating button as well.
     themeData = ThemeData(
-//      primaryColor: color,
       primarySwatch: materialColor,
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: color,
@@ -726,7 +722,11 @@ class App with ConnectivityListener {
   static String? get buildNumber => _packageInfo?.buildNumber;
 
   /// Determines if running in an IDE or in production.
-  static bool get inDebugger => _appState?.inDebugger ?? false;
+  static bool get inDebugMode => _appState?.inDebugMode ?? false;
+
+  ///
+  @Deprecated('Use inDebugMode instead.')
+  static bool get inDebugger => inDebugMode;
 
   /// Refresh the root State object with the passed function.
   static void setState(VoidCallback fn) => _appState?.setState(fn);
@@ -760,7 +760,8 @@ class App with ConnectivityListener {
     Duration? duration,
     Animation<double>? animation,
     VoidCallback? onVisible,
-    DismissDirection dismissDirection = DismissDirection.down,
+    DismissDirection? dismissDirection,
+    Clip? clipBehavior,
   }) {
     final state = ScaffoldMessenger.maybeOf(context!);
     state?.showSnackBar(
@@ -778,7 +779,8 @@ class App with ConnectivityListener {
         duration: duration ?? const Duration(milliseconds: 4000),
         animation: animation,
         onVisible: onVisible,
-        dismissDirection: dismissDirection,
+        dismissDirection: dismissDirection ?? DismissDirection.down,
+        clipBehavior: clipBehavior ?? Clip.hardEdge,
       ),
     );
   }
@@ -791,7 +793,7 @@ class App with ConnectivityListener {
     _appState?.catchError(ex);
   }
 
-  /// The BuildContext for the App's View.
+  /// Retrieve the 'lastest' context
   static BuildContext? get context => _appState?.lastContext;
 
   /// The Scaffold object for this App's View.
@@ -836,7 +838,6 @@ class App with ConnectivityListener {
   static Size get screenSize => MediaQueryData.fromWindow(mainWindow).size;
 
   /// Set whether the app is to use a 'small screen' or not.
-  /// Determine if running on a desktop or on a phone or tablet
   static bool get asSmallScreen => App.inDebugger && false;
 
   /// Return the bool value indicating if running in a small screen or not.

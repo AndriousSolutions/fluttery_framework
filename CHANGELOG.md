@@ -1,4 +1,19 @@
 
+## 2.0.0
+March 15, 2023
+- Widget buildChild(BuildContext context) { renamed  Widget buildIn(BuildContext context) {
+- field_widgets.dart updated to some 40+ more fields in Flutter
+- // The 'error' parameters are deprecated.
+  runApp(errorHandler: , errorScreen: , errorReport: ,) changed to runApp(newErrorHandlers: )
+  AppStatefulWidget(errorHandler: , errorScreen: , errorReport: ,) unused constructor parameters
+  App(errorHandler: , errorScreen: , errorReport: ,) unused constructor parameters
+- AppErrorHandler.allowNewHandlers renamed AppErrorHandler.newErrorHandlers
+- Errors in App's FutureBuilder are not handled; merely reported
+- class AppWidgetErrorDisplayed { // A simple 'Widget Error' Screen if widget fails to display
+- class AppState now has 'inline' error functions
+- If a widget fails to display, call the latest SateX object's error routine
+- rebuildLastState(); and refreshLastState() are deprecated
+
 ## 1.9.0
 February 04, 2023
 - // Refresh the 'current/latest' State object and 'root/first' State object.

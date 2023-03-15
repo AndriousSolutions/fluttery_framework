@@ -18,7 +18,7 @@
 ///          Created  10 Feb 2020
 ///
 ///
-import 'dart:ui' as ui
+import 'dart:ui' as i
     show
         Paragraph,
         ParagraphBuilder,
@@ -26,17 +26,7 @@ import 'dart:ui' as ui
         ParagraphStyle,
         TextStyle;
 
-import 'package:flutter/material.dart';
-
-import 'package:flutter/foundation.dart'
-    show
-        DiagnosticPropertiesBuilder,
-        DiagnosticsTreeStyle,
-        FlutterError,
-        FlutterErrorDetails,
-        FlutterExceptionHandler,
-        InformationCollector,
-        StringProperty;
+import 'package:fluttery_framework/view.dart';
 
 import 'package:flutter/rendering.dart'
     show
@@ -56,7 +46,7 @@ import 'package:flutter/rendering.dart'
 
 /// Define the type of function to handle errors.
 typedef ReportErrorHandler = Future<void> Function(
-    dynamic exception, StackTrace stack);
+    Object exception, StackTrace stack);
 
 /// Your App's error handler.
 class AppErrorHandler {
@@ -66,7 +56,7 @@ class AppErrorHandler {
     FlutterExceptionHandler? handler,
     ErrorWidgetBuilder? screen,
     ReportErrorHandler? report,
-    bool? allowNewHandlers,
+    bool? newErrorHandlers,
   }) {
     //
     _this ??= AppErrorHandler._();
@@ -75,11 +65,11 @@ class AppErrorHandler {
     final reassigned = set(handler: handler, screen: screen, report: report);
 
     // Allow for null. Simply allow new handles by default
-    allowNewHandlers ??= true;
+    newErrorHandlers ??= true;
 
     // Once set to false, you can't assign different handlers anymore.
     // However, it's set to false only if one of the handlers was reassigned.
-    if (!allowNewHandlers && reassigned) {
+    if (!newErrorHandlers && reassigned) {
       _allowNewHandlers = false;
     }
     return _this!;
@@ -88,12 +78,6 @@ class AppErrorHandler {
   AppErrorHandler._() {
     // Record the current error handler.
     _oldOnError = FlutterError.onError;
-
-    // Record the current Widget builder when a widget fails to build.
-    _oldBuilder = ErrorWidget.builder;
-
-    // At the start, define our own 'error building widget' widget if one is not provided.
-    ErrorWidget.builder = errorDisplayWidget;
 
     FlutterError.onError = (FlutterErrorDetails details) {
       // Prevent an infinite loop and fall back to the original handler.
@@ -113,6 +97,23 @@ class AppErrorHandler {
       // If there's an error in the error handler, we want to know about it.
       _inHandler = true;
 
+      // Supply an custom 'Error Widget' to display the error.
+      if (_oldBuilder == null) {
+        // Record the current Widget builder when a widget fails to build.
+        _oldBuilder = ErrorWidget.builder;
+
+        // Define our own 'error building widget' widget if one is not provided.
+        ErrorWidget.builder =
+            (FlutterErrorDetails details) => errorDisplayWidget(
+                  details,
+                  paragraphStyle: _paragraphStyle,
+                  textStyle: _textStyle,
+                  padding: _padding,
+                  minimumWidth: _minimumWidth,
+                  backgroundColor: _backgroundColor,
+                );
+      }
+
       final _handler = _onError ?? _oldOnError;
 
       if (_handler != null) {
@@ -130,7 +131,7 @@ class AppErrorHandler {
   static FlutterExceptionHandler? _oldOnError;
   //
   // ErrorWidgetBuilder get oldBuilder => _oldBuilder;
-  ErrorWidgetBuilder? _oldBuilder;
+  static ErrorWidgetBuilder? _oldBuilder;
 
   static ReportErrorHandler? _errorReport;
 
@@ -155,7 +156,23 @@ class AppErrorHandler {
     FlutterExceptionHandler? handler,
     ErrorWidgetBuilder? screen,
     ReportErrorHandler? report,
+    i.ParagraphStyle? paragraphStyle,
+    i.TextStyle? textStyle,
+    EdgeInsets? padding,
+    double? minimumWidth,
+    Color? backgroundColor,
   }) {
+    // Any subsequent assignments are not permitted.
+    _paragraphStyle ??= paragraphStyle;
+
+    _textStyle ??= textStyle;
+
+    _padding ??= padding;
+
+    _minimumWidth ??= minimumWidth;
+
+    _backgroundColor ??= backgroundColor;
+
     // Once you're not allowed to reset the handlers, it can't be reversed.
     if (!_allowNewHandlers) {
       return false;
@@ -177,6 +194,8 @@ class AppErrorHandler {
     }
 
     if (screen != null) {
+      // Record the current 'Error Widget'
+      _oldBuilder ??= ErrorWidget.builder;
       // Change the widget presented when another widget fails to build.
       ErrorWidget.builder = screen;
       reset = true;
@@ -184,6 +203,13 @@ class AppErrorHandler {
     // Something was set;
     return reset;
   }
+
+  /// The general appearance of the 'Error Widget' displayed when there's an error.
+  static i.ParagraphStyle? _paragraphStyle;
+  static i.TextStyle? _textStyle;
+  static EdgeInsets? _padding;
+  static double? _minimumWidth;
+  static Color? _backgroundColor;
 
   /// Display the Error details in a widget.
   /// try..catch to ensure a widget is returned.
@@ -280,11 +306,18 @@ class AppErrorHandler {
     return details;
   }
 
-  /// This class is intentionally doing things using the low-level
+  /// This function is intentionally doing things using the low-level
   /// primitives to avoid depending on any subsystems that may have ended
   /// up in an unstable state -- after all, this class is mainly used when
   /// things have gone wrong.
-  static Widget errorDisplayWidget(FlutterErrorDetails details) {
+  static Widget errorDisplayWidget(
+    FlutterErrorDetails details, {
+    i.ParagraphStyle? paragraphStyle,
+    i.TextStyle? textStyle,
+    EdgeInsets? padding,
+    double? minimumWidth,
+    Color? backgroundColor,
+  }) {
     String message;
     try {
       message = 'ERROR\n\n${details.exception}\n\n';
@@ -301,7 +334,93 @@ class AppErrorHandler {
     } catch (e) {
       message = 'Error';
     }
-    return _ErrorRenderObjectWidget(message: message, error: details.exception);
+    return _ErrorRenderObjectWidget(
+      message: message,
+      error: details.exception,
+      paragraphStyle: paragraphStyle,
+      textStyle: textStyle,
+      padding: padding,
+      minimumWidth: minimumWidth,
+      backgroundColor: backgroundColor,
+    );
+  }
+}
+
+/// A simply 'Widget Error' Screen if an app's widget fails to display
+class AppWidgetErrorDisplayed {
+  ///
+  const AppWidgetErrorDisplayed({
+    this.paragraphStyle,
+    this.textStyle,
+    this.padding,
+    this.minimumWidth,
+    this.backgroundColor,
+    this.customPainter,
+    this.stackTrace = false,
+  });
+
+  ///
+  final i.ParagraphStyle? paragraphStyle;
+
+  ///
+  final i.TextStyle? textStyle;
+
+  ///
+  final EdgeInsets? padding;
+
+  ///
+  final double? minimumWidth;
+
+  ///
+  final Color? backgroundColor;
+
+  ///
+  final CustomPainter? customPainter;
+
+  ///
+  final bool? stackTrace;
+
+  ///
+  Widget builder(
+    FlutterErrorDetails details, {
+    i.ParagraphStyle? paragraphStyle,
+    i.TextStyle? textStyle,
+    EdgeInsets? padding,
+    double? minimumWidth,
+    Color? backgroundColor,
+    CustomPainter? customPainter,
+  }) {
+    String? message;
+    try {
+      //
+      message = '\n\n${details.exception}\n\n';
+
+      if (details.stack != null && stackTrace != null && stackTrace!) {
+        //
+        final stack = details.stack.toString().split('\n');
+
+        final length = stack.length > 5 ? 5 : stack.length;
+
+        final buffer = StringBuffer()..write(message);
+
+        for (var i = 0; i < length; i++) {
+          buffer.write('${stack[i]}\n');
+        }
+        message = buffer.toString();
+      }
+    } catch (e) {
+      message = null;
+    }
+    return _ErrorRenderObjectWidget(
+      message: message,
+      error: details.exception,
+      paragraphStyle: paragraphStyle ?? this.paragraphStyle,
+      textStyle: textStyle ?? this.textStyle,
+      padding: padding ?? this.padding,
+      minimumWidth: minimumWidth ?? this.minimumWidth,
+      backgroundColor:
+          backgroundColor ?? this.backgroundColor ?? const Color(0xFFFFFFFF),
+    );
   }
 }
 
@@ -309,7 +428,7 @@ class AppErrorHandler {
 class _ErrorRenderObjectWidget extends LeafRenderObjectWidget {
   /// Supply an error message to display and or a Error object.
   const _ErrorRenderObjectWidget({
-    Key? key,
+    super.key,
     this.message,
     this.error,
     this.paragraphStyle,
@@ -317,7 +436,7 @@ class _ErrorRenderObjectWidget extends LeafRenderObjectWidget {
     this.padding,
     this.minimumWidth,
     this.backgroundColor,
-  }) : super(key: key);
+  });
 
   /// The message to display.
   final String? message;
@@ -326,10 +445,10 @@ class _ErrorRenderObjectWidget extends LeafRenderObjectWidget {
   final Object? error;
 
   ///
-  final ui.ParagraphStyle? paragraphStyle;
+  final i.ParagraphStyle? paragraphStyle;
 
   ///
-  final ui.TextStyle? textStyle;
+  final i.TextStyle? textStyle;
 
   ///
   final EdgeInsets? padding;
@@ -364,164 +483,13 @@ class _ErrorRenderObjectWidget extends LeafRenderObjectWidget {
   }
 }
 
-///
-class ErrorWidgetDisplay {
-  ///
-  const ErrorWidgetDisplay({
-    this.paragraphStyle,
-    this.textStyle,
-    this.padding,
-    this.minimumWidth,
-    this.backgroundColor,
-    this.stackTrace = false,
-  });
-
-  ///
-  final ui.ParagraphStyle? paragraphStyle;
-
-  ///
-  final ui.TextStyle? textStyle;
-
-  ///
-  final EdgeInsets? padding;
-
-  ///
-  final double? minimumWidth;
-
-  ///
-  final Color? backgroundColor;
-
-  ///
-  final bool? stackTrace;
-
-  ///
-  Widget builder(FlutterErrorDetails details) {
-    String? message;
-    try {
-      //
-      if (stackTrace != null && stackTrace!) {
-        //
-        message = 'ERROR\n\n${details.exception}\n\n';
-
-        final stack = details.stack.toString().split('\n');
-
-        final length = stack.length > 5 ? 5 : stack.length;
-
-        final buffer = StringBuffer()..write(message);
-
-        for (var i = 0; i < length; i++) {
-          buffer.write('${stack[i]}\n');
-        }
-        message = buffer.toString();
-      }
-    } catch (e) {
-      message = null;
-    }
-    return errorWidgetChild(
-      details: details,
-      message: message,
-      paragraphStyle: paragraphStyle,
-      textStyle: textStyle,
-      padding: padding,
-      minimumWidth: minimumWidth,
-      backgroundColor: backgroundColor,
-    );
-  }
-
-  ///
-  Widget errorWidgetChild({
-    Key? key,
-    FlutterErrorDetails? details,
-    String? message,
-    Object? error,
-    ui.ParagraphStyle? paragraphStyle,
-    ui.TextStyle? textStyle,
-    EdgeInsets? padding,
-    double? minimumWidth,
-    Color? backgroundColor,
-    CustomPainter? customPainter,
-  }) {
-    //
-    if (details != null) {
-      //
-      error ??= details.exception;
-    }
-
-    // Default
-    customPainter ??= _ErrorSymbol();
-
-    //
-    const double WIDTH = 30;
-
-    return ErrorRenderObjectWidget(
-      key: key,
-      message: message,
-      error: error,
-      paragraphStyle: paragraphStyle,
-      textStyle: textStyle,
-      padding: padding,
-      minimumWidth: minimumWidth,
-      backgroundColor: backgroundColor,
-      child: CustomPaint(
-        size: Size(WIDTH, (WIDTH * 1).toDouble()),
-        painter: customPainter,
-      ),
-    );
-  }
-}
-
-///
-class ErrorRenderObjectWidget extends SingleChildRenderObjectWidget {
-  ///
-  const ErrorRenderObjectWidget({
-    super.key,
-    this.message,
-    this.error,
-    this.paragraphStyle,
-    this.textStyle,
-    this.padding,
-    this.minimumWidth,
-    this.backgroundColor,
-    super.child,
-  });
-
-  ///
-  final Object? error;
-
-  /// The message to display.
-  final String? message;
-
-  ///
-  final ui.ParagraphStyle? paragraphStyle;
-
-  ///
-  final ui.TextStyle? textStyle;
-
-  ///
-  final EdgeInsets? padding;
-
-  ///
-  final double? minimumWidth;
-
-  ///
-  final Color? backgroundColor;
-
-  @override
-  RenderBox createRenderObject(BuildContext context) => _ErrorBox(
-        message: _errorMessage(message, error),
-        paragraphStyle: paragraphStyle,
-        textStyle: textStyle,
-        padding: padding,
-        minimumWidth: minimumWidth,
-        backgroundColor: backgroundColor,
-      );
-}
-
 /// Compose an error message to be displayed.
 /// An empty string if no message was provided.
 String _errorMessage(String? message, Object? error) {
   String _message;
+
   if (message == null || message.isEmpty) {
+    //
     if (error == null) {
       _message = '';
     } else {
@@ -538,67 +506,69 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   /// A message can optionally be provided. If a message is provided, an attempt
   /// will be made to render the message when the box paints.
   _ErrorBox({
-    this.message = '',
-    ui.ParagraphStyle? paragraphStyle,
-    ui.TextStyle? textStyle,
+    String? message,
+    i.ParagraphStyle? paragraphStyle,
+    i.TextStyle? textStyle,
     EdgeInsets? padding,
     double? minimumWidth,
     Color? backgroundColor,
   }) {
-    //
-    if (paragraphStyle != null) {
-      _paragraphStyle = paragraphStyle;
-    }
+    // Supply a style if not explicitly provided.
+    _paragraphStyle = paragraphStyle ??
+        i.ParagraphStyle(
+          textDirection: TextDirection.ltr,
+          textAlign: TextAlign.left,
+        );
+
     _textStyle = textStyle ?? _initTextStyle();
-    if (padding != null) {
-      _padding = padding;
-    }
-    if (minimumWidth != null) {
-      _minimumWidth = minimumWidth;
-    }
+
+    _padding = padding ?? const EdgeInsets.fromLTRB(34, 96, 34, 12);
+
+    _minimumWidth = minimumWidth ?? 200;
+
     _backgroundColor = backgroundColor ?? _initBackgroundColor();
-    final _message = message == null || message!.isEmpty
-        ? 'Unknown Error!'
-        : message!.trim();
+
+    _message =
+        message == null || message.isEmpty ? 'Unknown Error!' : message.trim();
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
     try {
-      ///
-      /// Generally, the much better way to draw text in a RenderObject is to
-      /// use the TextPainter class. If you're looking for code to crib from,
-      /// see the paragraph.dart file and the RenderParagraph class.
-      final builder = ui.ParagraphBuilder(_paragraphStyle)
-        ..pushStyle(_textStyle)
-        ..addText(_message);
-      _paragraph = builder.build();
-    } catch (error) {
-      // Intentionally left empty.
+      //
+      context.canvas.drawRect(offset & size, Paint()..color = _backgroundColor);
+
+      _drawWordERROR(context, 0, text: 'Oops!');
+
+      _drawIcon(context, 50);
+
+      _drawAppName(context, 100);
+
+      _drawMessage(context, 150);
+
+      _drawErrorMessage(context, 200, offset);
+
+      // Draw a rectangle around the screen
+      _drawRect(context);
+//      }
+    } catch (ex) {
+      // If an error happens here we're in a terrible state, so we really should
+      // just forget about it and let the developer deal with the already-reported
+      // errors. It's unlikely that these errors are going to help with that.
     }
   }
 
   /// The message to attempt to display at paint time.
-  final String? message;
+  late String? _message;
 
-  ui.Paragraph? _paragraph;
+  late i.Paragraph _paragraph;
 
-  @override
-  double computeMaxIntrinsicWidth(double height) {
-    return 100000;
-  }
+  /// The paragraph style to use when painting [RenderBox] objects.
+  late i.ParagraphStyle _paragraphStyle;
 
-  @override
-  double computeMaxIntrinsicHeight(double width) {
-    return 100000;
-  }
-
-  @override
-  bool get sizedByParent => true;
-
-  @override
-  bool hitTestSelf(Offset position) => true;
-
-  @override
-  void performResize() {
-    size = constraints.constrain(const Size(100000, 100000));
-  }
+  /// The text style to use when painting [RenderBox] objects.
+  /// a dark gray sans-serif font.
+  late i.TextStyle _textStyle;
 
   /// The distance to place around the text.
   ///
@@ -612,17 +582,34 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   ///
   ///  * [_minimumWidth], which controls how wide the box must be before the
   //     horizontal padding is applied.
-  EdgeInsets _padding = const EdgeInsets.fromLTRB(34, 96, 34, 12);
+  late EdgeInsets _padding;
 
   /// The width below which the horizontal padding is not applied.
   ///
   /// If the left and right padding would reduce the available width to less than
   /// this value, then the text is rendered flush with the left edge.
-  double _minimumWidth = 200;
+  late double _minimumWidth;
 
   /// The color to use when painting the background of [RenderBox] objects.
   /// a red from a light gray.
   late Color _backgroundColor;
+
+  @override
+  double computeMaxIntrinsicWidth(double height) => 100000;
+
+  @override
+  double computeMaxIntrinsicHeight(double width) => 100000;
+
+  @override
+  bool get sizedByParent => true;
+
+  @override
+  bool hitTestSelf(Offset position) => true;
+
+  @override
+  void performResize() {
+    size = constraints.constrain(const Size(100000, 100000));
+  }
 
   /// Light gray in production; Red in development.
   Color _initBackgroundColor() {
@@ -634,19 +621,15 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     return result;
   }
 
-  /// The text style to use when painting [RenderBox] objects.
-  /// a dark gray sans-serif font.
-  late ui.TextStyle _textStyle;
-
   /// Black text in production; Yellow in development.
-  ui.TextStyle _initTextStyle() {
-    var result = ui.TextStyle(
+  i.TextStyle _initTextStyle() {
+    var result = i.TextStyle(
       color: const Color(0xFF303030),
       fontFamily: 'sans-serif',
       fontSize: 18,
     );
     assert(() {
-      result = ui.TextStyle(
+      result = i.TextStyle(
         color: const Color(0xFFFFFF66),
         fontFamily: 'monospace',
         fontSize: 14,
@@ -657,348 +640,122 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     return result;
   }
 
-  /// The paragraph style to use when painting [RenderBox] objects.
-  ui.ParagraphStyle _paragraphStyle = ui.ParagraphStyle(
-    textDirection: TextDirection.ltr,
-    textAlign: TextAlign.left,
-  );
+  void _drawWordERROR(PaintingContext context, double top, {String? text}) {
+    text ??= 'ERROR';
+    final builder = i.ParagraphBuilder(i.ParagraphStyle(
+      textAlign: TextAlign.center,
+    ))
+      ..pushStyle(i.TextStyle(
+        color: Colors.red,
+        fontSize: 30,
+        fontWeight: FontWeight.w700,
+        textBaseline: TextBaseline.alphabetic,
+      ))
+      ..addText(text);
+    final paragraph = builder.build();
+    paragraph.layout(i.ParagraphConstraints(width: _minimumWidth));
+    context.canvas.drawParagraph(
+      paragraph,
+      Offset(
+        (size.width - paragraph.width) * 0.5,
+        _padding.top + top, //(size.height - paragraph.height) * 0.5,
+      ),
+    );
+  }
 
-  @override
-  void paint(PaintingContext context, Offset offset) {
-    try {
-      context.canvas.drawRect(offset & size, Paint()..color = _backgroundColor);
-      if (_paragraph != null) {
-        var width = size.width;
-        var left = 0.0;
-        var top = 0.0;
-        if (width > _padding.left + _minimumWidth + _padding.right) {
-          width -= _padding.left + _padding.right;
-          left += _padding.left;
-        }
-        _paragraph!.layout(ui.ParagraphConstraints(width: width));
-        if (size.height > _padding.top + _paragraph!.height + _padding.bottom) {
-          top += _padding.top;
-        }
-        context.canvas.drawParagraph(_paragraph!, offset + Offset(left, top));
-      }
-    } catch (ex) {
-      // Intentionally left empty.
+  void _drawIcon(PaintingContext context, double top) {
+    const icon = Icons.error;
+    final builder = i.ParagraphBuilder(i.ParagraphStyle(
+      fontFamily: icon.fontFamily,
+    ))
+      ..addText(String.fromCharCode(icon.codePoint));
+    final paragraph = builder.build();
+    paragraph.layout(i.ParagraphConstraints(width: size.width * 0.5));
+    context.canvas.drawParagraph(
+      paragraph,
+      Offset(
+        (size.width - paragraph.width) * 0.5,
+        _padding.top + top,
+      ),
+    );
+  }
+
+  void _drawAppName(PaintingContext context, double top) {
+    final builder = i.ParagraphBuilder(i.ParagraphStyle(
+      textAlign: TextAlign.center,
+    ))
+      ..pushStyle(i.TextStyle(
+        color: Colors.black,
+        fontSize: 18,
+        textBaseline: TextBaseline.alphabetic,
+      ))
+      ..addText('${App.appName}\n${App.version}');
+    final paragraph = builder.build();
+    paragraph.layout(
+        i.ParagraphConstraints(width: (size.width - paragraph.width) * 0.5));
+    context.canvas.drawParagraph(
+      paragraph,
+      Offset(
+        (size.width - paragraph.width) * 0.5,
+        _padding.top + top,
+      ),
+    );
+  }
+
+  void _drawMessage(PaintingContext context, double top) {
+    const text = 'An error has occurred in this app.\n';
+    final builder = i.ParagraphBuilder(i.ParagraphStyle(
+      textAlign: TextAlign.left,
+      textDirection: TextDirection.ltr,
+    ))
+      ..pushStyle(i.TextStyle(
+        color: Colors.black,
+        fontSize: 24,
+        textBaseline: TextBaseline.alphabetic,
+      ))
+      ..addText(text);
+    final paragraph = builder.build();
+    paragraph
+        .layout(i.ParagraphConstraints(width: size.width - _padding.right));
+    context.canvas.drawParagraph(
+      paragraph,
+      Offset(
+        _padding.left,
+        _padding.top + top,
+      ),
+    );
+  }
+
+  void _drawErrorMessage(PaintingContext context, double top, Offset offset) {
+    //
+    final builder = i.ParagraphBuilder(_paragraphStyle)
+      ..pushStyle(i.TextStyle(color: Colors.black, fontSize: 18))
+      ..addText(_message!);
+
+    final paragraph = builder.build();
+
+    //
+    var _width = size.width;
+    if (_width > _padding.left + _minimumWidth + _padding.right) {
+      _width -= _padding.left + _padding.right;
     }
-  }
-}
 
-/// The Error symbol programmatically displayed.
-class _ErrorSymbol extends CustomPainter {
-  ///
-  // ignore: non_constant_identifier_names
-  final NaN = double.nan;
+    paragraph.layout(i.ParagraphConstraints(width: _width));
 
-  //
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Path path_0 = Path();
-    path_0.moveTo(size.width * 4.414063, size.height * 9.287109);
-    path_0.cubicTo(
-        size.width * 2.734375,
-        size.height * 9.044922,
-        size.width * 1.376953,
-        size.height * 7.898438,
-        size.width * 0.8710938,
-        size.height * 6.291016);
-    path_0.cubicTo(
-        size.width * 0.7382813,
-        size.height * 5.873047,
-        size.width * 0.6835938,
-        size.height * 5.494141,
-        size.width * 0.6835938,
-        size.height * 5.000000);
-    path_0.cubicTo(
-        size.width * 0.6835938,
-        size.height * 4.400391,
-        size.width * 0.7714844,
-        size.height * 3.921875,
-        size.width * 0.9785156,
-        size.height * 3.404297);
-    path_0.cubicTo(
-        size.width * 1.037109,
-        size.height * 3.255859,
-        size.width * 1.035156,
-        size.height * 3.187500,
-        size.width * 0.9687500,
-        size.height * 3.150391);
-    path_0.cubicTo(
-        size.width * 0.9453125,
-        size.height * 3.136719,
-        size.width * 0.9570313,
-        size.height * 3.103516,
-        size.width * 1.031250,
-        size.height * 2.958984);
-    path_0.cubicTo(
-        size.width * 1.119141,
-        size.height * 2.792969,
-        size.width * 1.126953,
-        size.height * 2.783203,
-        size.width * 1.181641,
-        size.height * 2.789063);
-    path_0.cubicTo(
-        size.width * 1.259766,
-        size.height * 2.796875,
-        size.width * 1.283203,
-        size.height * 2.775391,
-        size.width * 1.423828,
-        size.height * 2.564453);
-    path_0.cubicTo(
-        size.width * 2.054688,
-        size.height * 1.615234,
-        size.width * 3.083984,
-        size.height * 0.9492188,
-        size.width * 4.248047,
-        size.height * 0.7363281);
-    path_0.cubicTo(
-        size.width * 4.451172,
-        size.height * 0.6992188,
-        size.width * 4.205078,
-        size.height * 1.488281,
-        size.width * 4.205078,
-        size.height * 1.294922);
-    path_0.cubicTo(
-        size.width * 4.207031,
-        size.height * 1.964844,
-        size.width * 4.218750,
-        size.height * 2.400391,
-        size.width * 4.332031,
-        size.height * 2.220703);
-    path_0.cubicTo(
-        size.width * 4.570313,
-        size.height * 4.015625,
-        size.width * 5.158203,
-        size.height * 4.582031,
-        size.width * 5.923828,
-        size.height * 2.623047);
-    path_0.cubicTo(
-        size.width * 6.468750,
-        size.height * 3.283203,
-        size.width * 7.064453,
-        size.height * 4.458984,
-        size.width * 6.001953,
-        size.height * 3.023438);
-    path_0.cubicTo(
-        size.width * 6.070313,
-        size.height * 4.304688,
-        size.width * 5.988281,
-        size.height * 4.609375,
-        size.width * 5.992188,
-        size.height * 3.056641);
-    path_0.cubicTo(
-        size.width * 5.994141,
-        size.height * 3.115234,
-        size.width * 6.041016,
-        size.height * 3.158203,
-        size.width * NaN,
-        size.height * NaN);
-    path_0.lineTo(size.width * NaN, size.height * NaN);
-    path_0.lineTo(size.width * NaN, size.height * NaN);
-    path_0.cubicTo(size.width * NaN, size.height * NaN, size.width * NaN,
-        size.height * NaN, size.width * NaN, size.height * NaN);
-    path_0.cubicTo(size.width * NaN, size.height * NaN, size.width * NaN,
-        size.height * NaN, size.width * NaN, size.height * NaN);
-    path_0.cubicTo(size.width * NaN, size.height * NaN, size.width * NaN,
-        size.height * NaN, size.width * NaN, size.height * NaN);
-    path_0.cubicTo(size.width * NaN, size.height * NaN, size.width * NaN,
-        size.height * NaN, size.width * NaN, size.height * NaN);
-    path_0.cubicTo(size.width * NaN, size.height * NaN, size.width * NaN,
-        size.height * NaN, size.width * NaN, size.height * NaN);
-    path_0.cubicTo(size.width * NaN, size.height * NaN, size.width * NaN,
-        size.height * NaN, size.width * NaN, size.height * NaN);
-    path_0.cubicTo(size.width * NaN, size.height * NaN, size.width * NaN,
-        size.height * NaN, size.width * NaN, size.height * NaN);
-    path_0.cubicTo(size.width * NaN, size.height * NaN, size.width * NaN,
-        size.height * NaN, size.width * NaN, size.height * NaN);
-    path_0.cubicTo(size.width * NaN, size.height * NaN, size.width * NaN,
-        size.height * NaN, size.width * NaN, size.height * NaN);
-    path_0.close();
-    path_0.moveTo(size.width * 5.314453, size.height * 8.359375);
-    path_0.cubicTo(
-        size.width * 6.480469,
-        size.height * 8.240234,
-        size.width * 7.494141,
-        size.height * 7.550781,
-        size.width * 3.478516,
-        size.height * 9.015625);
-    path_0.cubicTo(
-        size.width * 2.166016,
-        size.height * 9.423828,
-        size.width * 0.6035156,
-        size.height * 8.390625,
-        size.width * -0.4277344,
-        size.height * 7.759766);
-    path_0.cubicTo(
-        size.width * -1.683594,
-        size.height * 4.501953,
-        size.width * -1.750000,
-        size.height * 3.150391,
-        size.width * -0.5800781,
-        size.height * 7.453125);
-    path_0.cubicTo(
-        size.width * -1.173828,
-        size.height * 8.089844,
-        size.width * -1.361328,
-        size.height * 8.464844,
-        size.width * -1.066406,
-        size.height * 8.425781);
-    path_0.cubicTo(
-        size.width * -1.552734,
-        size.height * 10.50000,
-        size.width * -1.066406,
-        size.height * 11.47266,
-        size.width * -0.4511719,
-        size.height * 9.652344);
-    path_0.cubicTo(
-        size.width * 1.513672,
-        size.height * 11.62500,
-        size.width * 2.871094,
-        size.height * 11.48828,
-        size.width * NaN,
-        size.height * NaN);
-    path_0.close();
-
-    final Paint paint0Fill = Paint()..style = PaintingStyle.fill;
-    paint0Fill.color = const Color(0xff000000).withOpacity(1);
-    canvas.drawPath(path_0, paint0Fill);
-
-    final Path path_1 = Path();
-    path_1.moveTo(size.width * 3.199219, size.height * 6.802734);
-    path_1.cubicTo(
-        size.width * 2.884766,
-        size.height * 6.488281,
-        size.width * 2.832031,
-        size.height * 6.427734,
-        size.width * 2.832031,
-        size.height * 6.376953);
-    path_1.cubicTo(
-        size.width * 2.832031,
-        size.height * 6.326172,
-        size.width * 2.916016,
-        size.height * 6.234375,
-        size.width * 3.490234,
-        size.height * 5.660156);
-    path_1.lineTo(size.width * 4.150391, size.height * 5.000000);
-    path_1.lineTo(size.width * 3.490234, size.height * 4.339844);
-    path_1.cubicTo(
-        size.width * 2.921875,
-        size.height * 3.771484,
-        size.width * 2.832031,
-        size.height * 3.673828,
-        size.width * 2.832031,
-        size.height * 3.623047);
-    path_1.cubicTo(
-        size.width * 2.832031,
-        size.height * 3.574219,
-        size.width * 2.888672,
-        size.height * 3.509766,
-        size.width * 3.199219,
-        size.height * 3.199219);
-    path_1.cubicTo(
-        size.width * 2.867188,
-        size.height * 3.572266,
-        size.width * 2.832031,
-        size.height * 3.630859,
-        size.width * 2.832031,
-        size.height * 3.259766);
-    path_1.cubicTo(
-        size.width * 2.832031,
-        size.height * 3.380859,
-        size.width * 2.886719,
-        size.height * 3.982422,
-        size.width * 3.486328,
-        size.height * NaN);
-    path_1.lineTo(size.width * 4.140625, size.height * NaN);
-    path_1.lineTo(size.width * 4.796875, size.height * NaN);
-    path_1.cubicTo(
-        size.width * 5.361328,
-        size.height * NaN,
-        size.width * 4.142578,
-        size.height * NaN,
-        size.width * 4.142578,
-        size.height * NaN);
-    path_1.cubicTo(
-        size.width * 4.142578,
-        size.height * NaN,
-        size.width * 4.199219,
-        size.height * NaN,
-        size.width * 4.509766,
-        size.height * NaN);
-    path_1.cubicTo(
-        size.width * 4.843750,
-        size.height * NaN,
-        size.width * 4.882813,
-        size.height * NaN,
-        size.width * 4.943359,
-        size.height * NaN);
-    path_1.cubicTo(
-        size.width * 5.005859,
-        size.height * NaN,
-        size.width * 5.056641,
-        size.height * NaN,
-        size.width * 5.654297,
-        size.height * NaN);
-    path_1.cubicTo(
-        size.width * 6.007813,
-        size.height * NaN,
-        size.width * 6.302734,
-        size.height * NaN,
-        size.width * 6.310547,
-        size.height * NaN);
-    path_1.cubicTo(
-        size.width * 6.318359,
-        size.height * NaN,
-        size.width * 6.615234,
-        size.height * NaN,
-        size.width * 6.968750,
-        size.height * NaN);
-    path_1.cubicTo(
-        size.width * 7.562500,
-        size.height * NaN,
-        size.width * 7.615234,
-        size.height * NaN,
-        size.width * 6.968750,
-        size.height * NaN);
-    path_1.cubicTo(
-        size.width * 6.935547,
-        size.height * NaN,
-        size.width * 6.601563,
-        size.height * NaN,
-        size.width * 6.658203,
-        size.height * NaN);
-    path_1.cubicTo(
-        size.width * 6.283203,
-        size.height * NaN,
-        size.width * 6.234375,
-        size.height * NaN,
-        size.width * 6.607422,
-        size.height * NaN);
-    path_1.cubicTo(
-        size.width * 6.458984,
-        size.height * NaN,
-        size.width * 5.892578,
-        size.height * NaN,
-        size.width * NaN,
-        size.height * NaN);
-    path_1.lineTo(size.width * NaN, size.height * NaN);
-    path_1.lineTo(size.width * NaN, size.height * NaN);
-    path_1.cubicTo(size.width * NaN, size.height * NaN, size.width * NaN,
-        size.height * NaN, size.width * NaN, size.height * NaN);
-    path_1.cubicTo(size.width * NaN, size.height * NaN, size.width * NaN,
-        size.height * NaN, size.width * NaN, size.height * NaN);
-    path_1.close();
-
-    final Paint paint1Fill = Paint()..style = PaintingStyle.fill;
-    paint1Fill.color = const Color(0xff000000).withOpacity(1);
-    canvas.drawPath(path_1, paint1Fill);
+    context.canvas.drawParagraph(
+        paragraph, offset + Offset(_padding.left, _padding.top + top));
   }
 
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  // Draw a rectangle around the screen
+  void _drawRect(PaintingContext context) {
+    final right = size.width - _padding.right / 2;
+    final bottom = size.height - _padding.bottom;
+    final rect =
+        Rect.fromLTRB(_padding.left / 2, _padding.top / 2, right, bottom);
+    final paint = Paint()
+      ..color = Colors.red
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4;
+    context.canvas.drawRect(rect, paint);
   }
 }

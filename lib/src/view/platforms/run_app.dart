@@ -28,19 +28,16 @@ import 'package:fluttery_framework/view.dart' as v
     show AppErrorHandler, ReportErrorHandler;
 
 /// Add an Error Handler right at the start.
+// The 'error' parameters are deprecated.
 void runApp(
   m.Widget app, {
   FlutterExceptionHandler? errorHandler,
   m.ErrorWidgetBuilder? errorScreen,
   v.ReportErrorHandler? errorReport,
-  bool allowNewHandlers = false,
+  bool newErrorHandlers = true,
 }) {
   // Instantiate the app's error handler.
-  final handler = v.AppErrorHandler(
-      handler: errorHandler,
-      screen: errorScreen,
-      report: errorReport,
-      allowNewHandlers: allowNewHandlers);
+  final handler = v.AppErrorHandler(newErrorHandlers: newErrorHandlers);
 
   Isolate.current.addErrorListener(RawReceivePort((dynamic pair) {
     //

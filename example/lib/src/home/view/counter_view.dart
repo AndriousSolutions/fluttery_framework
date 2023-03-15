@@ -135,8 +135,8 @@ class _CounterPageState extends StateX<CounterPage> {
   // Merely for demonstration purposes. Erase if not using.
   /// Called when the system tells the app that the user's locale has changed.
   @override
-  void didChangeLocale(Locale locale) {
-    super.didChangeLocale(locale);
+  void didChangeLocales(List<Locale>? locales) {
+    super.didChangeLocales(locales);
   }
 
   // Merely for demonstration purposes. Erase if not using.

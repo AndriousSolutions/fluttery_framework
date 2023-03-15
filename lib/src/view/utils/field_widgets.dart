@@ -17,18 +17,15 @@
 ///
 ///
 
+import 'dart:async';
+
 import 'dart:ui' as ui show TextHeightBehavior;
+
+import 'package:flutter/gestures.dart';
 
 import 'package:flutter/material.dart' as m; //show TextFormField;
 
-import 'package:flutter/services.dart'
-    show
-        Brightness,
-        MaxLengthEnforcement,
-        TextCapitalization,
-        TextInputAction,
-        TextInputFormatter,
-        TextInputType;
+import 'package:flutter/services.dart';
 
 import 'package:fluttery_framework/view.dart' hide TextFormField;
 
@@ -242,13 +239,31 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
     this.textSpan,
     this.style,
     this.textAlign,
+    this.textAlignVertical,
     this.autofocus,
+    this.readOnly,
+    this.showCursor,
+    this.obscuringCharacter,
     this.obscureText,
+    this.smartDashesType,
+    this.smartQuotesType,
+    this.enableSuggestions,
+    this.onTapOutside,
+    this.cursorWidth,
+    this.cursorHeight,
+    this.cursorRadius,
+    this.cursorColor,
+    this.scrollController,
+    this.restorationId,
+    this.enableIMEPersonalizedLearning,
+    this.contextMenuBuilder,
     this.autocorrect,
 //    this.autovalidate,
 //    this.maxLengthEnforced,
     this.maxLengthEnforcement,
     this.maxLines,
+    this.minLines,
+    this.expands,
     this.maxLength,
     this.changed,
     this.editingComplete,
@@ -258,6 +273,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
     this.inputFormatters,
     this.enabled,
     this.keyboardAppearance,
+    this.enableInteractiveSelection,
     this.scrollPadding,
     this.buildCounter,
     this.scrollPhysics,
@@ -272,27 +288,42 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
     this.semanticsLabel,
     this.textWidthBasis,
     this.textHeightBehavior,
+    this.selectionColor,
 // ListTile
     this.leading,
     this.title,
     this.subtitle,
+    this.additionalInfo,
+    this.backgroundColorActivated,
     this.trailing,
     this.isThreeLine,
     this.dense,
     this.visualDensity,
     this.shape,
+    this.tileStyle,
     this.selectedColor,
     this.iconColor,
     this.textColor,
     this.contentPadding,
+    this.padding,
     this.tap,
     this.longPress,
     this.mouseCursor,
     this.selected,
+    this.onFocusChange,
     this.focusColor,
     this.hoverColor,
+    this.splashColor,
     this.tileColor,
     this.selectedTileColor,
+    this.checkboxShape,
+    this.enableFeedback,
+    this.horizontalTitleGap,
+    this.minVerticalPadding,
+    this.minLeadingWidth,
+    this.forTap,
+    this.leadingSize,
+    this.leadingToTitle,
 // CheckboxListTile
     this.secondary,
     this.controlAffinity,
@@ -320,10 +351,19 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
 // CheckBox
     this.toggle,
     this.activeColor,
+    this.fillColor,
+    this.checkColor,
     this.tristate,
     this.materialTapTargetSize,
+    this.overlayColor,
+    this.splashRadius,
+    this.outlineShape,
+    this.side,
+    this.isError,
   }) : super(label: label, value: value, type: type) {
+    //
     _key = ObjectKey(key ?? this).toString();
+
     // ignore: avoid_bool_literals_in_conditional_expressions
     _checkValue = value == null
         ? false
@@ -352,13 +392,25 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
     textInputAction ??= TextInputAction.done;
     textAlign ??= TextAlign.start;
     autofocus ??= false;
+    isError ??= false;
+    readOnly ??= false;
     obscureText ??= false;
+    obscuringCharacter ??= '•';
+    enableIMEPersonalizedLearning ??= true;
     autocorrect ??= true;
+    enableSuggestions ??= true;
+    cursorWidth ??= 2;
+    enableInteractiveSelection ??= !obscureText! || !readOnly!;
+
 //    autovalidate ??= false;
 //    maxLengthEnforced ??= true;
     maxLengthEnforcement ??= MaxLengthEnforcement.enforced;
     maxLines ??= 1;
+    expands = false;
     scrollPadding ??= const EdgeInsets.all(20);
+
+    leadingSize = 28;
+    leadingToTitle = 16;
 
     isThreeLine ??= false;
     enabled ??= true;
@@ -369,6 +421,8 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
     dismissThresholds ??= const <DismissDirection, double>{};
     movementDuration ??= const Duration(milliseconds: 200);
     crossAxisEndOffset ??= 0.0;
+    dragStartBehavior ??= DragStartBehavior.start;
+    behavior ??= HitTestBehavior.opaque;
   }
 
   ///
@@ -387,7 +441,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   String? get key => _key;
   String? _key;
 
-  ///todo: TextFormField
+  /// TextFormField
   TextEditingController? controller;
 
   /// The current text being edited.
@@ -413,15 +467,75 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   /// Describing how to format and paint text.
   TextStyle? style;
 
+  /// Defines the strut, which sets the minimum height a line can be
+  /// relative to the baseline.
+  StrutStyle? strutStyle;
+
   /// Whether and how to align text horizontally.
   TextAlign? textAlign;
+
+  /// How the text should be aligned vertically.
+  TextAlignVertical? textAlignVertical;
 
   /// Whether this text field should focus itself if nothing else is already
   /// focused.
   bool? autofocus;
 
+  /// Whether this rendering object is read only.
+  bool? readOnly;
+
+  /// Whether to paint the cursor.
+  bool? showCursor;
+
+  /// Character used for obscuring text if [obscureText] is true.
+  String? obscuringCharacter;
+
   /// Whether to hide the text being edited (e.g., for passwords).
   bool? obscureText;
+
+  /// Indicates how to handle the intelligent replacement of dashes in text input.
+  SmartDashesType? smartDashesType;
+
+  /// Indicates how to handle the intelligent replacement of quotes in text input.
+  SmartQuotesType? smartQuotesType;
+
+  /// Whether to show input suggestions as the user types.
+  bool? enableSuggestions;
+
+  /// For when a tap has occurred.
+  GestureTapCallback? tap;
+
+  /// The [onTap] function is called when a user taps on [CupertinoListTile].
+  FutureOr<void> Function()? forTap;
+
+  /// The type of callback that [TapRegion.onTapOutside] and
+  /// [TapRegion.onTapInside] take.
+  TapRegionCallback? onTapOutside;
+
+  /// How thick the cursor will be.
+  double? cursorWidth;
+
+  /// How tall the cursor will be.
+  double? cursorHeight;
+
+  /// How rounded the corners of the cursor should be.
+  Radius? cursorRadius;
+
+  /// The color to use when painting the cursor.
+  Color? cursorColor;
+
+  /// The [ScrollController] to use when vertically scrolling the input.
+  ScrollController? scrollController;
+
+  /// Restoration ID to save and restore the state of the form field.
+  String? restorationId;
+
+  /// Whether to enable that the IME update personalized data such as typing
+  /// history and user dictionary data.
+  bool? enableIMEPersonalizedLearning;
+
+  /// For a widget builder that builds a context menu for the given [EditableTextState].
+  EditableTextContextMenuBuilder? contextMenuBuilder;
 
   /// Whether to enable autocorrection.
   bool? autocorrect;
@@ -433,6 +547,12 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
 
   /// The maximum number of lines for the text to span, wrapping if necessary.
   int? maxLines;
+
+  /// The minimum number of lines to occupy when the content spans fewer lines.
+  int? minLines;
+
+  /// Whether this widget's height will be sized to fill its parent.
+  bool? expands;
 
   /// The maximum string length that can be entered into the TextField.
   int? maxLength;
@@ -463,10 +583,14 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   /// This setting is only honored on iOS devices.
   Brightness? keyboardAppearance;
 
-  ///
+  /// Configures padding to edges surrounding a [Scrollable] when the Textfield scrolls into view.
   EdgeInsets? scrollPadding;
 
-  ///
+  /// Whether to enable user interface affordances for changing the
+  /// text selection.
+  bool? enableInteractiveSelection;
+
+  /// Callback that generates a custom [InputDecoration.counter] widget.
   InputCounterWidgetBuilder? buildCounter;
 
   ///
@@ -480,7 +604,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   /// error text.
   AutovalidateMode? autovalidateMode;
 
-  ///todo: Text
+  /// Text
 //  final String data;
   TextSpan? textSpan;
 
@@ -513,7 +637,10 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   /// applied to ascent of the first line and the descent of the last line.
   ui.TextHeightBehavior? textHeightBehavior;
 
-  ///todo: [ListTile]
+  /// The color to use when painting the selection.
+  Color? selectionColor;
+
+  /// [ListTile]
   /// A widget to display before the title.
   Widget? leading;
 
@@ -522,6 +649,10 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
 
   /// Additional content displayed below the title.
   Widget? subtitle;
+
+  /// Similar to [subtitle], an [additionalInfo] is used to display additional
+  /// information.
+  Widget? additionalInfo;
 
   /// A widget to display after the title.
   Widget? trailing;
@@ -538,6 +669,9 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   /// Defines the tile's ['InkWell.customBorder'] and [Ink.decoration] shape.
   ShapeBorder? shape;
 
+  /// Defines the font used for the [title].
+  ListTileStyle? tileStyle;
+
   /// Defines the color used for icons and text when the list tile is selected.
   Color? selectedColor;
 
@@ -547,15 +681,28 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   /// Defines the default color for the [title] and [subtitle].
   Color? textColor;
 
+  /// The [backgroundColorActivated] is the background color of the tile after
+  /// the tile was tapped. It is set to match the iOS look by default.
+  Color? backgroundColorActivated;
+
   /// The tile's internal padding.
   EdgeInsetsGeometry? contentPadding;
 
-//  final bool enabled;
-  /// Called when the user taps this list tile.
-  GestureTapCallback? tap;
+  /// Padding of the content inside [CupertinoListTile].
+  EdgeInsetsGeometry? padding;
+
+  /// The [leadingSize] is used to constrain the width and height of [leading]
+  /// widget.
+  double? leadingSize;
+
+  /// The horizontal space between [leading] widget and [title].
+  double? leadingToTitle;
 
   /// Called when the user long-presses on this list tile.
   GestureLongPressCallback? longPress;
+
+  /// Handler called when the focus changes.
+  ValueChanged<bool>? onFocusChange;
 
   /// The cursor for a mouse pointer when it enters or is hovering over the
   /// widget.
@@ -570,20 +717,39 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   /// The color for the tile's [Material] when a pointer is hovering over it.
   Color? hoverColor;
 
+  /// The color of splash for the tile's [Material].
+  Color? splashColor;
+
   /// Defines the background color of `ListTile` when [selected] is false.
   Color? tileColor;
 
   /// Defines the background color of `ListTile` when [selected] is true.
   Color? selectedTileColor;
 
-  ///todo: [CheckboxListTile]
+  /// A ShapeBorder that draws an outline with the width and color specified
+  /// by [side].
+  OutlinedBorder? checkboxShape;
+
+  /// Whether detected gestures should provide acoustic and/or haptic feedback.
+  bool? enableFeedback;
+
+  /// The horizontal gap between the titles and the leading/trailing widgets.
+  double? horizontalTitleGap;
+
+  /// The minimum padding on the top and bottom of the title and subtitle widgets.
+  double? minVerticalPadding;
+
+  /// The minimum width allocated for the [ListTile.leading] widget.
+  double? minLeadingWidth;
+
+  /// [CheckboxListTile]
   /// A widget to display on the opposite side of the tile from the checkbox.
   Widget? secondary;
 
   /// Where to place the control relative to the text.
   ListTileControlAffinity? controlAffinity;
 
-  ///todo: [CircleAvatar]
+  /// [CircleAvatar]
   /// The color with which to fill the circle.
   Color? backgroundColor;
 
@@ -612,7 +778,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   ///
   double? maxRadius;
 
-  ///todo: [Dismissible]
+  /// [Dismissible]
   Widget? child;
 
   ///
@@ -623,6 +789,9 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
 
   ///
   VoidCallback? resize;
+
+  /// Called when the dismissible widget has been dragged.
+  DismissUpdateCallback? onUpdate;
 
   ///
   DismissDirectionCallback? dismissed;
@@ -642,7 +811,13 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   ///
   double? crossAxisEndOffset;
 
-  ///todo: ['CheckBox']
+  /// Determines the way that drag start behavior is handled.
+  DragStartBehavior? dragStartBehavior;
+
+  /// How to behave during hit tests.
+  HitTestBehavior? behavior;
+
+  /// ['CheckBox']
   bool? _checkValue;
 
   ///
@@ -651,11 +826,32 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   ///
   Color? activeColor;
 
-  ///
+  /// The color that fills the checkbox
+  MaterialStateProperty<Color?>? fillColor;
+
+  /// The color to use for the check icon when this checkbox is checked.
+  Color? checkColor;
+
+  /// If true the checkbox's [value] can be true, false, or null.
   bool? tristate;
 
-  ///
+  /// Configures the minimum size of the tap target.
   MaterialTapTargetSize? materialTapTargetSize;
+
+  /// The color for the checkbox's [Material].
+  m.MaterialStateProperty<Color?>? overlayColor;
+
+  /// The splash radius of the circular [Material] ink response.
+  double? splashRadius;
+
+  /// The shape of the checkbox's [Material].
+  OutlinedBorder? outlineShape;
+
+  /// The color and width of the checkbox's border.
+  BorderSide? side;
+
+  /// True if to show an error state.
+  bool? isError;
 
   m.Widget? _textFormField;
   Dismissible? _dismissible;
@@ -688,30 +884,52 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
       decoration: inputDecoration ?? InputDecoration(labelText: label),
       keyboardType: keyboardType,
       textCapitalization: textCapitalization!,
-      textInputAction: textInputAction,
+      textInputAction: textInputAction!,
       style: style,
+      strutStyle: strutStyle,
       textAlign: textAlign!,
+      textAlignVertical: textAlignVertical,
       autofocus: autofocus!,
+      readOnly: readOnly!,
+      showCursor: showCursor,
+      obscuringCharacter: obscuringCharacter!,
       obscureText: obscureText!,
       autocorrect: autocorrect!,
+      smartDashesType: smartDashesType,
+      smartQuotesType: smartQuotesType,
+      enableSuggestions: enableSuggestions!,
 //      autovalidate: autovalidate,
 //      maxLengthEnforced: maxLengthEnforced!,
       maxLengthEnforcement: maxLengthEnforcement!,
       maxLines: maxLines,
-      onChanged: changed ?? onChanged,
+      minLines: minLines,
+      expands: expands!,
       maxLength: maxLength,
+      onChanged: changed ?? onChanged,
+      onTap: tap ?? onTap,
+      onTapOutside: onTapOutside,
       onEditingComplete: editingComplete ?? onEditingComplete,
       onFieldSubmitted: fieldSubmitted ?? onFieldSubmitted,
       onSaved: saved ?? onSaved,
       validator: validator ?? onValidator,
       inputFormatters: inputFormatters,
       enabled: enabled,
+      cursorWidth: cursorWidth!,
+      cursorHeight: cursorHeight,
+      cursorRadius: cursorRadius,
+      cursorColor: cursorColor,
       keyboardAppearance: keyboardAppearance,
       scrollPadding: scrollPadding!,
+      enableInteractiveSelection: enableInteractiveSelection,
       buildCounter: buildCounter,
       scrollPhysics: scrollPhysics,
       autofillHints: autofillHints,
       autovalidateMode: autovalidateMode,
+      scrollController: scrollController,
+      restorationId: restorationId,
+      enableIMEPersonalizedLearning: enableIMEPersonalizedLearning!,
+      mouseCursor: mouseCursor,
+      contextMenuBuilder: contextMenuBuilder,
     ));
   }
 
@@ -906,6 +1124,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
       text,
       key: Key('Text$_key'),
       style: style,
+      strutStyle: strutStyle,
       textAlign: textAlign,
       textDirection: textDirection,
       locale: locale,
@@ -916,6 +1135,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
       semanticsLabel: semanticsLabel,
       textWidthBasis: textWidthBasis,
       textHeightBehavior: textHeightBehavior,
+      selectionColor: selectionColor,
     );
   }
 
@@ -966,6 +1186,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
         textSpan!,
         key: Key('Text.rich$_key'),
         style: style,
+        strutStyle: strutStyle,
         textAlign: textAlign,
         textDirection: textDirection,
         locale: locale,
@@ -976,6 +1197,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
         semanticsLabel: semanticsLabel,
         textWidthBasis: textWidthBasis,
         textHeightBehavior: textHeightBehavior,
+        selectionColor: selectionColor,
       );
     }
   }
@@ -1057,10 +1279,17 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   Widget get listTile => App.useCupertino
       ? CupertinoListTile(
           key: Key('ListTile$_key'),
-          leading: leading ?? onLeading(),
           title: title ?? onTitle(),
           subtitle: subtitle ?? onSubtitle(),
+          additionalInfo: additionalInfo,
+          leading: leading ?? onLeading(),
           trailing: trailing,
+          onTap: forTap,
+          backgroundColor: backgroundColor,
+          backgroundColorActivated: backgroundColorActivated,
+          padding: padding,
+          leadingSize: leadingSize!,
+          leadingToTitle: leadingToTitle!,
         )
       : ListTile(
           key: Key('ListTile$_key'),
@@ -1068,24 +1297,32 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
           title: title ?? onTitle(),
           subtitle: subtitle ?? onSubtitle(),
           trailing: trailing,
-          isThreeLine: isThreeLine ?? false,
+          isThreeLine: isThreeLine!,
           dense: dense,
-          iconColor: iconColor,
-          textColor: textColor,
           visualDensity: visualDensity,
           shape: shape,
+          style: tileStyle,
           selectedColor: selectedColor,
+          iconColor: iconColor,
+          textColor: textColor,
           contentPadding: contentPadding,
-          enabled: enabled ?? true,
+          enabled: enabled!,
           onTap: tap ?? onTap,
           onLongPress: longPress ?? onLongPress,
-          selected: selected ?? false,
+          onFocusChange: onFocusChange,
+          mouseCursor: mouseCursor,
+          selected: selected!,
           focusColor: focusColor,
           hoverColor: hoverColor,
+          splashColor: splashColor,
           focusNode: focusNode,
-          autofocus: autofocus ?? false,
+          autofocus: autofocus!,
           tileColor: tileColor,
           selectedTileColor: selectedTileColor,
+          enableFeedback: enableFeedback,
+          horizontalTitleGap: horizontalTitleGap,
+          minVerticalPadding: minVerticalPadding,
+          minLeadingWidth: minLeadingWidth,
         );
 
   ///
@@ -1152,13 +1389,27 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
         onChanged: toggle as void Function(bool?)? ??
             onToggle as void Function(bool?)?,
         activeColor: activeColor,
+        checkColor: checkColor,
+        enabled: enabled,
+        tileColor: tileColor,
         title: title ?? onTitle(),
         subtitle: subtitle ?? onSubtitle(),
-        isThreeLine: isThreeLine ?? false,
+        isThreeLine: isThreeLine!,
         dense: dense,
         secondary: secondary ?? onSecondary(),
         selected: selected ?? false,
         controlAffinity: controlAffinity!,
+        autofocus: autofocus!,
+        contentPadding: contentPadding,
+        tristate: tristate!,
+        shape: shape,
+        checkboxShape: checkboxShape,
+        selectedTileColor: selectedTileColor,
+        side: side,
+        visualDensity: visualDensity,
+        focusNode: focusNode,
+        onFocusChange: onFocusChange,
+        enableFeedback: enableFeedback,
       );
 
   ///
@@ -1195,6 +1446,9 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
         key: Key('CircleAvatar$_key'),
         backgroundColor: backgroundColor,
         backgroundImage: backgroundImage,
+        foregroundImage: foregroundImage,
+        onBackgroundImageError: onBackgroundImageError,
+        onForegroundImageError: onForegroundImageError,
         foregroundColor: foregroundColor,
         radius: radius,
         minRadius: minRadius,
@@ -1226,6 +1480,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
         background: background ?? onBackground(),
         secondaryBackground: secondaryBackground ?? onSecondaryBackground(),
         onResize: resize ?? onResize,
+        onUpdate: onUpdate,
         onDismissed: (DismissDirection direction) =>
             dismissed == null ? onDismissed(direction) : dismissed!(direction),
         direction: direction!,
@@ -1233,6 +1488,8 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
         dismissThresholds: dismissThresholds!,
         movementDuration: movementDuration!,
         crossAxisEndOffset: crossAxisEndOffset!,
+        dragStartBehavior: dragStartBehavior!,
+        behavior: behavior!,
         child: child ?? onChild(),
       );
 
@@ -1305,7 +1562,19 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
         onChanged: toggle as void Function(bool?)? ??
             onToggle as void Function(bool?)?,
         activeColor: activeColor,
+        fillColor: fillColor,
+        checkColor: checkColor,
+        focusColor: focusColor,
+        hoverColor: hoverColor,
+        overlayColor: overlayColor,
+        splashRadius: splashRadius,
         materialTapTargetSize: materialTapTargetSize,
+        visualDensity: visualDensity,
+        focusNode: focusNode,
+        autofocus: autofocus!,
+        shape: outlineShape,
+        side: side,
+        isError: isError!,
       );
 
   ///
@@ -1676,9 +1945,11 @@ mixin StateGetter {
   }
 
   /// Notify the framework of a rebuild in the next scheduled frame
+  @Deprecated('Keep it Flutter. Use setState() function.')
   bool refresh() => setState(() {});
 
   /// Notify the framework of a rebuild in the next scheduled frame
+  @Deprecated('Keep it Flutter. Use setState() function.')
   bool rebuild() => refresh();
 }
 

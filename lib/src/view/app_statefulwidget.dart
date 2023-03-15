@@ -50,16 +50,14 @@ abstract class AppStatefulWidget extends StatefulWidget {
     Key? key,
     this.loadingScreen,
     this.circularProgressIndicator = true,
+    // ignore: avoid_unused_constructor_parameters
     FlutterExceptionHandler? errorHandler,
+    // ignore: avoid_unused_constructor_parameters
     ErrorWidgetBuilder? errorScreen,
+    // ignore: avoid_unused_constructor_parameters
     v.ReportErrorHandler? errorReport,
-    bool allowNewHandlers = true,
-  })  : _app = v.App(
-          errorHandler: errorHandler,
-          errorScreen: errorScreen,
-          errorReport: errorReport,
-          allowNewHandlers: allowNewHandlers,
-        ),
+    bool? allowNewHandlers = true,
+  })  : _app = v.App(allowNewHandlers: allowNewHandlers),
         super(key: key ?? GlobalKey<_StateApp>()) {
     // defer displaying anything while starting up
     if (circularProgressIndicator == null || !circularProgressIndicator!) {
@@ -238,17 +236,15 @@ class _StateApp extends State<AppStatefulWidget> {
         context: ErrorDescription('While getting ready in FutureBuilder Async'),
       );
 
-      var handled = false;
-
       if (_appState != null) {
         // May have its own error handler for Asynchronous operations.
-        handled = _appState!.onAsyncError(details);
+        // So to possibly 'clear up' before falling out.
+        _appState!.onAsyncError(details);
       }
 
-      if (!handled) {
-        // Have the framework handle the asynchronous error.
-        widget._app.onAsyncError(snapshot);
-      }
+      // Have the framework handle the asynchronous error.
+      widget._app.onAsyncError(snapshot);
+
       _widget = v.App.errorHandler!.displayError(details);
       //
     } else if (snapshot.connectionState == ConnectionState.done &&
