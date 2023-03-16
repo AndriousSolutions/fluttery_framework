@@ -636,10 +636,10 @@ packages:
     dependency: "direct main"
     description:
       name: state_extended
-      sha256: "301d9d2ee1f7a112ce7c99671238f5a100a6abbd6af23964d6729b30ec24be3b"
+      sha256: "3d20629255f695c913b42d045951d3323e5928f962d283754014a903f8d8c579"
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.0"
+    version: "2.7.0"
   stream_channel:
     dependency: transitive
     description:
@@ -704,14 +704,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
-  unique_identifier:
-    dependency: "direct main"
-    description:
-      name: unique_identifier
-      sha256: "3a2ecf55177017ba9b213cac5978785fde15b41cac40eb4efefc1a31f3aa41de"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.0"
   universal_html:
     dependency: "direct main"
     description:

@@ -1,5 +1,5 @@
 
-## 2.0.0+2
+## 2.0.0+3
 March 15, 2023
 - Widget buildChild(BuildContext context) { renamed  Widget buildIn(BuildContext context) {
 - field_widgets.dart updated to some 40+ more fields in Flutter
@@ -13,6 +13,7 @@ March 15, 2023
 - class AppState now has 'inline' error functions
 - If a widget fails to display, call the latest SateX object's error routine
 - rebuildLastState(); and refreshLastState() are deprecated
+- Removed the incompatible package: unique_identifier: ^0.3.0
 
 ## 1.9.0
 February 04, 2023

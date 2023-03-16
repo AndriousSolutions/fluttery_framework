@@ -23,12 +23,12 @@
 
 import 'package:device_info_plus/device_info_plus.dart';
 
-/// Gets the ANDROID_ID for android and identifierForVendor for iOS platforms.
-import 'package:unique_identifier/unique_identifier.dart';
+/// Commented out to make it Linux and Windows compatible
+// /// Gets the ANDROID_ID for android and identifierForVendor for iOS platforms.
+// /// Returns an empty string for any other platform
+// import 'package:unique_identifier/unique_identifier.dart'
+//     if (dart.library.html) 'package:fluttery_framework/src/controller/unique_identifier.dart';
 
-import 'package:universal_platform/universal_platform.dart';
-
-// ignore: avoid_classes_with_only_static_members
 /// Supplies the devices information.
 class DeviceInfo {
   static bool _init = false;
@@ -44,10 +44,7 @@ class DeviceInfo {
 
     _init = true;
 
-    if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
-      // Supply the device's unique identifier.
-      _deviceId = await UniqueIdentifier.serial;
-    }
+    // _deviceId = await UniqueIdentifier.serial;
 
     final info = await DeviceInfoPlugin().deviceInfo;
 
@@ -61,54 +58,6 @@ class DeviceInfo {
   /// The unique identifier of the device
   static String get deviceId => _deviceId ?? '';
 
-// // ignore: avoid_classes_with_only_static_members
-// /// Supplies the devices information.
-// class DeviceInfo {
-//   static bool _init = false;
-//   static late Map<String, dynamic> _deviceParameters = {};
-// //  static Map<String, dynamic> _applicationParameters = Map();
-//
-//   /// Collect all the Device's information.
-//   static Future<Map<String, dynamic>> initAsync() async {
-//     //
-//     if (_init) {
-//       return _deviceParameters;
-//     }
-//
-//     _init = true;
-//
-//     if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
-//       // Supply the device's unique identifier.
-//       _deviceId = await UniqueIdentifier.serial;
-//     }
-//
-//     if (UniversalPlatform.isAndroid) {
-//       final info = await DeviceInfoPlugin().androidInfo;
-//       _loadAndroidParameters(info);
-//     } else if (UniversalPlatform.isIOS) {
-//       final info = await DeviceInfoPlugin().iosInfo;
-//       _loadiOSParameters(info);
-//     } else if (UniversalPlatform.isWeb) {
-//       final info = await DeviceInfoPlugin().webBrowserInfo;
-//       _loadBrowserParameters(info);
-//     } else if (UniversalPlatform.isWindows) {
-//       final info = await DeviceInfoPlugin().windowsInfo;
-//       _loadWindowsParameters(info);
-//     } else if (UniversalPlatform.isFuchsia) {
-//     } else if (UniversalPlatform.isLinux) {
-//       final info = await DeviceInfoPlugin().linuxInfo;
-//       _loadLinuxParameters(info);
-//     } else if (UniversalPlatform.isMacOS) {
-//       final info = await DeviceInfoPlugin().macOsInfo;
-//       _loadMacOsParameters(info);
-//     }
-//     return _deviceParameters;
-//   }
-//
-//   /// The unique identifier of the device
-//   static String get deviceId => _deviceId ?? '';
-//   static String? _deviceId;
-//
   // Android
 
   /// The name of the underlying board, like "goldfish".
@@ -271,202 +220,4 @@ class DeviceInfo {
   /// Hardware type (e.g. 'iPhone7,1' for iPhone 6 Plus).
   @Deprecated("Use nullable DeviceInfo.data['utsnameMachine'] instead.")
   static String get utsnameMachine => _deviceParameters['utsnameMachine'] ?? '';
-//
-//   static void _loadAndroidParameters(AndroidDeviceInfo info) {
-//     _deviceParameters =  info.data;
-//     // The base OS build the product is based on.
-//     _deviceParameters['baseOS'] = info.version.baseOS;
-//     // The current development codename
-//     _deviceParameters['codename'] = info.version.codename;
-//     // The internal value used by the underlying source control
-//     _deviceParameters['incremental'] = info.version.incremental;
-//     // The developer preview revision of a pre-release SDK
-//     _deviceParameters['previewSdkInt'] = info.version.previewSdkInt;
-//     // The user-visible version string.
-//     _deviceParameters['release'] = info.version.release;
-//     // The user-visible SDK version of the framework.
-//     _deviceParameters['sdkInt'] = info.version.sdkInt;
-//     // The user-visible security patch level.
-//     _deviceParameters['securityPatch'] = info.version.securityPatch;
-//     // Either a changelist number, or a label like "M4-rc20".
-//     _deviceParameters['id'] = info.id;
-//     // _deviceParameters['androidId'] = androidDeviceInfo.androidId;
-//     _deviceParameters['board'] = info.board;
-//     _deviceParameters['bootloader'] = info.bootloader;
-//     _deviceParameters['brand'] = info.brand;
-//     _deviceParameters['device'] = info.device;
-//     _deviceParameters['display'] = info.display;
-//     _deviceParameters['fingerprint'] = info.fingerprint;
-//     _deviceParameters['hardware'] = info.hardware;
-//     _deviceParameters['host'] = info.host;
-//     _deviceParameters['isPsychicalDevice'] = info.isPhysicalDevice;
-//     _deviceParameters['manufacturer'] = info.manufacturer;
-//     _deviceParameters['model'] = info.model;
-//     _deviceParameters['product'] = info.product;
-//     _deviceParameters['supported32BitAbis'] = info.supported32BitAbis;
-//     _deviceParameters['supported64BitAbis'] = info.supported64BitAbis;
-//     _deviceParameters['supportedAbis'] = info.supportedAbis;
-//     _deviceParameters['tags'] = info.tags;
-//     _deviceParameters['type'] = info.type;
-//     _deviceParameters['versionBaseOs'] = info.version.baseOS;
-//     _deviceParameters['versionCodename'] = info.version.codename;
-//     _deviceParameters['versionIncremental'] = info.version.incremental;
-//     _deviceParameters['versionPreviewSdk'] = info.version.previewSdkInt;
-//     _deviceParameters['versionRelease'] = info.version.release;
-//     _deviceParameters['versionSdk'] = info.version.sdkInt;
-//     _deviceParameters['versionSecurityPatch'] = info.version.securityPatch;
-//   }
-//
-//   static void _loadiOSParameters(IosDeviceInfo info) {
-//     _deviceParameters['name'] = info.name;
-//     _deviceParameters['systemName'] = info.systemName;
-//     _deviceParameters['systemVersion'] = info.systemVersion;
-//     _deviceParameters['model'] = info.model;
-//     _deviceParameters['localizedModel'] = info.localizedModel;
-//     _deviceParameters['identifierForVendor'] = info.identifierForVendor;
-//     _deviceParameters['isPsychicalDevice'] = info.isPhysicalDevice;
-//     _deviceParameters['utsname'] = info.utsname;
-//
-//     _deviceParameters['utsnameSysname'] = info.utsname.sysname;
-//     _deviceParameters['utsnameNodename'] = info.utsname.nodename;
-//     _deviceParameters['utsnameRelease'] = info.utsname.release;
-//     _deviceParameters['utsnameVersion'] = info.utsname.version;
-//     _deviceParameters['utsnameMachine'] = info.utsname.machine;
-//   }
-//
-//   static void _loadBrowserParameters(WebBrowserInfo info) {
-//     // the name of the current browser.
-//     _deviceParameters['name'] = info.browserName.name;
-//     // the internal "code" name of the current browser.
-//     _deviceParameters['appCodeName'] = info.appCodeName;
-//     // a DOMString with the official name of the browser.
-//     _deviceParameters['appName'] = info.appName;
-//     // the version of the browser as a DOMString.
-//     _deviceParameters['appVersion'] = info.appVersion;
-//     // the amount of device memory in gigabytes.
-//     _deviceParameters['deviceMemory'] = info.deviceMemory;
-//     // the number of logical processor cores available.
-//     _deviceParameters['hardwareConcurrency'] = info.hardwareConcurrency;
-//     // a DOMString representing the preferred language of the user, usually the language of the browser UI. .
-//     _deviceParameters['language'] = info.language;
-//     // an array of DOMString representing the languages known to the user, by order of preference.
-//     _deviceParameters['languages'] = info.languages;
-//     // the version of the browser as a DOMString.
-//     _deviceParameters['platform'] = info.platform;
-//     // Always returns 'Gecko', on any browser.
-//     _deviceParameters['product'] = info.product;
-//     // the build number of the current browser
-//     _deviceParameters['productSub'] = info.productSub;
-//     // the build number of the current browser
-//     _deviceParameters['userAgent'] = info.userAgent;
-//     // the vendor name of the current browser
-//     _deviceParameters['vendor'] = info.vendor;
-//     // Returns the vendor version number
-//     _deviceParameters['vendorSub'] = info.vendorSub;
-//     // the maximum number of simultaneous touch contact points are supported by the current device.
-//     _deviceParameters['maxTouchPoints'] = info.maxTouchPoints;
-//     // the number of logical processor cores available.
-//     _deviceParameters['hardwareConcurrency'] = info.hardwareConcurrency;
-//   }
-//
-//   static void _loadWindowsParameters(WindowsDeviceInfo info) {
-//     // The computer's fully-qualified DNS name, where available.
-//     _deviceParameters['computerName'] = info.computerName;
-//     // Number of CPU cores on the local machine
-//     _deviceParameters['numberOfCores'] = info.numberOfCores;
-//     // The physically installed memory in the computer.
-//     _deviceParameters['systemMemoryInMegabytes'] = info.systemMemoryInMegabytes;
-//     // userName
-//     _deviceParameters['userName'] = info.userName;
-//     // The major version number of the operating system.
-//     _deviceParameters['majorVersion'] = info.majorVersion;
-//     // The minor version number of the operating system.
-//     _deviceParameters['minorVersion'] = info.minorVersion;
-//     // The build number of the operating system.
-//     _deviceParameters['buildNumber'] = info.buildNumber;
-//     // The operating system platform.
-//     _deviceParameters['platformId'] = info.platformId;
-//     // The service-pack version string.
-//     _deviceParameters['csdVersion'] = info.csdVersion;
-//     // The major version number of the latest service pack installed on the system.
-//     _deviceParameters['servicePackMajor'] = info.servicePackMajor;
-//     // The minor version number of the latest service pack installed on the system.
-//     _deviceParameters['servicePackMinor'] = info.servicePackMinor;
-//     // The product suites available on the system.
-//     _deviceParameters['suitMask'] = info.suitMask;
-//     // The product type. This member contains additional information about the system.
-//     _deviceParameters['productType'] = info.productType;
-//     // Reserved for future use.
-//     _deviceParameters['reserved'] = info.reserved;
-//     // Value of `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\BuildLab` registry key.
-//     _deviceParameters['buildLab'] = info.buildLab;
-//     // Value of `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\BuildLabEx` registry key.
-//     _deviceParameters['buildLabEx'] = info.buildLabEx;
-//     // Value of `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\DigitalProductId` registry key.
-//     _deviceParameters['digitalProductId'] = info.digitalProductId;
-//     // Value of `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\DisplayVersion` registry key.
-//     _deviceParameters['displayVersion'] = info.displayVersion;
-//     // Value of `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\EditionID` registry key.
-//     _deviceParameters['editionId'] = info.editionId;
-//     // Value of `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\InstallDate` registry key.
-//     _deviceParameters['installDate'] = info.installDate;
-//     // Displayed as "Product ID" in Windows Settings.
-//     _deviceParameters['productId'] = info.productId;
-//     // Value of `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProductName` registry key.
-//     _deviceParameters['productName'] = info.productName;
-//     // Value of `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\RegisteredOwner` registry key.
-//     _deviceParameters['registeredOwner'] = info.registeredOwner;
-//     // Value of `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ReleaseId` registry key.
-//     _deviceParameters['releaseId'] = info.releaseId;
-//     // Displayed as "Device ID" in Windows Settings.
-//     _deviceParameters['deviceId'] = info.deviceId;
-//   }
-//
-//   static void _loadLinuxParameters(LinuxDeviceInfo info) {
-//     // A string identifying the operating system, without a version component,
-//     _deviceParameters['name'] = info.name;
-//     // A string identifying the operating system version, excluding any OS name
-//     _deviceParameters['version'] = info.version;
-//     // A lower-case string identifying the operating system,
-//     _deviceParameters['id'] = info.id;
-//     // A space-separated list of operating system identifiers
-//     _deviceParameters['idLike'] = info.idLike;
-//     // A lower-case string identifying the operating system release code name
-//     _deviceParameters['versionCodename'] = info.versionCodename;
-//     // A lower-case string identifying the operating system version
-//     _deviceParameters['versionId'] = info.versionId;
-//     // A pretty operating system name in a format suitable for presentation
-//     _deviceParameters['prettyName'] = info.prettyName;
-//     // A string uniquely identifying the system image used
-//     _deviceParameters['buildId'] = info.buildId;
-//     // A string identifying a specific variant or edition of the operating system
-//     _deviceParameters['variant'] = info.variant;
-//     // A lower-case string identifying a specific variant of the operating system.
-//     _deviceParameters['variantId'] = info.variantId;
-//     // A unique machine ID of the local system that is set during installation
-//     _deviceParameters['machineId'] = info.machineId;
-//   }
-//
-//   static void _loadMacOsParameters(MacOsDeviceInfo info) {
-//     // Name given to the local machine.
-//     _deviceParameters['computerName'] = info.computerName;
-//     // Operating system type
-//     _deviceParameters['hostName'] = info.hostName;
-//     // Machine cpu architecture
-//     _deviceParameters['arch'] = info.arch;
-//     // Device model
-//     _deviceParameters['model'] = info.model;
-//     // Machine Kernel version.
-//     _deviceParameters['kernelVersion'] = info.kernelVersion;
-//     // Operating system release number
-//     _deviceParameters['osRelease'] = info.osRelease;
-//     // Number of active CPUs
-//     _deviceParameters['activeCPUs'] = info.activeCPUs;
-//     // Machine's memory size
-//     _deviceParameters['memorySize'] = info.memorySize;
-//     // Device CPU Frequency
-//     _deviceParameters['cpuFrequency'] = info.cpuFrequency;
-//     // Device GUID
-//     _deviceParameters['systemGUID'] = info.systemGUID;
-//   }
 }
