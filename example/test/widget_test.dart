@@ -22,10 +22,10 @@ void testMyApp() {
   testWidgets('testing example app', (WidgetTester tester) async {
     //
 
+    await tester.pumpWidget(TemplateApp());
+
     /// Allows for SharedPreferences to be ready for testing.
     SharedPreferences.setMockInitialValues({});
-
-    await tester.pumpWidget(TemplateApp());
 
     /// Flutter won’t automatically rebuild your widget in the test environment.
     /// Use pump() or pumpAndSettle() to ask Flutter to rebuild the widget.

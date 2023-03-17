@@ -1,5 +1,5 @@
 
-## 2.1.0+1
+## 2.1.0+2
 March 16, 2023
 - All source code is now under 2-clause BSD License.
 - Conditional imports to make this Web compatible using fake_classes_for_web.dart
