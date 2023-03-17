@@ -1,6 +1,6 @@
-// Copyright 2019 Andrious Solutions Ltd. All rights reserved.
-// Use of this source code is governed by a Apache License, Version 2.0.
-// The main directory contains that LICENSE file.
+/// Copyright 2019 Andrious Solutions Ltd. All rights reserved.
+/// Use of this source code is governed by a 2-clause BSD License.
+/// The main directory contains that LICENSE file.
 
 export 'package:fluttery_framework/src/view/uxutils/src/view/simple_bottom_appbar.dart';
 

@@ -1,6 +1,6 @@
-// Copyright 2022 Andrious Solutions Ltd. All rights reserved.
-// Use of this source code is governed the Apache License, Version 2.0
-// (the "License") that can be found in the LICENSE file.
+/// Copyright 2022 Andrious Solutions Ltd. All rights reserved.
+/// Use of this source code is governed by a 2-clause BSD License.
+/// (the "License") that can be found in the LICENSE file.
 
 import 'package:flutter/gestures.dart' show DragStartBehavior;
 

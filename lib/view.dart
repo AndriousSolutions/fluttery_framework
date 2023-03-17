@@ -1,17 +1,6 @@
-///
-/// Copyright (C) 2018 Andrious Solutions
-///
-/// Licensed under the Apache License, Version 2.0 (the "License");
-/// you may not use this file except in compliance with the License.
-/// You may obtain a copy of the License at
-///
-///    http://www.apache.org/licenses/LICENSE-2.0
-///
-/// Unless required by applicable law or agreed to in writing, software
-/// distributed under the License is distributed on an "AS IS" BASIS,
-/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-/// See the License for the specific language governing permissions and
-/// limitations under the License.
+/// Copyright 2018 Andrious Solutions Ltd. All rights reserved.
+/// Use of this source code is governed by a 2-clause BSD License.
+/// The main directory contains that LICENSE file.
 ///
 ///          Created  25 Dec 2018
 ///
@@ -24,9 +13,12 @@ export 'package:flutter/material.dart' hide runApp;
 export 'package:flutter/cupertino.dart' hide RefreshCallback, runApp;
 
 /// Supply the custom runApp function
-export 'package:fluttery_framework/src/conditional_export.dart'
+// export 'package:fluttery_framework/src/conditional_export.dart'
+//     if (dart.library.html) 'package:fluttery_framework/src/view/platforms/run_webapp.dart'
+//     if (dart.library.io) 'package:fluttery_framework/src/view/platforms/run_app.dart'
+//     show runApp;
+export 'package:fluttery_framework/src/view/platforms/run_app.dart'
     if (dart.library.html) 'package:fluttery_framework/src/view/platforms/run_webapp.dart'
-    if (dart.library.io) 'package:fluttery_framework/src/view/platforms/run_app.dart'
     show runApp;
 
 /// Replace 'dart:io' for Web applications
@@ -68,9 +60,6 @@ export 'package:flutter_localizations/flutter_localizations.dart'
         GlobalCupertinoLocalizations,
         GlobalMaterialLocalizations,
         GlobalWidgetsLocalizations;
-
-/// TimeZone
-export 'package:fluttery_framework/src/view/utils/timezone.dart';
 
 /// InheritedWidget Widget
 export 'package:fluttery_framework/src/view/utils/inherited_state.dart'

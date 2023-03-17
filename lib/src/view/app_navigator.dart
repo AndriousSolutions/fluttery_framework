@@ -1,6 +1,6 @@
-// Copyright 2021 Andrious Solutions Ltd. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/// Copyright 2021 Andrious Solutions Ltd. All rights reserved.
+/// Use of this source code is governed by a 2-clause BSD License.
+/// found in the LICENSE file.
 
 //import 'package:andrious/src/view.dart';
 import 'package:flutter/material.dart';

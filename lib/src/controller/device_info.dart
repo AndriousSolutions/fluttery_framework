@@ -1,19 +1,8 @@
-///
-/// Copyright (C) 2019 Andrious Solutions c/o Jakub Homlala
-///
-/// https://github.com/Andrious/catcher/blob/de2e19d0be34b35382c29903f546d4119607bd1c/lib/core/catcher.dart#L121
-///
-/// Licensed under the Apache License, Version 2.0 (the "License");
-/// you may not use this file except in compliance with the License.
-/// You may obtain a copy of the License at
-///
-///    http://www.apache.org/licenses/LICENSE-2.0
-///
-/// Unless required by applicable law or agreed to in writing, software
-/// distributed under the License is distributed on an "AS IS" BASIS,
-/// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-/// See the License for the specific language governing permissions and
-/// limitations under the License.
+// ignore_for_file: avoid_classes_with_only_static_members
+
+/// Copyright 2019 Andrious Solutions Ltd. All rights reserved.
+/// Use of this source code is governed by a 2-clause BSD License.
+/// The main directory contains that LICENSE file.
 ///
 ///          Created  11 Feb 2019
 ///
