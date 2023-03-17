@@ -1,9 +1,10 @@
 
-## 2.1.0
+## 2.1.0+1
 March 16, 2023
 - All source code is now under 2-clause BSD License.
 - Conditional imports to make this Web compatible using fake_classes_for_web.dart
-- Removed timezone.dart to make this Windows compatible.
+- Removed timezone.dart to make this Windows compatible. 
+- SharedPreferences.setMockInitialValues({}); in test directory to ready plugin.
 
 ## 2.0.0+3
 March 15, 2023

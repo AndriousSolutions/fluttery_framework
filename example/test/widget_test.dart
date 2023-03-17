@@ -19,8 +19,12 @@ void testMyApp() {
   /// Define a test. The TestWidgets function also provides a WidgetTester
   /// to work with. The WidgetTester allows you to build and interact
   /// with widgets in the test environment.
-  testWidgets('app_template testing', (WidgetTester tester) async {
+  testWidgets('testing example app', (WidgetTester tester) async {
     //
+
+    /// Allows for SharedPreferences to be ready for testing.
+    SharedPreferences.setMockInitialValues({});
+
     await tester.pumpWidget(TemplateApp());
 
     /// Flutter won’t automatically rebuild your widget in the test environment.
