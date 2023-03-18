@@ -333,7 +333,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
 
   /// You need to be able access the widget.
   @override
-  // ignore: avoid_as
   T get widget => parentState?.widget as T;
 
   /// Used to complete asynchronous operations

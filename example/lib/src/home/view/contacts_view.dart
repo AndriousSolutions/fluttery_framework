@@ -33,7 +33,7 @@ class _ContactListState extends StateX<ContactsList> {
   late TemplateController appCon;
 
   @override
-  Widget build(BuildContext context) =>
+  Widget buildF(BuildContext context) =>
       App.useMaterial ? _buildAndroid(this) : _buildiOS(this);
 }
 

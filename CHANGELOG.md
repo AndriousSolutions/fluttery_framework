@@ -1,4 +1,10 @@
 
+## 2.2.0
+March 17, 2023
+- App.inWidgetsFlutterBinding  // Indicating Flutter framework binding with WidgetsFlutterBinding
+- App.inFlutterTest            // Indicating if running under a 'Flutter Test' environment
+- if (!v.App.inFlutterTest) {  // Prevents MethodChannel() calls in a test environment.
+
 ## 2.1.0+2
 March 16, 2023
 - All source code is now under 2-clause BSD License.

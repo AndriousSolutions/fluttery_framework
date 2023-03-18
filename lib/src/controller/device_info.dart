@@ -10,7 +10,8 @@
 //import 'dart:io' show Platform;
 // Replace 'dart:io' for Web applications
 
-import 'package:device_info_plus/device_info_plus.dart';
+import 'package:device_info_plus/device_info_plus.dart'
+    if (dart.library.html) 'package:device_info_plus/device_info_plus.dart';
 
 /// Commented out to make it Linux and Windows compatible
 // /// Gets the ANDROID_ID for android and identifierForVendor for iOS platforms.

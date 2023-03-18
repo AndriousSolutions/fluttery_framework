@@ -20,7 +20,7 @@ class TemplateView extends AppState {
   TemplateView()
       : super(
           controller: TemplateController(),
-          controllers: [ContactsController()],
+          controllers: [CounterController()],
           inTitle: () => 'Demo App'.tr,
           debugShowCheckedModeBanner: false,
           switchUI: Prefs.getBool('switchUI'),

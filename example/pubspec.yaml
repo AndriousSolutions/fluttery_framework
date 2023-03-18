@@ -37,8 +37,7 @@ dependencies:
     path: ../
 
 dev_dependencies:
-  integration_test:
-    sdk: flutter
+
   flutter_test:
     sdk: flutter
 
@@ -48,6 +47,12 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+
+  integration_test:
+    sdk: flutter
+
+  # https://pub.dev/packages/path_provider
+  path_provider: ^2.0.0
 
   # https://pub.dartlang.org/packages/state_extended
   state_extended: ^2.6.0

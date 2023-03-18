@@ -7,7 +7,7 @@ import 'package:fluttery_framework_example/src/home/model/contacts/contact.dart'
 
 import 'package:fluttery_framework_example/src/home/model/contacts/contacts_db.dart';
 
-class ContactsController extends AppController {
+class ContactsController extends StateXController {
   //
   factory ContactsController([StateX? state]) =>
       _this ??= ContactsController._(state);

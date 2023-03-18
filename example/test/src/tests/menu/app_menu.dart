@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'open_menu.dart';
 
-String _location = '========================== app_menu.dart';
+const _location = '========================== app_menu.dart';
 
 /// Switch the app through the popupmenu
 Future<void> openApplicationMenu(WidgetTester tester) async {

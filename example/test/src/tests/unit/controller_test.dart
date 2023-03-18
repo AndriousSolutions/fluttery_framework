@@ -5,7 +5,7 @@ String _location = '========================== controller_test.dart';
 
 Future<void> testTemplateController(WidgetTester tester) async {
   //ignore: avoid_print
-  print('====================== Unit Testing Controller ');
+  // print('====================== Unit Testing Controller ');
 
   final con = TemplateController();
 
@@ -13,7 +13,7 @@ Future<void> testTemplateController(WidgetTester tester) async {
 
   expect(app, isInstanceOf<String>(), reason: _location);
   //ignore: avoid_print
-  print('con.application: $app $_location');
+  // print('con.application: $app $_location');
 
   con.changeApp('Counter');
 

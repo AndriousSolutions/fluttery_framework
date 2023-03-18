@@ -17,6 +17,12 @@ class TemplateController extends AppController {
 
   final WordPairsController wordPairsTimer;
 
+  /// Store the boolean allowing for errors or not.
+  bool allowErrors = false;
+
+  /// Error right at the start
+  bool errorAtStartup = false;
+
   // Assign to the 'leading' widget on the interface.
   void leading() => changeUI();
 
@@ -61,6 +67,12 @@ class TemplateController extends AppController {
     //
     _appCount = Prefs.getInt('appRun');
 
+    // Possibly running in a test and can't run the Contacts app
+    // There's no sqlite in the test environment
+    if (App.inFlutterTest && _appCount == 2) {
+      _appCount = 0;
+    }
+
     final Key key = UniqueKey();
 
     Widget? widget;
@@ -92,11 +104,18 @@ class TemplateController extends AppController {
         !_appNames.contains(appName.trim())) {
       //
       _appCount++;
+
       if (_appCount == _appNames.length) {
         _appCount = 0;
       }
     } else {
       _appCount = _appNames.indexOf(appName.trim());
+    }
+
+    // Possibly running in a test and can't run the Contacts app
+    // There's no sqlite in the test environment
+    if (App.inFlutterTest && _appCount == 2) {
+      _appCount = 0;
     }
 
     unawaited(Prefs.setBool('words', _appNames[_appCount] == 'Word'));
@@ -204,13 +223,6 @@ class TemplateController extends AppController {
   /// Cancel the timer
   void cancelTimer() => wordPairsTimer.cancelTimer();
 
-  /// Clear itself
-  @override
-  void dispose() {
-    _this = null;
-    super.dispose();
-  }
-
   /// Supply the app's popupmenu
   /// an immutable menu
   Widget get menu => PopupMenu(
@@ -267,4 +279,237 @@ class TemplateController extends AppController {
           }
         },
       );
+
+  /// **************  Life cycle events ****************
+
+  /// Called to complete any asynchronous operations.
+  @override
+  Future<bool> initAsync() async {
+    final init = await super.initAsync();
+    //
+    if (TemplateController().allowErrors) {
+      throw AssertionError('error thrown in Page1State.initAsync()');
+    }
+    return init;
+  }
+
+  /// The framework calls this method when the [StateX] object removed from widget tree.
+  /// i.e. The screen is closed.
+  @override
+  void deactivate() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: deactivate in $state');
+    }
+  }
+
+  /// Called when this State object was removed from widget tree for some reason
+  /// Undo what was done when [deactivate] was called.
+  @override
+  void activate() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: activate in $state');
+    }
+  }
+
+  /// The framework calls this method when this [StateX] object will never
+  /// build again.
+  /// Note: YOU DON'T KNOW WHEN THIS WILL RUN in the Framework.
+  /// PERFORM ANY TIME-CRITICAL OPERATION IN deactivate() INSTEAD!
+  @override
+  void dispose() {
+    // Clear itself? Would that be advisable?
+    _this = null;
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ now disposed.');
+    }
+    super.dispose();
+  }
+
+  /// The application is not currently visible to the user, not responding to
+  /// user input, and running in the background.
+  @override
+  void pausedLifecycleState() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: pausedLifecycleState in $state');
+    }
+  }
+
+  /// Called when app returns from the background
+  @override
+  void resumedLifecycleState() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: resumedLifecycleState in $state');
+    }
+  }
+
+  /// If a State object is unexpectedly re-created
+  /// You have to 'update' the properties of the new StateX object using the
+  /// old StateX object because it's going to be disposed of.
+  @override
+  void updateNewStateX(oldState) {
+    /// When a State object destroyed and a new one is re-created!
+    /// This new StateX object may need to be updated with the old State object
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: updateNewStateX in $state');
+    }
+  }
+
+  /// The application is in an inactive state and is not receiving user input.
+  @override
+  void inactiveLifecycleState() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: inactiveLifecycleState in $state');
+    }
+  }
+
+  /// Either be in the progress of attaching when the engine is first initializing
+  /// or after the view being destroyed due to a Navigator pop.
+  @override
+  void detachedLifecycleState() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: detachedLifecycleState in $state');
+    }
+  }
+
+  /// Override this method to respond when the [StatefulWidget] is recreated.
+  @override
+  void didUpdateWidget(StatefulWidget oldWidget) {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didUpdateWidget in $state');
+    }
+  }
+
+  /// Called when this [StateX] object is first created immediately after [initState].
+  /// Otherwise called only if this [State] object's Widget
+  /// is a dependency of [InheritedWidget].
+  @override
+  void didChangeDependencies() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangeDependencies in $state');
+    }
+  }
+
+  /// Called whenever the application is reassembled during debugging, for
+  /// example during hot reload.
+  @override
+  void reassemble() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: reassemble in $state');
+    }
+  }
+
+  /// Called when the system tells the app to pop the current route.
+  /// For example, on Android, this is called when the user presses
+  /// the back button.
+  @override
+  Future<bool> didPopRoute() async {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didPopRoute in $state');
+    }
+    return super.didPopRoute();
+  }
+
+  /// Called when the host tells the app to push a new route onto the
+  /// navigator.
+  @override
+  Future<bool> didPushRoute(String route) async {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didPushRoute in $state');
+    }
+    return super.didPushRoute(route);
+  }
+
+  /// Called when the host tells the application to push a new
+  /// [RouteInformation] and a restoration state onto the router.
+  @override
+  Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didPushRouteInformation in $state');
+    }
+    return super.didPushRouteInformation(routeInformation);
+  }
+
+  /// Called when the application's dimensions change. For example,
+  /// when a phone is rotated.
+  @override
+  void didChangeMetrics() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangeMetrics in $state');
+    }
+  }
+
+  /// Called when the platform's text scale factor changes.
+  @override
+  void didChangeTextScaleFactor() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangeTextScaleFactor in $state');
+    }
+  }
+
+  /// Brightness changed.
+  @override
+  void didChangePlatformBrightness() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangePlatformBrightness in $state');
+    }
+  }
+
+  /// Called when the system tells the app that the user's locale has changed.
+  @override
+  void didChangeLocales(List<Locale>? locales) {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangeLocale in $state');
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    /// Passing these possible values:
+    /// AppLifecycleState.inactive (may be paused at any time)
+    /// AppLifecycleState.paused (may enter the suspending state at any time)
+    /// AppLifecycleState.detach
+    /// AppLifecycleState.resume
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangeAppLifecycleState in ${this.state}');
+    }
+  }
+
+  /// Called when the system is running low on memory.
+  @override
+  void didHaveMemoryPressure() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didHaveMemoryPressure in $state');
+    }
+  }
+
+  /// Called when the system changes the set of active accessibility features.
+  @override
+  void didChangeAccessibilityFeatures() {
+    // inDebugger is deprecated but still tested here. Use inDebugMode instead.
+    if (inDebugger) {
+      //ignore: avoid_print
+      print('############ Event: didChangeAccessibilityFeatures in $state');
+    }
+  }
 }

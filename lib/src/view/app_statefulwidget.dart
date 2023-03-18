@@ -75,6 +75,11 @@ abstract class AppStatefulWidget extends StatefulWidget {
 /// This State object sets up the App to run.
 class _StateApp extends State<AppStatefulWidget> {
   //
+  _StateApp() {
+    // Best to determine if binding with the Flutter engine or not here and now.
+    // May be in a test environment instead and that can be determined here.
+    v.App.inWidgetsFlutterBinding;
+  }
   v.AppState? _appState;
 
   @override
@@ -116,8 +121,10 @@ class _StateApp extends State<AppStatefulWidget> {
       /// Initialize System Preferences
       await Prefs.init();
 
-      /// Collect installation & connectivity information
-      await _widget._app.initInternal();
+      if (!v.App.inFlutterTest) {
+        /// Collect installation & connectivity information
+        await _widget._app.initInternal();
+      }
 
       /// Set theme using App's menu system if any theme was saved.
       v.App.setThemeData();
@@ -131,10 +138,11 @@ class _StateApp extends State<AppStatefulWidget> {
       // Supply the state object to the App object.
       _widget._app.setAppState(_appState);
 
-      // Collect the device's information but not in certain platforms
-//      if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
-      await v.App.getDeviceInfo();
-//      }
+      // Don't include this while testing.
+      if (!v.App.inFlutterTest) {
+        //
+        await v.App.getDeviceInfo();
+      }
 
       // Perform any asynchronous operations.
       init = await _appState!.initAsync();

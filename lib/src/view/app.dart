@@ -10,8 +10,11 @@ import 'dart:async' show Future, StreamSubscription;
 
 import 'dart:ui' as ui show SingletonFlutterWindow;
 
+import 'package:universal_io/io.dart' show Platform;
+
 // Replace 'dart:io' for Web applications
-import 'package:universal_platform/universal_platform.dart';
+import 'package:universal_platform/universal_platform.dart'
+    show UniversalPlatform;
 
 import 'package:flutter/foundation.dart' show FlutterExceptionHandler, kIsWeb;
 
@@ -45,11 +48,23 @@ class App with ConnectivityListener {
   App._(
     bool allowNewHandlers,
   ) {
+    // Initialize the Error Handler
     _errorHandler = v.AppErrorHandler(newErrorHandlers: allowNewHandlers);
     // Monitor the device's connectivity to the Internet.
     addConnectivityListener(this);
   }
   static App? _this;
+
+  /// Indicating app is running in the Flutter engine and not in
+  /// the `flutter_test` framework with TestWidgetsFlutterBinding for example
+  static bool get inWidgetsFlutterBinding => _inWidgetsFlutterBinding ??=
+      WidgetsBinding.instance is WidgetsFlutterBinding;
+  static bool? _inWidgetsFlutterBinding;
+
+  /// Indicate if running under a 'Flutter Test' environment
+  static bool get inFlutterTest =>
+      _inFlutterTest ??= Platform.environment.containsKey('FLUTTER_TEST');
+  static bool? _inFlutterTest;
 
   /// Returns the current Error Handler.
   static v.AppErrorHandler? get errorHandler => _errorHandler;
@@ -846,7 +861,7 @@ class App with ConnectivityListener {
   static String? _path;
 
   /// Determine the connectivity.
-  static final Connectivity _connectivity = Connectivity();
+  static final _connectivity = Connectivity();
 
   static StreamSubscription<ConnectivityResult>? _connectivitySubscription;
 

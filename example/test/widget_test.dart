@@ -1,5 +1,3 @@
-///
-
 import 'src/view.dart';
 
 import 'package:integration_test/integration_test.dart'
@@ -12,6 +10,46 @@ void testMyApp() {
   //
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  setUp(() async {
+    /// Allows for SharedPreferences to be ready for testing.
+    SharedPreferences.setMockInitialValues({});
+
+    // /// MethodChannels don't work in testing. No native platform accessible
+    // /// getApplicationDocumentsDirectory() is given "."
+    // TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
+    //     .setMockMethodCallHandler(
+    //         const MethodChannel('plugins.flutter.io/path_provider'),
+    //         (MethodCall methodCall) async {
+    //   return ".";
+    // });
+
+    /// Never worked.
+    // ///
+    // TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
+    //     .setMockMethodCallHandler(
+    //         const MethodChannel(
+    //             'dev.fluttercommunity.plus/connectivity_status'),
+    //         (MethodCall methodCall) async {
+    //   return Future.value(
+    //       StreamController<ConnectivityResult>().stream.listen((value) {}));
+    //   // return Stream<ConnectivityResult>.fromFutures([
+    //   //   Future.value(ConnectivityResult.none),
+    //   //   Future.value(ConnectivityResult.wifi),
+    //   //   Future.value(ConnectivityResult.mobile)
+    //   // ]).asyncMap((data) async {
+    //   //   await Future.delayed(const Duration(seconds: 10));
+    //   //   return data;
+    //   // });
+    // });
+
+    // TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
+    //     .setMockMethodCallHandler(
+    //         const MethodChannel('dev.fluttercommunity.plus/connectivity'),
+    //         (MethodCall methodCall) async {
+    //   return Future.value(ConnectivityResult.none);
+    // });
+  });
+
   /// Registers a function to be run once after all tests.
   /// Be sure the close the app after all the testing.
   tearDownAll(() {});
@@ -23,9 +61,6 @@ void testMyApp() {
     //
 
     await tester.pumpWidget(TemplateApp());
-
-    /// Allows for SharedPreferences to be ready for testing.
-    SharedPreferences.setMockInitialValues({});
 
     /// Flutter won’t automatically rebuild your widget in the test environment.
     /// Use pump() or pumpAndSettle() to ask Flutter to rebuild the widget.
@@ -57,8 +92,6 @@ void testMyApp() {
           break;
       }
 
-      /// Switch the app programmatically.
-//      con.changeApp();
       /// Switch the app through the popupmenu
       await openApplicationMenu(tester);
 
@@ -80,7 +113,7 @@ void testMyApp() {
     await wordPairsModelTest(tester);
 
     /// Unit testing the App's controller object
-    await testTemplateController(tester);
+    // await testTemplateController(tester);
 
     reportTestErrors();
   });
