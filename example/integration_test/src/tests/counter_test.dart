@@ -1,5 +1,5 @@
 //
-import '../view.dart';
+import '../_test_imports.dart';
 
 String _location = '========================== counter_test.dart';
 

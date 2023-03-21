@@ -55,6 +55,8 @@ class _RandomWordsAndroid extends StatelessWidget {
 //          appCon.menu,
         ],
       ),
+      // Test the drawer only through the tester.
+      drawer: App.inFlutterTest ? AppDrawer() : null,
       body: ListView.builder(
           padding: const EdgeInsets.all(16),
           itemBuilder: (context, i) {

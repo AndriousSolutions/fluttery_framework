@@ -1,5 +1,5 @@
 //
-import '../../view.dart';
+import '../../_test_imports.dart';
 
 import 'package:english_words/english_words.dart';
 

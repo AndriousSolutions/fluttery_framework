@@ -1,4 +1,9 @@
 
+## 2.3.0
+March 21, 2023
+- Assets class with a factory constructor
+- Extensive tests introduced
+
 ## 2.2.0
 March 17, 2023
 - App.inWidgetsFlutterBinding  // Indicating Flutter framework binding with WidgetsFlutterBinding

@@ -6,8 +6,8 @@ import 'package:fluttery_framework_example/src/model.dart';
 import 'package:fluttery_framework_example/src/view.dart';
 
 /// App
-class TemplateApp extends AppStatefulWidget {
-  TemplateApp({super.key});
+class FlutteryExampleApp extends AppStatefulWidget {
+  FlutteryExampleApp({super.key});
 
   // This is the 'App State object' of the application.
   @override

@@ -1,120 +1,116 @@
-import 'src/view.dart';
+/// Copyright 2022 Andrious Solutions Ltd. All rights reserved.
+/// Use of this source code is governed by a 2-clause BSD License.
+/// The main directory contains that LICENSE file.
+///
+///          Created 18 July, 2022
+///
 
-import 'package:integration_test/integration_test.dart'
-    show IntegrationTestWidgetsFlutterBinding;
+import 'package:flutter/material.dart';
 
-void main() => testMyApp();
+import 'package:flutter_test/flutter_test.dart';
 
-/// Also called in package's own testing file, test/widget_test.dart
-void testMyApp() {
-  //
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+/// Calls the example app's very own test
+import '../integration_test/widget_test.dart';
 
+void main() => testFlutteryFramework();
+
+const _deskTopSize = Size(1920, 1040); // physical pixels
+
+void testFlutteryFramework() {
+  /// Set up anything necessary before testing begins.
+  /// Runs once before ALL tests or groups
+  setUpAll(() async {});
+
+  /// Runs before EACH test or group
   setUp(() async {
-    /// Allows for SharedPreferences to be ready for testing.
-    SharedPreferences.setMockInitialValues({});
+    // Ensure TestWidgetsFlutterBinding is explicitly initialized
+    final TestWidgetsFlutterBinding binding =
+        TestWidgetsFlutterBinding.ensureInitialized();
 
-    // /// MethodChannels don't work in testing. No native platform accessible
-    // /// getApplicationDocumentsDirectory() is given "."
-    // TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
-    //     .setMockMethodCallHandler(
-    //         const MethodChannel('plugins.flutter.io/path_provider'),
-    //         (MethodCall methodCall) async {
-    //   return ".";
-    // });
-
-    /// Never worked.
-    // ///
-    // TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
-    //     .setMockMethodCallHandler(
-    //         const MethodChannel(
-    //             'dev.fluttercommunity.plus/connectivity_status'),
-    //         (MethodCall methodCall) async {
-    //   return Future.value(
-    //       StreamController<ConnectivityResult>().stream.listen((value) {}));
-    //   // return Stream<ConnectivityResult>.fromFutures([
-    //   //   Future.value(ConnectivityResult.none),
-    //   //   Future.value(ConnectivityResult.wifi),
-    //   //   Future.value(ConnectivityResult.mobile)
-    //   // ]).asyncMap((data) async {
-    //   //   await Future.delayed(const Duration(seconds: 10));
-    //   //   return data;
-    //   // });
-    // });
-
-    // TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
-    //     .setMockMethodCallHandler(
-    //         const MethodChannel('dev.fluttercommunity.plus/connectivity'),
-    //         (MethodCall methodCall) async {
-    //   return Future.value(ConnectivityResult.none);
-    // });
+    // (TODO: Tip # 4) Consider configuring your default screen size here.
+    // You can reset it to something else within a test
+    binding.window.physicalSizeTestValue = _deskTopSize;
   });
 
-  /// Registers a function to be run once after all tests.
   /// Be sure the close the app after all the testing.
+  /// Runs once after ALL tests or groups
   tearDownAll(() {});
 
-  /// Define a test. The TestWidgets function also provides a WidgetTester
-  /// to work with. The WidgetTester allows you to build and interact
-  /// with widgets in the test environment.
-  testWidgets('testing example app', (WidgetTester tester) async {
+  /// Runs after EACH test or group
+  tearDown(() async {
+    // Code that clears caches can go here
+  });
+
+  //
+  group('Test Fluttery Framework', () {
     //
+    integrationTestFlutteryFramework();
 
-    await tester.pumpWidget(TemplateApp());
-
-    /// Flutter won’t automatically rebuild your widget in the test environment.
-    /// Use pump() or pumpAndSettle() to ask Flutter to rebuild the widget.
-
-    /// pumpAndSettle() waits for all animations to complete.
-    await tester.pumpAndSettle();
-
-    final con = TemplateController();
-
+    // testAppController();
     //
-    int cnt = 1;
-
-    while (cnt <= 3) {
-      switch (con.application) {
-        case 'Counter':
-
-          /// Counter app testing
-          await counterTest(tester);
-          break;
-        case 'Word Pairs':
-
-          /// Random Word Pairs app
-          await wordsTest(tester);
-          break;
-        case 'Contacts':
-
-          /// Contacts app
-          await contactsTest(tester);
-          break;
-      }
-
-      /// Switch the app through the popupmenu
-      await openApplicationMenu(tester);
-
-      cnt++;
-    }
-
-    /// Open the Locale window
-    await openLocaleMenu(tester);
-
-    /// Open About menu
-    await openAboutMenu(tester);
-
-    /// Switch the Interface
-    await openInterfaceMenu(tester);
-
-    /// Unit testing does not involve integration or widget testing.
-
-    /// WordPairs App Model Unit Testing
-    await wordPairsModelTest(tester);
-
-    /// Unit testing the App's controller object
-    // await testTemplateController(tester);
-
-    reportTestErrors();
+    // testDeviceInfo();
+    //
+    // testWidgets('', (WidgetTester tester) async {
+    //   testGetUtils(tester);
+    // });
+    //
+    // testHandleError();
+    //
+    // //
+    // testWidgets('', (WidgetTester tester) async {
+    //   //
+    //   testFiles(tester);
+    //
+    //   testInstallFile(tester);
+    // });
+    //
+    // //
+    // testWidgets('', (WidgetTester tester) async {
+    //   testAppSettings(tester);
+    //
+    //   testAppErrorHandler(tester);
+    //
+    //   testFieldWidgets(tester);
+    //
+    //   testInheritedStateWidget(tester);
+    //
+    //   testLoadingScreen(tester);
+    //
+    //   testCustomRaisedButton(tester);
+    //
+    //   testSnappingListScrollPhysics(tester);
+    //
+    //   testDialogBoxes(tester);
+    //
+    //   testISOSpinner(tester);
+    //
+    //   testNavBottomBar(tester);
+    //
+    //   testSetOrientationLandscapeOnly(tester);
+    //
+    //   testShowCupertinoDatePicker(tester);
+    //
+    //   testSimpleBottomAppBar(tester);
+    //
+    //   testTabButtons(tester);
+    //
+    //   testVarStr(tester);
+    //
+    //   testForeground(tester);
+    //
+    //   testHyperlink(tester);
+    //
+    //   testWebPageWrapper(tester);
+    //
+    //   testAppView(tester);
+    //
+    //   testAppMenu(tester);
+    //
+    //   testAppRouterDelegate(tester);
+    //
+    //   testAppState(tester);
+    //
+    //   testAppStatefulWidget(tester);
+    // });
   });
 }

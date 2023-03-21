@@ -1,6 +1,6 @@
 # Fluttery Framework
 [![codecov](https://codecov.io/gh/AndriousSolutions/fluttery_framework/branch/master/graph/badge.svg)](https://codecov.io/gh/AndriousSolutions/fluttery_framework)
-[![CI](https://github.com/AndriousSolutions/fluttery_framework/actions/workflows/format_test_release.yml/badge.svg)](https://github.com/AndriousSolutions/fluttery_framework/actions/workflows/format_then_test.yml)
+[![CI](https://github.com/AndriousSolutions/fluttery_framework/actions/workflows/format_test_and_relase.yml/badge.svg)](https://github.com/AndriousSolutions/fluttery_framework/actions/workflows/format_test_and_relase.yml)
 [![Pub.dev](https://img.shields.io/pub/v/fluttery_framework.svg)](https://pub.dev/packages/fluttery_framework)
 [![GitHub stars](https://img.shields.io/github/stars/AndriousSolutions/fluttery_framework.svg?style=social&amp;logo=github)](https://github.com/AndriousSolutions/fluttery_framework/stargazers)
 [![Last Commit](https://img.shields.io/github/last-commit/AndriousSolutions/fluttery_framework)](https://github.com/AndriousSolutions/fluttery_framework/commits/master)
@@ -43,7 +43,7 @@ For more information on version numbers: [The importance of semantic versioning]
 
 ##### The Counter App
 ```dart
-import 'package:fluttery_framework/view.dart';
+import 'package:fluttery_framework/exports_imports.dart';
 
 import 'package:fluttery_framework/controller.dart';
 
@@ -142,7 +142,7 @@ import 'package:english_words/english_words.dart' show generateWordPairs;
 
 import 'package:flutter/material.dart' hide runApp;
 
-import 'package:fluttery_framework/view.dart'
+import 'package:fluttery_framework/exports_imports.dart'
     show AppStatefulWidget, AppState, Colors, runApp, StateX;
 
 import 'package:fluttery_framework/controller.dart' show StateXController;

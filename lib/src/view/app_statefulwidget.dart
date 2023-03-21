@@ -86,14 +86,16 @@ class _StateApp extends State<AppStatefulWidget> {
   void initState() {
     super.initState();
     _appGlobalKey = GlobalKey<v.AppState>();
+    _assets = Assets();
   }
 
   late GlobalKey _appGlobalKey;
+  late Assets _assets;
 
   /// Implement from the abstract v.AppStatefulWidget to create the View!
   @override
   Widget build(BuildContext context) {
-    Assets.init(context);
+    _assets.init(context);
     return FutureBuilder<bool>(
         key: UniqueKey(), // UniqueKey() for hot reload
         future: initAsync(),
@@ -183,8 +185,10 @@ class _StateApp extends State<AppStatefulWidget> {
     if (disposeStatic) {
       //
       Prefs.dispose();
-      // Assets.init(context); called in App.build() -gp
-      Assets.dispose();
+
+      //
+      _assets.dispose();
+
       //
       widget._app.dispose();
     }

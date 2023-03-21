@@ -50,7 +50,8 @@ class AppSettings {
   /// A simple URL link Widget.
   static _LinkTextSpan linkTextSpan(
       {TextStyle? style, String? url, String? text}) {
-    return _LinkTextSpan(style: style, url: url, text: text);
+    return _LinkTextSpan(
+        style: style, url: url ?? 'http://www.google.com', text: text);
   }
 
   /// Show a simple 'About' Screen displaying information about the App.
@@ -160,12 +161,12 @@ class _LinkTextSpan extends TextSpan {
   // manage the recognizer from outside the TextSpan, e.g. in the State of a
   // stateful widget that then hands the recognizer to the TextSpan.
 
-  _LinkTextSpan({TextStyle? style, String? url, String? text})
+  _LinkTextSpan({TextStyle? style, required String url, String? text})
       : super(
             style: style,
             text: text ?? url,
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                launchUrl(Uri.parse(url!));
+                launchUrl(Uri.parse(url));
               });
 }

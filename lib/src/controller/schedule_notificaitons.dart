@@ -27,7 +27,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 // import 'package:fluttery_framework/controller.dart' show HandleError;
-// import 'package:fluttery_framework/view.dart' show App;
+// import 'package:fluttery_framework/exports_imports.dart' show App;
 // import 'package:timezone/timezone.dart';
 //
 // export 'dart:typed_data' show Int64List;

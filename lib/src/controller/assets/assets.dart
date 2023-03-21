@@ -15,8 +15,13 @@ import 'package:flutter/services.dart' show AssetBundle, ByteData;
 
 /// The Assets manager for this custom framework.
 class Assets {
+  /// Singleton pattern
+  factory Assets() => _this ??= Assets._();
+  Assets._();
+  static Assets? _this;
+
   /// Initialize the App's Assets Manager.
-  static Future<bool> init(BuildContext context, {String? dir}) {
+  Future<bool> init(BuildContext context, {String? dir}) {
     if (_assets == null) {
       _assets = DefaultAssetBundle.of(context);
       _dir = dir ?? 'assets';
@@ -28,7 +33,7 @@ class Assets {
   static String? _dir;
 
   /// Clean up after the Assets Manager
-  static void dispose() {
+  void dispose() {
     _assets = null;
   }
 

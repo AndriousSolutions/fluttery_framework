@@ -1006,14 +1006,14 @@ mixin ConnectivityListener {
 class AppDrawer extends StatelessWidget {
   /// Supply the properties to a Material Design [Drawer] Widget.
   AppDrawer({
-    Key? key,
+    super.key,
     this.backgroundColor,
     this.elevation,
     this.shape,
     this.semanticLabel,
     this.header,
     this.items,
-  }) : super(key: key) {
+  }) {
     // Take any defined items.
     if (items != null) {
       _items.addAll(items!);
