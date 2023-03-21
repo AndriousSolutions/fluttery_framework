@@ -56,7 +56,10 @@ jobs:
 
       # Get current datetime in ISO format
       - id: date
-        run: echo "::set-output name=date::$(date -u +'%Y-%m-%d')"
+      #  run: echo "::set-output name=date::$(date -u +'%Y-%m-%d')"
+      #  run: echo "{date}={$(date -u +'%Y-%m-%d')}" >> $GITHUB_OUTPUT  <--or try this one.
+        run: echo "{date}=$(date -u +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
         
       # Create a Release
       - uses: softprops/action-gh-release@v1
