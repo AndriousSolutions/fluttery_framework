@@ -48,9 +48,13 @@ import 'package:flutter/material.dart'
 /// Provides a simple Bottom Bar displayed on the screen.
 class SimpleBottomAppBar extends StatefulWidget {
   /// Optionally supply up to four Bottom Bar buttons to be displayed.
-  const SimpleBottomAppBar(
-      {this.button01, this.button02, this.button03, this.button04, Key? key})
-      : super(key: key);
+  const SimpleBottomAppBar({
+    super.key,
+    this.button01,
+    this.button02,
+    this.button03,
+    this.button04,
+  });
 
   /// The first bottom bar button
   final BarButton? button01;

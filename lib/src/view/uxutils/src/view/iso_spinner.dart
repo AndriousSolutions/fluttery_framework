@@ -10,12 +10,12 @@ import 'package:flutter/gestures.dart' show PointerDeviceKind;
 class ISOSpinner extends StatefulWidget {
   /// Supply the supported Locales and Item Changed Routine.
   const ISOSpinner({
-    Key? key,
+    super.key,
     this.initialItem,
     this.locale,
     required this.supportedLocales,
     required this.onSelectedItemChanged,
-  }) : super(key: key);
+  });
 
   /// The 'current' Locale.
   final Locale? locale;

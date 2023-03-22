@@ -25,6 +25,28 @@ void testAppState(WidgetTester tester) {
 
   use = appState.isMaterial;
 
+  appState.onHome();
+
+  appState.onRouteInformationProvider();
+
+  appState.onBackButtonDispatcher();
+
+  appState.oniOSTheme();
+
+  appState.onLocale();
+
+  appState.onDebugShowMaterialGrid();
+
+  appState.onShowPerformanceOverlay();
+
+  appState.onCheckerboardRasterCacheImages();
+
+  appState.onCheckerboardOffscreenLayers();
+
+  appState.onShowSemanticsDebugger();
+
+  appState.onDebugShowCheckedModeBanner();
+
   AppState.homeKey;
 
   appState.app;

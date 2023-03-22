@@ -98,7 +98,7 @@ void testAppView(WidgetTester tester) {
 
   App.catchError(AssertionError('test'));
 
-//  App.scaffold;
+  App.scaffold;
 
   App.screenPhysicalWidth;
 

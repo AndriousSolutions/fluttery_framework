@@ -1,8 +1,9 @@
 
-## 2.3.0
+## 2.3.0+1
 March 21, 2023
 - Assets class with a factory constructor
 - Extensive tests introduced
+- super.key in constructors
 
 ## 2.2.0
 March 17, 2023

@@ -10,4 +10,10 @@ import '../_unit_test_view.dart';
 void testSimpleBottomAppBar(WidgetTester tester) {
   //
 //  test('Test SimpleBottomAppBar', () async {});
+  SimpleBottomAppBar(
+    button01: HomeBarButton(),
+    button02: DeleteBarButton(),
+    button03: EditBarButton(),
+    button04: SearchBarButton(),
+  );
 }

@@ -21,7 +21,5 @@ Future<void> openInterfaceMenu(WidgetTester tester) async {
   await tester.pump();
 
   /// Wait for the transition of the Interface
-  await tester.pumpAndSettle();
-  await tester.pumpAndSettle();
-  await tester.pumpAndSettle();
+  await tester.pumpAndSettle(const Duration(milliseconds: 300));
 }

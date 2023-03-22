@@ -10,4 +10,8 @@ import '../_unit_test_view.dart';
 void testShowCupertinoDatePicker(WidgetTester tester) {
   //
 //  test('Test ShowCupertinoDatePicker', () async {});
+  showCupertinoDatePicker(
+    App.context!,
+    onDateTimeChanged: (DateTime value) {},
+  );
 }

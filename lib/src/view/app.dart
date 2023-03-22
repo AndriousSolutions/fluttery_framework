@@ -800,9 +800,7 @@ class App with ConnectivityListener {
   static BuildContext? get context => _appState?.lastContext;
 
   /// The Scaffold object for this App's View.
-  static ScaffoldState get scaffold => Scaffold.of(context!);
-  // 'maybeOf' only in Beta channel
-//  static ScaffoldState get scaffold => Scaffold.maybeOf(context);
+  static ScaffoldState? get scaffold => Scaffold.maybeOf(context!);
 
   /// The Physical width of the screen
   static double get screenPhysicalWidth {

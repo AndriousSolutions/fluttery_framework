@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 /// A widget that displays a hyperlink
 class Hyperlink extends StatelessWidget {
   /// Must supply a child widget and a url string.
-  const Hyperlink(this.child, this.url, {Key? key}) : super(key: key);
+  const Hyperlink(this.child, this.url, {super.key});
 
   ///
   final Widget? child;

@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 class CustomRaisedButton extends StatelessWidget {
   /// A constructor that takes in Elevated buttons properties.
   const CustomRaisedButton({
-    Key? key,
+    super.key,
     this.loading,
     required this.onPressed,
     this.onLongPress,
@@ -23,7 +23,7 @@ class CustomRaisedButton extends StatelessWidget {
     this.autofocus,
     this.clipBehavior,
     required this.child,
-  }) : super(key: key);
+  });
 
   /// A flag when True will enable the button.
   final bool? loading;

@@ -26,4 +26,17 @@ Future<void> testShowBox(WidgetTester tester) async {
 void testDialogBox(WidgetTester tester) {
   //
 //  test('Test DialogBox', () async {});
+  dialogBox(
+    title: 'This is a test.',
+    button01: OKOption(),
+    button02: CancelOption(),
+    press01: () {},
+    press02: () {},
+    barrierDismissible: true,
+    switchButtons: true,
+  );
+
+  MsgBox(
+    context: App.context!,
+  );
 }

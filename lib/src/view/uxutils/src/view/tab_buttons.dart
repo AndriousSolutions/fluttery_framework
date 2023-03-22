@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 class TabButtons extends StatefulWidget {
   /// Supply the 'general appearance' of the screen's [ListView]
   TabButtons({
-    Key? key,
+    super.key,
     this.foregroundOn = Colors.white,
     this.foregroundOff = Colors.black,
     this.backgroundOn = Colors.blue,
@@ -21,7 +21,7 @@ class TabButtons extends StatefulWidget {
     this.borderRadius = 7,
     this.durationOff = 75,
     this.durationOn = 150,
-  }) : super(key: key);
+  });
 
   /// active button's foreground color
   final Color foregroundOn;
