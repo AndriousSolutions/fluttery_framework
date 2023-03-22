@@ -1,6 +1,6 @@
 # This workflow tests and releases the latest build
 
-name: Format Test Release
+name: build
 
 # Controls when the action will run.
 on:
