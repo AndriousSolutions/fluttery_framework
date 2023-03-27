@@ -55,7 +55,7 @@ dev_dependencies:
   path_provider: ^2.0.0
 
   # https://pub.dartlang.org/packages/state_extended
-  state_extended: ^2.6.0
+  state_extended: ^2.0.0
 #    path: ../../../packages/state_extended
 
 # For information on the generic Dart part of this file, see the

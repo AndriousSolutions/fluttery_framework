@@ -1,8 +1,14 @@
 
+## 2.4.1
+March 26, 2023
+- T get widget => (parentState?.widget ?? super.widget) as T;
+- if (_routerDelegate == null && _routerConfig == null)
+- RouteObserver class for RouteAware objects
+
 ## 2.3.0+1
 March 21, 2023
 - Assets class with a factory constructor
-- Extensive tests introduced
+- More extensive tests introduced
 - super.key in constructors
 
 ## 2.2.0

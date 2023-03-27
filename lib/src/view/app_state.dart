@@ -130,7 +130,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     this.inInheritedMediaQuery,
     this.inError,
     this.inAsyncError,
-  }) : super(controller: controller ?? AppController()) {
+  })  : _stateRouteObserver = StateRouteObserver(),
+        super(controller: controller ?? AppController()) {
     // In case null was explicitly passed in.
     useMaterial ??= false;
     useCupertino ??= false;
@@ -332,8 +333,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   v.App? _app;
 
   /// You need to be able access the widget.
+  // if parentState is null then AppStatefulWidget was likely not used.
   @override
-  T get widget => parentState?.widget as T;
+  T get widget => (parentState?.widget ?? super.widget) as T;
 
   /// Used to complete asynchronous operations
   @override
@@ -416,7 +418,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
       if (cupertinoApp != null) {
         app = cupertinoApp!;
         //
-      } else if (_routerDelegate == null) {
+      } else if (_routerDelegate == null && _routerConfig == null) {
         //
         app = CupertinoApp(
           key: key ?? cupertinoKey,
@@ -425,9 +427,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           initialRoute: initialRoute ?? onInitialRoute(),
           onGenerateRoute: onGenerateRoute ?? onOnGenerateRoute(),
           onUnknownRoute: onUnknownRoute ?? onOnUnknownRoute(),
-          navigatorObservers: navigatorObservers ??
-              onNavigatorObservers() ??
-              const <NavigatorObserver>[],
+          navigatorObservers: _navigatorObservers(),
           builder: builder ?? onBuilder(),
           title: title = onTitle(), // Important to assign an empty string
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
@@ -517,7 +517,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
       if (materialApp != null) {
         app = materialApp!;
         //
-      } else if (_routerDelegate == null) {
+      } else if (_routerDelegate == null && _routerConfig == null) {
+        //
         app = MaterialApp(
           key: key ?? materialKey,
           navigatorKey: navigatorKey ?? onNavigatorKey(),
@@ -527,9 +528,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           initialRoute: initialRoute ?? onInitialRoute(),
           onGenerateRoute: onGenerateRoute ?? onOnGenerateRoute(),
           onUnknownRoute: onUnknownRoute ?? onOnUnknownRoute(),
-          navigatorObservers: navigatorObservers ??
-              onNavigatorObservers() ??
-              const <NavigatorObserver>[],
+          navigatorObservers: _navigatorObservers(),
           builder: builder ?? onBuilder(),
           title: title = onTitle(),
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
@@ -572,6 +571,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
           home: home ?? onHome(),
         );
       } else {
+        //
         app = MaterialApp.router(
           key: key ?? materialKey,
           scaffoldMessengerKey:
@@ -641,6 +641,32 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
 
     return app;
   }
+
+  /// Supply the appropriate List of 'observers' that are called
+  /// when a route is changed in the Navigator.
+  List<NavigatorObserver> _navigatorObservers() {
+    // Supply the StateX objects to observe the route changes
+    final observers = <NavigatorObserver>[_stateRouteObserver.routeObserver];
+    // Observers from parameter?
+    if (navigatorObservers != null) {
+      observers.addAll(navigatorObservers!);
+    }
+    // Any observers from this function?
+    final moreObservers = onNavigatorObservers();
+    if (moreObservers != null && moreObservers.isNotEmpty) {
+      observers.addAll(moreObservers);
+    }
+    return observers;
+  }
+
+  /// State object becomes a route observer.
+  bool subscribe(State state) => _stateRouteObserver.subscribe(state);
+
+  /// No longer a route observer
+  bool unsubscribe(State state) => _stateRouteObserver.unsubscribe(state);
+
+  /// Any and all StateX objects are all 'route' observers.
+  final StateRouteObserver _stateRouteObserver;
 
   CupertinoThemeData? _iosThemeData() {
     // ignore: join_return_with_assignment
@@ -1211,4 +1237,38 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
     with StateXonErrorMixin {
   ///
   StateX([StateXController? _controller]) : super(_controller);
+
+  @override
+  @mustCallSuper
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Subscribe this to be informed about changes to route.
+    _appState?.subscribe(this);
+  }
+
+  @override
+  @mustCallSuper
+  void activate() {
+    super.activate();
+    // Subscribe this to be informed about changes to route.
+    _appState?.subscribe(this);
+  }
+
+  @override
+  @mustCallSuper
+  void deactivate() {
+    super.deactivate();
+    // No longer informed about changes to its route.
+    _appState?.unsubscribe(this);
+  }
+
+  /// Attempt to reference the App's first State object.
+  AppState? get _appState {
+    AppState? appState;
+    final root = rootState;
+    if (root != null && root is AppState) {
+      appState = root;
+    }
+    return appState;
+  }
 }

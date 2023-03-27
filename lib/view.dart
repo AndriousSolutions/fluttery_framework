@@ -54,6 +54,9 @@ export 'package:fluttery_framework/src/view/utils/loading_screen.dart';
 /// Fields
 export 'package:fluttery_framework/src/view/utils/field_widgets.dart';
 
+/// Routing
+export 'package:fluttery_framework/src/view/utils/state_route_observer.dart';
+
 /// Localizations
 export 'package:flutter_localizations/flutter_localizations.dart'
     show

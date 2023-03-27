@@ -4,7 +4,7 @@
 [![Pub.dev](https://img.shields.io/pub/v/fluttery_framework.svg)](https://pub.dev/packages/fluttery_framework)
 [![GitHub stars](https://img.shields.io/github/stars/AndriousSolutions/fluttery_framework.svg?style=social&amp;logo=github)](https://github.com/AndriousSolutions/fluttery_framework/stargazers)
 [![Last Commit](https://img.shields.io/github/last-commit/AndriousSolutions/fluttery_framework)](https://github.com/AndriousSolutions/fluttery_framework/commits/master)
-
+[![Chat](https://img.shields.io/discord/722900883784073290.svg?logo=discord)](https://discord.gg/TyPmeMc)
 ### A Flutter Framework's Framework
 ![Fluttery_Framework](https://user-images.githubusercontent.com/32497443/185770676-89af0669-9040-4dc6-ad5b-412ed9fed5e5.jpg)
 Allows for easier and, dare I say, faster development and better maintainability. No 're-inventing of the wheel' using already built-in capabilities and features offered by Flutter itself.

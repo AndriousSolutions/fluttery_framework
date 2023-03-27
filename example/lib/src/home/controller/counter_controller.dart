@@ -212,6 +212,42 @@ class CounterController extends AppController {
     return super.didPushRouteInformation(routeInformation);
   }
 
+  /// The top route has been popped off, and this route shows up.
+  @override
+  void didPopNext() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didPopNext in $state');
+    }
+  }
+
+  /// Called when this route has been pushed.
+  @override
+  void didPush() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didPush in $state');
+    }
+  }
+
+  /// Called when this route has been popped off.
+  @override
+  void didPop() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didPop in $state');
+    }
+  }
+
+  /// New route has been pushed, and this route is no longer visible.
+  @override
+  void didPushNext() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didPushNext in $state');
+    }
+  }
+
   /// Called when the application's dimensions change. For example,
   /// when a phone is rotated.
   @override

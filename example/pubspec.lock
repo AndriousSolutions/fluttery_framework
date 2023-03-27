@@ -336,7 +336,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.3.0+1"
+    version: "2.4.1"
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter
@@ -652,10 +652,10 @@ packages:
     dependency: "direct dev"
     description:
       name: state_extended
-      sha256: "301d9d2ee1f7a112ce7c99671238f5a100a6abbd6af23964d6729b30ec24be3b"
+      sha256: "903de2d77862ce8517679faeca0154075b5af5ecc1e5b45b4694928c760b57f1"
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.0"
+    version: "2.8.0+1"
   stream_channel:
     dependency: transitive
     description:
