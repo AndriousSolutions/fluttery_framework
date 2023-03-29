@@ -43,6 +43,7 @@ class _RandomWordsAndroid extends StatelessWidget {
     final con = state.con;
 //    final appCon = state.appCon;
     return Scaffold(
+      key: const Key('Scaffold'),
       appBar: AppBar(
         title: Text('Startup Name Generator'.tr),
         actions: [
@@ -56,7 +57,8 @@ class _RandomWordsAndroid extends StatelessWidget {
         ],
       ),
       // Test the drawer only through the tester.
-      drawer: App.inFlutterTest ? AppDrawer() : null,
+//      drawer: App.inFlutterTest ? AppDrawer() : null,
+      drawer: AppDrawer(),
       body: ListView.builder(
           padding: const EdgeInsets.all(16),
           itemBuilder: (context, i) {

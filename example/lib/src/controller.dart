@@ -1,5 +1,5 @@
 // The fluttery framework
-export 'package:fluttery_framework/controller.dart';
+export 'package:fluttery_framework/controller.dart' hide AppDrawer;
 
 // The controller for the app as a whole.
 export 'package:fluttery_framework_example/src/app/controller.dart';

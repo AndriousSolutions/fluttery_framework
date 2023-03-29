@@ -41,6 +41,7 @@ Widget _buildAndroid(_ContactListState state) {
   //
   final con = state.con;
   return Scaffold(
+    key: const Key('Scaffold'),
     appBar: AppBar(
       title: Text(state._title ?? state.widget.title),
       actions: [
@@ -55,19 +56,7 @@ Widget _buildAndroid(_ContactListState state) {
 //        appCon.menu,
       ],
     ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: () async {
-        await Navigator.of(con.state!.context).push(MaterialPageRoute<void>(
-          builder: (_) => const AddContact(),
-        ));
-        //     .then((_) {
-        //   con.refresh();
-        // });
-        /// Either use the 'then' clause or the 'async await' command.
-        con.refresh();
-      },
-      child: const Icon(Icons.add),
-    ),
+    drawer: AppDrawer(),
     body: SafeArea(
       child: con.items == null
           ? const Center(child: CircularProgressIndicator())
@@ -121,6 +110,19 @@ Widget _buildAndroid(_ContactListState state) {
                 );
               },
             ),
+    ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: () async {
+        await Navigator.of(con.state!.context).push(MaterialPageRoute<void>(
+          builder: (_) => const AddContact(),
+        ));
+        //     .then((_) {
+        //   con.refresh();
+        // });
+        /// Either use the 'then' clause or the 'async await' command.
+        con.refresh();
+      },
+      child: const Icon(Icons.add),
     ),
   );
 }

@@ -76,6 +76,10 @@ void integrationTestFlutteryFramework() {
 
           /// Counter app testing
           await counterTest(tester);
+
+          /// Testing its Bottom bar
+          await bottomBarTests(tester);
+
           break;
         case 'Word Pairs':
 
@@ -95,6 +99,9 @@ void integrationTestFlutteryFramework() {
       cnt++;
     }
 
+    /// Test dialog windows
+    await dialogTests(tester);
+
     /// Open the Locale window
     await openLocaleMenu(tester);
 
@@ -103,8 +110,6 @@ void integrationTestFlutteryFramework() {
 
     /// Switch the Interface
     await openInterfaceMenu(tester);
-
-    /// Unit testing does not involve integration or widget testing.
 
     /// WordPairs App Model Unit Testing
     await wordPairsModelTest(tester);

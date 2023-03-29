@@ -1,4 +1,11 @@
 
+## 2.5.0
+March 29, 2023
+- Updated parameters in class AppDrawer
+- Included class AppDrawer in testing
+- Included class SimpleBottomAppBar in testing
+- Included dialog windows from dialog_box.dart in testing
+
 ## 2.4.1
 March 26, 2023
 - T get widget => (parentState?.widget ?? super.widget) as T;

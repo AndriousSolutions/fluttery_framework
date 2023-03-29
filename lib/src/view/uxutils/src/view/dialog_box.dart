@@ -42,11 +42,14 @@ Future<bool> showBox({
   bool? useSafeArea,
   bool? useRootNavigator,
   RouteSettings? routeSettings,
+  Offset? anchorPoint,
+  TextStyle? textStyle,
 }) async {
   button01 ??= OKOption();
 //  button02 ??= CancelOption();
   bool? result;
   if (App.useMaterial) {
+    //
     result = await showDialog<bool>(
       context: context,
       barrierDismissible: barrierDismissible ?? true,
@@ -78,6 +81,7 @@ Future<bool> showBox({
           actions: <Widget>[
             if (button02 != null)
               TextButton(
+                key: const Key('button02'),
                 onPressed: () {
                   if (press02 != null) {
                     press02();
@@ -90,6 +94,7 @@ Future<bool> showBox({
                 child: Text(button02.text ?? 'Cancel'),
               ),
             TextButton(
+              key: const Key('button01'),
               onPressed: () {
                 if (press01 != null) {
                   press01();
@@ -104,36 +109,47 @@ Future<bool> showBox({
           ]),
     );
   } else {
+    //
     result = await showCupertinoDialog<bool>(
       context: context,
-      builder: (BuildContext context) =>
-          CupertinoAlertDialog(content: Text(text ?? ' '), actions: <Widget>[
-        if (button02 != null)
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        content: Text(text ?? ' '),
+        actions: <Widget>[
+          if (button02 != null)
+            CupertinoDialogAction(
+              key: const Key('button02'),
+              textStyle: textStyle,
+              onPressed: () {
+                if (press02 != null) {
+                  press02();
+                }
+                if (button02.onPressed != null) {
+                  button02.onPressed!();
+                }
+                Navigator.pop(context, button02.result ?? false);
+              },
+              child: Text(button02.text ?? 'Cancel'),
+            ),
           CupertinoDialogAction(
+            key: const Key('button01'),
+            textStyle: textStyle,
             onPressed: () {
-              if (press02 != null) {
-                press02();
+              if (press01 != null) {
+                press01();
               }
-              if (button02.onPressed != null) {
-                button02.onPressed!();
+              if (button01!.onPressed != null) {
+                button01.onPressed!();
               }
-              Navigator.pop(context, button02.result ?? false);
+              Navigator.pop(context, button01.result ?? true);
             },
-            child: Text(button02.text ?? 'Cancel'),
+            child: Text(button01!.text ?? 'OK'),
           ),
-        CupertinoDialogAction(
-          onPressed: () {
-            if (press01 != null) {
-              press01();
-            }
-            if (button01!.onPressed != null) {
-              button01.onPressed!();
-            }
-            Navigator.pop(context, button01.result ?? true);
-          },
-          child: Text(button01!.text ?? 'OK'),
-        ),
-      ]),
+        ],
+      ),
+      barrierDismissible: barrierDismissible ?? true,
+      useRootNavigator: useRootNavigator ?? true,
+      routeSettings: routeSettings,
+      anchorPoint: anchorPoint,
     );
   }
   return result ?? false;
@@ -148,22 +164,35 @@ void dialogBox({
   Option? button02,
   VoidCallback? press01,
   VoidCallback? press02,
-  bool barrierDismissible = false,
-  bool switchButtons = false,
+  bool? switchButtons,
+  bool? barrierDismissible,
+  Color? barrierColor,
+  String? barrierLabel,
+  bool? useSafeArea,
+  bool? useRootNavigator,
+  RouteSettings? routeSettings,
+  Offset? anchorPoint,
 }) {
   showDialog<bool>(
-      context: App.context!,
-      barrierDismissible: barrierDismissible,
-      builder: (BuildContext context) {
-        return _DialogWindow(
-          title: title,
-          button01: button01,
-          button02: button02,
-          press01: press01,
-          press02: press02,
-          switchButtons: switchButtons,
-        ).show();
-      });
+    context: App.context!,
+    builder: (BuildContext context) {
+      return _DialogWindow(
+        title: title,
+        button01: button01,
+        button02: button02,
+        press01: press01,
+        press02: press02,
+        switchButtons: switchButtons,
+      ).show();
+    },
+    barrierDismissible: barrierDismissible ?? false,
+    barrierColor: barrierColor ?? Colors.black54,
+    barrierLabel: barrierLabel,
+    useSafeArea: useSafeArea ?? true,
+    useRootNavigator: useRootNavigator ?? true,
+    routeSettings: routeSettings,
+    anchorPoint: anchorPoint,
+  );
 }
 
 class _DialogWindow with DialogOptions {
@@ -186,7 +215,7 @@ class _DialogWindow with DialogOptions {
   SimpleDialog show() {
     return SimpleDialog(
       title: Text(title ?? ' '),
-      children: _listOptions(),
+      children: [Row(children: _listOptions())],
     );
   }
 }
@@ -216,23 +245,24 @@ mixin DialogOptions {
 
     if (button01 != null || press01 != null) {
       option01 = Option(
+          key: const Key('button01'),
           text: button01?.text ?? 'Cancel',
           onPressed: press01 ?? button01!.onPressed,
           result: true);
     } else {
-      option01 = CancelOption();
+      option01 = CancelOption(key: const Key('button01'));
     }
     if (button02 != null || press02 != null) {
       option02 = Option(
+          key: const Key('button02'),
           text: button02?.text ?? 'OK',
           onPressed: press02 ?? button02!.onPressed,
           result: false);
     } else {
       if (option01 is! OKOption) {
-        option02 = OKOption();
-        opList.add(_simpleOption(option02));
+        option02 = OKOption(key: const Key('button02'));
       } else {
-        option02 = CancelOption();
+        option02 = CancelOption(key: const Key('button02'));
       }
     }
     if (switchButtons != null && switchButtons!) {
@@ -246,6 +276,7 @@ mixin DialogOptions {
   }
 
   Widget _simpleOption(Option option) => SimpleDialogOption(
+        key: option.key,
         onPressed: () {
           if (option.onPressed != null) {
             option.onPressed!();
@@ -259,8 +290,11 @@ mixin DialogOptions {
 /// The Button Option Class
 class Option {
   /// Supply the button's text, callback and dynamic result value.
-  Option({this.text, this.onPressed, this.result})
+  Option({this.key, this.text, this.onPressed, this.result})
       : assert(result != null, 'Must provide a option result!');
+
+  /// Key used for testing
+  final Key? key;
 
   /// The optional Button Text label.
   final String? text;
@@ -276,8 +310,9 @@ class Option {
 class OKOption extends Option {
   /// Supply the optionally Callback when pressed.
   /// Assigns a boolean True to the result property.
-  OKOption({VoidCallback? onPressed})
+  OKOption({Key? key, VoidCallback? onPressed})
       : super(
+          key: key,
           text: 'OK',
           onPressed: () {
             if (onPressed != null) {
@@ -292,8 +327,9 @@ class OKOption extends Option {
 class CancelOption extends Option {
   /// Supply the optionally Callback when pressed.
   /// Assigns a boolean False to the result property.
-  CancelOption({VoidCallback? onPressed})
+  CancelOption({Key? key, VoidCallback? onPressed})
       : super(
+          key: key,
           text: 'Cancel',
           onPressed: () {
             if (onPressed != null) {
@@ -354,6 +390,7 @@ class MsgBox {
     actions = actions ?? this.actions;
     actions ??= <Widget>[
       TextButton(
+        key: const Key('button01'),
         onPressed: () {
           Navigator.pop(context!);
         },
@@ -362,17 +399,18 @@ class MsgBox {
     ];
 
     return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) => AlertDialog(
-              title: Text(title ?? ''),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: body!,
-                ),
-              ),
-              actions: actions,
-            ));
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(title ?? ''),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: body!,
+          ),
+        ),
+        actions: actions,
+      ),
+    );
   }
 }
 
@@ -436,16 +474,17 @@ class DialogBox with DialogOptions {
     actions ??= _listOptions();
     barrierDismissible ??= this.barrierDismissible ?? false;
     return showDialog<void>(
-        context: App.context!,
-        barrierDismissible: barrierDismissible,
-        builder: (BuildContext context) => AlertDialog(
-              title: Text(title!),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: body!,
-                ),
-              ),
-              actions: actions,
-            ));
+      context: App.context!,
+      barrierDismissible: barrierDismissible,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(title!),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: body!,
+          ),
+        ),
+        actions: actions,
+      ),
+    );
   }
 }

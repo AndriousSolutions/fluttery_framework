@@ -180,6 +180,7 @@ class _BuildAndroid extends StatelessWidget {
     final con = state.con;
 //    final appCon = state.appCon;
     return Scaffold(
+      key: const Key('Scaffold'),
       appBar: AppBar(
         title: Text('Counter Page Demo'.tr),
         actions: [
@@ -187,6 +188,7 @@ class _BuildAndroid extends StatelessWidget {
           // appCon.menu,
         ],
       ),
+      drawer: AppDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -210,6 +212,12 @@ class _BuildAndroid extends StatelessWidget {
           });
         },
         child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: SimpleBottomAppBar(
+        button01: HomeBarButton(),
+        button02: StatsBarButton(),
+        button03: EventsBarButton(),
+        button04: HistoryBarButton(),
       ),
     );
   }

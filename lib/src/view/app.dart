@@ -1007,14 +1007,29 @@ class AppDrawer extends StatelessWidget {
     super.key,
     this.backgroundColor,
     this.elevation,
+    this.shadowColor,
+    this.surfaceTintColor,
     this.shape,
-    this.semanticLabel,
+    this.width,
     this.header,
-    this.items,
+    this.children,
+    this.semanticLabel,
+    this.scrollDirection,
+    this.reverse,
+    this.controller,
+    this.primary,
+    this.physics,
+    this.shrinkWrap,
+    this.padding,
+    this.itemExtent,
+    this.prototypeItem,
+    this.addAutomaticKeepAlives,
+    this.addRepaintBoundaries,
+    this.addSemanticIndexes,
   }) {
     // Take any defined items.
-    if (items != null) {
-      _items.addAll(items!);
+    if (children != null) {
+      _children.addAll(children!);
     }
   }
 
@@ -1024,38 +1039,91 @@ class AppDrawer extends StatelessWidget {
   /// The z-coordinate at which to place this drawer relative to its parent.
   final double? elevation;
 
+  /// The color used to paint a drop shadow under the drawer's [Material],
+  /// which reflects the drawer's [elevation].
+  final Color? shadowColor;
+
+  /// The color used as a surface tint overlay on the drawer's background color,
+  /// which reflects the drawer's [elevation].
+  final Color? surfaceTintColor;
+
   /// The shape of the drawer.
   final ShapeBorder? shape;
 
-  /// The semantic label of the dialog used by accessibility frameworks.
-  final String? semanticLabel;
+  /// The width of the drawer.
+  final double? width;
 
   /// The top-most region of a material design drawer.
   final DrawerHeader? header;
 
+  /// The semantic label of the dialog used by accessibility frameworks.
+  final String? semanticLabel;
+
+  /// The axis along which the scroll view scrolls.
+  final Axis? scrollDirection;
+
+  /// Whether the scroll view scrolls in the reading direction.
+  final bool? reverse;
+
+  /// An object that can be used to control the position to which this scroll
+  /// view is scrolled.
+  final ScrollController? controller;
+
+  /// Whether this is the primary scroll view associated with the parent
+  final bool? primary;
+
+  /// How the scroll view should respond to user input.
+  final ScrollPhysics? physics;
+
+  /// Whether the extent of the scroll view in the [scrollDirection] should be
+  /// determined by the contents being viewed
+  final bool? shrinkWrap;
+
+  /// The amount of space by which to inset the children.
+  final EdgeInsetsGeometry? padding;
+
+  /// If non-null, forces the children to have the given extent in the scroll
+  /// direction.
+  final double? itemExtent;
+
+  /// If non-null, forces the children to have the same extent as the given
+  /// widget in the scroll direction.
+  final Widget? prototypeItem;
+
+  /// Whether to wrap each child in an [AutomaticKeepAlive].
+  final bool? addAutomaticKeepAlives;
+
+  /// Whether to wrap each child in a [RepaintBoundary].
+  final bool? addRepaintBoundaries;
+
+  /// Whether to wrap each child in an [IndexedSemantics].
+  final bool? addSemanticIndexes;
+
   /// The List of Widget items that make up the Drawer's contents.
-  final List<ListTile>? items;
-  final List<ListTile> _items = [];
+  final List<Widget>? children;
+
+  //
+  final List<Widget> _children = <Widget>[];
 
   /// one item
-  void add(ListTile? item) {
+  void add(Widget? item) {
     if (item != null) {
-      _items.add(item);
+      _children.add(item);
     }
   }
 
   /// Add a List
-  void addAll(List<ListTile>? items) {
+  void addAll(List<Widget>? items) {
     if (items != null) {
-      _items.addAll(items);
+      _children.addAll(items);
     }
   }
 
   /// Remove an item
-  bool remove(ListTile? item) {
+  bool remove(Widget? item) {
     bool remove = item != null;
     if (remove) {
-      remove = _items.remove(item);
+      remove = _children.remove(item);
     }
     return remove;
   }
@@ -1066,14 +1134,32 @@ class AppDrawer extends StatelessWidget {
     if (header != null) {
       widgets.add(header!);
     }
-    if (_items.isNotEmpty) {
-      widgets.addAll(_items);
+    if (_children.isNotEmpty) {
+      widgets.addAll(_children);
     }
     return Drawer(
-        elevation: elevation ?? 16,
-        semanticLabel: semanticLabel,
-        child: ListView(
-          children: widgets,
-        ));
+      backgroundColor: backgroundColor,
+      elevation: elevation ?? 16,
+      shadowColor: shadowColor,
+      surfaceTintColor: surfaceTintColor,
+      shape: shape,
+      width: width,
+      semanticLabel: semanticLabel,
+      child: ListView(
+        scrollDirection: scrollDirection ?? Axis.vertical,
+        reverse: reverse ?? false,
+        controller: controller,
+        primary: primary,
+        physics: physics,
+        shrinkWrap: shrinkWrap ?? false,
+        padding: padding,
+        itemExtent: itemExtent,
+        prototypeItem: prototypeItem,
+        addAutomaticKeepAlives: addAutomaticKeepAlives ?? true,
+        addRepaintBoundaries: addRepaintBoundaries ?? true,
+        addSemanticIndexes: addSemanticIndexes ?? true,
+        children: widgets,
+      ),
+    );
   }
 }

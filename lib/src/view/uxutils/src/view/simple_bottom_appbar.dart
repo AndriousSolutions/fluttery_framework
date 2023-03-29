@@ -28,6 +28,7 @@ import 'package:flutter/material.dart'
         IconData,
         Icons,
         Interval,
+        Key,
         MainAxisAlignment,
         Matrix4,
         Offset,
@@ -207,6 +208,7 @@ class _SimpleBottomAppBarState extends State<SimpleBottomAppBar>
       fit: FlexFit.tight,
       flex: flexValues[count],
       child: TextButton(
+        key: btn.key,
         // highlightColor: Colors.transparent,
         // splashColor: Colors.transparent,
         // padding: const EdgeInsets.all(0),
@@ -248,10 +250,13 @@ class _SimpleBottomAppBarState extends State<SimpleBottomAppBar>
   }
 }
 
-/// Represnts the 'Bottom Bar Button.'
+/// Represents the 'Bottom Bar Button.'
 class BarButton {
   /// Supply the Button's label, icon, and 'onPressed' routine.
-  const BarButton({this.text, this.icon, this.onPressed});
+  const BarButton({this.key, this.text, this.icon, this.onPressed});
+
+  /// Optionally provide a Key value.
+  final Key? key;
 
   /// Optionally supply the Button's label.
   final String? text;
@@ -268,6 +273,7 @@ class HomeBarButton extends BarButton {
   /// Optionally supply an 'onPressed' routine.
   HomeBarButton({VoidCallback? onPressed})
       : super(
+          key: const Key('HomeBottomBarButton'),
           text: 'Home',
           icon: Icons.home,
           onPressed: () {
@@ -283,6 +289,7 @@ class DeleteBarButton extends BarButton {
   /// Optionally supply an 'onPressed' routine.
   DeleteBarButton({VoidCallback? onPressed})
       : super(
+          key: const Key('DeleteBottomBarButton'),
           text: 'Delete',
           icon: Icons.delete,
           onPressed: () {
@@ -298,6 +305,7 @@ class EditBarButton extends BarButton {
   /// Optionally supply an 'onPressed' routine.
   EditBarButton({VoidCallback? onPressed})
       : super(
+          key: const Key('EditBottomBarButton'),
           text: 'Edit',
           icon: Icons.edit,
           onPressed: () {
@@ -313,6 +321,7 @@ class SearchBarButton extends BarButton {
   /// Optionally supply an 'onPressed' routine.
   SearchBarButton({VoidCallback? onPressed})
       : super(
+          key: const Key('SearchBottomBarButton'),
           text: 'Search',
           icon: Icons.search,
           onPressed: () {
@@ -328,6 +337,7 @@ class StatsBarButton extends BarButton {
   /// Optionally supply an 'onPressed' routine.
   StatsBarButton({VoidCallback? onPressed})
       : super(
+          key: const Key('StatsBottomBarButton'),
           text: 'Stats',
           icon: Icons.timeline,
           onPressed: () {
@@ -343,6 +353,7 @@ class EventsBarButton extends BarButton {
   /// Optionally supply an 'onPressed' routine.
   EventsBarButton({VoidCallback? onPressed})
       : super(
+          key: const Key('EventsBottomBarButton'),
           text: 'Events',
           icon: Icons.event,
           onPressed: () {
@@ -358,6 +369,7 @@ class HistoryBarButton extends BarButton {
   /// Optionally supply an 'onPressed' routine.
   HistoryBarButton({VoidCallback? onPressed})
       : super(
+          key: const Key('HistoryBottomBarButton'),
           text: 'History',
           icon: Icons.history,
           onPressed: () {

@@ -6,8 +6,10 @@ export 'package:fluttery_framework_example/src/app/view.dart';
 /// Supply all the dependencies necessary to complete the testing.
 export 'package:flutter_test/flutter_test.dart';
 
-export 'package:fluttery_framework/view.dart' hide AppMenu, ISOSpinner;
-export 'package:fluttery_framework/controller.dart';
+export 'package:fluttery_framework/view.dart'
+    hide AppDrawer, AppMenu, ISOSpinner;
+
+export 'package:fluttery_framework/controller.dart' hide AppDrawer;
 
 export 'unit_tests.dart';
 
@@ -17,6 +19,10 @@ export 'unit_tests.dart';
 export 'controller_test.dart';
 
 export 'wordpairs_model.dart';
+
+export 'drawer_dialog_tests.dart';
+
+export 'simple_buttom_bar_test.dart';
 
 export '../unit/src/controller/_unit_test_controller.dart';
 
