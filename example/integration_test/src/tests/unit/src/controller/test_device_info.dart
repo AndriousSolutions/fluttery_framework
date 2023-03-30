@@ -42,17 +42,17 @@ Future<void> testDeviceInfo() async {
 
   DeviceInfo.product;
 
-  DeviceInfo.supported32BitAbis;
+//  DeviceInfo.supported32BitAbis;
 
-  DeviceInfo.supported64BitAbis;
+//  DeviceInfo.supported64BitAbis;
 
-  DeviceInfo.supportedAbis;
+//  DeviceInfo.supportedAbis;
 
   DeviceInfo.tags;
 
   DeviceInfo.type;
 
-  DeviceInfo.isPhysicalDevice;
+//  DeviceInfo.isPhysicalDevice;
 
   DeviceInfo.versionBaseOs;
 

@@ -129,8 +129,11 @@ class App with ConnectivityListener {
   /// Collect the device's information.
   static Future<void> getDeviceInfo() async {
     _packageInfo = await PackageInfo.fromPlatform();
-    // Collect Device Information
-    await DeviceInfo.initAsync();
+    // There's 'no device' while testing and so don't collect device info.
+    if (!inFlutterTest) {
+      // Collect Device Information
+      await DeviceInfo.initAsync();
+    }
   }
 
   /// Passed to the CupertinoApp or MaterialApp

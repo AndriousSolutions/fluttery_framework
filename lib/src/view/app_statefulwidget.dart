@@ -140,7 +140,7 @@ class _StateApp extends State<AppStatefulWidget> {
       // Supply the state object to the App object.
       _widget._app.setAppState(_appState);
 
-      // Don't include this while testing.
+      // Don't collect package and device information while testing.
       if (!v.App.inFlutterTest) {
         //
         await v.App.getDeviceInfo();

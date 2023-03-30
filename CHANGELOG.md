@@ -1,5 +1,10 @@
 
-## 2.5.0
+## 2.6.0
+March 30, 2023
+- Commented out class NavBottomBar in nav_bottom_bar.dart
+- Added dependency device_info_plus_web
+
+## 2.5.0+2
 March 29, 2023
 - Updated parameters in class AppDrawer
 - Included class AppDrawer in testing
