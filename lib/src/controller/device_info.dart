@@ -10,8 +10,7 @@
 //import 'dart:io' show Platform;
 // Replace 'dart:io' for Web applications
 
-import 'package:device_info_plus/device_info_plus.dart'
-    if (dart.library.html) 'package:device_info_plus_web/device_info_plus_web.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 /// Commented out to make it Linux and Windows compatible
 // /// Gets the ANDROID_ID for android and identifierForVendor for iOS platforms.
@@ -22,8 +21,7 @@ import 'package:device_info_plus/device_info_plus.dart'
 /// Supplies the devices information.
 class DeviceInfo {
   static bool _init = false;
-//  static late Map<String, String> _deviceParameters = {};
-  static late Map<String, dynamic> _deviceParameters = {};
+  static late Map<String, String> _deviceParameters = {};
 
   static String? _deviceId;
 
@@ -41,8 +39,7 @@ class DeviceInfo {
     final info = await DeviceInfoPlugin().deviceInfo;
 
     return _deviceParameters =
-//        info.data.map((key, value) => MapEntry(key, value.toString()));
-        info.toMap();
+        info.data.map((key, value) => MapEntry(key, value.toString()));
   }
 
   /// Supply the device information

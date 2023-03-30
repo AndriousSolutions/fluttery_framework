@@ -1,8 +1,9 @@
 
-## 2.6.0
+## 2.6.0+1
 March 30, 2023
 - Commented out class NavBottomBar in nav_bottom_bar.dart
 - Added dependency device_info_plus_web
+- then removed dependency device_info_plus_web finding it insufficient.
 
 ## 2.5.0+2
 March 29, 2023
