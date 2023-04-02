@@ -13,8 +13,8 @@ import 'package:flutter/material.dart';
 
 import 'package:fluttery_framework/controller.dart' show Assets;
 
-import 'package:fluttery_framework/view.dart' as v
-    show App, AppState, ReportErrorHandler;
+import 'package:fluttery_framework/view.dart'
+    as v; //   show App, AppState, ReportErrorHandler;
 
 /// Export the classes needed to use this file.
 export 'package:connectivity_plus/connectivity_plus.dart'

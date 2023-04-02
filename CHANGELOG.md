@@ -1,4 +1,8 @@
 
+## 2.7.0
+April 01, 2023 
+- NavigatorStateMethodsMixin supplies a Global Navigator without context
+
 ## 2.6.0+1
 March 30, 2023
 - Commented out class NavBottomBar in nav_bottom_bar.dart

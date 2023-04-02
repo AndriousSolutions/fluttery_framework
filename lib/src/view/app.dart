@@ -192,12 +192,13 @@ class App with ConnectivityListener {
   static ui.SingletonFlutterWindow? _window;
 
   /// Return the navigator key used by the App's View.
-  static GlobalKey<NavigatorState>? get navigatorKey => _appState?.navigatorKey;
-  static set navigatorKey(GlobalKey<NavigatorState>? v) {
-    if (v != null) {
-      _appState?.navigatorKey = v;
-    }
-  }
+  static final navigatorKey = GlobalKey<NavigatorState>();
+
+  /// Use this to navigate throughout the your app
+  static NavigatorState get navigator => router;
+
+  /// Merely another name for it.
+  static NavigatorState get router => navigatorKey.currentState!;
 
   /// Return the navigator key used by the App's View.
   static GlobalKey<ScaffoldMessengerState>? get scaffoldMessengerKey =>
@@ -977,6 +978,202 @@ class App with ConnectivityListener {
     }
     return connectionStatus;
   }
+
+  /// Whether the navigator can be popped.
+  static bool canPop() => _appState!.canPop();
+
+  /// Complete the lifecycle for a route that has been popped off the navigator.
+  static void finalizeRoute(Route<dynamic> route) =>
+      _appState!.finalizeRoute(route);
+
+  /// Consults the current route's [Route.willPop] method, and acts accordingly,
+  /// potentially popping the route as a result; returns whether the pop request
+  /// should be considered handled.
+  @optionalTypeArgs
+  static Future<bool> maybePop<T extends Object?>([T? result]) =>
+      _appState!.maybePop<T>(result);
+
+  /// Pop the top-most route off the navigator.
+  @optionalTypeArgs
+  static void pop<T extends Object?>([T? result]) => _appState!.pop<T>(result);
+
+  /// Pop the current route off the navigator and push a named route in its
+  /// place.
+  @optionalTypeArgs
+  static Future<T?> popAndPushNamed<T extends Object?, TO extends Object?>(
+          String routeName,
+          {TO? result,
+          Object? arguments}) =>
+      _appState!.popAndPushNamed<T, TO>(routeName,
+          result: result, arguments: arguments);
+
+  /// Calls [pop] repeatedly until the predicate returns true.
+  static void popUntil(RoutePredicate predicate) =>
+      _appState!.popUntil(predicate);
+
+  /// Push the given route onto the navigator.
+  @optionalTypeArgs
+  static Future<T?> push<T extends Object?>(Route<T> route) =>
+      _appState!.push<T>(route);
+
+  /// Push the given route onto the navigator, and then remove all the previous
+  /// routes until the `predicate` returns true.
+  @optionalTypeArgs
+  static Future<T?> pushAndRemoveUntil<T extends Object?>(
+          Route<T> newRoute, RoutePredicate predicate) =>
+      _appState!.pushAndRemoveUntil<T>(newRoute, predicate);
+
+  /// Push a named route onto the navigator.
+  @optionalTypeArgs
+  static Future<T?> pushNamed<T extends Object?>(
+    String routeName, {
+    Object? arguments,
+  }) =>
+      _appState!.pushNamed(routeName, arguments: arguments);
+
+  /// Push the route with the given name onto the navigator, and then remove all
+  /// the previous routes until the `predicate` returns true.
+  @optionalTypeArgs
+  static Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
+          String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
+      _appState!.pushNamedAndRemoveUntil<T>(newRouteName, predicate,
+          arguments: arguments);
+
+  /// Replace the current route of the navigator by pushing the given route and
+  /// then disposing the previous route once the new route has finished
+  /// animating in.
+  @optionalTypeArgs
+  static Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
+          Route<T> newRoute,
+          {TO? result}) =>
+      _appState!.pushReplacement<T, TO>(newRoute, result: result);
+
+  /// Replace the current route of the navigator by pushing the route named
+  /// [routeName] and then disposing the previous route once the new route has
+  /// finished animating in.
+  @optionalTypeArgs
+  static Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
+          String routeName,
+          {TO? result,
+          Object? arguments}) =>
+      _appState!.pushReplacementNamed<T, TO>(routeName,
+          result: result, arguments: arguments);
+
+  /// Immediately remove `route` from the navigator, and [Route.dispose] it.
+  static void removeRoute(Route<dynamic> route) =>
+      _appState!.removeRoute(route);
+
+  /// Immediately remove a route from the navigator, and [Route.dispose] it. The
+  /// route to be removed is the one below the given `anchorRoute`.
+  static void removeRouteBelow(Route<dynamic> anchorRoute) =>
+      _appState!.removeRouteBelow(anchorRoute);
+
+  /// Replaces a route on the navigator that most tightly encloses the given
+  /// context with a new route.
+  @optionalTypeArgs
+  static void replace<T extends Object?>(
+          {required Route<dynamic> oldRoute, required Route<T> newRoute}) =>
+      _appState!.replace<T>(oldRoute: oldRoute, newRoute: newRoute);
+
+  /// Replaces a route on the navigator with a new route. The route to be
+  /// replaced is the one below the given `anchorRoute`.
+  @optionalTypeArgs
+  static void replaceRouteBelow<T extends Object?>(
+          {required Route<dynamic> anchorRoute, required Route<T> newRoute}) =>
+      App.router
+          .replaceRouteBelow<T>(anchorRoute: anchorRoute, newRoute: newRoute);
+
+  /// Pop the current route off the navigator and push a named route in its
+  /// place.
+  @optionalTypeArgs
+  static String
+      restorablePopAndPushNamed<T extends Object?, TO extends Object?>(
+              String routeName,
+              {TO? result,
+              Object? arguments}) =>
+          _appState!.restorablePopAndPushNamed<T, TO>(routeName,
+              result: result, arguments: arguments);
+
+  /// Push a new route onto the navigator.
+  @optionalTypeArgs
+  static String restorablePush<T extends Object?>(
+          RestorableRouteBuilder<T> routeBuilder,
+          {Object? arguments}) =>
+      _appState!.restorablePush<T>(routeBuilder, arguments: arguments);
+
+  /// Push a new route onto the navigator, and then remove all the previous
+  /// routes until the `predicate` returns true.
+  @optionalTypeArgs
+  static String restorablePushAndRemoveUntil<T extends Object?>(
+          RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate,
+          {Object? arguments}) =>
+      _appState!.restorablePushAndRemoveUntil<T>(newRouteBuilder, predicate,
+          arguments: arguments);
+
+  /// Push a named route onto the navigator.
+  @optionalTypeArgs
+  static String restorablePushNamed<T extends Object?>(
+    String routeName, {
+    Object? arguments,
+  }) =>
+      _appState!.restorablePushNamed(routeName, arguments: arguments);
+
+  /// Push the route with the given name onto the navigator that most tightly
+  /// encloses the given context, and then remove all the previous routes until
+  /// the `predicate` returns true.
+  @optionalTypeArgs
+  static String restorablePushNamedAndRemoveUntil<T extends Object?>(
+          String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
+      _appState!.restorablePushNamedAndRemoveUntil<T>(newRouteName, predicate,
+          arguments: arguments);
+
+  /// Replace the current route of the navigator by pushing a new route and
+  /// then disposing the previous route once the new route has finished
+  /// animating in.
+  @optionalTypeArgs
+  static String
+      restorablePushReplacement<T extends Object?, TO extends Object?>(
+              RestorableRouteBuilder<T> routeBuilder,
+              {TO? result,
+              Object? arguments}) =>
+          _appState!.restorablePushReplacement<T, TO>(routeBuilder,
+              result: result, arguments: arguments);
+
+  /// Replace the current route of the navigator that most tightly encloses the
+  /// given context by pushing the route named [routeName] and then disposing
+  /// the previous route once the new route has finished animating in.
+  @optionalTypeArgs
+  static String
+      restorablePushReplacementNamed<T extends Object?, TO extends Object?>(
+              String routeName,
+              {TO? result,
+              Object? arguments}) =>
+          _appState!.restorablePushReplacementNamed<T, TO>(routeName,
+              result: result, arguments: arguments);
+
+  /// Replaces a route on the navigator that most tightly encloses the given
+  /// context with a new route.
+  @optionalTypeArgs
+  static String restorableReplace<T extends Object?>(
+          {required Route<dynamic> oldRoute,
+          required RestorableRouteBuilder<T> newRouteBuilder,
+          Object? arguments}) =>
+      _appState!.restorableReplace<T>(
+          oldRoute: oldRoute,
+          newRouteBuilder: newRouteBuilder,
+          arguments: arguments);
+
+  /// Replaces a route on the navigator with a new route. The route to be
+  /// replaced is the one below the given `anchorRoute`.
+  @optionalTypeArgs
+  static String restorableReplaceRouteBelow<T extends Object?>(
+          {required Route<dynamic> anchorRoute,
+          required RestorableRouteBuilder<T> newRouteBuilder,
+          Object? arguments}) =>
+      _appState!.restorableReplaceRouteBelow<T>(
+          anchorRoute: anchorRoute,
+          newRouteBuilder: newRouteBuilder,
+          arguments: arguments);
 }
 
 /// A Listener for the device's own connectivity status at any point in time.
@@ -984,24 +1181,6 @@ mixin ConnectivityListener {
   /// A listener method to respond if the device's connectivity changes.
   void onConnectivityChanged(ConnectivityResult result);
 }
-
-// /// Supply an MVC State object that hooks into the App class.
-// abstract class StateC<T extends StatefulWidget> extends s.StateC<T>
-//     with HandleError {
-//   /// Optionally supply a State Controller to be linked to this 'State' object.
-//   StateC([StateController? controller]) : super(controller);
-//
-//   @override
-//   void refresh() {
-//     // Critical to have the App 'refresh' first.
-//     // It uses a built-in InheritedWidget.
-//     App.refresh();
-//     if (mounted) {
-//       // Next refresh the current State object itself.
-//       super.refresh();
-//     }
-//   }
-// }
 
 /// A standard Drawer object for your Flutter app.
 class AppDrawer extends StatelessWidget {

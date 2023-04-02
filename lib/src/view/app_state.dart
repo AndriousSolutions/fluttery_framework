@@ -29,7 +29,8 @@ import 'package:flutter/rendering.dart' as debug;
 import '../../view.dart';
 
 /// The View for the app. The 'look and feel' for the whole app.
-class AppState<T extends StatefulWidget> extends _AppState<T> {
+class AppState<T extends StatefulWidget> extends _AppState<T>
+    with NavigatorStateMethodsMixin {
   /// Provide a huge array of options and features to the 'App State object.'
   AppState({
     this.key,
@@ -39,7 +40,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     super.object,
     super.materialApp,
     super.cupertinoApp,
-    super.navigatorKey,
+    @Deprecated('No longer available to the user.') super.navigatorKey,
     super.routeInformationProvider,
     super.routeInformationParser,
     super.routerDelegate,
@@ -372,9 +373,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   void dispose() {
     //
     _app = null;
-
-    _navigatorKey = null;
-
     super.dispose();
   }
 
@@ -422,7 +420,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
         //
         app = CupertinoApp(
           key: key ?? cupertinoKey,
-          navigatorKey: navigatorKey ?? onNavigatorKey(),
+          navigatorKey: v.App.navigatorKey,
           routes: routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
           initialRoute: initialRoute ?? onInitialRoute(),
           onGenerateRoute: onGenerateRoute ?? onOnGenerateRoute(),
@@ -521,7 +519,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
         //
         app = MaterialApp(
           key: key ?? materialKey,
-          navigatorKey: navigatorKey ?? onNavigatorKey(),
+          navigatorKey: v.App.navigatorKey,
           scaffoldMessengerKey:
               scaffoldMessengerKey ?? onScaffoldMessengerKey(),
           routes: routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
@@ -682,12 +680,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
     return v.App.themeData;
   }
 
-  // @override
-  // void dispose() {
-  //   _navigatorKey = null;
-  //   super.dispose();
-  // }
-
   /// Override if you like to customize error handling.
   @override
   @mustCallSuper
@@ -797,10 +789,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T> {
   /// Reload the whole App
   void reload() => _parentState?.setState(() {});
 
-  /// Returns the App's Navigator's Key.
-  GlobalKey<NavigatorState> onNavigatorKey() =>
-      _navigatorKey ??= GlobalKey<NavigatorState>();
-  GlobalKey<NavigatorState>? _navigatorKey;
+  /// Returns the App's Navigator Key.
+  @Deprecated("App's Navigator's Key is GlobalKey<NavigatorState>()")
+  GlobalKey<NavigatorState> onNavigatorKey() => v.App.navigatorKey;
 
   /// Returns the App's ScaffoldMessenger Key.
   GlobalKey<ScaffoldMessengerState> onScaffoldMessengerKey() =>
@@ -1071,6 +1062,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   CupertinoApp? cupertinoApp;
 
   /// All the fields found in the widgets, MaterialApp and CupertinoApp
+  @Deprecated('No longer assignable by user. Is now provided internally.')
   GlobalKey<NavigatorState>? navigatorKey;
   RouteInformationProvider? routeInformationProvider;
   RouteInformationParser<Object>? routeInformationParser;
@@ -1234,16 +1226,19 @@ mixin StateXonErrorMixin<T extends StatefulWidget> on s.StateX<T> {
 
 ///
 abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
-    with StateXonErrorMixin {
+    with NavigatorStateMethodsMixin, StateXonErrorMixin {
   ///
   StateX([StateXController? _controller]) : super(_controller);
+
+  /// Use this to navigate throughout the your app
+  static NavigatorState get router => App.router;
 
   @override
   @mustCallSuper
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Subscribe this to be informed about changes to route.
-    _appState?.subscribe(this);
+    App.state?.subscribe(this);
   }
 
   @override
@@ -1251,7 +1246,7 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
   void activate() {
     super.activate();
     // Subscribe this to be informed about changes to route.
-    _appState?.subscribe(this);
+    App.state?.subscribe(this);
   }
 
   @override
@@ -1259,16 +1254,211 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
   void deactivate() {
     super.deactivate();
     // No longer informed about changes to its route.
-    _appState?.unsubscribe(this);
+    App.state?.unsubscribe(this);
   }
+}
 
-  /// Attempt to reference the App's first State object.
-  AppState? get _appState {
-    AppState? appState;
-    final root = rootState;
-    if (root != null && root is AppState) {
-      appState = root;
-    }
-    return appState;
-  }
+/// Supply a specific Controller to this StatelessWidget.
+abstract class View<T extends StateXController> extends StatelessWidget {
+  ///
+  const View({Key? key}) : super(key: key);
+
+  /// Supply the specified Controller.
+  T? get controller => App.state?.controllerByType<T>();
+
+  @override
+  Widget build(BuildContext context);
+}
+
+/// Supply the Global Navigator and all its methods.
+mixin NavigatorStateMethodsMixin {
+  /// Whether the navigator can be popped.
+  bool canPop() => App.router.canPop();
+
+  /// Complete the lifecycle for a route that has been popped off the navigator.
+  void finalizeRoute(Route<dynamic> route) => App.router.finalizeRoute(route);
+
+  /// Consults the current route's [Route.willPop] method, and acts accordingly,
+  /// potentially popping the route as a result; returns whether the pop request
+  /// should be considered handled.
+  @optionalTypeArgs
+  Future<bool> maybePop<T extends Object?>([T? result]) =>
+      App.router.maybePop<T>(result);
+
+  /// Pop the top-most route off the navigator.
+  @optionalTypeArgs
+  void pop<T extends Object?>([T? result]) => App.router.pop<T>(result);
+
+  /// Pop the current route off the navigator and push a named route in its
+  /// place.
+  @optionalTypeArgs
+  Future<T?> popAndPushNamed<T extends Object?, TO extends Object?>(
+          String routeName,
+          {TO? result,
+          Object? arguments}) =>
+      App.router.popAndPushNamed<T, TO>(routeName,
+          result: result, arguments: arguments);
+
+  /// Calls [pop] repeatedly until the predicate returns true.
+  void popUntil(RoutePredicate predicate) => App.router.popUntil(predicate);
+
+  /// Push the given route onto the navigator.
+  @optionalTypeArgs
+  Future<T?> push<T extends Object?>(Route<T> route) =>
+      App.router.push<T>(route);
+
+  /// Push the given route onto the navigator, and then remove all the previous
+  /// routes until the `predicate` returns true.
+  @optionalTypeArgs
+  Future<T?> pushAndRemoveUntil<T extends Object?>(
+          Route<T> newRoute, RoutePredicate predicate) =>
+      App.router.pushAndRemoveUntil<T>(newRoute, predicate);
+
+  /// Push a named route onto the navigator.
+  @optionalTypeArgs
+  Future<T?> pushNamed<T extends Object?>(
+    String routeName, {
+    Object? arguments,
+  }) =>
+      App.router.pushNamed(routeName, arguments: arguments);
+
+  /// Push the route with the given name onto the navigator, and then remove all
+  /// the previous routes until the `predicate` returns true.
+  @optionalTypeArgs
+  Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
+          String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
+      App.router.pushNamedAndRemoveUntil<T>(newRouteName, predicate,
+          arguments: arguments);
+
+  /// Replace the current route of the navigator by pushing the given route and
+  /// then disposing the previous route once the new route has finished
+  /// animating in.
+  @optionalTypeArgs
+  Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
+          Route<T> newRoute,
+          {TO? result}) =>
+      App.router.pushReplacement<T, TO>(newRoute, result: result);
+
+  /// Replace the current route of the navigator by pushing the route named
+  /// [routeName] and then disposing the previous route once the new route has
+  /// finished animating in.
+  @optionalTypeArgs
+  Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
+          String routeName,
+          {TO? result,
+          Object? arguments}) =>
+      App.router.pushReplacementNamed<T, TO>(routeName,
+          result: result, arguments: arguments);
+
+  /// Immediately remove `route` from the navigator, and [Route.dispose] it.
+  void removeRoute(Route<dynamic> route) => App.router.removeRoute(route);
+
+  /// Immediately remove a route from the navigator, and [Route.dispose] it. The
+  /// route to be removed is the one below the given `anchorRoute`.
+  void removeRouteBelow(Route<dynamic> anchorRoute) =>
+      App.router.removeRouteBelow(anchorRoute);
+
+  /// Replaces a route on the navigator that most tightly encloses the given
+  /// context with a new route.
+  @optionalTypeArgs
+  void replace<T extends Object?>(
+          {required Route<dynamic> oldRoute, required Route<T> newRoute}) =>
+      App.router.replace<T>(oldRoute: oldRoute, newRoute: newRoute);
+
+  /// Replaces a route on the navigator with a new route. The route to be
+  /// replaced is the one below the given `anchorRoute`.
+  @optionalTypeArgs
+  void replaceRouteBelow<T extends Object?>(
+          {required Route<dynamic> anchorRoute, required Route<T> newRoute}) =>
+      App.router
+          .replaceRouteBelow<T>(anchorRoute: anchorRoute, newRoute: newRoute);
+
+  /// Pop the current route off the navigator and push a named route in its
+  /// place.
+  @optionalTypeArgs
+  String restorablePopAndPushNamed<T extends Object?, TO extends Object?>(
+          String routeName,
+          {TO? result,
+          Object? arguments}) =>
+      App.router.restorablePopAndPushNamed<T, TO>(routeName,
+          result: result, arguments: arguments);
+
+  /// Push a new route onto the navigator.
+  @optionalTypeArgs
+  String restorablePush<T extends Object?>(
+          RestorableRouteBuilder<T> routeBuilder,
+          {Object? arguments}) =>
+      App.router.restorablePush<T>(routeBuilder, arguments: arguments);
+
+  /// Push a new route onto the navigator, and then remove all the previous
+  /// routes until the `predicate` returns true.
+  @optionalTypeArgs
+  String restorablePushAndRemoveUntil<T extends Object?>(
+          RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate,
+          {Object? arguments}) =>
+      App.router.restorablePushAndRemoveUntil<T>(newRouteBuilder, predicate,
+          arguments: arguments);
+
+  /// Push a named route onto the navigator.
+  @optionalTypeArgs
+  String restorablePushNamed<T extends Object?>(
+    String routeName, {
+    Object? arguments,
+  }) =>
+      App.router.restorablePushNamed(routeName, arguments: arguments);
+
+  /// Push the route with the given name onto the navigator that most tightly
+  /// encloses the given context, and then remove all the previous routes until
+  /// the `predicate` returns true.
+  @optionalTypeArgs
+  String restorablePushNamedAndRemoveUntil<T extends Object?>(
+          String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
+      App.router.restorablePushNamedAndRemoveUntil<T>(newRouteName, predicate,
+          arguments: arguments);
+
+  /// Replace the current route of the navigator by pushing a new route and
+  /// then disposing the previous route once the new route has finished
+  /// animating in.
+  @optionalTypeArgs
+  String restorablePushReplacement<T extends Object?, TO extends Object?>(
+          RestorableRouteBuilder<T> routeBuilder,
+          {TO? result,
+          Object? arguments}) =>
+      App.router.restorablePushReplacement<T, TO>(routeBuilder,
+          result: result, arguments: arguments);
+
+  /// Replace the current route of the navigator that most tightly encloses the
+  /// given context by pushing the route named [routeName] and then disposing
+  /// the previous route once the new route has finished animating in.
+  @optionalTypeArgs
+  String restorablePushReplacementNamed<T extends Object?, TO extends Object?>(
+          String routeName,
+          {TO? result,
+          Object? arguments}) =>
+      App.router.restorablePushReplacementNamed<T, TO>(routeName,
+          result: result, arguments: arguments);
+
+  /// Replaces a route on the navigator that most tightly encloses the given
+  /// context with a new route.
+  @optionalTypeArgs
+  String restorableReplace<T extends Object?>(
+          {required Route<dynamic> oldRoute,
+          required RestorableRouteBuilder<T> newRouteBuilder,
+          Object? arguments}) =>
+      App.router.restorableReplace<T>(
+          oldRoute: oldRoute,
+          newRouteBuilder: newRouteBuilder,
+          arguments: arguments);
+
+  /// Replaces a route on the navigator with a new route. The route to be
+  /// replaced is the one below the given `anchorRoute`.
+  @optionalTypeArgs
+  String restorableReplaceRouteBelow<T extends Object?>(
+          {required Route<dynamic> anchorRoute,
+          required RestorableRouteBuilder<T> newRouteBuilder,
+          Object? arguments}) =>
+      App.router.restorableReplaceRouteBelow<T>(
+          anchorRoute: anchorRoute,
+          newRouteBuilder: newRouteBuilder,
+          arguments: arguments);
 }

@@ -96,8 +96,8 @@ Widget _buildAndroid(_ContactListState state) {
                     ),
                     child: ListTile(
                       onTap: () async {
-                        await Navigator.of(con.state!.context)
-                            .push(MaterialPageRoute<void>(
+//                        await Navigator.of(con.state!.context)
+                        await App.push(MaterialPageRoute<void>(
                           builder: (_) => ContactDetails(contact: contact),
                         ));
                         await con.getContacts();

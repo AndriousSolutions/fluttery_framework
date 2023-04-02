@@ -12,10 +12,10 @@ class ContactDetails extends StatefulWidget {
   const ContactDetails({required this.contact, Key? key}) : super(key: key);
   final Contact contact;
   @override
-  State createState() => _DetailsState();
+  State createState() => _ContactDetailsState();
 }
 
-class _DetailsState extends StateX<ContactDetails> {
+class _ContactDetailsState extends StateX<ContactDetails> {
   @override
   void initState() {
     super.initState();
@@ -50,7 +50,7 @@ class _DetailsState extends StateX<ContactDetails> {
 // Android interface
 class _BuildAndroid extends StatelessWidget {
   const _BuildAndroid({Key? key, required this.state}) : super(key: key);
-  final _DetailsState state;
+  final _ContactDetailsState state;
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +110,7 @@ class _BuildAndroid extends StatelessWidget {
 // iOS interface
 class _BuildiOS extends StatelessWidget {
   const _BuildiOS({Key? key, required this.state}) : super(key: key);
-  final _DetailsState state;
+  final _ContactDetailsState state;
 
   @override
   Widget build(BuildContext context) {
