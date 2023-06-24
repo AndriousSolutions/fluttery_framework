@@ -1,7 +1,7 @@
 dartdoc:
   categories:
     "Get started":
-      markdown: doc/get-started.md
+      markdown: doc/get_started.md
       name: Get started
     "State Object Controller":
       markdown: doc/controllers.md
