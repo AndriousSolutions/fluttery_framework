@@ -1,10 +1,11 @@
 
-## 4.0.0+2
+## 4.0.0+3
 June 15, 2023
 - *BREAKING CHANGE* Removed GetX to instead use go_router
 - Static reference to GoRouter object: App.goRouter
 - Updated to include new MaterialApp properties: highContrastTheme, highContrastDarkTheme, themeAnimationDuration, themeAnimationCurve, 
 - extension GoRouterExtension on BuildContext to utilize App.goRouter
+- Providing extensive documentation with the README.md
 
 ## 3.1.1+1
 June 03, 2023
