@@ -5,13 +5,12 @@
 [![GitHub stars](https://img.shields.io/github/stars/AndriousSolutions/fluttery_framework.svg?style=social&amp;logo=github)](https://github.com/AndriousSolutions/fluttery_framework/stargazers)
 [![Last Commit](https://img.shields.io/github/last-commit/AndriousSolutions/fluttery_framework)](https://github.com/AndriousSolutions/fluttery_framework/commits/master)
 [![Chat](https://img.shields.io/discord/419322779851030538.svg?logo=discord)](https://discord.gg/TyPmeMc)
-### Flutter Framework's Better Framework
+### A Framework for Flutter's Framework
 ![Fluttery_Framework](https://user-images.githubusercontent.com/32497443/185770676-89af0669-9040-4dc6-ad5b-412ed9fed5e5.jpg)
-Allows for faster and easier development with better maintainability. It looks like Flutter. It works like Flutter.
-There's no 're-inventing of the wheel.' It takes full advantage of built-in capabilities and features offered by Flutter
-to make your app that much better.
+Allows for faster and easier development with better maintainability. It looks like Flutter and works like Flutter.
+There's no 're-inventing of the wheel' or an extra learning curve. 
 
-It does this by already supplying adaptive functions and features expected of any production-ready app:
+It supplies the adaptive functions and features expected of a production-ready app:
 * Necessarily error handling capabilities
 * Allow for both a Material & Cupertino interface
 * Easily accessible system preferences
@@ -26,7 +25,12 @@ It does this by already supplying adaptive functions and features expected of an
 
 ### Installing
 I don't like the version number suggested in the '[Installing](https://pub.dev/packages/fluttery_framework#-installing-tab-)' page.
-Instead, always go up to the '**minor**' semantic version number when installing this library package. This means always trailing with one zero, '**.0**'. This allows you to take in any '**patch**' versions that involves bugfixes. Example, when installing version 7.9.2, use 7.9.0. Thus, the bug fix, 7.9.3, will be installed the next time you 'upgrade' the dependencies.
+Instead, always go up to the '**minor**' semantic version number when installing this library package. 
+This means always trailing with one zero, '**.0**'.
+This allows you to take in any '**patch**' versions that involves bugfixes. 
+
+For example, when installing version 7.9.2, use 7.9.0. That means, the bug fix, 7.9.3, will be 
+installed the next time you 'upgrade' your dependencies.
 
 ## Fluttery Framework Documentation
 
@@ -40,7 +44,7 @@ Instead, always go up to the '**minor**' semantic version number when installing
 
 [Error Handling](https://pub.dev/documentation/fluttery_framwork/error-handling.md)
 
-Turn to this free Medium article for a full overview of the package:
+Turn to this free Medium article for an overview of the package:
 
 [Fluttery Framework](https://andrious.medium.com/the-fluttery-framework-35480fb834da)
 

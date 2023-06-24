@@ -7,7 +7,7 @@ There is a number of example apps for your review to better understand how to us
 
 <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/f3ee5ec8-6ffe-4587-a06e-a1676413a4bc" alt="pubdev" width="445" height="228">
 
-## _The Example App_
+## _Fluttery Framework's Example App_
 An extensive example app accompanies the Fluttery Framework package itself. You'll find it under the 'pub.dev' 
 folder when you take in the Fluttery Framework through your `pubspec.yaml` file. The example code there demonstrates 
 the functions and features to quickly make a multi-platform app.
@@ -16,7 +16,7 @@ the functions and features to quickly make a multi-platform app.
 <img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/124d415d-2fd5-4629-a19f-c01bbbae8000" width="171" height="357">
 <img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cea16091-79c8-45fd-8fa9-eb571cc521f9" width="171" height="357">
 
-## _The Steps Necessary_
+## _The Necessary Steps_
 
 1. Extend the State class with `StateX` instead of `State`.
 2. Extend your Controller with the class, `StateXConroller`.
@@ -32,9 +32,10 @@ ___
 ![scalability](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/b5af9fb1-9aef-4f05-baa4-98ff3014caef)
 
 ## _The Controller and State Events_
-With the controller, you not only supply the app's business rules, but your controller can respond
-the system events that commonly occur during an app's lifecycle. The sample code below lists all the 
-available 'event' functions:
+With the controller, you not only supply the app's business rules, but can also respond
+to the device and system events that commonly occur during an app's lifecycle. The sample code below lists all the 
+available 'event' functions. In most cases, you'll only use the 'lifecycle' functions. However, they're
+all there just the same as you may need them someday in a future app:
 ```Dart
 class CounterController extends StateXController {
   factory CounterController() => _this ??= CounterController._();
@@ -170,8 +171,8 @@ class CounterController extends StateXController {
   void didChangeAccessibilityFeatures() {}
 }
 ```
-## _List of System Events_
-##### (Tap on each to see their source code equivalent)
+## _List of Device and System Events_
+##### (Tap on each to see the source code and an explanation of their function.)
 [![deactivate](https://github.com/AndriousSolutions/state_extended/assets/32497443/5efcf55d-4b34-4875-a4f3-5532ab438f58)](https://github.com/AndriousSolutions/state_extended/blob/074e17ee298eec2a22c3b904caf20e75d5ce41c3/lib/state_extended.dart#L1530)
 [![activate](https://github.com/AndriousSolutions/state_extended/assets/32497443/1c69c8a9-7f16-40e2-b3de-d58ff521df2e)](https://github.com/AndriousSolutions/state_extended/blob/074e17ee298eec2a22c3b904caf20e75d5ce41c3/lib/state_extended.dart#L1540)
 [![didUpdateWidget](https://github.com/AndriousSolutions/state_extended/assets/32497443/6f6a83a8-0fb7-43d4-985b-9dc6bc3b1b5a)](https://github.com/AndriousSolutions/state_extended/blob/074e17ee298eec2a22c3b904caf20e75d5ce41c3/lib/state_extended.dart#L1576)

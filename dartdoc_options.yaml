@@ -12,11 +12,7 @@ dartdoc:
     "Error handling":
       markdown: doc/error-handling.md
       name: Error handling
-  categoryOrder:
-    - "Get started"
-    - "State Object Controller"
-    - "App's Preferences"
-    - "Error handling"
+  nodoc: ['lib/*.dart']
   showUndocumentedCategories: true
   ignore:
     - broken-link
