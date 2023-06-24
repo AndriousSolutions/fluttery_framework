@@ -27,9 +27,9 @@ void testFlutteryFramework() {
     final TestWidgetsFlutterBinding binding =
         TestWidgetsFlutterBinding.ensureInitialized();
 
-    // (TODO: Tip # 4) Consider configuring your default screen size here.
-    // You can reset it to something else within a test
-    binding.window.physicalSizeTestValue = _deskTopSize;
+    // // (TODO: Tip # 4) Consider configuring your default screen size here.
+    // // You can reset it to something else within a test
+    // binding.window.physicalSizeTestValue = _deskTopSize;
   });
 
   /// Be sure the close the app after all the testing.

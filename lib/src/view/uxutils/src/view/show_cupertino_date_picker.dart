@@ -160,6 +160,6 @@ void showCupertinoDatePicker(
     ),
     filter: filter,
     useRootNavigator: useRootNavigator,
-    semanticsDismissible: semanticsDismissible,
+    semanticsDismissible: semanticsDismissible ?? true,
   );
 }

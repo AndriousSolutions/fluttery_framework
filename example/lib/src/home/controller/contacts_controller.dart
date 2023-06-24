@@ -64,6 +64,7 @@ class ContactsController extends StateXController {
     return _contacts!;
   }
 
+  /// Retrieve any new contacts or display any changes made.
   Future<void> refresh() async {
     await getContacts();
     super.setState(() {});

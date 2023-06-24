@@ -34,8 +34,10 @@ class _AddContactState extends StateX<AddContact> {
   // Use the appropriate interface depending on the platform.
   // Called everytime the setState() function is called.
   @override
-  Widget build(BuildContext context) =>
-      App.useMaterial ? _BuildAndroid(state: this) : _BuildiOS(state: this);
+  Widget buildAndroid(BuildContext context) => _BuildAndroid(state: this);
+
+  @override
+  Widget buildiOS(BuildContext context) => _BuildiOS(state: this);
 }
 
 /// The Android interface.

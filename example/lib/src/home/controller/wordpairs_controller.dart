@@ -253,7 +253,8 @@ class WordPairsController extends StateXController {
     /// AppLifecycleState.resume
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didChangeAppLifecycleState in ${this.state}');
+      print(
+          '############ Event: didChangeAppLifecycleState in ${this.state} for $this');
     }
   }
 
@@ -269,8 +270,7 @@ class WordPairsController extends StateXController {
   /// Called when the system changes the set of active accessibility features.
   @override
   void didChangeAccessibilityFeatures() {
-    // inDebugger is deprecated but still tested here. Use inDebugMode instead.
-    if (inDebugger) {
+    if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: didChangeAccessibilityFeatures in $state');
     }

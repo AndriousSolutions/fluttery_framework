@@ -6,10 +6,7 @@ class AppDrawer extends v.AppDrawer {
   factory AppDrawer({Key? key}) => _this ??= AppDrawer._(key);
   static AppDrawer? _this;
 
-  AppDrawer._(Key? key)
-      : super(
-          key: key,
-        ) {
+  AppDrawer._(Key? key) : super(key: key) {
     //
     addAll([
       ListTile(

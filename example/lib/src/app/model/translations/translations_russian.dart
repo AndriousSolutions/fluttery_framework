@@ -35,4 +35,5 @@ Map<String, String> ruRU = {
   'Startup Name Generator': 'Генератор имени запуска',
   'Saved Suggestions': 'Сохраненные предложения',
   'Current Language': 'Текущий язык',
+  'Use built-in InheritedWidget': 'Используйте встроенный InheritedWidget',
 };

@@ -136,12 +136,16 @@ class ContactsDB extends SQLiteDB {
           //
           phone['phone'] = phone['initValue'];
 
-          final delete = await showBox(
-              text: 'Deleting this Phone number?',
-              context: contact.state!.context);
+          final context = contact.state!.context;
+          // Ensure compiler because using BuildContext across asynchronous gap.
+          if (context.mounted) {
+            //
+            final delete = await showBox(
+                text: 'Deleting this Phone number?', context: context);
 
-          if (delete) {
-            phone.addAll({'deleted': 1});
+            if (delete) {
+              phone.addAll({'deleted': 1});
+            }
           }
         }
 
@@ -165,6 +169,7 @@ class ContactsDB extends SQLiteDB {
           //
           email['phone'] = email['initValue'];
 
+          // ignore: use_build_context_synchronously
           final delete = await showBox(
               text: 'Deleting this email?', context: contact.state!.context);
 

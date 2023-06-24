@@ -10,3 +10,6 @@ export 'package:fluttery_framework_example/src/home/controller/counter_controlle
 
 // The Word Pairs app
 export 'package:fluttery_framework_example/src/home/controller/wordpairs_controller.dart';
+
+// Grid View app
+export 'package:fluttery_framework_example/src/home/grid_app_example/grid_controller.dart';

@@ -12,21 +12,22 @@ import 'package:fluttery_framework/controller.dart'
 
 import 'package:state_extended/state_extended.dart' as s show StateX;
 
-import 'package:fluttery_framework/view.dart' as v
-    show
-        App,
-        AppRouterDelegate,
-        AppErrorHandler,
-        AppRouteInformationParser,
-        AppStateX,
-        L10n,
-        ReportErrorHandler,
-        Sizer;
+import 'package:fluttery_framework/view.dart';
+
+import 'package:fluttery_framework/view.dart' as v;
+
+// show
+//     App,
+//     AppRouterDelegate,
+//     AppErrorHandler,
+//     AppRouteInformationParser,
+//     AppStateX,
+//     L10n,
+//     ReportErrorHandler,
+//     Sizer;
 
 /// Highlights UI while debugging.
 import 'package:flutter/rendering.dart' as debug;
-
-import '../../view.dart';
 
 /// The View for the app. The 'look and feel' for the whole app.
 class AppState<T extends StatefulWidget> extends _AppState<T>
@@ -58,7 +59,11 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.theme,
     super.iOSTheme,
     super.darkTheme,
+    super.highContrastTheme,
+    super.highContrastDarkTheme,
     super.themeMode,
+    super.themeAnimationDuration,
+    super.themeAnimationCurve,
     super.color,
     super.locale,
     super.localizationsDelegates,
@@ -76,9 +81,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.debugShowCheckedModeBanner,
     super.shortcuts,
     super.actions,
+    this.useRouterConfig,
     super.restorationScopeId,
     super.scrollBehavior,
-    super.useInheritedMediaQuery,
     super.debugShowWidgetInspector,
     super.debugPaintSizeEnabled,
     super.debugPaintBaselinesEnabled,
@@ -111,7 +116,11 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     this.inTheme,
     this.iniOSTheme,
     this.inDarkTheme,
+    this.inHighContrastTheme,
+    this.inHighContrastDarkTheme,
     this.inThemeMode,
+    this.inThemeAnimationDuration,
+    this.inThemeAnimationCurve,
     this.inColor,
     this.inLocale,
     this.inLocalizationsDelegates,
@@ -128,7 +137,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     this.inActions,
     this.inRestorationScopeId,
     this.inScrollBehavior,
-    this.inInheritedMediaQuery,
     this.inError,
     this.inAsyncError,
   })  : _stateRouteObserver = StateRouteObserver(),
@@ -173,6 +181,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   /// The App's 'home screen'
   final Widget? home;
+
+  ///
+  final bool? useRouterConfig;
 
   /// Explicitly use the Material theme
   bool? useMaterial;
@@ -248,8 +259,20 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Returns the App's 'Dark Theme' [ThemeData] if any.
   final ThemeData? Function()? inDarkTheme;
 
+  /// Returns the App's 'High Contrast Theme' [ThemeData] if any.
+  final ThemeData? Function()? inHighContrastTheme;
+
+  /// Returns the App's 'High Contrast Dark Theme' [ThemeData] if any.
+  final ThemeData? Function()? inHighContrastDarkTheme;
+
   /// Returns the App's [ThemeMode] if any.
   final ThemeMode? Function()? inThemeMode;
+
+  /// The duration of animated theme changes.
+  final Duration? Function()? inThemeAnimationDuration;
+
+  /// The curve to apply when animating theme changes.
+  final Curve? Function()? inThemeAnimationCurve;
 
   /// Returns the App's [Color] if any.
   final Color? Function()? inColor;
@@ -300,9 +323,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Returns the App's [ScrollBehavior] if any.
   final ScrollBehavior? Function()? inScrollBehavior;
 
-  /// Returns the App's 'Inherited Media Query' routine if any.
-  final bool? Function()? inInheritedMediaQuery;
-
   /// Returns the App's 'Error Handler' if any.
   final void Function(FlutterErrorDetails details)? inError;
 
@@ -312,11 +332,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   // The error flag.
   bool _inError = false;
 
-  /// Supply to the 'home' StatefulWidget
-  /// Allows you to 're-create' the home widget's state object.
-  @Deprecated('Prone to misuse. Recursive deactivation if used more than once.')
-  static Key homeKey = UniqueKey();
-
   /// Reference the 'parent' State object
   State? get parentState => _parentState;
   State? _parentState;
@@ -325,13 +340,13 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   set parentState(State? state) => _parentState ??= state;
 
   /// Reference to the 'app' object.
-  v.App? get app => _app;
+  AppObject? get app => _app;
 
   /// Set the 'app' object but only once!
-  set app(v.App? app) => _app ??= app;
+  set app(AppObject? app) => _app ??= app;
 
   /// The app's representation
-  v.App? _app;
+  AppObject? _app;
 
   /// You need to be able access the widget.
   // if parentState is null then AppStatefulWidget was likely not used.
@@ -378,9 +393,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   /// Override build to avoid the built-in Future Builder. It's been run.
   @override
-  Widget build(BuildContext context) => v.Sizer(
-      // ignore: deprecated_member_use
-      builder: (context, orientation, deviceType) => buildWidget(context));
+  Widget build(BuildContext context) =>
+      Sizer(builder: (context, orientation, deviceType) => buildF(context));
 
   /// Override to impose your own WidgetsApp (like CupertinoApp or MaterialApp)
   @override
@@ -401,26 +415,60 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       return true;
     }());
 
-    final _routerDelegate = routerDelegate ?? onRouterDelegate();
+    // If the Router Configuration is provided.
     final _routerConfig = routerConfig ?? onRouterConfig();
-    var _routeInformationParser =
-        routeInformationParser ?? onRouteInformationParser();
-    // Supply the appropriate parser for the developer.
-    if (_routerDelegate is v.AppRouterDelegate &&
-        _routeInformationParser == null) {
-      _routeInformationParser = v.AppRouteInformationParser();
+
+    // Make the GoRouter readily available without requiring a context.
+    if (_routerConfig != null) {
+      App.goRouter = _routerConfig;
     }
+
+    // If the flag was set to true and there is a Router Configuration.
+    final _useRouter = (useRouterConfig ?? false) && _routerConfig != null;
+
+    // If the routerConfig is to be used, the others must all be null.
+    final _routeInformationProvider = _useRouter
+        ? null
+        : routeInformationProvider ?? onRouteInformationProvider();
+
+    final _routeInformationParser = _useRouter
+        ? null
+        : routeInformationParser ?? onRouteInformationParser();
+
+    final _routerDelegate =
+        _useRouter ? null : routerDelegate ?? onRouterDelegate();
+
+    final _backButtonDispatcher =
+        _useRouter ? null : backButtonDispatcher ?? onBackButtonDispatcher();
+
+    // Determine the supported Locales.
+    var _supportedLocales = supportedLocales ??
+        onSupportedLocales() ??
+        App.supportedLocales ??
+        const <Locale>[Locale('en', 'US')];
+    // Can't be empty
+    if(_supportedLocales.isEmpty){
+      _supportedLocales = const <Locale>[Locale('en', 'US')];
+    }
+    // Assign the locales to the App
+    App.supportedLocales = _supportedLocales;
+
+    // Locale must explicitly be assigned to Get.locale as well.
+    final _locale = onLocale() ?? locale;
+    // Assign the appropriate Locale to the App's locale
+    locale = _locale;
 
     if (useCupertino!) {
       // A CupertinoApp object has been supplied.
       if (cupertinoApp != null) {
         app = cupertinoApp!;
         //
-      } else if (_routerDelegate == null && _routerConfig == null) {
+      } else if (_routerDelegate == null && !_useRouter) {
         //
         app = CupertinoApp(
           key: key ?? cupertinoKey,
-          navigatorKey: v.App.navigatorKey,
+          navigatorKey: App.navigatorKey,
+          theme: _iosThemeData(),
           routes: routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
           initialRoute: initialRoute ?? onInitialRoute(),
           onGenerateRoute: onGenerateRoute ?? onOnGenerateRoute(),
@@ -430,18 +478,14 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           title: title = onTitle(), // Important to assign an empty string
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
           color: color ?? onColor() ?? Colors.blue,
-          theme: _iosThemeData(),
-          locale:
-              onLocale() ?? locale, // locale gets assigned elsewhere so switch
+          locale: _locale,
           localizationsDelegates:
               localizationsDelegates ?? onLocalizationsDelegates(),
           localeListResolutionCallback:
               localeListResolutionCallback ?? onLocaleListResolutionCallback,
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback,
-          supportedLocales: v.App.supportedLocales = supportedLocales ??
-              onSupportedLocales() ??
-              const <Locale>[Locale('en', 'US')],
+          supportedLocales: _supportedLocales,
           showPerformanceOverlay:
               showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
           checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
@@ -459,8 +503,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           actions: actions ?? onActions(),
           restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
           scrollBehavior: scrollBehavior ?? onScrollBehavior(),
-          useInheritedMediaQuery:
-              useInheritedMediaQuery ?? onInheritedMediaQuery() ?? false,
           // Let the parameters run before the home parameter.
           home: home ?? onHome(),
         );
@@ -468,27 +510,24 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
         //
         app = CupertinoApp.router(
           key: key ?? cupertinoKey,
-          routeInformationProvider:
-              routeInformationProvider ?? onRouteInformationProvider(),
+          routeInformationProvider: _routeInformationProvider,
           routeInformationParser: _routeInformationParser,
           routerDelegate: _routerDelegate,
+          backButtonDispatcher: _backButtonDispatcher,
           routerConfig: _routerConfig,
           theme: _iosThemeData(),
           builder: builder ?? onBuilder(),
           title: title = onTitle(),
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
           color: color ?? onColor() ?? Colors.blue,
-          locale:
-              onLocale() ?? locale, // locale gets assigned elsewhere so switch
+          locale: _locale,
           localizationsDelegates:
               localizationsDelegates ?? onLocalizationsDelegates(),
           localeListResolutionCallback:
               localeListResolutionCallback ?? onLocaleListResolutionCallback,
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback,
-          supportedLocales: v.App.supportedLocales = supportedLocales ??
-              onSupportedLocales() ??
-              const <Locale>[Locale('en', 'US')],
+          supportedLocales: _supportedLocales,
           showPerformanceOverlay:
               showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
           checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
@@ -506,8 +545,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           actions: actions ?? onActions(),
           restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
           scrollBehavior: scrollBehavior ?? onScrollBehavior(),
-          useInheritedMediaQuery:
-              useInheritedMediaQuery ?? onInheritedMediaQuery() ?? false,
         );
       }
     } else {
@@ -515,11 +552,11 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       if (materialApp != null) {
         app = materialApp!;
         //
-      } else if (_routerDelegate == null && _routerConfig == null) {
+      } else if (_routerDelegate == null && !_useRouter) {
         //
         app = MaterialApp(
           key: key ?? materialKey,
-          navigatorKey: v.App.navigatorKey,
+          navigatorKey: App.navigatorKey,
           scaffoldMessengerKey:
               scaffoldMessengerKey ?? onScaffoldMessengerKey(),
           routes: routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
@@ -533,17 +570,22 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           color: color ?? onColor() ?? Colors.white,
           theme: _themeData(),
           darkTheme: darkTheme ?? onDarkTheme(),
+          highContrastTheme: highContrastTheme ?? onHighContrastTheme(),
+          highContrastDarkTheme:
+              highContrastDarkTheme ?? onHighContrastDarkTheme(),
           themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
-          locale:
-              onLocale() ?? locale, // locale gets assigned elsewhere so switch
+          themeAnimationDuration: themeAnimationDuration ??
+              onThemeAnimationDuration() ??
+              const Duration(milliseconds: 200),
+          themeAnimationCurve:
+              themeAnimationCurve ?? onThemeAnimationCurve() ?? Curves.linear,
+          locale: _locale,
           localizationsDelegates: onLocalizationsDelegates(),
           localeListResolutionCallback:
               localeListResolutionCallback ?? onLocaleListResolutionCallback,
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback,
-          supportedLocales: v.App.supportedLocales = supportedLocales ??
-              onSupportedLocales() ??
-              const <Locale>[Locale('en', 'US')],
+          supportedLocales: _supportedLocales,
           debugShowMaterialGrid:
               debugShowMaterialGrid ?? onDebugShowMaterialGrid() ?? false,
           showPerformanceOverlay:
@@ -563,8 +605,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           actions: actions ?? onActions(),
           restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
           scrollBehavior: scrollBehavior ?? onScrollBehavior(),
-          useInheritedMediaQuery:
-              useInheritedMediaQuery ?? onInheritedMediaQuery() ?? false,
           // Let the parameters run before the home parameter.
           home: home ?? onHome(),
         );
@@ -574,30 +614,33 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           key: key ?? materialKey,
           scaffoldMessengerKey:
               scaffoldMessengerKey ?? onScaffoldMessengerKey(),
-          routeInformationProvider:
-              routeInformationProvider ?? onRouteInformationProvider(),
+          routeInformationProvider: _routeInformationProvider,
           routeInformationParser: _routeInformationParser,
           routerDelegate: _routerDelegate,
           routerConfig: _routerConfig,
-          backButtonDispatcher:
-              backButtonDispatcher ?? onBackButtonDispatcher(),
+          backButtonDispatcher: _backButtonDispatcher,
           builder: builder ?? onBuilder(),
           title: title = onTitle(),
           onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
           color: color ?? onColor() ?? Colors.white,
           theme: _themeData(),
           darkTheme: darkTheme ?? onDarkTheme(),
+          highContrastTheme: highContrastTheme ?? onHighContrastTheme(),
+          highContrastDarkTheme:
+              highContrastDarkTheme ?? onHighContrastDarkTheme(),
           themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
-          locale:
-              onLocale() ?? locale, // locale gets assigned elsewhere so switch
+          themeAnimationDuration: themeAnimationDuration ??
+              onThemeAnimationDuration() ??
+              const Duration(milliseconds: 200),
+          themeAnimationCurve:
+              themeAnimationCurve ?? onThemeAnimationCurve() ?? Curves.linear,
+          locale: _locale,
           localizationsDelegates: onLocalizationsDelegates(),
           localeListResolutionCallback:
               localeListResolutionCallback ?? onLocaleListResolutionCallback,
           localeResolutionCallback:
               localeResolutionCallback ?? onLocaleResolutionCallback,
-          supportedLocales: v.App.supportedLocales = supportedLocales ??
-              onSupportedLocales() ??
-              const <Locale>[Locale('en', 'US')],
+          supportedLocales: _supportedLocales,
           debugShowMaterialGrid:
               debugShowMaterialGrid ?? onDebugShowMaterialGrid() ?? false,
           showPerformanceOverlay:
@@ -617,26 +660,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           actions: actions ?? onActions(),
           restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
           scrollBehavior: scrollBehavior ?? onScrollBehavior(),
-          useInheritedMediaQuery:
-              useInheritedMediaQuery ?? onInheritedMediaQuery() ?? false,
         );
       }
     }
-
-//     // The theme may not have been set. This property must have a value.
-//     // Assign Flutter's current theme default
-// //    v.App.themeData ??= ThemeData.light();
-//     if (v.App.themeData == null) {
-//       v.App.themeData = ThemeData.light();
-//       // If a color is already stored in preferences, don't overwrite.
-//       v.App.preferredTheme(
-//           color: v.App.themeData!.primaryColor, overWrite: false);
-//     }
-//
-//     // Supply the iOS theme if necessary.
-//     v.App.iOSTheme ??=
-//         MaterialBasedCupertinoThemeData(materialTheme: v.App.themeData!);
-
     return app;
   }
 
@@ -668,16 +694,16 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   CupertinoThemeData? _iosThemeData() {
     // ignore: join_return_with_assignment
-    v.App.iOSTheme = iOSTheme ??
+    App.iOSTheme = iOSTheme ??
         oniOSTheme() ??
         const CupertinoThemeData(brightness: Brightness.light);
-    return v.App.iOSTheme;
+    return App.iOSTheme;
   }
 
   ThemeData? _themeData() {
     // ignore: join_return_with_assignment
-    v.App.themeData = theme ?? onTheme();
-    return v.App.themeData;
+    App.themeData = theme ?? onTheme();
+    return App.themeData;
   }
 
   /// Override if you like to customize error handling.
@@ -758,7 +784,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// During development, if a hot reload occurs, the reassemble method is called.
   @override
   void reassemble() {
-    v.App.hotReload = true;
+    App.hotReload = true;
     super.reassemble();
   }
 
@@ -791,7 +817,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   /// Returns the App's Navigator Key.
   @Deprecated("App's Navigator's Key is GlobalKey<NavigatorState>()")
-  GlobalKey<NavigatorState> onNavigatorKey() => v.App.navigatorKey;
+  GlobalKey<NavigatorState> onNavigatorKey() => App.navigatorKey;
 
   /// Returns the App's ScaffoldMessenger Key.
   GlobalKey<ScaffoldMessengerState> onScaffoldMessengerKey() =>
@@ -852,7 +878,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   /// Returns the 'Generate Title' routine if any.
   GenerateAppTitle? onOnGenerateTitle(BuildContext context) =>
-      inGenerateTitle ?? (context) => v.L10n.s(onTitle());
+      inGenerateTitle ?? (context) => L10n.s(onTitle());
 
   /// Returns the App's [ThemeData] if any.
   ThemeData? onTheme() => inTheme != null ? inTheme!() : null;
@@ -863,9 +889,26 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Returns the App's 'Dark Theme' [ThemeData] if any.
   ThemeData? onDarkTheme() => inDarkTheme != null ? inDarkTheme!() : null;
 
+  /// Returns the App's 'High Contrast Theme' [ThemeData] if any.
+  ThemeData? onHighContrastTheme() =>
+      inHighContrastTheme != null ? inHighContrastTheme!() : null;
+
+  /// Returns the App's 'High Contrast Dark Theme' [ThemeData] if any.
+  ThemeData? onHighContrastDarkTheme() =>
+      inHighContrastDarkTheme != null ? inHighContrastDarkTheme!() : null;
+
   /// Returns the App's [ThemeMode] if any.
   ThemeMode? onThemeMode() =>
       inThemeMode != null ? inThemeMode!() : ThemeMode.system;
+
+  /// Returns the App's [ThemeMode] if any.
+  Duration? onThemeAnimationDuration() => inThemeAnimationDuration != null
+      ? inThemeAnimationDuration!()
+      : const Duration(milliseconds: 200);
+
+  /// Returns the App's [ThemeMode] if any.
+  Curve? onThemeAnimationCurve() =>
+      inThemeAnimationCurve != null ? inThemeAnimationCurve!() : Curves.linear;
 
   /// Returns the App's [Color] if any.
   Color? onColor() => inColor != null ? inColor!() : null;
@@ -898,7 +941,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       inLocaleResolutionCallback == null
           ? null
           : inLocaleResolutionCallback!(
-              locale, supportedLocales); // ?? v.L10n.localeResolutionCallback;
+              locale, supportedLocales); // ?? L10n.localeResolutionCallback;
 
   /// Returns the Locale Iteration if any.
   List<Locale>? onSupportedLocales() =>
@@ -953,11 +996,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Returns the App's [ScrollBehavior] if any.
   ScrollBehavior? onScrollBehavior() =>
       inScrollBehavior != null ? inScrollBehavior!() : null;
-
-  /// Returns the App's 'Inherited Media Query' routine if any.
-  bool? onInheritedMediaQuery() =>
-      // ignore: avoid_bool_literals_in_conditional_expressions
-      inInheritedMediaQuery != null ? inInheritedMediaQuery!() : false;
 }
 
 /// The underlying State object representing the App's View in the MVC pattern.
@@ -989,7 +1027,11 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     this.theme,
     this.iOSTheme,
     this.darkTheme,
+    this.highContrastTheme,
+    this.highContrastDarkTheme,
     this.themeMode,
+    this.themeAnimationDuration,
+    this.themeAnimationCurve,
     this.locale,
     this.localizationsDelegates,
     this.localeListResolutionCallback,
@@ -1006,7 +1048,6 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     this.actions,
     this.restorationScopeId,
     this.scrollBehavior,
-    this.useInheritedMediaQuery,
     this.debugPaintSizeEnabled,
     this.debugPaintBaselinesEnabled,
     this.debugPaintPointersEnabled,
@@ -1027,7 +1068,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
       FlutterError.onError = _handleError;
     }
     // Listen to the device's connectivity.
-    v.App.addConnectivityListener(controller);
+    App.addConnectivityListener(controller);
 //    title ??= '';
 //    color ??= Colors.blue;
     debugShowMaterialGrid ??= false;
@@ -1045,7 +1086,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     debugRepaintTextRainbowEnabled ??= false;
 
     // Supply a customized error handling.
-    _errorHandler = v.AppErrorHandler(
+    _errorHandler = AppErrorHandler(
         handler: errorHandler ?? onErrorHandler,
         screen: errorScreen ?? onErrorScreen,
         report: errorReport ?? onErrorReport);
@@ -1055,7 +1096,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   final FlutterExceptionHandler? currentErrorFunc;
 
   // The App's error handler.
-  v.AppErrorHandler? _errorHandler;
+  AppErrorHandler? _errorHandler;
 
   /// The MaterialApp and CupertinoApp if provided.
   MaterialApp? materialApp;
@@ -1081,7 +1122,11 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   ThemeData? theme;
   CupertinoThemeData? iOSTheme;
   ThemeData? darkTheme;
+  ThemeData? highContrastTheme;
+  ThemeData? highContrastDarkTheme;
   ThemeMode? themeMode;
+  Duration? themeAnimationDuration;
+  Curve? themeAnimationCurve;
   Color? color;
   Locale? locale;
   Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
@@ -1097,9 +1142,9 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   bool? debugShowCheckedModeBanner;
   Map<LogicalKeySet, Intent>? shortcuts;
   Map<Type, Action<Intent>>? actions;
+
   String? restorationScopeId;
   ScrollBehavior? scrollBehavior;
-  bool? useInheritedMediaQuery;
 
   /// Highlights UI while debugging.
   bool? debugPaintSizeEnabled;
@@ -1137,7 +1182,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
 
   FlutterExceptionHandler? errorHandler;
   ErrorWidgetBuilder? errorScreen;
-  v.ReportErrorHandler? errorReport;
+  ReportErrorHandler? errorReport;
 
   final FlutterExceptionHandler? inErrorHandler;
   final ErrorWidgetBuilder? inErrorScreen;
@@ -1185,7 +1230,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   void onError(FlutterErrorDetails details) {
     try {
       // Call the App's 'current' error handler.
-      v.App.onError(details);
+      App.onError(details);
     } catch (e, stack) {
       recordException(e, stack);
     }
@@ -1207,7 +1252,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
         );
         try {
           // Call the App's 'current' error handler.
-          v.App.onError(details);
+          App.onError(details);
         } catch (e, stack) {
           // Error in the final error handler? That's a pickle.
           recordException(e, stack);
@@ -1217,6 +1262,135 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   }
 }
 
+// ///
+// class AppInformationParser extends RouteInformationParser<GetNavConfig> {
+//   /// [initialRoute] => [/]
+//   AppInformationParser({
+//     String? initialRoute,
+//   })  : initialRoute = initialRoute ?? '/',
+//         super();
+//
+//   /// Initial route
+//   /// default '/'
+//   final String initialRoute;
+//
+//   @override
+//   Future<GetNavConfig> parseRouteInformation(
+//     RouteInformation routeInformation,
+//   ) {
+//     String? location = routeInformation.location; // => [/]
+//     if (location == '/') {
+//       if (!Get.routeTree.routes.any((e) => e.name == '/')) {
+//         location = initialRoute;
+//       }
+//     }
+//
+//     // if (!Get.routeTree.routes.any((e) => false)) {
+//     //   location = AppRoutes.notFound;
+//     // }
+//
+//     final matchResult = Get.routeTree.matchRoute(location ?? initialRoute);
+//     String? matchResultLocation = matchResult.route?.name;
+//
+//     if (matchResultLocation != location) {
+//       location = AppRoutes.notFound;
+//     } else if (matchResultLocation == AppRoutes.navigation) {
+//       location = AppRoutes.home;
+//     } else if (matchResultLocation == AppRoutes.list) {
+//       location = AppRoutes.vehicles;
+//     } else if (matchResultLocation == AppRoutes.report) {
+//       location = AppRoutes.vehicleReport;
+//     } else if (matchResultLocation == AppRoutes.map) {
+//       location = AppRoutes.mapVehicles;
+//     }
+//
+//     final result = Get.routeTree.matchRoute(location ?? initialRoute);
+//
+//     return SynchronousFuture(
+//       GetNavConfig(
+//         currentTreeBranch: result.treeBranch,
+//         location: location,
+//         state: routeInformation.state,
+//       ),
+//     );
+//   }
+//
+//   @override
+//   RouteInformation? restoreRouteInformation(GetNavConfig configuration) {
+//     return RouteInformation(
+//       location: configuration.location,
+//       state: configuration.state,
+//     );
+//   }
+// }
+//
+// /// Of course, You're free to override this class if you like
+// class AppRoutes {
+//   /// Identified as the 'home' page.
+//   AppRoutes.home()
+//       : path = '/',
+//         isUnknown = false,
+//         isHomePage = true;
+//
+//   /// Identified as a Page.
+//   AppRoutes.page(this.path)
+//       : isUnknown = false,
+//         isHomePage = false;
+//
+//   /// Indentified as an 'unknown' page.
+//   AppRoutes.unknown([String? _path])
+//       : path = _path ?? '/404',
+//         isUnknown = true,
+//         isHomePage = false;
+//
+// //  final AppRouteState? state;
+//   /// The path
+//   final String? path;
+//
+//   /// Indicates if the page is unknown.
+//   final bool isUnknown;
+//
+//   /// Indicates if it is a 'home' page.
+//   final bool isHomePage;
+//
+//   /// Converts the AppRoutePath object as a Json object.
+//   Map<String, Object> toJson() => <String, Object>{
+//         'path': path ?? '',
+//         'isUnknown': isUnknown,
+//         'isHomePage': isHomePage,
+//       };
+//
+//   /// Returns an AppRoutePath object for a Json object.
+//   AppRoutes fromJson(Map<String, dynamic> json) {
+//     AppRoutes route;
+//
+//     String? path;
+//     final dynamic value = json['path'];
+//
+//     if (value is String) {
+//       path = value;
+//     } else {
+//       path = '';
+//     }
+//
+//     if (path.trim().isEmpty) {
+//       path = '/404';
+//     }
+//
+//     switch (path) {
+//       case '/':
+//         route = AppRoutes.home();
+//         break;
+//       case '/404':
+//         route = AppRoutes.unknown();
+//         break;
+//       default:
+//         route = AppRoutes.page(path);
+//     }
+//     return route;
+//   }
+// }
+
 /// Supply an 'error handler' routine if something goes wrong.
 /// It need not be implemented, but it's their for your consideration.
 mixin StateXonErrorMixin<T extends StatefulWidget> on s.StateX<T> {
@@ -1224,11 +1398,137 @@ mixin StateXonErrorMixin<T extends StatefulWidget> on s.StateX<T> {
   void onError(FlutterErrorDetails details) {}
 }
 
+/// A State object that implements a built-in InheritedWidget
+abstract class StateIn<T extends StatefulWidget> extends StateX<T> {
+  ///
+  StateIn({StateXController? controller})
+      : super(controller: controller, useInheritedWidget: true);
+
+  /// Build the Android interface
+  @override
+  Widget buildAndroid(BuildContext context);
+
+  /// Build the iOS interface
+  @override
+  Widget buildiOS(BuildContext context) => super.buildiOS(context);
+}
+
 ///
 abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
     with NavigatorStateMethodsMixin, StateXonErrorMixin {
   ///
-  StateX([StateXController? _controller]) : super(_controller);
+  StateX({StateXController? controller, this.useInheritedWidget})
+      : super(controller) {
+    // Ensure a default value
+    _useInherited = this.useInheritedWidget ?? false;
+  }
+
+  /// A flag determining whether the built-in InheritedWidget is used or not.
+  final bool? useInheritedWidget;
+  // Same flag but non-nullable
+  late bool _useInherited;
+
+  // Collect any 'widgets' depending on this State's InheritedWidget.
+  final Set<BuildContext> _dependencies = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _appState = App.appState;
+  }
+
+  late v.AppState? _appState;
+
+  /// Provide the 'main' controller to this 'State View.'
+  @override
+  StateXController? get controller {
+    final controller = super.controller;
+    return controller == null ? null : controller as StateXController;
+  }
+
+  /// Build the Android interface
+  // If only an iOS app, implement this function anyway. It'll get called below.
+  Widget buildAndroid(BuildContext context);
+
+  /// Build the iOS interface
+  Widget buildiOS(BuildContext context) => buildAndroid(context);
+
+  /// Implement the build() function if you don't use initAsync()
+  /// Implemented in mixin FutureBuilderStateMixin
+  /// Explicitly implemented here to highlight the override.
+  @override
+  //ignore: unnecessary_overrides
+  Widget build(BuildContext context) => super.build(context);
+
+  @override
+  Widget buildF(BuildContext context) => _useInherited
+      ? _StateXInheritedWidget(
+          key: ValueKey<StateX>(this),
+          state: this,
+          child: _child ??= buildIn(context),
+        )
+      : buildIn(context);
+
+  /// Compiled once and passed to an InheritedWidget
+  /// Supply the appropriate interface depending on the platform.
+  Widget buildIn(BuildContext context) =>
+      App.useMaterial ? buildAndroid(context) : buildiOS(context);
+
+  InheritedElement? _inheritedElement;
+
+  // Widget passed to the InheritedWidget.
+  Widget? _child;
+
+  /// Determine if the dependencies should be updated.
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
+
+  ///
+  ///  Set the specified widget (through its context) as a dependent of the InheritedWidget
+  ///
+  ///  Return false if not configured to use the InheritedWidget
+  @override
+  bool dependOnInheritedWidget(BuildContext? context) {
+    var depend = _useInherited && context != null;
+    if (depend) {
+      if (_inheritedElement == null) {
+        _dependencies.add(context);
+      } else {
+        context.dependOnInheritedElement(_inheritedElement!);
+      }
+    } else {
+      depend = super.dependOnInheritedWidget(context);
+    }
+    return depend;
+  }
+
+  /// In harmony with Flutter's own API
+  /// Rebuild the InheritedWidget of the 'closes' InheritedStateX object if any.
+  @override
+  void notifyClients() {
+    if (_useInherited) {
+      setState(() {});
+    } else {
+      super.notifyClients();
+    }
+  }
+
+  @override
+  void dispose() {
+    _appState = null;
+    _child = null;
+    _inheritedElement = null;
+    _dependencies.clear();
+    super.dispose();
+  }
+
+  /// Called when the State's InheritedWidget is called again
+  /// This 'widget function' will be called again.
+  Widget state(WidgetBuilder? widgetFunc) {
+    widgetFunc ??= (_) => const SizedBox();
+    return _useInherited
+        ? _SetStateWidget(stateX: this, widgetFunc: widgetFunc)
+        : widgetFunc(context);
+  }
 
   /// Use this to navigate throughout the your app
   static NavigatorState get router => App.router;
@@ -1238,7 +1538,7 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Subscribe this to be informed about changes to route.
-    App.state?.subscribe(this);
+    _appState?.subscribe(this);
   }
 
   @override
@@ -1246,7 +1546,7 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
   void activate() {
     super.activate();
     // Subscribe this to be informed about changes to route.
-    App.state?.subscribe(this);
+    _appState?.subscribe(this);
   }
 
   @override
@@ -1254,21 +1554,64 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
   void deactivate() {
     super.deactivate();
     // No longer informed about changes to its route.
-    App.state?.unsubscribe(this);
+    _appState?.unsubscribe(this);
   }
 }
 
-/// Supply a specific Controller to this StatelessWidget.
-abstract class View<T extends StateXController> extends StatelessWidget {
-  ///
-  const View({Key? key}) : super(key: key);
+/// The InheritedWidget used by StateX
+class _StateXInheritedWidget extends InheritedWidget {
+  const _StateXInheritedWidget(
+      {super.key, required this.state, required super.child});
 
-  /// Supply the specified Controller.
-  T? get controller => App.state?.controllerByType<T>();
+  final StateX state;
 
   @override
-  Widget build(BuildContext context);
+  InheritedElement createElement() {
+    //
+    final element = InheritedElement(this);
+    state._inheritedElement = element;
+    // Associate any dependencies widgets to this InheritedWidget
+    // toList(growable: false) prevent concurrent error
+    for (final context in state._dependencies.toList(growable: false)) {
+      context.dependOnInheritedElement(element);
+      state._dependencies.remove(context);
+    }
+    return element;
+  }
+
+  /// Use the StateX's updateShouldNotify() function
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) =>
+      state.updateShouldNotify(oldWidget);
 }
+
+/// Supply a widget to depend upon a StateX's InheritedWidget
+class _SetStateWidget extends StatelessWidget {
+  const _SetStateWidget({
+    Key? key,
+    required this.stateX,
+    required this.widgetFunc,
+  }) : super(key: key);
+  final StateX stateX;
+  final WidgetBuilder widgetFunc;
+  @override
+  Widget build(BuildContext context) {
+    context.dependOnInheritedElement(stateX._inheritedElement!);
+    return widgetFunc(context);
+  }
+}
+
+// /// Supply a specific Controller to this StatelessWidget.
+// abstract class View<T extends StateXController> extends StatelessWidget {
+//   ///
+//   const View({Key? key}) : super(key: key);
+//
+//   /// Supply the specified Controller.
+//   T? get controller => App.appState?.controllerByType<T>();
+//
+//   @override
+//   Widget build(BuildContext context);
+// }
 
 /// Supply the Global Navigator and all its methods.
 mixin NavigatorStateMethodsMixin {

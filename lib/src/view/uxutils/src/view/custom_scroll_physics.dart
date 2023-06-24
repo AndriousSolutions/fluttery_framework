@@ -18,9 +18,12 @@
 ///
 
 import 'dart:math' show min;
+import 'dart:ui';
 
 import 'package:flutter/material.dart'
     show
+        AxisDirection,
+        FixedScrollMetrics,
         ScrollMetrics,
         ScrollPhysics,
         ScrollPosition,
@@ -72,7 +75,16 @@ class SnappingListScrollPhysics extends ScrollPhysics {
         (velocity >= 0.0 && position.pixels >= position.maxScrollExtent)) {
       return super.createBallisticSimulation(position, velocity);
     }
-    final tolerance = this.tolerance;
+    final tolerance = toleranceFor(FixedScrollMetrics(
+      minScrollExtent: null,
+      maxScrollExtent: null,
+      pixels: null,
+      viewportDimension: null,
+      axisDirection: AxisDirection.down,
+      devicePixelRatio: PlatformDispatcher.instance.views.first
+          .devicePixelRatio, //WidgetsBinding.instance.window.devicePixelRatio,
+    ));
+
     final target =
         _getTargetPixels(position as ScrollPosition, tolerance, velocity);
     if (target != position.pixels) {

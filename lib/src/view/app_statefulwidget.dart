@@ -46,23 +46,21 @@ abstract class AppStatefulWidget extends StatefulWidget {
     // ignore: avoid_unused_constructor_parameters
     v.ReportErrorHandler? errorReport,
     bool? allowNewHandlers = true,
-  })  : _app = v.App(allowNewHandlers: allowNewHandlers),
+  })  : _app = v.AppObject(allowNewHandlers: allowNewHandlers),
         super(key: key ?? GlobalKey<_StateApp>()) {
     // defer displaying anything while starting up
     if (circularProgressIndicator == null || !circularProgressIndicator!) {
       WidgetsFlutterBinding.ensureInitialized().deferFirstFrame();
     }
-  } // Allows app calling app
+  }
+  //
+  final v.AppObject _app;
 
   /// A simple screen displayed then starting up.
   final Widget? loadingScreen;
 
   /// Whether CircularProgressIndicator is displayed or not
   final bool? circularProgressIndicator;
-
-  // /// Reference to the 'app' object.
-  // v.App? get app => _app;
-  final v.App _app;
 
   /// Create the app-level State object.
   v.AppState createAppState();
@@ -97,11 +95,11 @@ class _StateApp extends State<AppStatefulWidget> {
   Widget build(BuildContext context) {
     _assets.init(context);
     return FutureBuilder<bool>(
-        key: UniqueKey(), // UniqueKey() for hot reload
-        future: initAsync(),
-        initialData: false,
-        builder: (_, snapshot) =>
-            _futureBuilder(snapshot, widget.loadingScreen));
+      key: UniqueKey(), // UniqueKey() for hot reload
+      future: initAsync(),
+      initialData: false,
+      builder: (_, snapshot) => _futureBuilder(snapshot, widget.loadingScreen),
+    );
   }
 
   /// Runs all the asynchronous operations necessary before the app can proceed.
@@ -113,11 +111,8 @@ class _StateApp extends State<AppStatefulWidget> {
     if (init && !v.App.hotReload) {
       return init;
     }
-    // or it's a hot reload
 
     init = true;
-
-    final _widget = widget;
 
     try {
       /// Initialize System Preferences
@@ -125,20 +120,20 @@ class _StateApp extends State<AppStatefulWidget> {
 
       if (!v.App.inFlutterTest) {
         /// Collect installation & connectivity information
-        await _widget._app.initInternal();
+        await v.App.initInternal();
       }
 
       /// Set theme using App's menu system if any theme was saved.
       v.App.setThemeData();
 
       // Create 'App State object' for this app.
-      _appState = _widget.createAppState();
+      _appState = widget.createAppState();
+
+      // Supply the state object to the App object.
+      v.App.appState = _appState;
 
       // Record this State object.
       _appState?.parentState = this;
-
-      // Supply the state object to the App object.
-      _widget._app.setAppState(_appState);
 
       // Don't collect package and device information while testing.
       if (!v.App.inFlutterTest) {
@@ -262,9 +257,7 @@ class _StateApp extends State<AppStatefulWidget> {
 
       _widget = ErrorWidget.builder(details);
     } else {
-      // //
-      // Widget widget;
-
+      //
       if (loading != null) {
         //
         _widget = loading;
@@ -278,7 +271,6 @@ class _StateApp extends State<AppStatefulWidget> {
           _widget = const Center(child: CupertinoActivityIndicator());
         }
       }
-//      return widget;
     }
     // Reset if there was a 'hot reload'.
     v.App.hotReload = false;

@@ -4,8 +4,6 @@ import 'package:fluttery_framework_example/src/view.dart';
 import 'package:fluttery_framework_example/src/home/model/contacts/contact.dart'
     show Contact;
 
-import 'add_contact.dart' show AddContact;
-
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
 class ContactDetails extends StatefulWidget {
@@ -25,8 +23,10 @@ class _ContactDetailsState extends StateX<ContactDetails> {
   late Contact contact;
 
   @override
-  Widget build(BuildContext context) =>
-      App.useMaterial ? _BuildAndroid(state: this) : _BuildiOS(state: this);
+  Widget buildAndroid(BuildContext context) => _BuildAndroid(state: this);
+
+  @override
+  Widget buildiOS(BuildContext context) => _BuildiOS(state: this);
 
   // Provide a means to 'edit' the details
   Future<void> editContact(Contact? contact, BuildContext context) async {
@@ -56,14 +56,22 @@ class _BuildAndroid extends StatelessWidget {
   Widget build(BuildContext context) {
     final contact = state.contact;
     // Dart allows for local function declarations
-    onTap() => state.editContact(contact, context);
+    onTap() {
+      if (!contact.inForm) {
+        state.editContact(contact, context);
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(title: contact.displayName.text, actions: [
         TextButton(
           onPressed: () async {
             // Confirm the deletion
             final delete = await showBox(
-                text: 'Delete this contact?'.tr, context: context);
+                button01: OKOption(),
+                button02: CancelOption(),
+                text: 'Delete this contact?'.tr,
+                context: context);
 
             if (delete) {
               //
@@ -71,15 +79,6 @@ class _BuildAndroid extends StatelessWidget {
               // ignore: use_build_context_synchronously
               Navigator.of(context).pop();
             }
-            // // A 'then' clause implementation.
-            // showBox(text: 'Delete this contact?', context: context)
-            //     .then((bool delete) {
-            //   if (delete) {
-            //     contact.delete().then((_) {
-            //       Navigator.of(context).pop();
-            //     });
-            //   }
-            // });
           },
           child: const Icon(Icons.delete, color: Colors.white),
         ),

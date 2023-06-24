@@ -1375,7 +1375,9 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   CheckboxListTile get checkboxListTile => CheckboxListTile(
         key: Key('CheckboxListTile$_key'),
         value: _checkValue,
+        // ignore: avoid_positional_boolean_parameters
         onChanged: toggle as void Function(bool?)? ??
+            // ignore: avoid_positional_boolean_parameters
             onToggle as void Function(bool?)?,
         activeColor: activeColor,
         checkColor: checkColor,
@@ -1548,7 +1550,9 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
         key: Key('Checkbox$_key'),
         value: _checkValue,
         tristate: tristate!,
+        // ignore: avoid_positional_boolean_parameters
         onChanged: toggle as void Function(bool?)? ??
+            // ignore: avoid_positional_boolean_parameters
             onToggle as void Function(bool?)?,
         activeColor: activeColor,
         fillColor: fillColor,
@@ -1932,14 +1936,6 @@ mixin StateGetter {
     }
     return set;
   }
-
-  /// Notify the framework of a rebuild in the next scheduled frame
-  @Deprecated('Keep it Flutter. Use setState() function.')
-  bool refresh() => setState(() {});
-
-  /// Notify the framework of a rebuild in the next scheduled frame
-  @Deprecated('Keep it Flutter. Use setState() function.')
-  bool rebuild() => refresh();
 }
 
 ///

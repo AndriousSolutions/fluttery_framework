@@ -16,6 +16,7 @@ Future<void> contactsTest(WidgetTester tester) async {
 
   // Find a list of word pairs
   Finder finder = find.byType(TextFormField);
+
   // The text form fields should be available.
   expect(finder, findsWidgets, reason: _location);
 

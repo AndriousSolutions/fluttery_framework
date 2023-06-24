@@ -11,7 +11,7 @@ void testAppView(WidgetTester tester) {
   //
 //  test('Test App class', () async {
   //
-  final app = App();
+  final app = AppObject();
 
   App.errorHandler;
 
@@ -21,8 +21,6 @@ void testAppView(WidgetTester tester) {
 
   app.onAsyncError(
       AsyncSnapshot.withError(ConnectionState.none, AssertionError('error')));
-
-  App.widgetsAppKey;
 
   App.navigatorKey;
 

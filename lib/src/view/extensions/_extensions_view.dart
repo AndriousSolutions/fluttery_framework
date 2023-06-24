@@ -5,6 +5,8 @@
 ///          Created  15 May 2022
 ///
 
+export 'package:fluttery_framework/src/view/extensions/gorouter_extension.dart';
+
 export 'package:fluttery_framework/src/view/extensions/context_extensions.dart';
 
 export 'package:fluttery_framework/src/view/extensions/double_extensions.dart';

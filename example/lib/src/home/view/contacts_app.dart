@@ -3,12 +3,6 @@ import 'package:fluttery_framework_example/src/view.dart';
 
 import 'package:fluttery_framework_example/src/controller.dart';
 
-import 'package:fluttery_framework_example/src/home/view/contacts/add_contact.dart'
-    show AddContact;
-
-import 'package:fluttery_framework_example/src/home/view/contacts/contact_details.dart'
-    show ContactDetails;
-
 class ContactsList extends StatefulWidget {
   const ContactsList({Key? key, this.title = 'Contacts App'}) : super(key: key);
   final String title;
@@ -17,7 +11,7 @@ class ContactsList extends StatefulWidget {
 }
 
 class _ContactListState extends StateX<ContactsList> {
-  _ContactListState() : super(ContactsController()) {
+  _ContactListState() : super(controller: ContactsController()) {
     con = controller as ContactsController;
   }
   late ContactsController con;
@@ -32,9 +26,158 @@ class _ContactListState extends StateX<ContactsList> {
   String? _title;
   late TemplateController appCon;
 
+  /// Depending on the platform, run an 'Android' or 'iOS' style of Widget.
   @override
-  Widget buildF(BuildContext context) =>
-      App.useMaterial ? _buildAndroid(this) : _buildiOS(this);
+  Widget buildAndroid(BuildContext context) => _buildAndroid(this);
+
+  /// Depending on the platform, run an 'Android' or 'iOS' style of Widget.
+  @override
+  Widget buildiOS(BuildContext context) => _buildiOS(this);
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Called when this object is reinserted into the tree after having been
+  /// removed via [deactivate].
+  @override
+  //ignore: unnecessary_overrides
+  void activate() {
+    super.activate();
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// The framework calls this method whenever it removes this [State] object
+  /// from the tree.
+  @override
+  void deactivate() {
+    super.deactivate();
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// The framework calls this method when this [State] object will never
+  /// build again.
+  /// Note: THERE IS NO GUARANTEE THIS METHOD WILL RUN in the Framework.
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Calls setState((){});
+  void refresh() {
+    super.setState(() {});
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// An 'error handler' routine to fire when an error occurs.
+  /// Allows the user to define their own with each State.
+  @override
+  void onError(FlutterErrorDetails details) {
+    super.onError(details);
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  // ignore: comment_references
+  /// Override this method to respond when the [widget] changes (e.g., to start
+  /// implicit animations).
+  @override
+  void didUpdateWidget(StatefulWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Called when a dependency of this [State] object changes.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Called whenever the application is reassembled during debugging, for
+  /// example during hot reload.
+  @override
+  void reassemble() {
+    super.reassemble();
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Called when the system tells the app to pop the current route.
+  /// For example, on Android, this is called when the user presses
+  /// the back button.
+  /// Observers are notified in registration order until one returns
+  /// true. If none return true, the application quits.
+  @override
+  Future<bool> didPopRoute() async {
+    return super.didPopRoute();
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Called when the host tells the app to push a new route onto the
+  /// navigator.
+  ///
+  /// Observers are expected to return true if they were able to
+  /// handle the notification. Observers are notified in registration
+  /// order until one returns true.
+  ///
+  /// This method exposes the `pushRoute` notification from
+  // ignore: comment_references
+  @override
+  Future<bool> didPushRoute(String route) async {
+    return super.didPushRoute(route);
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Called when the application's dimensions change. For example,
+  /// when a phone is rotated.
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Called when the platform's text scale factor changes.
+  @override
+  void didChangeTextScaleFactor() {
+    super.didChangeTextScaleFactor();
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Brightness changed.
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Called when the system tells the app that the user's locale has changed.
+  @override
+  void didChangeLocales(List<Locale>? locales) {
+    super.didChangeLocales(locales);
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Called when the system puts the app in the background or returns the app to the foreground.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    /// Passing these possible values:
+    /// AppLifecycleState.paused (may enter the suspending state at any time)
+    /// AppLifecycleState.resumed
+    /// AppLifecycleState.inactive (may be paused at any time)
+    /// AppLifecycleState.suspending (Android only)
+    super.didChangeAppLifecycleState(state);
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Called when the system is running low on memory.
+  @override
+  void didHaveMemoryPressure() {
+    super.didHaveMemoryPressure();
+  }
+
+  // Merely for demonstration purposes. Erase if not using.
+  /// Called when the system changes the set of active accessibility features.
+  @override
+  void didChangeAccessibilityFeatures() {
+    super.didChangeAccessibilityFeatures();
+  }
 }
 
 Widget _buildAndroid(_ContactListState state) {
@@ -56,7 +199,7 @@ Widget _buildAndroid(_ContactListState state) {
 //        appCon.menu,
       ],
     ),
-    drawer: AppDrawer(),
+    drawer: AppDrawer(key: const Key('AppDrawer')),
     body: SafeArea(
       child: con.items == null
           ? const Center(child: CircularProgressIndicator())
@@ -96,10 +239,16 @@ Widget _buildAndroid(_ContactListState state) {
                     ),
                     child: ListTile(
                       onTap: () async {
-//                        await Navigator.of(con.state!.context)
-                        await App.push(MaterialPageRoute<void>(
-                          builder: (_) => ContactDetails(contact: contact),
-                        ));
+                        final widget = ContactDetails(contact: contact);
+                        PageRoute<void> route;
+                        if (App.useMaterial) {
+                          route = MaterialPageRoute<void>(
+                              builder: (BuildContext context) => widget);
+                        } else {
+                          route = CupertinoPageRoute<void>(
+                              builder: (BuildContext context) => widget);
+                        }
+                        await Navigator.of(state.context).push(route);
                         await con.getContacts();
                         con.state!.setState(() {});
                       },
@@ -113,13 +262,17 @@ Widget _buildAndroid(_ContactListState state) {
     ),
     floatingActionButton: FloatingActionButton(
       onPressed: () async {
-        await Navigator.of(con.state!.context).push(MaterialPageRoute<void>(
-          builder: (_) => const AddContact(),
-        ));
-        //     .then((_) {
-        //   con.refresh();
-        // });
-        /// Either use the 'then' clause or the 'async await' command.
+        final context = con.state!.context;
+        final useRouter = App.appState!.useRouterConfig!;
+        if (useRouter) {
+          await context.push<void>('/add');
+        } else {
+          // Of course, this is for demo purposes. This is what's done without the Router Configuration.
+          await Navigator.of(context).push(MaterialPageRoute<void>(
+            builder: (_) => const AddContact(),
+          ));
+        }
+        // Refresh to relieve any changes made.
         con.refresh();
       },
       child: const Icon(Icons.add),
@@ -163,7 +316,6 @@ Widget _buildiOS(_ContactListState state) {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               AppMenu().popupMenuButton,
-//              appCon.menu,
             ],
           ),
         ),

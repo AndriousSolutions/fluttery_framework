@@ -85,6 +85,10 @@ void integrationTestFlutteryFramework() {
 
           /// Random Word Pairs app
           await wordsTest(tester);
+
+          /// Test dialog windows
+          await dialogTests(tester);
+
           break;
         case 'Contacts':
 
@@ -99,8 +103,8 @@ void integrationTestFlutteryFramework() {
       cnt++;
     }
 
-    /// Test dialog windows
-    await dialogTests(tester);
+    /// Switch the app through the popupmenu
+    await openApplicationMenu(tester);
 
     /// Open the Locale window
     await openLocaleMenu(tester);

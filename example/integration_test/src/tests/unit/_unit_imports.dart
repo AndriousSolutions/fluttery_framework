@@ -1,6 +1,6 @@
 /// Supply the dependencies for the example app
 export 'package:fluttery_framework_example/src/controller.dart';
-export 'package:fluttery_framework_example/src/model.dart';
+export 'package:fluttery_framework_example/src/model.dart' hide StateSetter;
 export 'package:fluttery_framework_example/src/app/view.dart';
 
 /// Supply all the dependencies necessary to complete the testing.

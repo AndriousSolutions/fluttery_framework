@@ -35,4 +35,5 @@ Map<String, String> esAR = {
   'Startup Name Generator': 'Generador de nombres de inicio',
   'Saved Suggestions': 'Sugerencias guardadas',
   'Current Language': 'Idioma actual',
+  'Use built-in InheritedWidget': 'Usar widget heredado incorporado',
 };

@@ -59,17 +59,14 @@ class WordPairsTimer extends StateXController {
     cancelTimer();
   }
 
-  @override
-  void activate() {
-    initTimer();
-  }
-
-  @override
-  void dispose() {
-    _appStateObject = null;
-    cancelTimer();
-    super.dispose();
-  }
+  /// IMPORTANT dispose() runs late and cancels the *new* timer
+  /// deactivate() is more reliable.
+  // @override
+  // void dispose() {
+//  //   _appStateObject = null;
+//  //   cancelTimer();
+//  //   super.dispose();
+  // }
 
   @override
   Future<bool> didPopRoute() {
@@ -85,7 +82,8 @@ class WordPairsTimer extends StateXController {
     if (state == AppLifecycleState.resumed) {
       /// Create the Timer again.
       initTimer();
-    } else if (state == AppLifecycleState.paused) {
+    } else {
+      //if (state == AppLifecycleState.paused) {
       /// Passing these possible values:
       /// AppLifecycleState.paused (may enter the suspending state at any time)
       /// AppLifecycleState.inactive (may be paused at any time)
@@ -107,7 +105,7 @@ class WordPairsTimer extends StateXController {
             ),
           );
         } else {
-          widget = const SizedBox(height: 5);
+          widget = SizedBox(height: 6.h);
         }
         return widget;
       });
@@ -130,17 +128,10 @@ class WordPairsTimer extends StateXController {
       /// Alternate approach uses inheritWidget() and setStatesInherited() functions.
       _wordPair = twoWords.asString;
 
-      /// Option 1:  Simply rebuild the InheritedWidget
-      /// This calls the framework's InheritedWidget to rebuild
-//      appStateObject?.buildInherited();
-
-      /// Option 2: Change dataObject will rebuild the InheritedWidget
+      /// Change dataObject will rebuild the InheritedWidget
       /// Changing the 'dataObject' will call the SetState class implemented above
       /// and only that widget.
       appStateObject?.dataObject = _wordPair;
-
-      /// Option 3: Also changes dataObject and rebuilds the InheritedWidget
-//      appStateObject?.inheritedNeedsBuild(_wordPair);
     } catch (ex) {
       /// Stop the timer.
       /// Something is not working. Don't have the timer repeat it over and over.
@@ -168,8 +159,8 @@ class WordPairsTimer extends StateXController {
 
   /// Cancel the timer
   void cancelTimer() {
-    _initTimer = false;
     timer?.cancel();
+    _initTimer = false;
   }
 
   /// Create a Timer to run periodically.

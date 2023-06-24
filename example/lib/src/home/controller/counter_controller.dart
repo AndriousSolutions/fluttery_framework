@@ -1,15 +1,9 @@
 //
-import 'package:fluttery_framework_example/src/controller.dart'
-    show
-        AppController,
-        AppLifecycleState,
-        Locale,
-        RouteInformation,
-        StatefulWidget,
-        WordPairsTimer;
+import 'package:fluttery_framework_example/src/controller.dart';
 
-import 'package:fluttery_framework_example/src/model.dart'
-    show CounterModel, State, Widget;
+import 'package:fluttery_framework_example/src/model.dart';
+
+import 'package:fluttery_framework_example/src/view.dart';
 
 class CounterController extends AppController {
   factory CounterController() => _this ??= CounterController._();
@@ -21,8 +15,12 @@ class CounterController extends AppController {
     wordPairsTimer = WordPairsTimer();
   }
   static CounterController? _this;
+
   late final CounterModel _model;
   late final WordPairsTimer wordPairsTimer;
+
+  /// The flag indicating if an InheritedWidget is to used.
+  bool useInherited = false;
 
   @override
   void initState() {
@@ -61,6 +59,10 @@ class CounterController extends AppController {
   @override
   Future<bool> initAsync() async {
     final init = await super.initAsync();
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: initAsync in $state');
+    }
     return init;
   }
 
@@ -294,7 +296,8 @@ class CounterController extends AppController {
     /// AppLifecycleState.resume
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didChangeAppLifecycleState in ${this.state}');
+      print(
+          '############ Event: didChangeAppLifecycleState in ${this.state} for $this');
     }
   }
 
@@ -310,8 +313,7 @@ class CounterController extends AppController {
   /// Called when the system changes the set of active accessibility features.
   @override
   void didChangeAccessibilityFeatures() {
-    // inDebugger is deprecated but still tested here. Use inDebugMode instead.
-    if (inDebugger) {
+    if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: didChangeAccessibilityFeatures in $state');
     }

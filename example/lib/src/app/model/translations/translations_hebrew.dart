@@ -35,4 +35,5 @@ Map<String, String> heIL = {
   'Startup Name Generator': 'מחולל שמות אתחול',
   'Saved Suggestions': 'הצעות שמורות',
   'Current Language': 'שפה נוכחית',
+  'Use built-in InheritedWidget': 'השתמש ב-InheritedWidget מובנה',
 };

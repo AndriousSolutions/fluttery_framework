@@ -35,4 +35,5 @@ Map<String, String> frFR = {
   'Startup Name Generator': 'Générateur de nom de démarrage',
   'Saved Suggestions': 'Suggestions enregistrées',
   'Current Language': 'Langue courante',
+  'Use built-in InheritedWidget': 'Utiliser le InheritedWidget intégré',
 };

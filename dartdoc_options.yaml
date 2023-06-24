@@ -1,0 +1,23 @@
+dartdoc:
+  categories:
+    "Get started":
+      markdown: doc/get-started.md
+      name: Get started
+    "State Object Controller":
+      markdown: doc/controllers.md
+      name: State Object Controller
+    "App's Preferences":
+      markdown: doc/preferences.md
+      name: App's Preferences
+    "Error handling":
+      markdown: doc/error-handling.md
+      name: Error handling
+  categoryOrder:
+    - "Get started"
+    - "State Object Controller"
+    - "App's Preferences"
+    - "Error handling"
+  showUndocumentedCategories: true
+  ignore:
+    - broken-link
+    - missing-from-search-index

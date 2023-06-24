@@ -25,7 +25,7 @@
 import 'package:fluttery_framework/src/controller/get_utils/get_utils.dart';
 
 ///
-extension GetStringUtils on String {
+extension StringUtils on String {
   /// Is this String a number?
   bool get isNum => GetUtils.isNum(this);
 

@@ -5,12 +5,10 @@
 ///          Created  24 Dec 2018
 ///
 
-import 'package:flutter/foundation.dart' show FlutterErrorDetails;
+// The original StateXController
+import 'package:state_extended/state_extended.dart' as c;
 
-import 'package:fluttery_framework/controller.dart' show StateXController;
-
-import 'package:fluttery_framework/view.dart'
-    show ConnectivityListener, ConnectivityResult, StateX;
+import 'package:fluttery_framework/view.dart';
 
 /// A Controller for the 'app level'.
 class AppController extends StateXController implements ConnectivityListener {
@@ -36,4 +34,58 @@ class AppController extends StateXController implements ConnectivityListener {
   /// If the device's connectivity changes.
   @override
   void onConnectivityChanged(ConnectivityResult result) {}
+}
+
+///
+class StateXController extends c.StateXController {
+  ///
+  StateXController([super.state]);
+
+  /// Link a widget to a InheritedWidget
+  @override
+  bool dependOnInheritedWidget(BuildContext? context) =>
+      state?.dependOnInheritedWidget(context) ?? false;
+
+  /// Retrieve the State object by its StatefulWidget. Returns null if not found.
+  @override
+  StateX? stateOf<T extends StatefulWidget>() {
+    final state = super.stateOf<T>();
+    return state == null ? null : state as StateX;
+  }
+
+  /// Return a Set of State objects.
+  @override
+  Set<StateX> get states => Set.from(super.states.whereType<StateX>());
+
+  ///
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        onResumed();
+        break;
+      case AppLifecycleState.inactive:
+        onInactive();
+        break;
+      case AppLifecycleState.paused:
+        onPaused();
+        break;
+      case AppLifecycleState.detached:
+        onDetached();
+        break;
+    }
+  }
+
+  ///
+  void onResumed() {}
+
+  ///
+  void onPaused() {}
+
+  ///
+  void onInactive() {}
+
+  ///
+  void onDetached() {}
 }

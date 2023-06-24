@@ -61,7 +61,7 @@ class TemplateController extends AppController {
   bool get contactsApp => _appNames[_appCount] == 'Contacts';
 
   int _appCount = 0;
-  final _appNames = ['Counter', 'Word Pairs', 'Contacts'];
+  final _appNames = ['Counter', 'Word Pairs', 'Contacts', 'Inherited'];
 
   Widget onHome() {
     //
@@ -86,6 +86,9 @@ class TemplateController extends AppController {
         break;
       case 'Contacts':
         widget = ContactsList(key: key);
+        break;
+      case 'Inherited':
+        widget = HomePage(key: key);
         break;
       default:
         widget = const SizedBox();
@@ -120,6 +123,7 @@ class TemplateController extends AppController {
 
     unawaited(Prefs.setBool('words', _appNames[_appCount] == 'Word'));
 
+    // Rerun the whole app with App.setState(() {})
     Prefs.setInt('appRun', _appCount).then((value) => App.setState(() {}));
   }
 
@@ -131,9 +135,9 @@ class TemplateController extends AppController {
     final codes = localeTag.split('-');
     if (codes.length == 2) {
       locale = Locale(codes[0], codes[1]);
+      App.locale = locale;
     } else {
       // the app's locale
-      locale = L10n.locale;
       // Possibly the device's locale.
       locale = App.locale!;
     }
@@ -166,8 +170,8 @@ class TemplateController extends AppController {
           // Retrieve the available locales.
           final locale = L10n.getLocale(index);
           if (locale != null) {
-            App.locale = locale;
             await Prefs.setString('locale', locale.toLanguageTag());
+//            App.locale = locale;
             App.setState(() {});
           }
         });
@@ -195,20 +199,21 @@ class TemplateController extends AppController {
     ColorPicker.color = Color(App.themeData!.primaryColor.value);
 
     await ColorPicker.showColorPicker(
-        context: App.context!,
-        onColorChange: (Color value) {
-          /// Implement to take in a color change.
-        },
-        onChange: ([ColorSwatch<int?>? value]) {
-          App.setThemeData(swatch: value);
-          App.setState(() {});
-        },
-        shrinkWrap: true);
+      context: App.context!,
+      onColorChange: (Color value) {
+        /// Implement to take in a color change.
+      },
+      onChange: ([ColorSwatch<int?>? value]) {
+        App.setThemeData(swatch: value);
+        App.setState(() {});
+      },
+      shrinkWrap: true,
+    );
   }
 
   void aboutApp() => showAboutDialog(
         context: App.context!,
-        applicationName: App.state?.title ?? '',
+        applicationName: App.appState?.title ?? '',
         applicationVersion: 'version: ${App.version} build: ${App.buildNumber}',
       );
 
@@ -490,7 +495,8 @@ class TemplateController extends AppController {
     /// AppLifecycleState.resume
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didChangeAppLifecycleState in ${this.state}');
+      print(
+          '############ Event: didChangeAppLifecycleState in ${this.state} for $this');
     }
   }
 
@@ -506,8 +512,7 @@ class TemplateController extends AppController {
   /// Called when the system changes the set of active accessibility features.
   @override
   void didChangeAccessibilityFeatures() {
-    // inDebugger is deprecated but still tested here. Use inDebugMode instead.
-    if (inDebugger) {
+    if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: didChangeAccessibilityFeatures in $state');
     }

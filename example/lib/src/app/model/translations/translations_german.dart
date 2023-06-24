@@ -35,4 +35,6 @@ Map<String, String> deDE = {
   'Startup Name Generator': 'Startup-Namensgenerator',
   'Saved Suggestions': 'Gespeicherte Vorschläge',
   'Current Language': 'Aktuelle Sprache',
+  'Use built-in InheritedWidget':
+      'Verwenden Sie das integrierte InheritedWidget',
 };

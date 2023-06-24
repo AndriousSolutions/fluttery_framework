@@ -47,8 +47,6 @@ void testAppState(WidgetTester tester) {
 
   appState.onDebugShowCheckedModeBanner();
 
-  AppState.homeKey;
-
   appState.app;
 
   appState.onError(FlutterErrorDetails(exception: AssertionError('Error')));

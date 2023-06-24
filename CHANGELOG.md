@@ -1,4 +1,34 @@
 
+## 4.0.0
+June 15, 2023
+- *BREAKING CHANGE* Removed GetX to instead use go_router
+- Static reference to GoRouter object: App.goRouter
+- Updated to include new MaterialApp properties: highContrastTheme, highContrastDarkTheme, themeAnimationDuration, themeAnimationCurve, 
+- extension GoRouterExtension on BuildContext to utilize App.goRouter
+
+## 3.1.1+1
+June 03, 2023
+// Locale must explicitly be assigned to Get.locale as well.
+- Get.locale = _locale;
+
+## 3.1.0+1
+May 23, 2023
+- StateX class with a built-in InheritedWidget
+- dependOnInheritedWidget() in StateXController
+- Corrected example app, controller: TemplateController()
+- Removed  abstract class View
+- Update Counter Example app and Grid example app
+- semanticsDismissible ?? true for latest Flutter version
+- IMPORTANT dispose() runs late and cancels the *new* timer deactivate() is more reliable.
+
+## 3.0.0
+April 13, 2023
+- *BREAKING CHANGE* Upgrade to Flutter v.3.0
+- Incorporate GetX v.4 into this framework
+- Upgrade to state_extended v.3
+- Introduce class StateIn and class StateX
+- Update example app
+
 ## 2.7.0
 April 01, 2023 
 - NavigatorStateMethodsMixin supplies a Global Navigator without context

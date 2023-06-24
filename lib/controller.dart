@@ -7,20 +7,22 @@
 ///
 
 // Material
-export 'package:flutter/material.dart' hide runApp;
+export 'package:flutter/material.dart' hide runApp, StateSetter;
 
 // Cupertino
-export 'package:flutter/cupertino.dart' hide RefreshCallback, runApp;
+export 'package:flutter/cupertino.dart'
+    hide RefreshCallback, runApp, StateSetter;
 
 // State Object's Controller
 export 'package:state_extended/state_extended.dart'
-    show StateXController, StateListener;
+    show SetStateMixin, StateListener, RootState, AsyncOps;
 
 // App's View
 export 'package:fluttery_framework/src/view/app.dart' show App, AppDrawer;
 
 //App's Controller
-export 'package:fluttery_framework/src/controller/app.dart' show AppController;
+export 'package:fluttery_framework/src/controller/app.dart'
+    show AppController, StateXController;
 
 // Notifications
 export 'package:fluttery_framework/src/controller/schedule_notificaitons.dart';

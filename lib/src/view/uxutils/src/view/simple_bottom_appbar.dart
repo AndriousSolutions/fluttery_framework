@@ -206,7 +206,6 @@ class _SimpleBottomAppBarState extends State<SimpleBottomAppBar>
   Widget _barButton(BarButton btn, int count) {
     return Flexible(
       fit: FlexFit.tight,
-      flex: flexValues[count],
       child: TextButton(
         key: btn.key,
         // highlightColor: Colors.transparent,
@@ -219,30 +218,34 @@ class _SimpleBottomAppBarState extends State<SimpleBottomAppBar>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Transform.translate(
-              offset: Offset(0, verticalShiftValues[count]),
-              child: Transform(
-                transform: Matrix4.skewY(skewValues[count]),
-                child: Icon(
-                  btn.icon,
-                  size: 22,
+            Flexible(
+              child: Transform.translate(
+                offset: Offset(0, verticalShiftValues[count]),
+                child: Transform(
+                  transform: Matrix4.skewY(skewValues[count]),
+                  child: Icon(
+                    btn.icon,
+                    size: 22,
+                  ),
                 ),
               ),
             ),
-            ClipRect(
-              child: FractionalTranslation(
-                translation: Offset(fractionalOffsetValues[count], 0),
-                child: Opacity(
-                  opacity: opacityValues[count],
-                  child: Center(
-                    child: Text(
-                      btn.text!,
-                      style: const TextStyle(fontWeight: FontWeight.w400),
+            Flexible(
+              child: ClipRect(
+                child: FractionalTranslation(
+                  translation: Offset(fractionalOffsetValues[count], 0),
+                  child: Opacity(
+                    opacity: opacityValues[count],
+                    child: Center(
+                      child: Text(
+                        btn.text!,
+                        style: const TextStyle(fontWeight: FontWeight.w400),
+                      ),
                     ),
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

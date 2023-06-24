@@ -12,7 +12,7 @@ class WordPairs extends StatefulWidget {
 
 /// Should always keep your State class 'hidden' with the leading underscore
 class _WordPairsState extends StateX<WordPairs> {
-  _WordPairsState() : super(WordPairsController()) {
+  _WordPairsState() : super(controller: WordPairsController()) {
     con = controller as WordPairsController;
   }
   late WordPairsController con;
@@ -27,10 +27,15 @@ class _WordPairsState extends StateX<WordPairs> {
 
   /// Depending on the platform, run an 'Android' or 'iOS' style of Widget.
   @override
-  Widget build(BuildContext context) => App.useMaterial
-      ? _RandomWordsAndroid(state: this)
-      : _RandomWordsiOS(state: this);
+  Widget buildAndroid(BuildContext context) => _RandomWordsAndroid(state: this);
+
+  /// Depending on the platform, run an 'Android' or 'iOS' style of Widget.
+  @override
+  Widget buildiOS(BuildContext context) => _RandomWordsiOS(state: this);
 }
+
+/// Depending on the platform, run an 'Android' or 'iOS' style of Widget.
+@override
 
 /// The Android-style of interface
 class _RandomWordsAndroid extends StatelessWidget {
@@ -41,7 +46,6 @@ class _RandomWordsAndroid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final con = state.con;
-//    final appCon = state.appCon;
     return Scaffold(
       key: const Key('Scaffold'),
       appBar: AppBar(
@@ -53,11 +57,8 @@ class _RandomWordsAndroid extends StatelessWidget {
             onPressed: _pushSaved,
           ),
           AppMenu().popupMenuButton,
-//          appCon.menu,
         ],
       ),
-      // Test the drawer only through the tester.
-//      drawer: App.inFlutterTest ? AppDrawer() : null,
       drawer: AppDrawer(),
       body: ListView.builder(
           padding: const EdgeInsets.all(16),

@@ -8,7 +8,6 @@ import 'package:fluttery_framework_example/src/view.dart';
 /// App
 class FlutteryExampleApp extends AppStatefulWidget {
   FlutteryExampleApp({super.key});
-
   // This is the 'App State object' of the application.
   @override
   AppState createAppState() => TemplateView();
@@ -24,6 +23,7 @@ class TemplateView extends AppState {
           inTitle: () => 'Demo App'.tr,
           debugShowCheckedModeBanner: false,
           switchUI: Prefs.getBool('switchUI'),
+          useRouterConfig: false,
           inSupportedLocales: () {
             /// The app's translations
             L10n.translations = {
@@ -45,10 +45,26 @@ class TemplateView extends AppState {
         );
 
   @override
-  Locale? onLocale() {
-    return (controller as TemplateController).appLocale();
-  }
+  Locale? onLocale() => TemplateController().appLocale();
 
   @override
-  Widget onHome() => (controller as TemplateController).onHome();
+  Widget onHome() => TemplateController().onHome();
+
+  @override
+  RouterConfig<Object>? onRouterConfig() => GoRouter(
+        routes: <RouteBase>[
+          GoRoute(
+            path: '/',
+            builder: (BuildContext context, GoRouterState state) {
+              return onHome();
+            },
+          ),
+          GoRoute(
+            path: '/add',
+            builder: (BuildContext context, GoRouterState state) {
+              return const AddContact();
+            },
+          ),
+        ],
+      );
 }
