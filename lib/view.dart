@@ -29,14 +29,14 @@ export 'package:state_extended/state_extended.dart'
     show AppStateX, InheritedStateX, SetState;
 
 /// App
-export 'package:fluttery_framework/src/view/app.dart';
+export 'package:fluttery_framework/view/app.dart';
 
 /// App StatefulWidget
-export 'package:fluttery_framework/src/view/app_statefulwidget.dart'
+export 'package:fluttery_framework/view/app_statefulwidget.dart'
     hide ErrorWidgetBuilder;
 
 /// App State Object
-export 'package:fluttery_framework/src/view/app_state.dart';
+export 'package:fluttery_framework/view/app_state.dart';
 
 /// Settings
 export 'package:fluttery_framework/src/view/utils/app_settings.dart';
@@ -70,8 +70,7 @@ export 'package:fluttery_framework/src/view/utils/inherited_state.dart'
     show InheritedStates, InheritedStateWidget;
 
 /// Menus
-export 'package:fluttery_framework/src/view/app_menu.dart'
-    show AppMenu, PopupMenu;
+export 'package:fluttery_framework/view/app_menu.dart' show AppMenu, PopupMenu;
 
 /// Extensions
 export 'package:fluttery_framework/src/view/app/app_appstate.dart';

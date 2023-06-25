@@ -18,10 +18,10 @@ export 'package:state_extended/state_extended.dart'
     show SetStateMixin, StateListener, RootState, AsyncOps;
 
 // App's View
-export 'package:fluttery_framework/src/view/app.dart' show App, AppDrawer;
+export 'package:fluttery_framework/view/app.dart' show App, AppDrawer;
 
 //App's Controller
-export 'package:fluttery_framework/src/controller/app.dart'
+export 'package:fluttery_framework/controller/app.dart'
     show AppController, StateXController;
 
 // Notifications
