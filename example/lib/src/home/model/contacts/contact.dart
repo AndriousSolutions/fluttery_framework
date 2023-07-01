@@ -36,7 +36,7 @@ class ContactEdit extends ContactList {
   bool get inForm => _inForm;
   bool _inForm = false;
 
-  late GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Future<bool> onPressed([BuildContext? context]) async {
     if (!_formKey.currentState!.validate()) {

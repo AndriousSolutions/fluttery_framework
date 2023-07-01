@@ -16,7 +16,7 @@ import 'package:universal_io/io.dart' show Platform;
 // import 'package:universal_platform/universal_platform.dart'
 //     show UniversalPlatform;
 
-import 'package:flutter/foundation.dart' show FlutterExceptionHandler, kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:package_info_plus/package_info_plus.dart' show PackageInfo;
 
