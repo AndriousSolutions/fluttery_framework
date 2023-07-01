@@ -38,11 +38,11 @@ installed the next time you 'upgrade' your dependencies.
 <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/46cf193f-a3cc-452b-94b2-01207ba18ea2" alt="Fluttery Framework" style="width:162px;height:208px;">
 
 <ul>
-   <li><a href="topics/Get started-topic.html">Get&nbsp;started</a></li>
-   <li><a href="topics/StateX class-topic.html">StateX class</a></li>
-   <li><a href="topics/State Object Controller-topic.html">State&nbsp;Object&nbsp;Controller</a></li>
-   <li><a href="topics/App's Preferences-topic.html">App's&nbsp;Preferences</a></li>
-   <li><a href="topics/Error handling-topic.html">Error&nbsp;handling</a></li>
+   <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/Get%20started-topic.html">Get&nbsp;started</a></li>
+   <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/StateX%20class-topic.html">StateX class</a></li>
+   <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/State%20Object%20Controller-topic.html">State&nbsp;Object&nbsp;Controller</a></li>
+   <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/App's%20Preferences-topic.html">App's&nbsp;Preferences</a></li>
+   <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/Error%20handling-topic.html">Error&nbsp;handling</a></li>
 </ul>
 
 Free overview article on medium.com:
