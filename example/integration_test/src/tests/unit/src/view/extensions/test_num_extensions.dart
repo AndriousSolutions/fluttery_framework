@@ -23,6 +23,8 @@ void testNumExtension() {
 
   2.seconds;
 
+  3.minutes;
+
   0.3.hours;
 
   .5.days;

@@ -65,7 +65,7 @@ void integrationTestFlutteryFramework() {
     /// pumpAndSettle() waits for all animations to complete.
     await tester.pumpAndSettle();
 
-    final con = TemplateController();
+    final con = ExampleAppController();
 
     //
     int cnt = 1;

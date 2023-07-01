@@ -25,4 +25,8 @@ class _InheritFoxState extends StateIn<InheritFox> {
   _InheritFoxState() : super(controller: FoxController());
   @override
   Widget buildAndroid(BuildContext context) => widget.child!;
+
+  /// Currently not providing an 'iOS' version of the interface.
+  @override
+  Widget buildiOS(BuildContext context) => buildAndroid(context);
 }

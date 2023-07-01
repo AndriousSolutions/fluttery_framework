@@ -2,18 +2,24 @@ dartdoc:
   categories:
     "Get started":
       markdown: doc/get_started.md
-      name: Get Started
+    "StateX class":
+      markdown: doc/statex.md
     "State Object Controller":
       markdown: doc/controllers.md
-      name: State Object Controller
     "App's Preferences":
       markdown: doc/preferences.md
-      name: App's Preferences
+    "Extensions":
+      markdown: doc/extensions.md
     "Error handling":
       markdown: doc/error-handling.md
-      name: Error handling
-  categoryOrder: ["Get Started", "State Object Controller", "App's Preferences", "Error handling"]
-  nodoc: ['lib/*.dart']
+  categoryOrder:
+    - "Get started"
+    - "StateX class"
+    - "State Object Controller"
+    - "App's Preferences"
+    - "Extensions"
+    - "Error handling"
+  nodoc: ['lib/*.dart', '_*.dart']
   showUndocumentedCategories: true
 #  ignore:
 #    - ambiguous-doc-reference

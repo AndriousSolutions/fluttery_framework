@@ -8,12 +8,14 @@ import 'package:fluttery_framework_example/src/model.dart' show Settings;
 // You can see 'at a glance' this Controller also 'talks to' the interface (View).
 import 'package:fluttery_framework_example/src/view.dart';
 
-class TemplateController extends AppController {
-  factory TemplateController() => _this ??= TemplateController._();
-  TemplateController._()
+///
+///
+class ExampleAppController extends AppController {
+  factory ExampleAppController() => _this ??= ExampleAppController._();
+  ExampleAppController._()
       : wordPairsTimer = WordPairsController(),
         super();
-  static TemplateController? _this;
+  static ExampleAppController? _this;
 
   final WordPairsController wordPairsTimer;
 
@@ -292,7 +294,7 @@ class TemplateController extends AppController {
   Future<bool> initAsync() async {
     final init = await super.initAsync();
     //
-    if (TemplateController().allowErrors) {
+    if (ExampleAppController().allowErrors) {
       throw AssertionError('error thrown in Page1State.initAsync()');
     }
     return init;

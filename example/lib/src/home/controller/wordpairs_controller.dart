@@ -53,7 +53,7 @@ class WordPairsController extends StateXController {
   Future<bool> initAsync() async {
     final init = await super.initAsync();
     //
-    if (TemplateController().allowErrors) {
+    if (ExampleAppController().allowErrors) {
       throw AssertionError('error thrown in Page1State.initAsync()');
     }
     return init;

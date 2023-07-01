@@ -1,5 +1,5 @@
 
-## 4.0.0+5
+## 4.0.0+6
 June 15, 2023
 - *BREAKING CHANGE* Removed GetX to instead use go_router
 - Static reference to GoRouter object: App.goRouter

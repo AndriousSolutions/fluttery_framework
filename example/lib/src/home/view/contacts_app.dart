@@ -20,11 +20,11 @@ class _ContactListState extends StateX<ContactsList> {
   void initState() {
     super.initState();
     _title = App.title!;
-    appCon = TemplateController();
+    appCon = ExampleAppController();
   }
 
   String? _title;
-  late TemplateController appCon;
+  late ExampleAppController appCon;
 
   /// Depending on the platform, run an 'Android' or 'iOS' style of Widget.
   @override

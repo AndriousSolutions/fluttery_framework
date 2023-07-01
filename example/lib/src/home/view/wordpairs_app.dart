@@ -20,10 +20,10 @@ class _WordPairsState extends StateX<WordPairs> {
   @override
   void initState() {
     super.initState();
-    appCon = TemplateController();
+    appCon = ExampleAppController();
   }
 
-  late TemplateController appCon;
+  late ExampleAppController appCon;
 
   /// Depending on the platform, run an 'Android' or 'iOS' style of Widget.
   @override

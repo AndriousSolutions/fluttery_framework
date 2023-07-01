@@ -11,7 +11,7 @@ unitTests(WidgetTester tester) async {
 
   testGetUtils(tester);
 
-  testHandleError();
+  testHandleError(tester);
 
   testFiles(tester);
 

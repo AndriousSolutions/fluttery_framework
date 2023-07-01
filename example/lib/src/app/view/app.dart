@@ -10,18 +10,19 @@ class FlutteryExampleApp extends AppStatefulWidget {
   FlutteryExampleApp({super.key});
   // This is the 'App State object' of the application.
   @override
-  AppState createAppState() => TemplateView();
+  AppState createAppState() => _ExampleAppState();
 }
 
 /// This is the 'View' of the application.
 /// The 'look and behavior' of the app.
-class TemplateView extends AppState {
-  TemplateView()
+///
+class _ExampleAppState extends AppState {
+  _ExampleAppState()
       : super(
-          controller: TemplateController(),
+          controller: ExampleAppController(),
           controllers: [CounterController()],
           inTitle: () => 'Demo App'.tr,
-          debugShowCheckedModeBanner: false,
+          inDebugShowCheckedModeBanner: () => false,
           switchUI: Prefs.getBool('switchUI'),
           useRouterConfig: false,
           inSupportedLocales: () {
@@ -42,13 +43,15 @@ class TemplateView extends AppState {
             GlobalCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
           ],
+          inInitAsync: () => Future.value(true), // Merely a test.
+          inInitState: () {/* Optional inInitState() function */},
         );
 
   @override
-  Locale? onLocale() => TemplateController().appLocale();
+  Locale? onLocale() => ExampleAppController().appLocale();
 
   @override
-  Widget onHome() => TemplateController().onHome();
+  Widget onHome() => ExampleAppController().onHome();
 
   @override
   RouterConfig<Object>? onRouterConfig() => GoRouter(

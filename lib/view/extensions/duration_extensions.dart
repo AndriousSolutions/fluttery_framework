@@ -22,13 +22,27 @@
 ///
 /// Original source: get 4.6.1
 
-import 'dart:math';
+import 'dart:async';
 
-/// Provide the precision to the double object
-extension Precision on double {
+/// Duration utilities.
+///
+///
+/// dartdoc:
+/// {@category Extensions}
+extension GetDurationUtils on Duration {
+  /// Utility to delay some callback (or code execution).
   ///
-  double toPrecision(int fractionDigits) {
-    final mod = pow(10, fractionDigits.toDouble()).toDouble();
-    return (this * mod).round().toDouble() / mod;
-  }
+  /// Sample:
+  /// ```
+  /// void main() async {
+  ///   final _delay = 3.seconds;
+  ///   print('+ wait $_delay');
+  ///   await _delay.delay();
+  ///   print('- finish wait $_delay');
+  ///   print('+ callback in 700ms');
+  ///   await 0.7.seconds.delay(() {
+  /// }
+  ///```
+  Future<void> delay([FutureOr<void> Function()? callback]) async =>
+      Future.delayed(this, callback);
 }

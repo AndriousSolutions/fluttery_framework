@@ -73,10 +73,10 @@ export 'package:fluttery_framework/src/view/utils/inherited_state.dart'
 export 'package:fluttery_framework/view/app_menu.dart' show AppMenu, PopupMenu;
 
 /// Extensions
-export 'package:fluttery_framework/src/view/app/app_appstate.dart';
-export 'package:fluttery_framework/src/view/app/app_navigation.dart';
-export 'package:fluttery_framework/src/view/extensions/_extensions_view.dart';
-export 'package:fluttery_framework/src/view/extensions/string_extensions.dart';
+export 'package:fluttery_framework/view/app/app_appstate.dart';
+export 'package:fluttery_framework/view/app/app_navigation.dart';
+export 'package:fluttery_framework/view/extensions/_extensions_view.dart';
+export 'package:fluttery_framework/view/extensions/string_extensions.dart';
 
 /// UX Utils
 export 'package:fluttery_framework/src/view/uxutils/view.dart';

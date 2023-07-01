@@ -27,11 +27,11 @@ class _CounterPageState extends StateX<CounterPage> {
   @override
   void initState() {
     super.initState();
-    appCon = TemplateController();
+    appCon = ExampleAppController();
     con.timer.initTimer();
   }
 
-  late TemplateController appCon;
+  late ExampleAppController appCon;
 
   Widget get wordPair => con.wordPair;
 

@@ -25,4 +25,8 @@ class _InheritDogState extends StateIn<InheritDog> {
   _InheritDogState() : super(controller: DogController());
   @override
   Widget buildAndroid(BuildContext context) => widget.child!;
+
+  /// Currently not providing an 'iOS' version of the interface.
+  @override
+  Widget buildiOS(BuildContext context) => buildAndroid(context);
 }

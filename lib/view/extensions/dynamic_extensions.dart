@@ -22,23 +22,14 @@
 ///
 /// Original source: get 4.6.1
 
-import 'dart:async';
+import 'package:fluttery_framework/src/controller/get_utils/get_utils.dart';
 
-/// Duration utilities.
-extension GetDurationUtils on Duration {
-  /// Utility to delay some callback (or code execution).
+///
+///
+///
+/// dartdoc:
+/// {@category Extensions}
+extension GetDynamicUtils on dynamic {
   ///
-  /// Sample:
-  /// ```
-  /// void main() async {
-  ///   final _delay = 3.seconds;
-  ///   print('+ wait $_delay');
-  ///   await _delay.delay();
-  ///   print('- finish wait $_delay');
-  ///   print('+ callback in 700ms');
-  ///   await 0.7.seconds.delay(() {
-  /// }
-  ///```
-  Future<void> delay([FutureOr<void> Function()? callback]) async =>
-      Future.delayed(this, callback);
+  bool? get isBlank => GetUtils.isBlank(this);
 }

@@ -29,7 +29,13 @@ import 'package:fluttery_framework/view.dart' as v;
 /// Highlights UI while debugging.
 import 'package:flutter/rendering.dart' as debug;
 
+///
 /// The View for the app. The 'look and feel' for the whole app.
+///
+/// dartdoc:
+/// {@category Get started}
+/// {@category StateX class}
+/// {@category Error handling}
 class AppState<T extends StatefulWidget> extends _AppState<T>
     with NavigatorStateMethodsMixin {
   /// Provide a huge array of options and features to the 'App State object.'
@@ -41,7 +47,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.object,
     super.materialApp,
     super.cupertinoApp,
-    @Deprecated('No longer available to the user.') super.navigatorKey,
     super.routeInformationProvider,
     super.routeInformationParser,
     super.routerDelegate,
@@ -447,7 +452,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
         App.supportedLocales ??
         const <Locale>[Locale('en', 'US')];
     // Can't be empty
-    if(_supportedLocales.isEmpty){
+    if (_supportedLocales.isEmpty) {
       _supportedLocales = const <Locale>[Locale('en', 'US')];
     }
     // Assign the locales to the App
@@ -1008,7 +1013,6 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     super.object,
     this.materialApp,
     this.cupertinoApp,
-    this.navigatorKey,
     this.routeInformationProvider,
     this.routeInformationParser,
     this.routerDelegate,
@@ -1103,8 +1107,6 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   CupertinoApp? cupertinoApp;
 
   /// All the fields found in the widgets, MaterialApp and CupertinoApp
-  @Deprecated('No longer assignable by user. Is now provided internally.')
-  GlobalKey<NavigatorState>? navigatorKey;
   RouteInformationProvider? routeInformationProvider;
   RouteInformationParser<Object>? routeInformationParser;
   RouterDelegate<Object>? routerDelegate;
@@ -1393,12 +1395,21 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
 
 /// Supply an 'error handler' routine if something goes wrong.
 /// It need not be implemented, but it's their for your consideration.
+///
+///
+///
+/// dartdoc:
+/// {@category StateX class}
+/// {@category Error handling}
 mixin StateXonErrorMixin<T extends StatefulWidget> on s.StateX<T> {
   /// This is called within the framework.
   void onError(FlutterErrorDetails details) {}
 }
 
 /// A State object that implements a built-in InheritedWidget
+///
+/// dartdoc:
+/// {@category StateX class}
 abstract class StateIn<T extends StatefulWidget> extends StateX<T> {
   ///
   StateIn({StateXController? controller})
@@ -1410,10 +1421,14 @@ abstract class StateIn<T extends StatefulWidget> extends StateX<T> {
 
   /// Build the iOS interface
   @override
-  Widget buildiOS(BuildContext context) => super.buildiOS(context);
+  Widget buildiOS(BuildContext context);
 }
 
+/// The extension of the State class.
 ///
+/// dartdoc:
+/// {@category Get started}
+/// {@category StateX class}
 abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
     with NavigatorStateMethodsMixin, StateXonErrorMixin {
   ///
@@ -1439,7 +1454,8 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
 
   late v.AppState? _appState;
 
-  /// Provide the 'main' controller to this 'State View.'
+  /// Provide the 'main' controller to this State object.
+  /// It can have more than one controller.
   @override
   StateXController? get controller {
     final controller = super.controller;
@@ -1447,11 +1463,12 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
   }
 
   /// Build the Android interface
-  // If only an iOS app, implement this function anyway. It'll get called below.
+  /// If only an iOS app, implement this with '=> buildiOS(context);'.
   Widget buildAndroid(BuildContext context);
 
   /// Build the iOS interface
-  Widget buildiOS(BuildContext context) => buildAndroid(context);
+  /// If only an Android/Windows/Linux/Web app, implement this with '=> buildAndroid(context);'.
+  Widget buildiOS(BuildContext context);
 
   /// Implement the build() function if you don't use initAsync()
   /// Implemented in mixin FutureBuilderStateMixin

@@ -31,6 +31,10 @@ typedef ErrorWidgetBuilder = Widget Function(
 /// The widget passed to runApp().
 /// The 'App' Stateful Widget. It's the StatefulWidget for the 'App' State object.
 /// extends the AppStatefulWidget found in the package, statex.
+///
+/// {@category Get started}
+/// {@category App's Preferences}
+/// {@category Error handling}
 abstract class AppStatefulWidget extends StatefulWidget {
   /// The entrypoint of the framework passed to runApp()
   /// This is a StatelessWidget where you can define
@@ -39,12 +43,6 @@ abstract class AppStatefulWidget extends StatefulWidget {
     Key? key,
     this.loadingScreen,
     this.circularProgressIndicator = true,
-    // ignore: avoid_unused_constructor_parameters
-    FlutterExceptionHandler? errorHandler,
-    // ignore: avoid_unused_constructor_parameters
-    ErrorWidgetBuilder? errorScreen,
-    // ignore: avoid_unused_constructor_parameters
-    v.ReportErrorHandler? errorReport,
     bool? allowNewHandlers = true,
   })  : _app = v.AppObject(allowNewHandlers: allowNewHandlers),
         super(key: key ?? GlobalKey<_StateApp>()) {

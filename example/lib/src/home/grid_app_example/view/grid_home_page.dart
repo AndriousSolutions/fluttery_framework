@@ -82,4 +82,8 @@ class _HomePageState extends StateX<HomePage> {
           ),
         ],
       );
+
+  /// Currently not providing an 'iOS' version of the interface.
+  @override
+  Widget buildiOS(BuildContext context) => buildAndroid(context);
 }

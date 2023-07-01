@@ -40,6 +40,8 @@ void testStringExtension() {
 
   '123'.isHTMLFileName;
 
+  '123'.isURL;
+
   '123'.isEmail;
 
   '123'.isPhoneNumber;

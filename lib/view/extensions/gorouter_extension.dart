@@ -1,6 +1,10 @@
 import 'package:fluttery_framework/view.dart';
 
 /// Supply a reference to the GoRouter itself.
+///
+///
+/// dartdoc:
+/// {@category Extensions}
 extension GoRouterExtension on BuildContext {
   /// Get a location from route name and parameters.
   String namedLocation(

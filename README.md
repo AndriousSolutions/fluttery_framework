@@ -11,15 +11,16 @@ Allows for faster and easier development with better maintainability. It looks l
 There's no 're-inventing of the wheel' or an extra learning curve. 
 
 It supplies the adaptive functions and features expected of a production-ready app:
+* Flutter's own intuitive State Management
 * Necessarily error handling capabilities
-* Allow for both a Material & Cupertino interface
-* Easily accessible system preferences
+* Easy implementation of both a Material & Cupertino interface
+* Omi-accessible system preferences
 * Built-in app notifications
 * A better menu bar
 * Built-in device event handling
 * A date picker
 * A color theme picker
-* An array dialog windows
+* An array of dialog windows
 * A customizable bottom bar
 * A loading screen option
 
@@ -36,22 +37,22 @@ installed the next time you 'upgrade' your dependencies.
 
 <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/46cf193f-a3cc-452b-94b2-01207ba18ea2" alt="Fluttery Framework" style="width:162px;height:208px;">
 
-[Getting Started](https://pub.dev/documentation/fluttery_framwork/getting_started.md)
+<ul>
+   <li><a href="topics/Get started-topic.html">Get&nbsp;started</a></li>
+   <li><a href="topics/StateX class-topic.html">StateX class</a></li>
+   <li><a href="topics/State Object Controller-topic.html">State&nbsp;Object&nbsp;Controller</a></li>
+   <li><a href="topics/App's Preferences-topic.html">App's&nbsp;Preferences</a></li>
+   <li><a href="topics/Error handling-topic.html">Error&nbsp;handling</a></li>
+</ul>
 
-[State Object Controller](https://pub.dev/documentation/fluttery_framwork/getting_started.md)
-
-[App's Preferences](https://pub.dev/documentation/fluttery_framwork/preferences.md)
-
-[Error Handling](https://pub.dev/documentation/fluttery_framwork/error-handling.md)
-
-Turn to this free Medium article for an overview of the package:
+Free overview article on medium.com:
 
 [Fluttery Framework](https://andrious.medium.com/the-fluttery-framework-35480fb834da)
 
 ___
 ## Example Code:
-###### (Copy & paste and try it out.)
 ##### The Counter App
+###### (Copy & paste and try it out.)
 ```Dart
 import 'package:fluttery_framework/view.dart';
 
@@ -63,11 +64,11 @@ class MyApp extends AppStatefulWidget {
   MyApp({Key? key}) : super(key: key);
 
   @override
-  AppState createAppState() => View();
+  AppState createAppState() => _CounterAppState();
 }
 
-class View extends AppState {
-  View()
+class _CounterAppState extends AppState {
+  _CounterAppState()
       : super(
     title: 'Flutter Demo',
     home: const MyHomePage(),

@@ -52,6 +52,10 @@ class ImageAPIStateX<T extends StatefulWidget> extends StateX<T>
   /// in the corresponding initAsync() routine.
   @override
   bool onAsyncError(FlutterErrorDetails details) => false;
+
+  /// Currently not providing an 'iOS' version of the interface.
+  @override
+  Widget buildiOS(BuildContext context) => buildAndroid(context);
 }
 
 ///

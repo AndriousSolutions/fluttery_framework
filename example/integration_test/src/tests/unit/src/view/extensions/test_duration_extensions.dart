@@ -10,4 +10,6 @@ import '../_unit_test_view.dart';
 void testDurationExtension() {
   //
 //  test('Test Duration Extension', () async {});
+
+  2.seconds.delay(() async {});
 }

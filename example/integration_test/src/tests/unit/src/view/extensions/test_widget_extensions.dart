@@ -19,4 +19,12 @@ void testWidgetExtension() {
   widget.paddingOnly(left: 1, top: 2, right: 3, bottom: 4);
 
   widget.paddingZero;
+
+  widget.marginAll(2);
+
+  widget.marginSymmetric();
+
+  widget.marginOnly();
+
+  widget.marginZero;
 }

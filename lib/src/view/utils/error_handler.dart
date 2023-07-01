@@ -37,6 +37,7 @@ import 'package:flutter/rendering.dart'
 typedef ReportErrorHandler = Future<void> Function(
     Object exception, StackTrace stack);
 
+/// {@category Error handling}
 /// Your App's error handler.
 class AppErrorHandler {
   /// Singleton Pattern with only one instance of this Error Handler.
@@ -225,7 +226,7 @@ class AppErrorHandler {
   }
 
   /// Determines if running in an IDE or in production.
-  static bool get inDebugger {
+  static bool get inDebugMode {
     var inDebugMode = false;
     // assert is removed in production.
     assert(inDebugMode = true);

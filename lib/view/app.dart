@@ -34,20 +34,14 @@ import 'package:fluttery_framework/controller.dart' show DeviceInfo;
 final App = AppObject();
 
 /// This class is available throughout the app
-/// Readily supplies static properties about the App.
+/// readily supplies static properties about the App.
+///
+/// {@category Get started}
 class AppObject
     with ConnectivityListener, _AppPackageInfoMixin, _AppThemeDataMixin {
   /// Supply an error handler to the App.
   // The parameters are deprecated.
-  factory AppObject({
-    // ignore: avoid_unused_constructor_parameters
-    FlutterExceptionHandler? errorHandler,
-    // ignore: avoid_unused_constructor_parameters
-    ErrorWidgetBuilder? errorScreen,
-    // ignore: avoid_unused_constructor_parameters
-    v.ReportErrorHandler? errorReport,
-    bool? allowNewHandlers = true,
-  }) =>
+  factory AppObject({bool? allowNewHandlers = true}) =>
       _this ??= AppObject._(allowNewHandlers ?? true);
 
   AppObject._(

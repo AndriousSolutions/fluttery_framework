@@ -25,6 +25,10 @@
 import 'package:flutter/widgets.dart';
 
 /// add Padding Property to widget
+///
+///
+/// dartdoc:
+/// {@category Extensions}
 extension WidgetPaddingX on Widget {
   /// Padding on all sides
   Widget paddingAll(double padding) =>
@@ -54,6 +58,10 @@ extension WidgetPaddingX on Widget {
 }
 
 /// Add margin property to widget
+///
+///
+/// dartdoc:
+/// {@category Extensions}
 extension WidgetMarginX on Widget {
   /// Add specified margin to all sides.
   Widget marginAll(double margin) =>
@@ -83,6 +91,10 @@ extension WidgetMarginX on Widget {
 }
 
 /// Allows you to insert widgets inside a CustomScrollView
+///
+///
+/// dartdoc:
+/// {@category Extensions}
 extension WidgetSliverBoxX on Widget {
   /// Add to a BoxAdapter
   Widget get sliverBox => SliverToBoxAdapter(child: this);

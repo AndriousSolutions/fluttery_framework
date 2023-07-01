@@ -9,7 +9,7 @@ class AppMenu {
   factory AppMenu() => _this ??= AppMenu._();
   static AppMenu? _this;
 
-  AppMenu._() : _con = TemplateController() {
+  AppMenu._() : _con = ExampleAppController() {
     //
     App.menu.key = const Key('appMenuButton');
 
@@ -37,7 +37,7 @@ class AppMenu {
   }
 
   /// The App's controller
-  final TemplateController _con;
+  final ExampleAppController _con;
 
   /// Supply the app's popupmenu
   /// a mutable menu

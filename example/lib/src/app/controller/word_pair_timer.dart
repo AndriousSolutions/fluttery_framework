@@ -34,13 +34,6 @@ class WordPairsTimer extends StateXController {
 
   Timer? timer;
 
-  /// Retrieve a particular State object of a specific type
-  /// that this Controller is 'attached' to.
-
-  TemplateView? get appStateObject =>
-      _appStateObject ??= rootState as TemplateView;
-  TemplateView? _appStateObject;
-
   final suggestions = <WordPair>[];
   int index = 0;
 
@@ -110,8 +103,9 @@ class WordPairsTimer extends StateXController {
         return widget;
       });
 
-  /// Alternate approach. See class _WordPair
-//  Widget get wordPair => _WordPair(this);
+  // /// Alternate approach. See class _WordPair
+  // Widget get wordPair => _WordPair(this);
+
   String _wordPair = '';
 
   void _getWordPair() {
@@ -131,7 +125,7 @@ class WordPairsTimer extends StateXController {
       /// Change dataObject will rebuild the InheritedWidget
       /// Changing the 'dataObject' will call the SetState class implemented above
       /// and only that widget.
-      appStateObject?.dataObject = _wordPair;
+      rootState?.dataObject = _wordPair;
     } catch (ex) {
       /// Stop the timer.
       /// Something is not working. Don't have the timer repeat it over and over.
@@ -203,7 +197,6 @@ class WordPairsTimer extends StateXController {
 }
 
 /// Alternate approach to spontaneous rebuilds using the framework's InheritedWidget.
-/// This approach uses inheritWidget() and setStatesInherited() functions.
 /// This class is assigned to the getter, wordPair.
 class _WordPair extends StatelessWidget {
   const _WordPair(this.con, {Key? key}) : super(key: key);
@@ -212,16 +205,7 @@ class _WordPair extends StatelessWidget {
   Widget build(BuildContext context) {
     /// This is where the magic happens.
     /// This Widget becomes a dependent of an InheritedWidget deep in the framework.
-    con.appStateObject?.dependOnInheritedWidget(context);
-
-    // String data;
-    //
-    // if (con.appStateObject?.dataObject is String) {
-    //   data = con.appStateObject?.dataObject as String;
-    // } else {
-    //   data = con._wordPair;
-    // }
-
+    con.rootState?.dependOnInheritedWidget(context);
     return Text(
       con._wordPair, //data,
       style: TextStyle(

@@ -32,6 +32,8 @@ export 'package:flutter/material.dart'
         Widget;
 
 /// Create a customized [PopupMenuButton].
+///
+/// {@category Get started}
 class AppMenu<T> with PopupMenuButtonFunctions<T> {
   /// Supply all the properties to instantiate a custom [PopupMenuButton].
   AppMenu({

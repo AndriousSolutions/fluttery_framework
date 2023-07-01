@@ -22,10 +22,17 @@
 ///
 /// Original source: get 4.6.1
 
-import 'package:fluttery_framework/src/controller/get_utils/get_utils.dart';
+import 'dart:math';
 
+/// Provide the precision to the double object
 ///
-extension GetDynamicUtils on dynamic {
+///
+/// dartdoc:
+/// {@category Extensions}
+extension Precision on double {
   ///
-  bool? get isBlank => GetUtils.isBlank(this);
+  double toPrecision(int fractionDigits) {
+    final mod = pow(10, fractionDigits.toDouble()).toDouble();
+    return (this * mod).round().toDouble() / mod;
+  }
 }

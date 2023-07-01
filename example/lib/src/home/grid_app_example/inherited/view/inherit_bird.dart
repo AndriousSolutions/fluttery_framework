@@ -22,4 +22,8 @@ class _InheritBirdState extends StateIn<InheritBird> {
   _InheritBirdState() : super(controller: BirdController());
   @override
   Widget buildAndroid(BuildContext context) => widget.child!;
+
+  /// Currently not providing an 'iOS' version of the interface.
+  @override
+  Widget buildiOS(BuildContext context) => buildAndroid(context);
 }

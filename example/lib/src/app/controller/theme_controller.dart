@@ -2,6 +2,8 @@
 import 'package:fluttery_framework_example/src/controller.dart';
 
 /// The App's theme controller
+///
+/// {@category Get started}
 class ThemeController extends StateXController {
   factory ThemeController() => _this ??= ThemeController._();
   ThemeController._() {

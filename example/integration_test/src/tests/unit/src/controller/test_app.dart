@@ -8,14 +8,18 @@
 import '_unit_test_controller.dart';
 
 Future<void> testAppController() async {
-  //
+  // This class extends StateXController but implements
+  // initAsync(), onAsyncError() and onConnectivityChanged()
   final app = AppController();
 
+  // Override to run any asynchronous operations before the app starts
   await app.initAsync();
 
   final details = FlutterErrorDetails(exception: AssertionError('Error'));
 
+  // Override to run if initAsync() causes an error and so to recover
   app.onAsyncError(details);
 
+  // Override to run if, for example, the phone's wifi/data is turned off.
   app.onConnectivityChanged(ConnectivityResult.none);
 }

@@ -7,12 +7,32 @@
 
 import '_unit_test_controller.dart';
 
-void testHandleError() {
+void testHandleError(WidgetTester tester) {
 //  test('Test HandleError Mixin', () async {
   //
+  final error = AssertionError('Error Test');
+
+  StateXController con = ExampleAppController();
+
+  var state = con.state;
+
+  if (state != null && state is AppState) {
+    //
+    state.onError(FlutterErrorDetails(exception: error));
+  }
+
+  con = CounterController();
+
+  state = con.state;
+
+  if (state != null && state is StateXonErrorMixin) {
+    //
+    state.onError(FlutterErrorDetails(exception: error));
+  }
+
   final handler = _HandelErrorTester();
 
-  handler.getError(AssertionError('Error Test'));
+  handler.getError(error);
 
   handler.errorMsg;
 

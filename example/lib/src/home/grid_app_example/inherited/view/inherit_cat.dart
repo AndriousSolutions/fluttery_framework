@@ -25,4 +25,8 @@ class _InheritCatState extends StateIn<InheritCat> {
   _InheritCatState() : super(controller: CatController());
   @override
   Widget buildAndroid(BuildContext context) => widget.child!;
+
+  /// Currently not providing an 'iOS' version of the interface.
+  @override
+  Widget buildiOS(BuildContext context) => buildAndroid(context);
 }

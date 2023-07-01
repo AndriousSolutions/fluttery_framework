@@ -15,7 +15,7 @@ void testAppState(WidgetTester tester) {
   // Find its StatefulWidget first then the 'type' of State object.
 //  final appState = tester.firstState<AppState>(find.byType(FlutteryExampleApp));
 
-  final appState = TemplateController().state as AppState;
+  final appState = ExampleAppController().state as AppState;
 
   bool? use = appState.useCupertino;
 

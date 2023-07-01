@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:fluttery_framework/src/controller/get_utils/get_utils.dart';
 
 ///
+///
+///
+/// dartdoc:
+/// {@category Extensions}
 extension GetNumUtils on num {
   /// True if this number is lower than num
   bool isLowerThan(num b) => GetUtils.isLowerThan(this, b);

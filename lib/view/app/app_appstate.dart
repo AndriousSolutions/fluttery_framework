@@ -312,10 +312,6 @@ extension AppStateExtension on AppObject {
   /// Determines if running in an IDE or in production.
   bool get inDebugMode => appState?.inDebugMode ?? false;
 
-  ///
-  @Deprecated('Use inDebugMode instead.')
-  bool get inDebugger => inDebugMode;
-
   /// Refresh the root State object with the passed function.
   void setState(VoidCallback fn) => appState?.setState(fn);
 

@@ -7,7 +7,7 @@ Future<void> testTemplateController(WidgetTester tester) async {
   //ignore: avoid_print
   // print('====================== Unit Testing Controller ');
 
-  final con = TemplateController();
+  final con = ExampleAppController();
 
   final app = con.application;
 

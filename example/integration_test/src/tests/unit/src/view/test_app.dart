@@ -24,53 +24,53 @@ void testAppView(WidgetTester tester) {
 
   App.navigatorKey;
 
-  App.scaffoldMessengerKey;
+  App.scaffoldMessengerKey = App.scaffoldMessengerKey;
 
-  App.routes;
+  App.routes = App.routes;
 
-  App.initialRoute;
+  App.initialRoute = App.initialRoute;
 
-  App.onGenerateRoute;
+  App.onGenerateRoute = App.onGenerateRoute;
 
-  App.onUnknownRoute;
+  App.onUnknownRoute = App.onUnknownRoute;
 
-  App.navigatorObservers;
+  App.navigatorObservers = App.navigatorObservers;
 
-  App.builder;
+  App.builder = App.builder;
 
-  App.title;
+  App.title = App.title;
 
-  App.onGenerateTitle;
+  App.onGenerateTitle = App.onGenerateTitle;
 
   App.getMaterialColor(Colors.red);
 
-  App.color;
+  App.color = App.color;
 
-  App.localizationsDelegates;
+  App.localizationsDelegates = App.localizationsDelegates;
 
-  App.localeResolutionCallback;
+  App.localeResolutionCallback = App.localeResolutionCallback;
 
-  App.debugShowMaterialGrid;
+  App.debugShowMaterialGrid = App.debugShowMaterialGrid;
 
-  App.showPerformanceOverlay;
+  App.showPerformanceOverlay = App.showPerformanceOverlay;
 
-  App.checkerboardRasterCacheImages;
+  App.checkerboardRasterCacheImages = App.checkerboardRasterCacheImages;
 
-  App.checkerboardOffscreenLayers;
+  App.checkerboardOffscreenLayers = App.checkerboardOffscreenLayers;
 
-  App.showSemanticsDebugger;
+  App.showSemanticsDebugger = App.showSemanticsDebugger;
 
-  App.debugShowCheckedModeBanner;
+  App.debugShowCheckedModeBanner = App.debugShowCheckedModeBanner;
 
-  App.debugPaintSizeEnabled;
+  App.debugPaintSizeEnabled = App.debugPaintSizeEnabled;
 
-  App.debugPaintBaselinesEnabled;
+  App.debugPaintBaselinesEnabled = App.debugPaintBaselinesEnabled;
 
-  App.debugPaintPointersEnabled;
+  App.debugPaintPointersEnabled = App.debugPaintPointersEnabled;
 
-  App.debugPaintLayerBordersEnabled;
+  App.debugPaintLayerBordersEnabled = App.debugPaintLayerBordersEnabled;
 
-  App.debugRepaintRainbowEnabled;
+  App.debugRepaintRainbowEnabled = App.debugRepaintRainbowEnabled;
 
   App.platform;
 
@@ -80,9 +80,11 @@ void testAppView(WidgetTester tester) {
 
   App.packageName;
 
-  App.inDebugMode;
+  App.version;
 
-  App.inDebugger;
+  App.buildNumber;
+
+  App.inDebugMode;
 
   App.refresh();
 
