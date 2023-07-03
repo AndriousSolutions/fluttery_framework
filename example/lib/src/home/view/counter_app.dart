@@ -72,7 +72,32 @@ class _CounterPageState extends StateX<CounterPage> {
                     ),
                   ],
                 ),
-              )
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 50.0),
+                      child: ElevatedButton(
+                        key: const Key('Page 1'),
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (BuildContext context) =>
+                                  Page1(key: UniqueKey()),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'Page 1',
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

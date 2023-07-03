@@ -28,8 +28,7 @@ export 'package:fluttery_framework/controller/app.dart'
 export 'package:fluttery_framework/src/controller/schedule_notificaitons.dart';
 
 // Device Info
-export 'package:fluttery_framework/src/controller/device_info.dart'
-    show DeviceInfo;
+export 'package:fluttery_framework/controller/device_info.dart' show DeviceInfo;
 
 // Assets
 export 'package:fluttery_framework/src/controller/assets/assets.dart';

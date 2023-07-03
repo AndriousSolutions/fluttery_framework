@@ -1,4 +1,3 @@
-# Extensions
 ## _Extending Flutter's Capabilities_
 
 These extensions alone would be reason enough to use the Fluttery Framework.

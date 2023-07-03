@@ -17,7 +17,7 @@ import 'package:fluttery_framework/view.dart';
 /// {@category State Object Controller}
 class AppController extends StateXController implements ConnectivityListener {
   /// Optionally supply a 'State' object to be linked to this State Controller.
-  AppController([StateX? state]) : super(state);
+  AppController([super.state]);
 
   /// Initialize any 'time-consuming' operations at the beginning.
   /// Initialize items essential to the Mobile Applications.
@@ -64,4 +64,15 @@ class StateXController extends c.StateXController {
   /// Return a Set of State objects.
   @override
   Set<StateX> get states => Set.from(super.states.whereType<StateX>());
+
+  /// Retrieve and cast as this Framework's own particular 'AppState' type.
+  @override
+  AppState? get rootState {
+    AppState? appState;
+    final state = super.rootState;
+    if (state != null) {
+      appState = state as AppState;
+    }
+    return appState;
+  }
 }

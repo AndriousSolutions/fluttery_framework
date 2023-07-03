@@ -13,7 +13,15 @@ void testAppView(WidgetTester tester) {
   //
   final app = AppObject();
 
+  App.inWidgetsFlutterBinding;
+
+  App.inFlutterTest;
+
   App.errorHandler;
+
+  App.isInit = App.isInit;
+
+  App.hotReload = App.hotReload;
 
   final details = FlutterErrorDetails(exception: AssertionError('error'));
 
@@ -22,11 +30,15 @@ void testAppView(WidgetTester tester) {
   app.onAsyncError(
       AsyncSnapshot.withError(ConnectionState.none, AssertionError('error')));
 
+  App.mainWindow;
+
   App.navigatorKey;
 
   App.scaffoldMessengerKey = App.scaffoldMessengerKey;
 
   App.routes = App.routes;
+
+  App.menu;
 
   App.initialRoute = App.initialRoute;
 

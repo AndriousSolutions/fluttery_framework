@@ -37,7 +37,7 @@ installed the next time you 'upgrade' your dependencies.
 
 <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/46cf193f-a3cc-452b-94b2-01207ba18ea2" alt="Fluttery Framework" style="width:162px;height:208px;">
 
-<ul>
+<ul style="list-style-type: none">
    <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/Get%20started-topic.html">Get&nbsp;started</a></li>
    <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/StateX%20class-topic.html">StateX class</a></li>
    <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/State%20Object%20Controller-topic.html">State&nbsp;Object&nbsp;Controller</a></li>
@@ -50,8 +50,7 @@ Free overview article on medium.com:
 [Fluttery Framework](https://andrious.medium.com/the-fluttery-framework-35480fb834da)
 
 ___
-## Example Code:
-##### The Counter App
+## The Counter Example App
 ###### (Copy & paste and try it out.)
 ```Dart
 import 'package:fluttery_framework/view.dart';

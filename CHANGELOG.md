@@ -1,4 +1,15 @@
 
+## 4.0.1
+July 03, 2023
+- /// Retrieve and cast as this Framework's own particular 'controller' type.
+  StateXController? controllerById(String? id)
+  StateXController? get rootCon {
+  AppState? get rootState {
+  StateXController? get controller {
+- Extend the Counter example app
+- dartdoc category: App object & Device info.
+
+
 ## 4.0.0+7
 June 15, 2023
 - *BREAKING CHANGE* Removed GetX to instead use go_router

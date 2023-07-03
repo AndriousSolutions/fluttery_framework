@@ -337,6 +337,28 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   // The error flag.
   bool _inError = false;
 
+  /// Retrieve and cast as this Framework's own particular 'controller' type.
+  @override
+  StateXController? get controller {
+    StateXController? controller;
+    final con = super.controller;
+    if (con != null) {
+      controller = con as StateXController;
+    }
+    return controller;
+  }
+
+  /// Retrieve and cast as this Framework's own particular 'controller' type.
+  @override
+  StateXController? controllerById(String? id) {
+    StateXController? controller;
+    final con = super.controllerById(id);
+    if (con != null) {
+      controller = con as StateXController;
+    }
+    return controller;
+  }
+
   /// Reference the 'parent' State object
   State? get parentState => _parentState;
   State? _parentState;
@@ -1454,12 +1476,46 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
 
   late v.AppState? _appState;
 
+  /// Returns the 'first' StateX object in the App
+  // Important to prefix with the class name to 'share' this as a mixin.
+  @override
+  AppState? get rootState {
+    AppState? appState;
+    final root = super.rootState;
+    if (root != null) {
+      appState = root as AppState;
+    }
+    return appState;
+  }
+
   /// Provide the 'main' controller to this State object.
   /// It can have more than one controller.
   @override
   StateXController? get controller {
     final controller = super.controller;
     return controller == null ? null : controller as StateXController;
+  }
+
+  /// Retrieve and cast as this Framework's own particular 'controller' type.
+  @override
+  StateXController? controllerById(String? id) {
+    StateXController? controller;
+    final con = super.controllerById(id);
+    if (con != null) {
+      controller = con as StateXController;
+    }
+    return controller;
+  }
+
+  /// Retrieve and cast as this Framework's own particular 'controller' type.
+  @override
+  StateXController? get rootCon {
+    StateXController? controller;
+    final con = super.rootCon;
+    if (con != null) {
+      controller = con as StateXController;
+    }
+    return controller;
   }
 
   /// Build the Android interface
@@ -1617,18 +1673,6 @@ class _SetStateWidget extends StatelessWidget {
     return widgetFunc(context);
   }
 }
-
-// /// Supply a specific Controller to this StatelessWidget.
-// abstract class View<T extends StateXController> extends StatelessWidget {
-//   ///
-//   const View({Key? key}) : super(key: key);
-//
-//   /// Supply the specified Controller.
-//   T? get controller => App.appState?.controllerByType<T>();
-//
-//   @override
-//   Widget build(BuildContext context);
-// }
 
 /// Supply the Global Navigator and all its methods.
 mixin NavigatorStateMethodsMixin {

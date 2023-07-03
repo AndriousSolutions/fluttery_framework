@@ -6,19 +6,26 @@ dartdoc:
       markdown: doc/statex.md
     "State Object Controller":
       markdown: doc/controllers.md
-    "App's Preferences":
-      markdown: doc/preferences.md
-    "Extensions":
-      markdown: doc/extensions.md
     "Error handling":
       markdown: doc/error-handling.md
+    "App's Preferences":
+      markdown: doc/preferences.md
+    "App object":
+      markdown: doc/app-object.md
+    "Extensions":
+      markdown: doc/extensions.md
+    "Device Information":
+      markdown: doc/device-info.md
+
   categoryOrder:
     - "Get started"
     - "StateX class"
     - "State Object Controller"
-    - "App's Preferences"
-    - "Extensions"
     - "Error handling"
+    - "App's Preferences"
+    - "App object"
+    - "Extensions"
+    - "Device Information"
   nodoc: ['lib/*.dart', '_*.dart']
   showUndocumentedCategories: true
 #  ignore:
@@ -27,6 +34,6 @@ dartdoc:
     - unresolved-doc-reference
   warnings:
     - tool-error
-#  ignore:
-#    - broken-link
-#    - missing-from-search-index
+  ignore:
+    - broken-link
+    - missing-from-search-index

@@ -37,6 +37,7 @@ final App = AppObject();
 /// readily supplies static properties about the App.
 ///
 /// {@category Get started}
+/// {@category App object}
 class AppObject
     with ConnectivityListener, _AppPackageInfoMixin, _AppThemeDataMixin {
   /// Supply an error handler to the App.

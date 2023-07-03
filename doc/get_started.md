@@ -1,4 +1,3 @@
-# Getting Started
 There is a number of example apps that use the Fluttery Framework:
 
 - [Shrine Example App](https://github.com/Andrious/shrine_example_app)

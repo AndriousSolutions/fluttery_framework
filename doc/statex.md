@@ -1,4 +1,3 @@
-# StateX class
 ## _The State Extended_
 Extending the capabilities of Flutter’s own State class with the StateX class,
 this class allows you to use a State Object Controller (SOC) to reliably call 
@@ -12,7 +11,7 @@ and recreated again and again in a typical Flutter app, its State object remains
 All that should really be in a StatefulWidget is its **createState**() function. 
 Any additional code should be immutable otherwise performance is affected.
 
-```dart
+```Dart
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, this.title = 'Flutter Demo Home Page'})
       : super(key: key);
@@ -46,7 +45,7 @@ the other controllers.
 
 the Controller object is referenced here and there in the State object’s **build**() function. By design, 
 the controller is providing the data and the event handling necessary for the app to function correctly. 
-```dart
+```Dart
   @override
   Widget buildAndroid(BuildContext context) => Scaffold(
         appBar: AppBar(
