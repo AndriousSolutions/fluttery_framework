@@ -57,8 +57,11 @@ class Controller extends StateXController {
   /// Called to complete any asynchronous operations.
   @override
   Future<bool> initAsync() async {
-    final init = await super.initAsync();
-    return init;
+    // Simply wait for 10 seconds at startup.
+    /// In production, this is where databases are opened, logins attempted, etc.
+    return Future.delayed(const Duration(seconds: 5), () {
+      return true;
+    });
   }
 
   /// The framework will call this method exactly once.

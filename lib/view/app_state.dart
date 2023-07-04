@@ -1489,6 +1489,7 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
   }
 
   /// Provide the 'main' controller to this State object.
+  ///
   /// It can have more than one controller.
   @override
   StateXController? get controller {
@@ -1518,16 +1519,24 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
     return controller;
   }
 
-  /// Build the Android interface
+  /// Build the Android interface.
+  ///
+  /// By convention, this involves Material Interface
+  ///
   /// If only an iOS app, implement this with '=> buildiOS(context);'.
   Widget buildAndroid(BuildContext context);
 
-  /// Build the iOS interface
+  /// Build the iOS interface.
+  ///
+  /// By convention, this involves Cupertino Interface
+  ///
   /// If only an Android/Windows/Linux/Web app, implement this with '=> buildAndroid(context);'.
   Widget buildiOS(BuildContext context);
 
-  /// Implement the build() function if you don't use initAsync()
-  /// Implemented in mixin FutureBuilderStateMixin
+  /// Implement the build() function if you don't use initAsync().
+  ///
+  /// Implemented in mixin FutureBuilderStateMixin.
+  ///
   /// Explicitly implemented here to highlight the override.
   @override
   //ignore: unnecessary_overrides
@@ -1542,7 +1551,8 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
         )
       : buildIn(context);
 
-  /// Compiled once and passed to an InheritedWidget
+  /// Compiled once and passed to an InheritedWidget.
+  ///
   /// Supply the appropriate interface depending on the platform.
   Widget buildIn(BuildContext context) =>
       App.useMaterial ? buildAndroid(context) : buildiOS(context);

@@ -8,7 +8,7 @@
 ### A Framework for Flutter's Framework
 ![Fluttery_Framework](https://user-images.githubusercontent.com/32497443/185770676-89af0669-9040-4dc6-ad5b-412ed9fed5e5.jpg)
 Allows for faster and easier development with better maintainability. It looks like Flutter and works like Flutter.
-There's no 're-inventing of the wheel' or an extra learning curve. 
+There's no 're-inventing of the wheel' or an extra learning curve. If you know Flutter, you'll know Fluttery.  
 
 It supplies the adaptive functions and features expected of a production-ready app:
 * Flutter's own intuitive State Management
@@ -25,11 +25,10 @@ It supplies the adaptive functions and features expected of a production-ready a
 * A loading screen option
 
 ### Installing
-I don't like the version number suggested in the '[Installing](https://pub.dev/packages/fluttery_framework#-installing-tab-)' page.
-Instead, always go up to the '**minor**' semantic version number when installing this library package. 
-This means always trailing with one zero, '**.0**'.
+Instead of using version number suggested in the '[Installing](https://pub.dev/packages/fluttery_framework#-installing-tab-)' page, 
+always go up to the '**minor**' semantic version number when installing this library package. 
+This means always have a trailing zero, '**.0**'.
 This allows you to take in any '**patch**' versions that involves bugfixes. 
-
 For example, when installing version 7.9.2, use 7.9.0. That means, the bug fix, 7.9.3, will be 
 installed the next time you 'upgrade' your dependencies.
 
@@ -41,8 +40,11 @@ installed the next time you 'upgrade' your dependencies.
    <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/Get%20started-topic.html">Get&nbsp;started</a></li>
    <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/StateX%20class-topic.html">StateX class</a></li>
    <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/State%20Object%20Controller-topic.html">State&nbsp;Object&nbsp;Controller</a></li>
-   <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/App's%20Preferences-topic.html">App's&nbsp;Preferences</a></li>
    <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/Error%20handling-topic.html">Error&nbsp;handling</a></li>
+   <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/App's%20Preferences-topic.html">App's&nbsp;Preferences</a></li>
+   <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/App%20object-topic.html">App object</a></li>
+   <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/Extensions-topic.html">Extensions</a></li>
+   <li><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/Device%20Information-topic.html">Device Information</a></li>
 </ul>
 
 Free overview article on medium.com:

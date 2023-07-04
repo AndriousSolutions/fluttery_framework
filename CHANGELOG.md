@@ -1,5 +1,5 @@
 
-## 4.0.1
+## 4.0.1+01
 July 03, 2023
 - /// Retrieve and cast as this Framework's own particular 'controller' type.
   StateXController? controllerById(String? id)
@@ -8,7 +8,7 @@ July 03, 2023
   StateXController? get controller {
 - Extend the Counter example app
 - dartdoc category: App object & Device info.
-
+- Continue updating documentation
 
 ## 4.0.0+7
 June 15, 2023

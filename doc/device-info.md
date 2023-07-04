@@ -5,78 +5,78 @@ available to you by simply using the omi-presence DeviceInfo static properties:
 
 ###### (Copy & paste and try it out.)
 ```Dart
-  DeviceInfo.data;
+  Map<String, dynamic> data = DeviceInfo.data;
 
-  DeviceInfo.board;
+  String board = DeviceInfo.board;
 
-  DeviceInfo.bootloader;
+  String bootloader = DeviceInfo.bootloader;
 
-  DeviceInfo.brand;
+  String brand = DeviceInfo.brand;
 
-  DeviceInfo.device;
+  String device = DeviceInfo.device;
 
-  DeviceInfo.display;
+  String display = DeviceInfo.display;
 
-  DeviceInfo.fingerprint;
+  String fingerprint = DeviceInfo.fingerprint;
 
-  DeviceInfo.hardware;
+  String hardware = DeviceInfo.hardware;
 
-  DeviceInfo.host;
+  String host = DeviceInfo.host;
 
-  DeviceInfo.id;
+  String id = DeviceInfo.id;
 
-  DeviceInfo.manufacturer;
+  String manufacturer = DeviceInfo.manufacturer;
 
-  DeviceInfo.model;
+  String model = DeviceInfo.model;
 
-  DeviceInfo.product;
+  String product = DeviceInfo.product;
 
-  DeviceInfo.supported32BitAbis;
+  Strng supported32BitAbis = DeviceInfo.supported32BitAbis;
 
-  DeviceInfo.supported64BitAbis;
+  String supported64BitAbis = DeviceInfo.supported64BitAbis;
 
-  DeviceInfo.supportedAbis;
+  String supportedAbis = DeviceInfo.supportedAbis;
 
-  DeviceInfo.tags;
+  String tags = DeviceInfo.tags;
 
-  DeviceInfo.type;
+  String type = DeviceInfo.type;
 
-  DeviceInfo.isPhysicalDevice;
+  String isPhysicalDevice = DeviceInfo.isPhysicalDevice;
 
-  DeviceInfo.versionBaseOs;
+  String versionBaseOs = DeviceInfo.versionBaseOs;
 
-  DeviceInfo.versionCodename;
+  String versionCodename = DeviceInfo.versionCodename;
 
-  DeviceInfo.versionIncremental;
+  String versionIncremental = DeviceInfo.versionIncremental;
 
-  DeviceInfo.versionPreviewSdk;
+  String versionPreviewSdk = DeviceInfo.versionPreviewSdk;
 
-  DeviceInfo.versionRelease;
+  String versionRelease = DeviceInfo.versionRelease;
 
-  DeviceInfo.versionSdk;
+  String versionSdk = DeviceInfo.versionSdk;
 
-  DeviceInfo.versionSecurityPatch;
+  String versionSecurityPatch = DeviceInfo.versionSecurityPatch;
 
-  DeviceInfo.name;
+  String name = DeviceInfo.name;
 
-  DeviceInfo.systemName;
+  String systemName = DeviceInfo.systemName;
 
-  DeviceInfo.systemVersion;
+  String systemVersion = DeviceInfo.systemVersion;
 
-  DeviceInfo.localizedModel;
+  String localizedModel = DeviceInfo.localizedModel;
 
-  DeviceInfo.identifierForVendor;
+  String identifierForVendor = DeviceInfo.identifierForVendor;
 
-  DeviceInfo.utsname;
+  String utsname = DeviceInfo.utsname;
 
-  DeviceInfo.utsnameSysname;
+  String utsnameSysname = DeviceInfo.utsnameSysname;
 
-  DeviceInfo.utsnameNodename;
+  String utsnameNodename = DeviceInfo.utsnameNodename;
 
-  DeviceInfo.utsnameRelease;
+  String utsnameRelease = DeviceInfo.utsnameRelease;
 
-  DeviceInfo.utsnameVersion;
+  String utsnameVersion = DeviceInfo.utsnameVersion;
 
-  DeviceInfo.utsnameMachine;
+  String utsnameMachine = DeviceInfo.utsnameMachine;
 ```
 

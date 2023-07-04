@@ -1,15 +1,20 @@
 ## _The State Extended_
-Extending the capabilities of Flutter’s own State class with the StateX class,
-this class allows you to use a State Object Controller (SOC) to reliably call 
+Extending the capabilities of Flutter’s own State class with the StateX class.
+This class allows you to use a [State Object Controller](https://pub.dev/documentation/fluttery_framework/latest/topics/State%20Object%20Controller-topic.html) (SOC) to reliably call 
 its **setState**() function from outside the class — a very powerful capability!
-I'll show you what I mean shortly.
 
-My motto while writing this framework has always been, ‘Keep It Flutter.’
-It should look like Flutter, and it should act like Flutter. With that, I kept the State class 
-as the main player in State Management---just like Flutter. While a StatefulWidget is created, destroyed, 
-and recreated again and again in a typical Flutter app, its State object remains in memory. 
-All that should really be in a StatefulWidget is its **createState**() function. 
-Any additional code should be immutable otherwise performance is affected.
+The StateX class gives you four things:
+
+<ul style="list-style-type: none">
+   <li>The State Object Controller separates the app's interface from everything else:</li>
+   <li><b><a href="https://pub.dev/documentation/fluttery_framework/latest/controller_app/StateXController-class.html" style="text-decoration:none;">StateXController</a></b></li>
+   <li>Two functions to supply the Material interface and the Cupertino interface:</li>
+   <li><b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildAndroid.html" style="text-decoration:none">buildAndroid</a></b>() and <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildiOS.html">buildiOS</a></b>()</li>
+   <li>A function to perform any necessary asynchronous operations before displaying the interface.</li>
+   <li><b><a href="https://pub.dev/documentation/state_extended/latest/state_extended/AsyncOps/initAsync.html" style="text-decoration:none;color:none;">initAsync</a></b>()</li>
+   <li>A means to update only <i>particular</i> widgets on the screen improving performance:</li>
+   <li><b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/notifyClients.html">notifyClient></a></b>(), <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/state.html">state</a></b>(), <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/updateShouldNotify.html">updateShouldNotify</a></b>()</li>
+</ul>
 
 ```Dart
 class MyHomePage extends StatefulWidget {
@@ -31,20 +36,16 @@ class _MyHomePageState extends StateX<MyHomePage> {
 ### Control Your Code
 All your ‘mutable’ code should go into the Dart file containing your State Object Controller.
 It would generally contain the ‘business logic’ involved in a given app as well as address any 
-event handling. Controllers not new to Flutter. You’ve likely encountered a number of controllers 
-while working with Flutter’s own widgets---many with named parameters called ‘controller.’ 
-The State class would be concerned with the interface, and the State Object Controller class would 
-be concerned with the event handling and logic.
+event handling. Controllers are not new to Flutter. For example, two popular widgets that also use a controller are 
+[TextField](https://github.com/flutter/flutter/blob/66cda5917daacd5e600221be0259b62115078486/packages/flutter/lib/src/material/text_field.dart#L246C13-L246C13)
+and [SingleChildScrollView](https://github.com/flutter/flutter/blob/66cda5917daacd5e600221be0259b62115078486/packages/flutter/lib/src/widgets/single_child_scroll_view.dart#L139).
 
-A StateX controller can do anything its associated StateX object can do as it has access to that
-State object and its properties: widget, mounted, and context. Further, a StateX object can have 
-any number of controllers during the app’s lifecycle. This promotes more modular development 
-where each controller could, for example, be dedicated to a particular responsibility independent of 
-the other controllers.
+A StateX object can have any number of controllers during the app’s lifecycle. This promotes more modular development 
+where each controller could be dedicated to a particular responsibility independent of 
+other controllers. This further relieves any 'Controller bloat' common in such arrangements.
 
-
-the Controller object is referenced here and there in the State object’s **build**() function. By design, 
-the controller is providing the data and the event handling necessary for the app to function correctly. 
+By design, the Controller object is then referenced here and there in the State object’s **build**() function 
+providing the data and the event handling where necessary for the app to function correctly. 
 ```Dart
   @override
   Widget buildAndroid(BuildContext context) => Scaffold(
@@ -81,6 +82,7 @@ the controller is providing the data and the event handling necessary for the ap
 
 I felt was an essential feature missing in Flutter’s original State class: 
 The means to deal with asynchronous operations in a State object before proceeding to render the interface.
+![initFutureDelay](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/f7e790f9-2362-4cc2-8ac5-0f38c82c7c3c)
 
 It’s for demonstration purposes, so there’s no real asynchronous operation going on there. 
 A duration of 10 seconds is counting down when that black screen appears. 
@@ -100,17 +102,18 @@ Since most asynchronous operations have no direct relation to an app’s interfa
 you’ll likely have your asynchronous stuff running in a State Object Controller 
 with the rest of the app’s business logic. See how that works?
 
-Below are three other gif files. The first one depicts one StateX object waiting to continue 
-while the second depicts twelve StateX objects waiting to continue. Each StateX object has its own 
-individual asynchronous operation going on, and each uses Flutter’s own FutureBuilder widget 
-to wait for completion. See what I did there? I’m keeping it Flutter.
+Below are three other gif files. The first one depicts one StateX object waiting to continue while
+the second depicts twelve StateX objects waiting to continue.
+Each StateX object has its own individual asynchronous operation going on, and each uses Flutter’s
+own FutureBuilder widget to wait for completion. See what I did there? I’m keeping it Flutter
 
-The one above on the far right shows the whole process completed. 
-It’s the startup process for the third example app that accompanies the state_extended package. 
-Since this app is running on an Android emulator, those spinners are from the 
-CircularProgressIndicator widget. However, if it were running on an iOS phone, 
-the CupertinoActivityIndicator widget would be used to produce the iOS-style activity indicators instead. 
-Flutter is a cross-platform SDK after all.
+<img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6ccff53b-da0e-41b9-aace-81dc95111254" width="171" height="357">
+<img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/25ab69de-b9eb-4c8c-a2d0-9598152bf360" width="171" height="357">
+<img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/009afbfb-40a3-4c69-8813-7d7e71e21888" width="171" height="357">
+
+Since this app is running on an Android emulator, those spinners are from the CircularProgressIndicator widget.
+However, if it were running on an iOS phone, the CupertinoActivityIndicator widget would be used to
+produce the iOS-style activity indicators instead. Flutter is a cross-platform SDK after all.
 
 It’s Built-in
 So, how do you use the built-in FutureBuilder in the StateX class? Simple. 
@@ -119,100 +122,9 @@ The function name is not very imaginative, but it had to be a different function
 You see, in the StateX class, it’s the build() function that introduces the FutureBuilder widget (see the second screenshot below). 
 It eventually calls the buildWidget() function in the internal function, _futureBuilder.
 
-listing the additional functions and features you gain when you use the StateX class.
-add(StateXController? controller)
-Add a specific StateXController to this State object.
-
-addList(List<StateXController>? list)
-Add a list of ‘Controllers’ to be associated with this StatX object.
-
-StateXController? get controller
-Provide the ‘first’ controller added to this State object
-(allowed multiple controllers).
-
-U? controllerByType<U extends StateXController>()
-
-Retrieve a StateXController by type (allowed multiple controllers).
-
-onError(FlutterErrorDetails details)
-Its own Error Handler. The default routine is to dump the error to the console.
-
 there are twenty-one event handlers added to the StateX class in the state_extended package, 
 and when a controller is linked to a StateX object, it too then has access to these event handlers and 
 to events that may be triggered in the app. I suspect Android developers in particular will recognize this 
 as an indispensable capability as well.
 
-StateX class and its initState() function below, presents how a StateX object, after running its own initState() function, 
-then runs the initState() function of each and every controller currently associated with it at the time. 
-You see, each controller may have its own operations or services that need to run before the StateX object can continue. 
-Instead of a large and messy initState() function in the one State object — 
 there can be individual controllers running their own initState() functions. Very clean. Very modular.
-
-initState()
-Called exactly once when the State object is first created.
-
-initAsync()
-Called exactly once at the app’s startup to initialize any ‘time-consuming’ operations that need to complete 
-for the app can continue.
-
-dispose()
-When the State object will never build again. Its terminated.
-
-didUpdateWidget(StatefulWidget oldWidget)
-Override this method to respond when the State object’s accompanying StatefulWidget is destroyed 
-and a new one recreated — a very common occurrence in the life of a typical Flutter app.
-
-didChangeDependencies()
-When a dependency of this State object changes.
-
-didChangePlatformBrightness()
-Brightness changed.
-
-didChangeLocale(Locale locale)
-When the user’s locale has changed.
-
-didChangeMetrics()
-When the application’s dimensions change. (i.e. when a phone is rotated.)
-
-reassemble()
-Called during hot reload. (e.g. reassembled during debugging.)
-
-didPopRoute()
-Called when the system tells the app to pop the current route.
-
-didPushRoute(String route)
-Called when the app pushes a new route onto the navigator.
-
-didPushRouteInformation(RouteInformation routeInformation)
-Called when pushing a new RouteInformation and a restoration state
-onto the router.
-
-deactivate()
-When the State object is removed from the Widget tree.
-
-didChangeTextScaleFactor()
-When the platform’s text scale factor changes.
-
-didHaveMemoryPressure()
-When the phone is running low on memory.
-
-didChangeAccessibilityFeatures()
-When the system changes the set of active accessibility features.
-
-didChangeAppLifecycleState(AppLifecycleState state)
-Called when the app’s in the background or returns to the foreground.
-The four following functions use this one to address specific events.
-
-inactiveLifecycleState()
-The application is in an inactive state and is not receiving user input.
-
-pausedLifecycleState()
-The application is not currently visible to the user, not responding to
-user input, and running in the background.
-
-detachedLifecycleState()
-Either be in the progress of attaching when the engine is first initializing
-or after the view being destroyed due to a Navigator pop.
-
-resumedLifecycleState()
-The application is visible and responding to user input.

@@ -5,15 +5,13 @@ Supply an App object accessible throughout the app.
 ```Dart
   final app = AppObject();
 
-  App.inWidgetsFlutterBinding;
+  bool inWidgetsFlutterBinding = App.inWidgetsFlutterBinding;
 
-  App.inFlutterTest;
+  bool inFlutterTest = App.inFlutterTest;
 
-  App.errorHandler;
+  bool isInit = App.isInit;
 
-  App.isInit;
-
-  App.hotReload;
+  bool hotReload = App.hotReload;
 
   final details = FlutterErrorDetails(exception: AssertionError('error'));
 
@@ -22,79 +20,75 @@ Supply an App object accessible throughout the app.
   app.onAsyncError(
       AsyncSnapshot.withError(ConnectionState.none, AssertionError('error')));
 
-  App.mainWindow;
+  ui.FlutterView mainWindow = App.mainWindow;
 
-  App.navigatorKey;
+  GlobalKey<NavigatorState>() key = App.navigatorKey;
 
-  App.scaffoldMessengerKey;
+  GlobalKey<ScaffoldMessengerState>? get scaffoldKey = App.scaffoldMessengerKey;
 
-  App.routes;
+  Map<String, WidgetBuilder>? routes = App.routes;
 
-  App.menu;
+  String? initialRoute = App.initialRoute;
 
-  App.initialRoute;
+  RouteFactory? genRoute = App.onGenerateRoute;
 
-  App.onGenerateRoute;
+  RouteFactory? unknown = App.onUnknownRoute;
 
-  App.onUnknownRoute;
+  List<NavigatorObserver>? observers = App.navigatorObservers;
 
-  App.navigatorObservers;
+  TransitionBuilder? builder = App.builder;
 
-  App.builderr;
+  String? title = App.title;
 
-  App.title;
+  GenerateAppTitle? genTitle = App.onGenerateTitle;
 
-  App.onGenerateTitle;
+  MaterialColor material = App.getMaterialColor(Colors.red);
 
-  App.getMaterialColor(Colors.red);
+  Color? color = App.color;
 
-  App.color;
+  Iterable<LocalizationsDelegate<dynamic>>? delegates = App.localizationsDelegates;
 
-  App.localizationsDelegates;
+  LocaleResolutionCallback? callBack = App.localeResolutionCallback;
 
-  App.localeResolutionCallback;
+  bool debugShowMaterialGrid = App.debugShowMaterialGrid;
 
-  App.debugShowMaterialGrid;
+  bool showPerformanceOverlay = App.showPerformanceOverlay;
 
-  App.showPerformanceOverlay;
+  bool checkerboardRasterCacheImages = App.checkerboardRasterCacheImages;
 
-  App.checkerboardRasterCacheImages;
+  bool checkerboardOffscreenLayers = App.checkerboardOffscreenLayers;
 
-  App.checkerboardOffscreenLayers;
+  bool showSemanticsDebugger = App.showSemanticsDebugger;
 
-  App.showSemanticsDebugger;
+  bool debugShowCheckedModeBanner = App.debugShowCheckedModeBanner;
 
-  App.debugShowCheckedModeBanner;
+  bool debugPaintSizeEnabled = App.debugPaintSizeEnabled;
 
-  App.debugPaintSizeEnabled;
+  bool debugPaintBaselinesEnabled = App.debugPaintBaselinesEnabled;
 
-  App.debugPaintBaselinesEnabled;
+  bool debugPaintPointersEnabled = App.debugPaintPointersEnabled;
 
-  App.debugPaintPointersEnabled;
+  bool debugPaintLayerBordersEnabled = App.debugPaintLayerBordersEnabled;
 
-  App.debugPaintLayerBordersEnabled;
+  bool debugRepaintRainbowEnabled = App.debugRepaintRainbowEnabled;
 
-  App.debugRepaintRainbowEnabled;
+  TargetPlatform? platform = App.platform;
 
-  App.platform;
+  PackageInfo? packageInfo = App.packageInfo;
 
-  App.packageInfo;
+  String? appName = App.appName;
 
-  App.appName;
+  String? packageName = App.packageName;
 
-  App.packageName;
+  String? version = App.version;
 
-  App.version;
+  String? buildNumber = App.buildNumber;
 
-  App.buildNumber;
-
-  App.inDebugMode;
+  bool inDebugMode = App.inDebugMode;
 
   App.refresh();
 
   App.dependOnInheritedWidget(App.context);
-
-  App.buildInherited();
 
   App.notifyClients();
 
@@ -102,37 +96,37 @@ Supply an App object accessible throughout the app.
 
   App.catchError(AssertionError('test'));
 
-  App.scaffold;
+  ScaffoldState? scaffold = App.scaffold;
 
-  App.screenPhysicalWidth;
+  double screenPhysicalWidth = App.screenPhysicalWidth;
 
-  App.screenWidth;
+  double screenWidth = App.screenWidth;
 
-  App.screenPhysicalHeight;
+  double screenPhysicalHeight = App.screenPhysicalHeight;
 
-  App.screenHeight;
+  double screenHeight = App.screenHeight;
 
-  App.screenSize;
+  double screenSize = App.screenSize;
 
-  App.asSmallScreen;
+  bool asSmallScreen = App.asSmallScreen;
 
-  App.inSmallScreen;
+  bool inSmallScreen = App.inSmallScreen;
 
-  App.filesDir;
+  String filesDir = App.filesDir;
 
-  App.connectivity;
+  String connectivity = App.connectivity;
 
-  App.isOnline;
+  bool isOnline = App.isOnline;
 
-  App.turnedOnInternet;
+  bool turnedOnInternet = App.turnedOnInternet;
 
-  App.turnedOffInternet;
+  bool turnedOffInternet = App.turnedOffInternet;
 
   app.onConnectivityChanged(ConnectivityResult.none);
 
-  App.addConnectivityListener(ConnectivityListenerTester());
+  bool added = App.addConnectivityListener(ConnectivityListenerTester());
 
-  App.removeConnectivityListener(ConnectivityListenerTester());
+  boo removed = App.removeConnectivityListener(ConnectivityListenerTester());
 
-  App.installNum;
+  String installNum = await App.installNum;
 ```
