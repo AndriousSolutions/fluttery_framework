@@ -304,7 +304,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "4.0.0+7"
+    version: "4.0.1+01"
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter
