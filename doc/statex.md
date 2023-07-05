@@ -1,37 +1,26 @@
 ## _The State Extended_
 Extending the capabilities of Flutter’s own State class with the StateX class.
-This class allows you to use a [State Object Controller](https://pub.dev/documentation/fluttery_framework/latest/topics/State%20Object%20Controller-topic.html) (SOC) to reliably call 
-its **setState**() function from outside the class — a very powerful capability!
+This class allows you to use a [State Object Controller](https://pub.dev/documentation/fluttery_framework/latest/topics/State%20Object%20Controller-topic.html)
+(SOC) to reliably call the State object's **setState**() function from outside its class — a very powerful capability!
 
-The StateX class gives you four things:
+The StateX class gives you five new functions and features:
 
 <ul style="list-style-type: none">
-   <li>The State Object Controller separates the app's interface from everything else:</li>
+   <li>The State Object Controller separates the interface (i.e. the State object's <b>build</b>() function) from everything else:</li>
    <li><b><a href="https://pub.dev/documentation/fluttery_framework/latest/controller_app/StateXController-class.html" style="text-decoration:none;">StateXController</a></b></li>
    <li>Two functions to supply the Material interface and the Cupertino interface:</li>
    <li><b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildAndroid.html" style="text-decoration:none">buildAndroid</a></b>() and <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildiOS.html">buildiOS</a></b>()</li>
-   <li>A function to perform any necessary asynchronous operations before displaying the interface.</li>
-   <li><b><a href="https://pub.dev/documentation/state_extended/latest/state_extended/AsyncOps/initAsync.html" style="text-decoration:none;color:none;">initAsync</a></b>()</li>
-   <li>A means to update only <i>particular</i> widgets on the screen improving performance:</li>
-   <li><b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/notifyClients.html">notifyClient></a></b>(), <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/state.html">state</a></b>(), <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/updateShouldNotify.html">updateShouldNotify</a></b>()</li>
+   <li>A function to perform any necessary asynchronous operations before displaying the interface:</li>
+   <li><b><a href="https://pub.dev/documentation/state_extended/latest/state_extended/AsyncOps/initAsync.html" style="text-decoration:none;">initAsync</a></b>()</li>
+   <li>A means to update only <i>particular</i> widgets in the interface and not the whole screen improving performance:</li>
+   <li><b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/dependOnInheritedWidget.html" style="text-decoration:none;">dependOnInheritedWidget</a></b>()
+, <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/didChangeDependencies.html" style="text-decoration:none;">didChangeDependencies</a></b>()
+, <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/notifyClients.html">notifyClient</a></b>()
+, <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/state.html">state</a></b>()
+, <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/updateShouldNotify.html">updateShouldNotify</a></b>()</li>
+   <li>A function that runs if any error occurs. Allows you to 'clean up' and fail gracefully:</li>
+   <li><b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateXonErrorMixin/onError.html" style="text-decoration:none;">onError</a></b>()</li>
 </ul>
-
-```Dart
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, this.title = 'Flutter Demo Home Page'})
-      : super(key: key);
-  // Fields in a StatefulWidget should always be "final".
-  final String title;
-  @override
-  State createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends StateX<MyHomePage> {
-  _MyHomePageState() : super(controller: Controller()) {
-    con = controller as Controller;
-  }
-  late Controller con;
-```
 
 ### Control Your Code
 All your ‘mutable’ code should go into the Dart file containing your State Object Controller.
@@ -45,40 +34,8 @@ where each controller could be dedicated to a particular responsibility independ
 other controllers. This further relieves any 'Controller bloat' common in such arrangements.
 
 By design, the Controller object is then referenced here and there in the State object’s **build**() function 
-providing the data and the event handling where necessary for the app to function correctly. 
-```Dart
-  @override
-  Widget buildAndroid(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text('You have pushed the button this many times:'),
-              Text(
-                '${con.counter}',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          /// Try this alternative approach.
-          /// The Controller merely mimics the Flutter's API
-          //         onPressed: con.onPressed,
-          onPressed: () => setState(con.incrementCounter),
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        ),
-      );
-
-  @override
-  Widget buildiOS(BuildContext context) => buildAndroid(context);
-}
-```
-[statex_counter_app.dart](https://gist.github.com/Andrious/c3896795659c82daf5c78e427ba030bf)
+providing the data and the event handling where necessary for the app to function correctly. (See below)
+[![CounterStateClass](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9e1771be-ca42-453a-815f-67b3c37b2ba9)](https://gist.github.com/Andrious/c3896795659c82daf5c78e427ba030bf)
 
 I felt was an essential feature missing in Flutter’s original State class: 
 The means to deal with asynchronous operations in a State object before proceeding to render the interface.

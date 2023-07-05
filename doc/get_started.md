@@ -3,19 +3,20 @@ There is a number of example apps that use the Fluttery Framework:
 - [Shrine Example App](https://github.com/Andrious/shrine_example_app)
 - [Bazaar Example App](https://github.com/Andrious/bazaar)
 - [Stocks Example App](https://github.com/Andrious/fluttery_stocks)
+###### (Download and try them out.)
 
 <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/f3ee5ec8-6ffe-4587-a06e-a1676413a4bc" alt="pubdev" width="445" height="228">
 
 ## _Fluttery Framework's Example App_
 An extensive example app accompanies the Fluttery Framework package itself. You'll find it under the 'pub.dev' 
-folder when you take in the Fluttery Framework through your `pubspec.yaml` file. The example code there demonstrates 
-the functions and features to quickly make a multi-platform app.
+folder when you take in the Fluttery Framework through your `pubspec.yaml` file. 
+This example code demonstrates the functions and features that quickly make a multi-platform app.
 
 <img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/573eb817-88eb-438c-9360-f7c4449c9449" width="171" height="357">
 <img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/124d415d-2fd5-4629-a19f-c01bbbae8000" width="171" height="357">
 <img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cea16091-79c8-45fd-8fa9-eb571cc521f9" width="171" height="357">
 
-## _The Necessary Steps_
+## _The Basic Steps Necessary_
 
 1. Extend the State class with **StateX** instead of **State**.
 2. Extend your State Object's Controller with the class, **StateXConroller**.
@@ -23,10 +24,9 @@ the functions and features to quickly make a multi-platform app.
 4. Cast your Controller with the State object's property, **controller**.
 5. Supply the 'Material' interface to the **buildAndroid**() function.
 6. Supply the 'Cupertino' interface to the **buildiOS**() function.
-###### (See the red arrows below)
-
+###### (See the little red arrows in the picture below)
 ___
-![CounterController](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/fd9872ec-ba79-4660-a99d-d5d04adb9f30)
+[![CounterController](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/fd9872ec-ba79-4660-a99d-d5d04adb9f30)](https://github.com/AndriousSolutions/fluttery_framework/blob/0168b3c8a626dfebeb99b28fc3e60cefbba71966/example/lib/src/home/view/counter_app.dart)
 ___
 ![scalability](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/b5af9fb1-9aef-4f05-baa4-98ff3014caef)
 
@@ -171,7 +171,7 @@ class CounterController extends StateXController {
 }
 ```
 ## _List of Device and System Events_
-##### (Tap on each to see the source code and an explanation of their function.)
+##### (Tap on each below to see the source code and a further explanation of their function.)
 
 [![deactivate](https://github.com/AndriousSolutions/state_extended/assets/32497443/5efcf55d-4b34-4875-a4f3-5532ab438f58)](https://github.com/AndriousSolutions/state_extended/blob/074e17ee298eec2a22c3b904caf20e75d5ce41c3/lib/state_extended.dart#L1530)
 [![activate](https://github.com/AndriousSolutions/state_extended/assets/32497443/1c69c8a9-7f16-40e2-b3de-d58ff521df2e)](https://github.com/AndriousSolutions/state_extended/blob/074e17ee298eec2a22c3b904caf20e75d5ce41c3/lib/state_extended.dart#L1540)
@@ -197,7 +197,7 @@ class CounterController extends StateXController {
 Right at the beginning using the App's own State class, _AppState_, you're able to 
 define in detail how your app is to 'look and behave'. This State class is the 
 amalgamation of both the MaterialApp widget and the CupertinoApp widget and an 
-assortment of other Flutter properties.
+assortment of other Flutter properties. See the class, _ThisAppState, below.
 
 ```Dart
 import 'package:fluttery_framework/view.dart';
@@ -245,25 +245,3 @@ class _ThisAppState extends AppState {
 ```
 ##### List of parameters available to you using the AppState class: [AppState](https://github.com/AndriousSolutions/fluttery_framework/blob/5bf647ed5639739995f8d5b1cd150b03f8f87d23/lib/view/app_state.dart#L33)
 ##### (If you know the widgets, MaterialApp or CupertinoApp, you'll know these parameters.)
-
-## _Asynchronous Operations_
-If your Controller requires some asynchronous operations be performed before the StatefulWidget continues,
-you can override this particular function: Future<bool> **initAsync**()
-___
-All State Object Controllers have the **initAsync**() function to run any asynchronous operations before 
-their corresponding StateX objects can proceed and call their **build**() functions. In other words, a
-circular spinner appears in the center of the screen until any asynchronous operations are completed 
-by the State object before proceeding to render its interface.
-
-Below are three other gif files. The first one depicts one StateX object waiting to continue while 
-the second depicts twelve StateX objects waiting to continue. 
-Each StateX object has its own individual asynchronous operation going on, and each uses Flutter’s 
-own FutureBuilder widget to wait for completion. See what I did there? I’m keeping it Flutter
-
-<img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/009afbfb-40a3-4c69-8813-7d7e71e21888" width="171" height="357">
-<img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6ccff53b-da0e-41b9-aace-81dc95111254" width="171" height="357">
-<img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/25ab69de-b9eb-4c8c-a2d0-9598152bf360" width="171" height="357">
-
-Since this app is running on an Android emulator, those spinners are from the CircularProgressIndicator widget. 
-However, if it were running on an iOS phone, the CupertinoActivityIndicator widget would be used to 
-produce the iOS-style activity indicators instead. Flutter is a cross-platform SDK after all.

@@ -33,6 +33,7 @@ import 'package:flutter/rendering.dart' as debug;
 /// The View for the app. The 'look and feel' for the whole app.
 ///
 /// dartdoc:
+/// {@category AppState class}
 /// {@category Get started}
 /// {@category StateX class}
 /// {@category Error handling}
@@ -334,8 +335,10 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Returns the App's 'Async Error Handler' if any.
   final bool? Function(FlutterErrorDetails details)? inAsyncError;
 
-  // The error flag.
-  bool _inError = false;
+  /// A flag indicating we're running in the error routine.
+  ///
+  /// Set to avoid infinite loop if in errors in the error routine.
+  bool inErrorRoutine = false;
 
   /// Retrieve and cast as this Framework's own particular 'controller' type.
   @override
@@ -735,13 +738,14 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   /// Override if you like to customize error handling.
   @override
-  @mustCallSuper
+// Allow a complete override. gp
+//  @mustCallSuper
   void onError(FlutterErrorDetails details) {
     // Don't call this routine within itself.
-    if (_inError) {
+    if (inErrorRoutine) {
       return;
     }
-    _inError = true;
+    inErrorRoutine = true;
 
     // If it involves the widgets library,
     // call the latest SateX object's error routine
@@ -787,7 +791,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       }
     }
 
-    _inError = false;
+    inErrorRoutine = false;
   }
 
   /// Rebuild the 'latest/current' State object and the 'root/first' State object

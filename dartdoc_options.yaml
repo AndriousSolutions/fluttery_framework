@@ -6,12 +6,14 @@ dartdoc:
       markdown: doc/statex.md
     "State Object Controller":
       markdown: doc/controllers.md
-    "Error handling":
-      markdown: doc/error-handling.md
-    "App's Preferences":
-      markdown: doc/preferences.md
+    "AppState class":
+      markdown: doc/appstate.md
     "App object":
       markdown: doc/app-object.md
+    "App's Preferences":
+      markdown: doc/preferences.md
+    "Error handling":
+      markdown: doc/error-handling.md
     "Extensions":
       markdown: doc/extensions.md
     "Device Information":

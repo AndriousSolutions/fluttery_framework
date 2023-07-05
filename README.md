@@ -8,16 +8,16 @@
 ### A Framework for Flutter's Framework
 ![Fluttery_Framework](https://user-images.githubusercontent.com/32497443/185770676-89af0669-9040-4dc6-ad5b-412ed9fed5e5.jpg)
 Allows for faster and easier development with better maintainability. It looks like Flutter and works like Flutter.
-There's no 're-inventing of the wheel' or an extra learning curve. If you know Flutter, you'll know Fluttery.  
+There's no 're-inventing of the wheel' or an extra learning curve. If you know Flutter, you'll know Fluttery Framework.  
 
 It supplies the adaptive functions and features expected of a production-ready app:
 * Flutter's own intuitive State Management
-* Necessarily error handling capabilities
-* Easy implementation of both a Material & Cupertino interface
-* Omi-accessible system preferences
+* Necessary error handling capabilities
+* Easy implementation of both the Material & Cupertino interface
+* App-wide accessibility to system preferences
 * Built-in app notifications
 * A better menu bar
-* Built-in device event handling
+* Event handling for the device the app runs on
 * A date picker
 * A color theme picker
 * An array of dialog windows
