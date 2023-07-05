@@ -41,13 +41,3 @@ color:black;
 
 ## _The 'Look and Feel' of your app_
 
-
-<button class="accordion">Collapsible</button>
-<div class="panel">
-  <p>Some collapsible content. Click the button to toggle between showing and hiding the collapsible content. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-</div>
-
-<button data-toggle="collapse" data-target="#demo">Collapsible</button>
-<div id="demo" class="collapse">
-Lorem ipsum dolor text....
-</div>

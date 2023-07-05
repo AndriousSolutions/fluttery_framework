@@ -23,17 +23,18 @@ dartdoc:
     - "Get started"
     - "StateX class"
     - "State Object Controller"
-    - "Error handling"
-    - "App's Preferences"
+    - "AppState class"
     - "App object"
+    - "App's Preferences"
+    - "Error handling"
     - "Extensions"
     - "Device Information"
-  nodoc: ['lib/*.dart', '_*.dart']
+  nodoc: ['lib/*.dart']
   showUndocumentedCategories: true
 #  ignore:
 #    - ambiguous-doc-reference
-  errors:
-    - unresolved-doc-reference
+#  errors:
+#    - unresolved-doc-reference
   warnings:
     - tool-error
   ignore:
