@@ -1,7 +1,7 @@
 ## _Mobile Phone Info._
 
 There's an assortment of information about the phone your app is running on
-available to you by simply using the omi-presence DeviceInfo static properties:
+available to you. Simply using the DeviceInfo class and its omi-presence static properties:
 
 ###### (Copy & paste and try it out.)
 ```Dart

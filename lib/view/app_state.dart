@@ -1647,8 +1647,11 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
 
 /// The InheritedWidget used by StateX
 class _StateXInheritedWidget extends InheritedWidget {
-  const _StateXInheritedWidget(
-      {super.key, required this.state, required super.child});
+  const _StateXInheritedWidget({
+    super.key,
+    required this.state,
+    required super.child,
+  });
 
   final StateX state;
 

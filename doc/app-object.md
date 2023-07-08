@@ -1,7 +1,7 @@
 ## _App properties anytime, anywhere_
 
-Supply an App object accessible throughout the app.
-###### (Copy & paste and try it out.)
+The App object has a number of static properties accessible to you throughout the app.
+###### (Copy & paste an item below and try it out.)
 ```Dart
   final app = AppObject();
 

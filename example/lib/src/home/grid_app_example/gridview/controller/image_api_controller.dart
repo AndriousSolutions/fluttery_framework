@@ -46,13 +46,6 @@ class ImageAPIController extends StateXController {
     return init;
   }
 
-  /// Supply an 'error handler' routine if something goes wrong
-  /// in the corresponding initAsync() routine.
-  @override
-  void onAsyncError(FlutterErrorDetails details) {
-    super.onAsyncError(details);
-  }
-
   /// Load the image to
   Future<bool> _loadImage() async {
     // Call the API
@@ -133,5 +126,12 @@ class ImageAPIController extends StateXController {
       }
     }
     return data;
+  }
+
+  /// Supply an 'error handler' routine if something goes wrong
+  /// in the corresponding initAsync() routine.
+  @override
+  void onAsyncError(FlutterErrorDetails details) {
+    super.onAsyncError(details);
   }
 }

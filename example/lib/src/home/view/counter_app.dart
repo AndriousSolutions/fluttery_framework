@@ -53,10 +53,8 @@ class _CounterPageState extends StateX<CounterPage> {
               SizedBox(height: 10.h),
               Text('You have pushed the button this many times:'.tr,
                   style: const TextStyle(fontSize: 15)),
-              state((context) => Text(
-                    con.data,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  )),
+              state((context) => Text(con.data,
+                  style: Theme.of(context).textTheme.headlineMedium)),
               Padding(
                 padding: EdgeInsets.only(top: 10.h),
                 child: Column(

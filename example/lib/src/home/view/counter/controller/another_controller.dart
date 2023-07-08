@@ -18,7 +18,7 @@ class AnotherController extends StateXController {
   bool tripError = false;
 
   @override
-  Future<bool> runAsync() async {
+  Future<bool> initAsync() async {
     if (tripError) {
       throw AssertionError('Error in AnotherController.initAsync()!');
     }
@@ -99,7 +99,8 @@ class AnotherController extends StateXController {
 
   /// Called when the user's locale has changed.
   @override
-  void didChangeLocale(Locale locale) => didChangeLocale(locale);
+  void didChangeLocales(List<Locale>? locales) =>
+      super.didChangeLocales(locales);
 
   /// Called when the system puts the app in the background or
   /// returns the app to the foreground.

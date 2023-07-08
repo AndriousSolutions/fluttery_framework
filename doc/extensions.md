@@ -4,19 +4,8 @@ These extensions alone would be reason enough to use the Fluttery Framework.
 Thanks to Jonny Borges (author of GetX), I've incorporated many of his tried
 and true extensions.
 
-<!--
-<ul style="list-style-type: none">
-   <li><a href="#context">Context</a></li>
-   <li><a href="#double">Double</a></li>
-   <li><a href="#duration">Duration</a></li>
-   <li><a href="#dynamic">Dynamic</a></li>
-   <li><a href="#number">Number</a></li>
-   <li><a href="#string">String</a></li>
-   <li><a href="#widget">Widget</a></li>
--->
-
 <table cellspacing="0" cellpadding="0" border="0" align="center">
-  	<caption>Table Of Contents</caption>
+  	<caption>Contents</caption>
     <tbody>
     <tr>
        <td><a href="#context">Context</a></td>
@@ -24,14 +13,9 @@ and true extensions.
        <td><a href="#duration">Duration</a></td>
        <td><a href="#dynamic">Dynamic</a></td>
        <td><a href="#number">Number</a></td>
-     </tr>
-    <tr>
        <td><a href="#string">String</a></td>
        <td><a href="#widget">Widget</a></td>
-       <td>&nbsp;</td>
-       <td>&nbsp;</td>
-       <td>&nbsp;</td>
-     </tr>
+      </tr>
     </tbody>
 </table>
 
