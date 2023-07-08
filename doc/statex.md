@@ -55,8 +55,8 @@ that accompanies the Flutter Framework package. The second screenshot shows how 
 
 ###### (A controller and its use are highlighted by red arrows.)
 <div>
-<a href="https://gist.github.com/Andrious/c3896795659c82daf5c78e427ba030bf#file-statex_counter_app-dart-L35"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9e1771be-ca42-453a-815f-67b3c37b2ba9" width="50%" height="60%"></a>
-<a href="https://github.com/AndriousSolutions/fluttery_framework/blob/master/example/lib/src/home/view/counter/view/page_01.dart#L19"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea" width="50%" height="60%"></a>
+<a href="https://gist.github.com/Andrious/c3896795659c82daf5c78e427ba030bf#file-statex_counter_app-dart-L35"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9e1771be-ca42-453a-815f-67b3c37b2ba9" width="45%" height="60%"></a>
+<a href="https://github.com/AndriousSolutions/fluttery_framework/blob/master/example/lib/src/home/view/counter/view/page_01.dart#L19"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea" width="45%" height="60%"></a>
 </div>
 
 <h3 id="sync">Sync The State</h3>
@@ -155,12 +155,12 @@ current count is then ever rebuilt. The rest of the screen would now be left alo
 press of that button. Granted this is a very simple interface and possibly a bad example,
 but look how easy this is implemented in the screenshot below.
 <div>
-<a href="https://github.com/AndriousSolutions/fluttery_framework/blob/4dc676193914808583f111006334a91a08475b7f/example/lib/src/home/view/counter_app.dart#L41"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/12dccbda-b8e6-46ca-b1d2-ddc8a134f0da" width="50%" height="60%"></a>
+<a href="https://github.com/AndriousSolutions/fluttery_framework/blob/4dc676193914808583f111006334a91a08475b7f/example/lib/src/home/view/counter_app.dart#L41"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/12dccbda-b8e6-46ca-b1d2-ddc8a134f0da" width="45%" height="50%"></a>
 <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/bfb0c949-f15a-4a84-b4e9-d3e789a3e92b" width="171" height="357">
 <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9557a498-2a8b-40a4-8d49-189b5120bde4" width="171" height="357">
 </div>
 <p>The <b>state</b>() function found only in the Fluttery Framework will allow for this immediate
-improvement in efficiency. The less that's rebuilt when it comes to interfaces, the better.
+improvement in efficiency. When it comes to interfaces, the less that's rebuilt, the better.
 You're app is running on a mobile phone and not a Cray Supercomputer after all.
 <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/fa7f226f-7624-49a0-9d5d-598bdb936ed8" width="50%" height="60%">
 </p>

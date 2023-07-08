@@ -71,8 +71,8 @@ However, both also have a 'router' version that involves you explicitly listing 
 In fact, you'll find both **MaterialApp** and **CupertinoApp** pass on all those attributes and properties to
 yet another common 'Design App' widget called, **WidgetsApp**.
 
-There's nothing new here if you know Flutter. And if you're learning, working with the Fluttery Framework
-will be a good way to learn Flutter.
+There's nothing new here if you know Flutter. And if you don't, working with the Fluttery Framework 
+is a good way to learn Flutter. The Fluttery Frameworks strives use Flutter's own functions and features.
 
 <h3 id="materialApp">MaterialApp</h3>
 
@@ -138,12 +138,11 @@ is that of the router version.
 [![28scrollBehavior](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/ecbeacb2-b6e5-4ad1-961f-e2d53cb1ffd8)](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/material/app.dart#L733)
 ![rightParenthesis](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/db4fcdd6-3ba2-495c-9f07-bf67dfa53748)
 
-Again, both the **MaterialApp** and **CupertinoApp** widget pass many of their parameters on
-to the widget, **WidgetsApp** (see below). This implies that there's 
-nothing stopping you from writing your own 'Design App' widget. The Flutter framework
-can utilize a whole new style of interface if you're so inclined to write one.
-
 <h3 id="widgetsApp">WidgetsApp</h3>
 
+Again, both the **MaterialApp** and **CupertinoApp** widget pass many of their parameters on
+to the widget, **WidgetsApp** (see below). This implies that there's
+nothing stopping you from writing your own 'Design App' widget. The Flutter framework
+can utilize a whole new style of interface if you're so inclined to write one.
 ###### (Screenshot below of CupertinoApp's **_buildWidgetApp**() function)
 <a href="https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/cupertino/app.dart#L563"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/79447d0a-887f-4edd-b907-5182312840c3" width="50%" height="60%"></a>
