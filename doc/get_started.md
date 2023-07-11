@@ -3,6 +3,7 @@ There is a number of example apps that use the Fluttery Framework:
 - [Shrine Example App](https://github.com/Andrious/shrine_example_app)
 - [Bazaar Example App](https://github.com/Andrious/bazaar)
 - [Stocks Example App](https://github.com/Andrious/fluttery_stocks)
+- [Wonderous Example App](https://github.com/Andrious/wonderous)
 ###### (Download and try them out.)
 
 <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/f3ee5ec8-6ffe-4587-a06e-a1676413a4bc" alt="pubdev" width="445" height="228">

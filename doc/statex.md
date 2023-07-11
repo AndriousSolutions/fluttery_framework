@@ -54,10 +54,14 @@ Thus providing the data and the event handling. For example, the first screensho
 that accompanies the Flutter Framework package. The second screenshot shows how a number of controllers can be added.
 
 ###### (A controller and its use are highlighted by red arrows.)
+
 <div>
-<a href="https://gist.github.com/Andrious/c3896795659c82daf5c78e427ba030bf#file-statex_counter_app-dart-L35"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9e1771be-ca42-453a-815f-67b3c37b2ba9" width="45%" height="60%"></a>
-<a href="https://github.com/AndriousSolutions/fluttery_framework/blob/master/example/lib/src/home/view/counter/view/page_01.dart#L19"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea" width="45%" height="60%"></a>
+<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9e1771be-ca42-453a-815f-67b3c37b2ba9"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9e1771be-ca42-453a-815f-67b3c37b2ba9" width="48%" height="60%"></a>
+<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea" width="48%" height="60%"></a>
 </div>
+
+| [_MyHomePageState](https://gist.github.com/Andrious/c3896795659c82daf5c78e427ba030bf#file-statex_counter_app-dart-L35) |                                                                                [Page1State](https://github.com/AndriousSolutions/fluttery_framework/blob/master/example/lib/src/home/view/counter/view/page_01.dart#L19)                                                                                 |
+|:-----------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 
 <h3 id="sync">Sync The State</h3>
 
@@ -87,9 +91,12 @@ If they were running on an iOS phone, the
 <a href="https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/cupertino/activity_indicator.dart#L32">CupertinoActivityIndicator</a>
 widget would produce the iOS-style activity indicators instead. Flutter is suppose to be a cross-platform SDK after all.
 <div>
-<a href="https://github.com/AndriousSolutions/fluttery_framework/blob/512093984b404e4f2216521a5f95bd6418ea6054/example/lib/src/home/grid_app_example/gridview/controller/image_api_controller.dart#L38"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1e846262-a0a5-47e3-891f-1ed7d0308962" width="50%" height="60%"></a>
-<a href="https://github.com/Andrious/workingmemory/blob/master/lib/src/app/controller/working_memory_app.dart#L77"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e4b9c1ee-803a-4b53-b393-027a510599df" width="50%" height="60%"></a>
+<a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1e846262-a0a5-47e3-891f-1ed7d0308962"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1e846262-a0a5-47e3-891f-1ed7d0308962" width="50%" height="60%"></a>
+<a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e4b9c1ee-803a-4b53-b393-027a510599df"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e4b9c1ee-803a-4b53-b393-027a510599df" width="50%" height="60%"></a>
 </div>
+
+| [image_api_controller.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/512093984b404e4f2216521a5f95bd6418ea6054/example/lib/src/home/grid_app_example/gridview/controller/image_api_controller.dart#L38) | [working_memory_app.dart](https://github.com/Andrious/workingmemory/blob/master/lib/src/app/controller/working_memory_app.dart#L77) |
+|:-----|:----:|
 <h3 id="control">Control The Sync</h3>
 <p>Those three screens above are from yet another example app supplied with the Flutter Framework.
 Yes, there are twelve separate StateX objects on that one screen each loading an animal image. 
@@ -134,9 +141,12 @@ for those two types of interfaces:
 Like the State class, the StateX class is an abstract class. However, when you extend the StateX class, 
 you don't have to implement the one **build**() function. You have to implement two functions:
 <div>
-<a href="https://github.com/AndriousSolutions/fluttery_framework/blob/4dc676193914808583f111006334a91a08475b7f/lib/view/app_state.dart#L1526"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/2f78d7e6-494a-4b06-8d2d-67bf64e786f5" width="50%" height="60%"></a>
+<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/2f78d7e6-494a-4b06-8d2d-67bf64e786f5"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/2f78d7e6-494a-4b06-8d2d-67bf64e786f5" width="50%" height="60%"></a>
 <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/4543c405-8dad-4c33-bb54-a3b5850c8c67" width="171" height="357">
 </div>
+
+| [app_state.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/4dc676193914808583f111006334a91a08475b7f/lib/view/app_state.dart#L1526) |
+|:-----|
 Why two? Because Flutter produces one codebase for multiple platforms. It's likely the very reason why you've 
 turned to Flutter to make your next app in the first place. If you only want to use the Cupertino interface, for example, 
 then direct the <b>buildAndroid</b>() function to call the <b>buildiOS</b>() function. Otherwise, build both.
@@ -155,20 +165,29 @@ current count is then ever rebuilt. The rest of the screen would now be left alo
 press of that button. Granted this is a very simple interface and possibly a bad example,
 but look how easy this is implemented in the screenshot below.
 <div>
-<a href="https://github.com/AndriousSolutions/fluttery_framework/blob/4dc676193914808583f111006334a91a08475b7f/example/lib/src/home/view/counter_app.dart#L41"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/12dccbda-b8e6-46ca-b1d2-ddc8a134f0da" width="45%" height="50%"></a>
-<img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/bfb0c949-f15a-4a84-b4e9-d3e789a3e92b" width="171" height="357">
-<img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9557a498-2a8b-40a4-8d49-189b5120bde4" width="171" height="357">
+  <a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/12dccbda-b8e6-46ca-b1d2-ddc8a134f0da"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/12dccbda-b8e6-46ca-b1d2-ddc8a134f0da" width="45%" height="50%"></a>
+  <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/bfb0c949-f15a-4a84-b4e9-d3e789a3e92b" width="171" height="357">
+  <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9557a498-2a8b-40a4-8d49-189b5120bde4" width="171" height="357">
 </div>
+
+| [counter_app.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/4dc676193914808583f111006334a91a08475b7f/example/lib/src/home/view/counter_app.dart#L41) | 
+|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
 <p>The <b>state</b>() function found only in the Fluttery Framework will allow for this immediate
 improvement in efficiency. When it comes to interfaces, the less that's rebuilt, the better.
 You're app is running on a mobile phone and not a Cray Supercomputer after all.
-<img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/fa7f226f-7624-49a0-9d5d-598bdb936ed8" width="50%" height="60%">
 </p>
 <p>Back to the app with its grid of animal pictures, you can see above when the 'new dogs' text button
 is pressed, only the three 'dog pictures' are downloaded again. What your seeing are only
 three portions of the screen being updated---only three widgets being rebuilt. If the whole screen was
 rebuilt, all the pictures would change. Not very effective.</p>
-The screenshot to the right depicts one of the three widgets being assigned as a dependent to
+
+<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/fa7f226f-7624-49a0-9d5d-598bdb936ed8"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/fa7f226f-7624-49a0-9d5d-598bdb936ed8" width="50%" height="60%"></a>
+
+| [counter_app.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/4dc676193914808583f111006334a91a08475b7f/example/lib/src/home/grid_app_example/gridview/view/image_api.dart#L38) | 
+|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+The screenshot above depicts one of the three widgets being assigned as a dependent to
 a State object's InheritedWidget using the <b>dependOnInheritedWidget</b>() function.
 In fact, the State object's controller with its own <b>dependOnInheritedWidget</b>() function
 is actually used.

@@ -1,28 +1,31 @@
 ### Control The Pattern
-It’s the Controller that contains the business logic and performs the event handling while the State object is just concerned with the interface. See what I mean? Granted, there are variations in how and when the Controller is assigned to a variable, but that’s the general pattern.
+It’s the Controller that contains the business logic and performs 
+the event handling while the State object is just concerned with the interface. 
+There are variations in how and when the Controller is assigned to a variable, 
+but that’s the general pattern.
 
 ### Avoid Controller Bloat
 You're able to add as many Controllers as you want to your StateX object.
 And so, if there is a number of Controllers assigned to a StateX, and when ‘an event’ occurs in that View, 
 the Controllers will fire, in turn, in the order they were assigned.
 <div>
-<a href="https://github.com/Andrious/bazaar/blob/5b06048010e425129123f856b6cb669362151b8a/lib/src/view/home/homepage.dart#L34"><img align="right" src="https://github.com/Andrious/bazaar/assets/32497443/cdb79266-d973-4c46-b221-4e7ad93a1105" width="50%" height="60%"></a>
-<img align="right" src="https://github.com/Andrious/bazaar/assets/32497443/f84c06e9-7622-495a-9a8d-91da133311d0">
+  <img src="https://github.com/Andrious/bazaar/assets/32497443/f84c06e9-7622-495a-9a8d-91da133311d0">
+  <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/f2f41422-5986-4cf9-8d56-88b12b1d71ab" width="48%" height="60%">
 </div>
 
 Thus, when your controller is ‘registered’ with a State object and its State object’s initState() function 
 is called, its own initState() function will also be called. Anything your controller may need to be 
 initialized, for example, before that widget is displayed can now be done so in its own initState() function.
-<div>
-<img src="https://github.com/Andrious/bazaar/assets/32497443/9c6ab55d-faf6-4b40-8f3c-6295ebe592b9">
-<img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/f2f41422-5986-4cf9-8d56-88b12b1d71ab" width="50%" height="60%">
-</div>
+
 Thus, when your controller is ‘registered’ with a State object and its State object’s initState() function
 is called, its own initState() function will also be called. Anything your controller may need to be
 initialized, for example, before that widget is displayed can now be done so in its own initState() function.
 <div>
-<img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/13e580ad-73bc-40e5-a95f-a1d5a7731574" width="50%" height="60%">
-<img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55" width="50%" height="60%">
+<img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/13e580ad-73bc-40e5-a95f-a1d5a7731574" width="48%" height="60%">
+<img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55" width="48%" height="60%">
+</div>
+<div>
+  <img src="https://github.com/Andrious/bazaar/assets/32497443/9c6ab55d-faf6-4b40-8f3c-6295ebe592b9">
 </div>
 
 ## _The Controller and State Events_

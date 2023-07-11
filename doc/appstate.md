@@ -39,9 +39,12 @@ A powerful capability.
 
 ###### (Note: If a parameter is still supplied, any function is ignored. An explicit parameter takes precedence.)
 <div>
-<a href="https://github.com/Andrious/shrine_example_app/blob/d9b0969c40a59c2556b6a86046d20a444155c36b/lib/src/app/view/app.dart#L18"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/73cc50be-d06b-4bbc-83f1-0d330786c0d0" width="50%" height="60%"></a>
-<a href="https://github.com/Andrious/shrine_example_app/blob/d9b0969c40a59c2556b6a86046d20a444155c36b/lib/src/app/view/app.dart#L18"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/11e55201-349e-4979-bd82-65914aad57dd" width="50%" height="60%"></a>
+<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/73cc50be-d06b-4bbc-83f1-0d330786c0d0"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/73cc50be-d06b-4bbc-83f1-0d330786c0d0" width="48%" height="60%"></a>
+<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/11e55201-349e-4979-bd82-65914aad57dd"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/11e55201-349e-4979-bd82-65914aad57dd" width="48%" height="60%"></a>
 </div>
+
+| [app.dart](https://github.com/Andrious/shrine_example_app/blob/d9b0969c40a59c2556b6a86046d20a444155c36b/lib/src/app/view/app.dart#L18) | [app.dart](https://github.com/Andrious/shrine_example_app/blob/d9b0969c40a59c2556b6a86046d20a444155c36b/lib/src/app/view/app.dart#L18) |
+|:-----------------------------------------------------------------------------------------------------------------------------------------|:----:|
 
 <h3 id="inline">Support for inline functions</h3>
 
@@ -77,6 +80,8 @@ is a good way to learn Flutter. The Fluttery Frameworks strives use Flutter's ow
 <h3 id="materialApp">MaterialApp</h3>
 
 ###### (Tap on any of the parameters below to view its description right in Flutter's own source code.)
+<p>
+
 [![01MaterialApp](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9ff0825b-a3b5-4478-ba1c-1262c3beca66)](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/material/app.dart#L207)
 [![02Material](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/b81eab0b-eb09-4288-9ac6-2a99c1b8db2e)](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/widgets/framework.dart#L335)
 [![03navigatorKey](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/4362a898-a88f-460e-9435-27f3078c25aa)](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/widgets/app.dart#L488)
@@ -108,13 +113,15 @@ is a good way to learn Flutter. The Fluttery Frameworks strives use Flutter's ow
 [![28scrollBehavior](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/ecbeacb2-b6e5-4ad1-961f-e2d53cb1ffd8)](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/material/app.dart#L733)
 [![29home](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/dc00af57-5a93-459c-98d2-a537a0817040)](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/widgets/app.dart#L656)
 ![rightParenthesis](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/db4fcdd6-3ba2-495c-9f07-bf67dfa53748)
-
+</p>
 The CupertinoApp is the 'iOS style' counterpart when it comes to the interface. The graphic below 
 is that of the router version. 
 
 <h3 id="cupertinoApp">CupertinoApp</h3>
 
 ###### (Tap on any of the parameters below to view its description right in Flutter's own source code.)
+<p>
+
 [![01CupertinoApp](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/c38f08a2-a410-486b-ac66-e72cabae6030)](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/cupertino/app.dart#L194)
 [![02cupertinoKey](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/ddbb3785-a72a-494c-8107-97f0da346977)](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/widgets/framework.dart#L335)
 [![03routeInformationProvider](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/72664542-8bc6-4181-b1dc-505b41c85dd9)](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/widgets/app.dart#L609)
@@ -137,7 +144,7 @@ is that of the router version.
 [![27restorationScopeId](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/22add2fd-2020-4c4c-a288-ead044066ede)](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/widgets/app.dart#L1158)
 [![28scrollBehavior](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/ecbeacb2-b6e5-4ad1-961f-e2d53cb1ffd8)](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/material/app.dart#L733)
 ![rightParenthesis](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/db4fcdd6-3ba2-495c-9f07-bf67dfa53748)
-
+</p>
 <h3 id="widgetsApp">WidgetsApp</h3>
 
 Again, both the **MaterialApp** and **CupertinoApp** widget pass many of their parameters on
@@ -145,4 +152,7 @@ to the widget, **WidgetsApp** (see below). This implies that there's
 nothing stopping you from writing your own 'Design App' widget. The Flutter framework
 can utilize a whole new style of interface if you're so inclined to write one.
 ###### (Screenshot below of CupertinoApp's **_buildWidgetApp**() function)
-<a href="https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/cupertino/app.dart#L563"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/79447d0a-887f-4edd-b907-5182312840c3" width="50%" height="60%"></a>
+<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/79447d0a-887f-4edd-b907-5182312840c3"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/79447d0a-887f-4edd-b907-5182312840c3" width="48%" height="60%"></a>
+
+| [app,dart](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/cupertino/app.dart#L563) | 
+|:----------------------------------------------------------------------------------------------------------------------------------------------|
