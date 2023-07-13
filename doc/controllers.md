@@ -143,6 +143,7 @@ Again, doing so agrees with its general role as an ongoing custodian of the app'
 A clean, consistent, and manageable approach, and as it happens, one that adheres to good programming practices.
 
 <h3 id="events">The Controller and State Events</h3>
+
 As mentioned above, with the controller, you not only supply the app's business rules, but can also respond
 to the device and system events that commonly occur during an app's lifecycle. The sample code below lists all the
 available 'event' functions. In most cases, you'll only use the functions, **initAsync**(), **initState**(), **deactivate**(), and **dispose**()
