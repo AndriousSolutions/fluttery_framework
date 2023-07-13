@@ -2,7 +2,10 @@
 Extend the capabilities of Flutter’s own State class.
 This class allows you to use a [State Object Controller](https://pub.dev/documentation/fluttery_framework/latest/topics/State%20Object%20Controller-topic.html)
 (SOC) to reliably call the State object's **setState**() function from outside its class — a very powerful capability!
+<!--
 <table cellspacing="0" cellpadding="0" border="0" align="center">
+-->
+<table>
   	<caption>Contents</caption>
     <tbody>
     <tr>

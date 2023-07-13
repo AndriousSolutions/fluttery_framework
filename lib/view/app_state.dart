@@ -1455,6 +1455,7 @@ abstract class StateIn<T extends StatefulWidget> extends StateX<T> {
 /// dartdoc:
 /// {@category Get started}
 /// {@category StateX class}
+/// {@category Testing}
 abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
     with NavigatorStateMethodsMixin, StateXonErrorMixin {
   ///

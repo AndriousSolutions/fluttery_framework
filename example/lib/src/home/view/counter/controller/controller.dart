@@ -57,7 +57,12 @@ class Controller extends StateXController {
   /// Called to complete any asynchronous operations.
   @override
   Future<bool> initAsync() async {
-    // Simply wait for 10 seconds at startup.
+    // A controller can have many State objects 'registered' with it
+    // Return if the current State is Page2State
+    if (state is Page1State || state is Page2State) {
+      return true;
+    }
+    // Simply wait for 5 seconds at startup.
     /// In production, this is where databases are opened, logins attempted, etc.
     return Future.delayed(const Duration(seconds: 5), () {
       return true;

@@ -43,8 +43,8 @@ A powerful capability.
 <a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/11e55201-349e-4979-bd82-65914aad57dd"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/11e55201-349e-4979-bd82-65914aad57dd" width="48%" height="60%"></a>
 </div>
 
-| [app.dart](https://github.com/Andrious/shrine_example_app/blob/d9b0969c40a59c2556b6a86046d20a444155c36b/lib/src/app/view/app.dart#L18) | [app.dart](https://github.com/Andrious/shrine_example_app/blob/d9b0969c40a59c2556b6a86046d20a444155c36b/lib/src/app/view/app.dart#L18) |
-|:-----------------------------------------------------------------------------------------------------------------------------------------|:----:|
+| [app.dart](https://github.com/Andrious/shrine_example_app/blob/d9b0969c40a59c2556b6a86046d20a444155c36b/lib/src/app/view/app.dart#L18) |
+|:-----------------------------------------------------------------------------------------------------------------------------------------|
 
 <h3 id="inline">Support for inline functions</h3>
 

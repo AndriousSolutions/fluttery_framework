@@ -47,6 +47,7 @@ class WordPairsTimer extends StateXController {
     model.addState(state);
   }
 
+  /// In case this State object is unmounted from the widget tree.
   @override
   void deactivate() {
     cancelTimer();
@@ -72,17 +73,19 @@ class WordPairsTimer extends StateXController {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     //
-    if (state == AppLifecycleState.resumed) {
-      /// Create the Timer again.
-      initTimer();
-    } else {
-      //if (state == AppLifecycleState.paused) {
-      /// Passing these possible values:
+    if (state != AppLifecycleState.resumed) {
       /// AppLifecycleState.paused (may enter the suspending state at any time)
       /// AppLifecycleState.inactive (may be paused at any time)
       /// AppLifecycleState.suspending (Android only)
       cancelTimer();
     }
+  }
+
+  /// Called when app returns from the background
+  @override
+  void resumedLifecycleState() {
+    /// Create the Timer again.
+    initTimer();
   }
 
   /// If the value of the object, obj, changes, this builder() is called again

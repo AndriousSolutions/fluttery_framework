@@ -1,38 +1,147 @@
-### Control The Pattern
-It’s the Controller that contains the business logic and performs 
-the event handling while the State object is just concerned with the interface. 
-There are variations in how and when the Controller is assigned to a variable, 
-but that’s the general pattern.
+In the Fluttery Framework, the typical controller object extends the **SateXController** class
+and contains the business rules for the app. A controller is also used by a particular 
+State object to deal with any event handling while the State object itself deals with just the interface.
+The State object would typically extend the [StateX](https://pub.dev/documentation/fluttery_framework/latest/topics/StateX%20class-topic.html) class, 
+so to utilize the Controller object in its **build**() function or in any other of its functions.
+Again, so to deal with the app's business rules and or address any events like the pushing of a button.
 
-### Avoid Controller Bloat
-You're able to add as many Controllers as you want to your StateX object.
-And so, if there is a number of Controllers assigned to a StateX, and when ‘an event’ occurs in that View, 
-the Controllers will fire, in turn, in the order they were assigned.
+<table>
+  	<caption>Contents</caption>
+    <tbody>
+    <tr>
+       <td><a href="#external">External State Control</a></td>
+       <td><a href="#bloat">No Controller Bloat</a></td>
+       <td><a href="#control">Control The State</a></td>
+       <td><a href="#single">The Singleton Pattern</a></td>
+       <td><a href="#list">The List of Device and System Events</a></td>
+      </tr>
+    </tbody>
+</table>
+
+<h3 id="external">External State Control</h3>
+<div>
+  <a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea" width="48%" height="60%"></a>
+</div>
+
+When a **StateX** object takes in a **StateXController** object through its constructor or though one of its **add**() functions
+(see screenshot), that controller now has access to that State object and all its properties and functions.
+That very fact allows for some powerful capabilities. Essentially, you now have the ability to call the State object's 
+**setState**() function from outside its class---through that controller object!
+The basic requirement of any State Management in Flutter is to reliably call the **setState**() function 
+from a particular State object. 
+
+| [page_01.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view/page_01.dart#L19) |
+|:-----------------|
+The two screenshots below demonstrate how easily you can now reference a particular State object from 
+yet another State object if need be. The code below is from the example app that accompanies the 
+Fluttery Framework package. The first screenshot is of the State class, **Page2State**, which displays 'Page 2'
+of the [Three-Page Counter](https://github.com/AndriousSolutions/fluttery_framework/tree/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view) Example app.
+In this app, you're able to increment the counter of even a neighboring page with a tap of a button.
+
+The first screenshot shows how to increment the counter on 'Page 1' from the 'Page 2' screen.
+The second screenshot shows how to increment the counter on 'Page 2' from the 'Page 3' screen.
+A simple demonstration, but a spectacular one if you think about it! 
+Notice it's the same controller class object (unimaginatively named Controller) being used, 
+and it can reference all three State objects at the same time!
+<div>
+<a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9a4a708a-b1cb-4c62-918a-91980b83e767"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9a4a708a-b1cb-4c62-918a-91980b83e767" width="48%" height="60%"></a>
+<a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55" width="48%" height="60%"></a>
+</div>
+
+| [page_02.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view/page_02.dart#L141) | [page_03.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view/page_03.dart#L18) |
+|:-----------------|-----------------:|
+<div>
+  <img id="fifo" align="right" src="https://github.com/Andrious/bazaar/assets/32497443/9c6ab55d-faf6-4b40-8f3c-6295ebe592b9">
+</div>
+
+During the course of a typical app, as the user progressively moves deeper, for example, into the app 
+going from screen to screen, the **StateXController** object retains the sequence of State objects 
+its been assigned to in turn. It's 'current' state object (its `.state` property) is always the one residing in the current screen.
+However, as you see in the screenshots above, the controller has the means to reference 'past' State objects
+from previous screens (<a href="https://pub.dev/documentation/state_extended/latest/state_extended/SetStateMixin/ofState.html">ofState</a>() and <a href="https://pub.dev/documentation/state_extended/latest/state_extended/SetStateMixin/stateOf.html">stateOf</a>()). Of course, when the user retreats back to the original screen, the controller's
+'current' state object property reflects that change accordingly.
+
+Further, the **StateX** class has access to some 27 events functions. Thus, if a controller is registered with that State object, 
+those events are delegated to that controller. The controller is to directly handle any such events
+while the State object is to be remain concerned with just the interface. This all follows the clean architecture paradigm.
+
+<h3 id="bloat">No Controller Bloat</h3>
+You're able to add as many controllers as you want to and individual StateX object. This prevents making your
+controller class too big to manage---bloating it with all the business rules required. Instead, you can
+break down the logic into manageable segments each representing a particular aspect of the app's business rules
+, in turn, each aspect could be represented by an individual controller class if applicable.
+Note, when a StateX object has a number of registered Controllers, and a system event occurs for example, 
+those controllers are run in the order they were assigned to possibly address that event---if
+you've supplied the code to do so.
+
+Of course, nothing is stopping you from having controllers call other controllers or other objects
+representing databases, or other third-party packages so to address the varying complexity of your app and its business rules.
+The 'controller side' of your app deals with the logic. 
+You're free to organize the degree of abstraction and complexity necessary 
+to do so leaving the interface to the StateX object.
 <div>
   <img src="https://github.com/Andrious/bazaar/assets/32497443/f84c06e9-7622-495a-9a8d-91da133311d0">
-  <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/f2f41422-5986-4cf9-8d56-88b12b1d71ab" width="48%" height="60%">
+  <a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea" width="48%" height="60%"></a>
 </div>
 
-Thus, when your controller is ‘registered’ with a State object and its State object’s initState() function 
-is called, its own initState() function will also be called. Anything your controller may need to be 
-initialized, for example, before that widget is displayed can now be done so in its own initState() function.
+| [page_01.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view/page_01.dart#L19) |
+|:-----------------|
+<h3 id="control">Control The State</h3>
+Thus, when you register a controller to a StateX object, take advantage of the fact that a controller has all
+the functions like its corresponding StateX object.
+For example, if there's anything your controller may need to be initialized before a widget is displayed,
+remember a controller has its **initState**() function to initialize such requirements.
 
-Thus, when your controller is ‘registered’ with a State object and its State object’s initState() function
-is called, its own initState() function will also be called. Anything your controller may need to be
-initialized, for example, before that widget is displayed can now be done so in its own initState() function.
+In the first screenshot below, the **WordPairsTimer** controller class has to set up its timer
+and pass its State object reference to the 'data object' called, _model_, before its particular
+State object can proceed and call its **build**() function.
+Since these are not operations pertaining to the interface at all, they are well-suited to reside 
+in some designated controller object.
+
+The second screenshot below, is of another example app where it appears it's necessary for a controller
+to instantiate another controller called, _ExampleAppController_. It obviously a requirement and
+part of the 'business process' and so it too resides in a controller.
 <div>
-<img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/13e580ad-73bc-40e5-a95f-a1d5a7731574" width="48%" height="60%">
-<img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55" width="48%" height="60%">
-</div>
-<div>
-  <img src="https://github.com/Andrious/bazaar/assets/32497443/9c6ab55d-faf6-4b40-8f3c-6295ebe592b9">
+  <a id="wordPairInit" target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6a66aa52-a66a-4d56-aa2e-62683cc0c681"><img  src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6a66aa52-a66a-4d56-aa2e-62683cc0c681" width="48%" height="60%"></a>
+  <a id="contactListInit" target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/c47cfe0c-0ee1-479f-aa37-59ef378143b7"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/c47cfe0c-0ee1-479f-aa37-59ef378143b7" width="48%" height="60%"></a>
 </div>
 
-## _The Controller and State Events_
-With the controller, you not only supply the app's business rules, but can also respond
+| [word_pair_timer.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/app/controller/word_pair_timer.dart#L37) | [contacts_app.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/contacts_app.dart#L7) |
+|:-------------------------|----------------------:|
+Further note in the first screenshot above, the controller's corresponding **deactivate**() function turns off
+the timer if and when, in this instance, that screen is closed. But that's not sufficient. 
+Let's assume this example app is running on a mobile phone. If and when the user chooses to answer a phone call,
+for example, and place this app in the background, again, it's good practice to turn off the timer.
+The timer is re-initialized only if and when the user returns to that app. 
+This behavior is easily achieved in that controller as well using its
+**didChangeAppLifecycleState**() and **resumedLifecycleState**() functions to name a few. See below.
+<div>
+  <a id="cancelTimer" target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e29083ac-1f1d-4b59-8f77-28aaf8c7d47c"><img  src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e29083ac-1f1d-4b59-8f77-28aaf8c7d47c" width="48%" height="60%"></a>
+</div>
+
+| [word_pair_timer.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/master/example/lib/src/app/controller/word_pair_timer.dart#L72) |
+|:-------------------------|
+<h3 id="single">The Singleton Pattern</h3>
+I find the role of a Controller is best served by a single instance of that class throughout the 
+life of the app. It's called upon to respond to various system and user events 
+throughout an app's lifecycle and yet still retain an ongoing and reliable state. 
+A factory constructor for the Controller class readily accomplishes this. See below.
+```Dart
+class CounterController extends StateXController {
+  factory CounterController() => _this ??= CounterController._();
+  CounterController._() : super();
+  static CounterController? _this;
+```
+With the Singleton pattern, making only one single instance of a particular class creates lesser overhead.
+Certainly not a steadfast rule, but it's suggested all controllers instantiate with a factory constructor. 
+Again, doing so agrees with its general role as an ongoing custodian of the app's business rules and event handling.
+A clean, consistent, and manageable approach, and as it happens, one that adheres to good programming practices.
+
+<h3 id="events">The Controller and State Events</h3>
+As mentioned above, with the controller, you not only supply the app's business rules, but can also respond
 to the device and system events that commonly occur during an app's lifecycle. The sample code below lists all the
-available 'event' functions. In most cases, you'll only use the 'lifecycle' functions. However, they're
-all there just the same as you may need them someday in a future app:
+available 'event' functions. In most cases, you'll only use the functions, **initAsync**(), **initState**(), **deactivate**(), and **dispose**()
+as well as its 'lifecycle' functions. However, they're all there for you as you may need them someday in a future app:
 ###### (Below is the [Controller](https://github.com/AndriousSolutions/fluttery_framework/blob/0168b3c8a626dfebeb99b28fc3e60cefbba71966/example/lib/src/home/view/counter/controller/controller.dart#L12) from the 'Three Page' Counter Example App.)
 ```Dart
 class CounterController extends StateXController {
@@ -169,8 +278,8 @@ class CounterController extends StateXController {
   void didChangeAccessibilityFeatures() {}
 }
 ```
-## _List of Device and System Events_
-##### (Tap on each below to see the source code and a further explanation of their function.)
+<h3 id="list">The List of Device and System Events</h3>
+###### (Tap on each below to see the source code and a further explanation of these function.)
 
 [![deactivate](https://github.com/AndriousSolutions/state_extended/assets/32497443/5efcf55d-4b34-4875-a4f3-5532ab438f58)](https://github.com/AndriousSolutions/state_extended/blob/074e17ee298eec2a22c3b904caf20e75d5ce41c3/lib/state_extended.dart#L1530)
 [![activate](https://github.com/AndriousSolutions/state_extended/assets/32497443/1c69c8a9-7f16-40e2-b3de-d58ff521df2e)](https://github.com/AndriousSolutions/state_extended/blob/074e17ee298eec2a22c3b904caf20e75d5ce41c3/lib/state_extended.dart#L1540)
