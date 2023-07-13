@@ -94,13 +94,15 @@ If they were running on an iOS phone, the
 <a href="https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/cupertino/activity_indicator.dart#L32">CupertinoActivityIndicator</a>
 widget would produce the iOS-style activity indicators instead. Flutter is suppose to be a cross-platform SDK after all.
 <div>
-<a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1e846262-a0a5-47e3-891f-1ed7d0308962"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1e846262-a0a5-47e3-891f-1ed7d0308962" width="50%" height="60%"></a>
-<a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e4b9c1ee-803a-4b53-b393-027a510599df"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e4b9c1ee-803a-4b53-b393-027a510599df" width="50%" height="60%"></a>
+<a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1e846262-a0a5-47e3-891f-1ed7d0308962"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1e846262-a0a5-47e3-891f-1ed7d0308962" width="48%" height="60%"></a>
+<a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e4b9c1ee-803a-4b53-b393-027a510599df"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e4b9c1ee-803a-4b53-b393-027a510599df" width="48%" height="60%"></a>
 </div>
 
 | [image_api_controller.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/512093984b404e4f2216521a5f95bd6418ea6054/example/lib/src/home/grid_app_example/gridview/controller/image_api_controller.dart#L38) | [working_memory_app.dart](https://github.com/Andrious/workingmemory/blob/master/lib/src/app/controller/working_memory_app.dart#L77) |
 |:-----|:----:|
+
 <h3 id="control">Control The Sync</h3>
+
 <p>Those three screens above are from yet another example app supplied with the Flutter Framework.
 Yes, there are twelve separate StateX objects on that one screen each loading an animal image. 
 Actually its their own individual State Object Controller that's performing the 
@@ -150,11 +152,14 @@ you don't have to implement the one **build**() function. You have to implement 
 
 | [app_state.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/4dc676193914808583f111006334a91a08475b7f/lib/view/app_state.dart#L1526) |
 |:-----|
+
 Why two? Because Flutter produces one codebase for multiple platforms. It's likely the very reason why you've 
 turned to Flutter to make your next app in the first place. If you only want to use the Cupertino interface, for example, 
 then direct the <b>buildAndroid</b>() function to call the <b>buildiOS</b>() function. Otherwise, build both.
 As you see to the right, with the Fluttery Framework, you can even have to user choose their favorite interface.
+
 <h3 id="inherit">Inherit State</h3>
+
 <p>You've may have been introduced to the InheritedWidget, and how it allows you to repel any 
 piece of data you've designated down the widget tree. However, a more intriguing feature 
 is whenever you call an already instantiated InheritedWidget, any widgets assigned as its
