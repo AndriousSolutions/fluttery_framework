@@ -32,6 +32,7 @@ from a particular State object.
 
 | [page_01.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view/page_01.dart#L19) |
 |:-----------------|
+
 The two screenshots below demonstrate how easily you can now reference a particular State object from 
 yet another State object if need be. The code below is from the example app that accompanies the 
 Fluttery Framework package. The first screenshot is of the State class, **Page2State**, which displays 'Page 2'
@@ -66,12 +67,12 @@ those events are delegated to that controller. The controller is to directly han
 while the State object is to be remain concerned with just the interface. This all follows the clean architecture paradigm.
 
 <h3 id="bloat">No Controller Bloat</h3>
-You're able to add as many controllers as you want to and individual StateX object. This prevents making your
+You're able to add as many controllers as you want to an individual StateX object. This prevents making your
 controller class too big to manage---bloating it with all the business rules required. Instead, you can
 break down the logic into manageable segments each representing a particular aspect of the app's business rules
 , in turn, each aspect could be represented by an individual controller class if applicable.
-Note, when a StateX object has a number of registered Controllers, and a system event occurs for example, 
-those controllers are run in the order they were assigned to possibly address that event---if
+Note, when a StateX object has a number of registered Controllers, and a system event occurs, for example, 
+those controllers will run in the order they were assigned to possibly address that event---if
 you've supplied the code to do so.
 
 Of course, nothing is stopping you from having controllers call other controllers or other objects
@@ -86,7 +87,9 @@ to do so leaving the interface to the StateX object.
 
 | [page_01.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view/page_01.dart#L19) |
 |:-----------------|
+
 <h3 id="control">Control The State</h3>
+
 Thus, when you register a controller to a StateX object, take advantage of the fact that a controller has all
 the functions like its corresponding StateX object.
 For example, if there's anything your controller may need to be initialized before a widget is displayed,
@@ -94,9 +97,9 @@ remember a controller has its **initState**() function to initialize such requir
 
 In the first screenshot below, the **WordPairsTimer** controller class has to set up its timer
 and pass its State object reference to the 'data object' called, _model_, before its particular
-State object can proceed and call its **build**() function.
-Since these are not operations pertaining to the interface at all, they are well-suited to reside 
-in some designated controller object.
+State object can proceed to calling its **build**() function and display somthing on the screen.
+Since these are not operations pertaining to the interface directly, they are well-suited to reside 
+in one of the designated controller objects.
 
 The second screenshot below, is of another example app where it appears it's necessary for a controller
 to instantiate another controller called, _ExampleAppController_. It obviously a requirement and
@@ -108,6 +111,7 @@ part of the 'business process' and so it too resides in a controller.
 
 | [word_pair_timer.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/app/controller/word_pair_timer.dart#L37) | [contacts_app.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/contacts_app.dart#L7) |
 |:-------------------------|----------------------:|
+
 Further note in the first screenshot above, the controller's corresponding **deactivate**() function turns off
 the timer if and when, in this instance, that screen is closed. But that's not sufficient. 
 Let's assume this example app is running on a mobile phone. If and when the user chooses to answer a phone call,
@@ -126,6 +130,7 @@ I find the role of a Controller is best served by a single instance of that clas
 life of the app. It's called upon to respond to various system and user events 
 throughout an app's lifecycle and yet still retain an ongoing and reliable state. 
 A factory constructor for the Controller class readily accomplishes this. See below.
+
 ```Dart
 class CounterController extends StateXController {
   factory CounterController() => _this ??= CounterController._();
@@ -142,7 +147,9 @@ As mentioned above, with the controller, you not only supply the app's business 
 to the device and system events that commonly occur during an app's lifecycle. The sample code below lists all the
 available 'event' functions. In most cases, you'll only use the functions, **initAsync**(), **initState**(), **deactivate**(), and **dispose**()
 as well as its 'lifecycle' functions. However, they're all there for you as you may need them someday in a future app:
+
 ###### (Below is the [Controller](https://github.com/AndriousSolutions/fluttery_framework/blob/0168b3c8a626dfebeb99b28fc3e60cefbba71966/example/lib/src/home/view/counter/controller/controller.dart#L12) from the 'Three Page' Counter Example App.)
+
 ```Dart
 class CounterController extends StateXController {
   factory CounterController() => _this ??= CounterController._();
@@ -278,7 +285,9 @@ class CounterController extends StateXController {
   void didChangeAccessibilityFeatures() {}
 }
 ```
+
 <h3 id="list">The List of Device and System Events</h3>
+
 ###### (Tap on each below to see the source code and a further explanation of these function.)
 
 [![deactivate](https://github.com/AndriousSolutions/state_extended/assets/32497443/5efcf55d-4b34-4875-a4f3-5532ab438f58)](https://github.com/AndriousSolutions/state_extended/blob/074e17ee298eec2a22c3b904caf20e75d5ce41c3/lib/state_extended.dart#L1530)
