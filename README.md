@@ -13,7 +13,9 @@ There's no 're-inventing of the wheel' or an extra learning curve. If you know F
 
 It supplies the adaptive functions and features expected of a production-ready app:
 * Flutter's own intuitive State Management
-* Necessary error handling capabilities
+* An extended version of Flutter's State class
+* A State Object Controller for this new State class
+* Additional error handling capabilities
 * Easy implementation of both the Material & Cupertino interface
 * App-wide accessibility to system preferences
 * Built-in app notifications
