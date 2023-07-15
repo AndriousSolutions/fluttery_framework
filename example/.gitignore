@@ -92,7 +92,8 @@ unused.txt
 
 # Android related
 google-services.json
-/android/
+/android/gradle/
+# Remember there's another one: /android/.gitignore
 
 
 # iOS/XCode related

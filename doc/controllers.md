@@ -45,8 +45,8 @@ A simple demonstration, but a spectacular one if you think about it!
 Notice it's the same controller class object (unimaginatively named Controller) being used, 
 and it can reference all three State objects at the same time!
 <div>
-<a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9a4a708a-b1cb-4c62-918a-91980b83e767"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9a4a708a-b1cb-4c62-918a-91980b83e767" width="48%" height="60%"></a>
-<a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55" width="48%" height="60%"></a>
+<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9a4a708a-b1cb-4c62-918a-91980b83e767"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9a4a708a-b1cb-4c62-918a-91980b83e767" width="48%" height="60%"></a>
+<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55" width="48%" height="60%"></a>
 </div>
 
 | [page_02.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view/page_02.dart#L141) | [page_03.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view/page_03.dart#L18) |

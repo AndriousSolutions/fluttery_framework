@@ -28,7 +28,7 @@ Future<void> contactsTest(WidgetTester tester) async {
     await tester.pump();
 
     await tester.pumpAndSettle();
-//  await tester.showKeyboard(field);
+
     String text = '';
     switch (cnt) {
       case 0:
@@ -61,11 +61,8 @@ Future<void> contactsTest(WidgetTester tester) async {
   expect(finder, findsOneWidget, reason: _location);
 
   await tester.tap(finder);
-  await tester.pump();
 
-  await tester.pumpAndSettle();
-  await tester.pumpAndSettle();
-  await tester.pumpAndSettle();
+  await tester.pumpAndSettle(const Duration(milliseconds: 300));
 }
 
 /// Delete a contact if any

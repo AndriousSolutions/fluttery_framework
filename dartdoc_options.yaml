@@ -14,6 +14,8 @@ dartdoc:
       markdown: doc/preferences.md
     "Error handling":
       markdown: doc/error-handling.md
+    "Testing":
+      markdown: doc/testing.md
     "Extensions":
       markdown: doc/extensions.md
     "Device Information":
@@ -27,6 +29,7 @@ dartdoc:
     - "App object"
     - "App's Preferences"
     - "Error handling"
+    - "Testing"
     - "Extensions"
     - "Device Information"
   nodoc: ['lib/*.dart']

@@ -45,6 +45,7 @@ installed the next time you 'upgrade' your dependencies.
    <li id="app-prefs"><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/App's%20Preferences-topic.html">App's&nbsp;Preferences</a></li>
    <li id="app-object"><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/App%20object-topic.html">App object</a></li>
    <li id="error"><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/Error%20handling-topic.html">Error&nbsp;handling</a></li>
+   <li id="testing"><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/Testing-topic.html">Testing</a></li>
    <li id="extensions"><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/Extensions-topic.html">Extensions</a></li>
    <li id="device"><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/Device%20Information-topic.html">Device Information</a></li>
 </ul>

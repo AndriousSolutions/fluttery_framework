@@ -94,8 +94,8 @@ If they were running on an iOS phone, the
 <a href="https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/cupertino/activity_indicator.dart#L32">CupertinoActivityIndicator</a>
 widget would produce the iOS-style activity indicators instead. Flutter is suppose to be a cross-platform SDK after all.
 <div>
-<a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1e846262-a0a5-47e3-891f-1ed7d0308962"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1e846262-a0a5-47e3-891f-1ed7d0308962" width="48%" height="60%"></a>
-<a href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e4b9c1ee-803a-4b53-b393-027a510599df"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e4b9c1ee-803a-4b53-b393-027a510599df" width="48%" height="60%"></a>
+<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1e846262-a0a5-47e3-891f-1ed7d0308962"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1e846262-a0a5-47e3-891f-1ed7d0308962" width="48%" height="60%"></a>
+<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e4b9c1ee-803a-4b53-b393-027a510599df"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e4b9c1ee-803a-4b53-b393-027a510599df" width="48%" height="60%"></a>
 </div>
 
 | [image_api_controller.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/512093984b404e4f2216521a5f95bd6418ea6054/example/lib/src/home/grid_app_example/gridview/controller/image_api_controller.dart#L38) | [working_memory_app.dart](https://github.com/Andrious/workingmemory/blob/master/lib/src/app/controller/working_memory_app.dart#L77) |
@@ -146,7 +146,7 @@ for those two types of interfaces:
 Like the State class, the StateX class is an abstract class. However, when you extend the StateX class, 
 you don't have to implement the one **build**() function. You have to implement two functions:
 <div>
-<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/2f78d7e6-494a-4b06-8d2d-67bf64e786f5"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/2f78d7e6-494a-4b06-8d2d-67bf64e786f5" width="50%" height="60%"></a>
+<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/2f78d7e6-494a-4b06-8d2d-67bf64e786f5"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/2f78d7e6-494a-4b06-8d2d-67bf64e786f5" width="48%" height="60%"></a>
 <img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/4543c405-8dad-4c33-bb54-a3b5850c8c67" width="171" height="357">
 </div>
 
