@@ -101,7 +101,12 @@ class _CounterPageState extends StateX<CounterPage> {
         ),
         floatingActionButton: FloatingActionButton(
           key: const Key('IncrementButton'),
-          onPressed: () => setState(con.onPressed),
+          onPressed: () {
+            // Deliberately throw an error to demonstrate error handling.
+            throw Exception('Fake error to demonstrate error handling!');
+            // This code is greyed out by the IDE because it can never bt reached.
+            setState(con.onPressed);
+          },
           child: const Icon(Icons.add),
         ),
         bottomNavigationBar: SimpleBottomAppBar(
@@ -168,7 +173,13 @@ class _CounterPageState extends StateX<CounterPage> {
                   Padding(
                     padding: EdgeInsets.only(top: 5.h),
                     child: CupertinoButton.filled(
-                      onPressed: () => setState(con.onPressed),
+                      onPressed: () {
+                        // Deliberately throw an error to demonstrate error handling.
+                        throw Exception(
+                            'Fake error to demonstrate error handling!');
+                        // This code is greyed out by the IDE because it can never bt reached.
+                        setState(con.onPressed);
+                      },
                       child: const Text('Add'),
                     ),
                   ),
@@ -178,4 +189,12 @@ class _CounterPageState extends StateX<CounterPage> {
           ),
         ]),
       );
+
+  @override
+  void onError(FlutterErrorDetails details) {
+    final stack = details.stack;
+    if (stack != null && stack.toString().contains('handleTap')) {
+      setState(con.onPressed);
+    }
+  }
 }

@@ -16,7 +16,7 @@ import 'package:universal_io/io.dart' show Platform;
 // import 'package:universal_platform/universal_platform.dart'
 //     show UniversalPlatform;
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 
 import 'package:package_info_plus/package_info_plus.dart' show PackageInfo;
 
@@ -36,20 +36,21 @@ final App = AppObject();
 /// This class is available throughout the app
 /// readily supplies static properties about the App.
 ///
+/// dartdoc:
 /// {@category Get started}
 /// {@category App object}
 class AppObject
     with ConnectivityListener, _AppPackageInfoMixin, _AppThemeDataMixin {
-  /// Supply an error handler to the App.
-  // The parameters are deprecated.
-  factory AppObject({bool? allowNewHandlers = true}) =>
-      _this ??= AppObject._(allowNewHandlers ?? true);
+  /// One single instance of the App object
+  factory AppObject({
+    @Deprecated("The 'error' parameter is deprecated.")
+    bool? allowNewHandlers = true,
+  }) =>
+      _this ??= AppObject._();
 
-  AppObject._(
-    bool allowNewHandlers,
-  ) {
+  AppObject._() {
     // Initialize the Error Handler
-    _errorHandler = v.AppErrorHandler(newErrorHandlers: allowNewHandlers);
+    _errorHandler = v.AppErrorHandler();
     // Monitor the device's connectivity to the Internet.
     addConnectivityListener(this);
   }
@@ -67,6 +68,7 @@ class AppObject
   bool? _inFlutterTest;
 
   /// Returns the current Error Handler.
+  // Used in app_statefulwidget.dart and app_state.dart
   v.AppErrorHandler? get errorHandler => _errorHandler;
   v.AppErrorHandler? _errorHandler;
 
@@ -115,10 +117,15 @@ class AppObject
     final handler = errorHandler?.flutterExceptionHandler;
     if (handler != null) {
       handler(details);
-    } else {
-      // Call Flutter's default error handler.
-      FlutterError.presentError(details);
     }
+    // Don't when in DebugMode.
+    if (!kDebugMode) {
+      // Resets the count of errors to show a complete error message or an abbreviated one.
+      FlutterError.resetErrorCount();
+    }
+    // https://docs.flutter.dev/testing/errors#errors-caught-by-flutter
+    // Log the error.
+    FlutterError.presentError(details);
   }
 
   /// App-level error handling if async operation at start up fails

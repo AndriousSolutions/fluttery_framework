@@ -1,4 +1,12 @@
 
+## 4.1.0
+July 20, 2023
+- Implemented onInitAsync() in app_state.dart
+- Adjusted onError() in app_state.dart to call State object's onError()
+- Introduced FlutterError.presentError(details); in App.onError()
+- All the 'error' parameters are deprecated.
+- Continue updating documentation
+
 ## 4.0.1+14
 July 03, 2023
 - /// Retrieve and cast as this Framework's own particular 'controller' type.

@@ -27,7 +27,7 @@ The code will demonstrate the functions and features that quickly make a multi-p
 6. Supply the 'Cupertino' interface to the **buildiOS**() function.
 ###### (See the little red arrows in the picture below)
 ___
-[![CounterController](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/fd9872ec-ba79-4660-a99d-d5d04adb9f30)](https://github.com/AndriousSolutions/fluttery_framework/blob/0168b3c8a626dfebeb99b28fc3e60cefbba71966/example/lib/src/home/view/counter_app.dart)
+[![counter_app](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/67c2ff90-9589-4b70-95e0-ad932aba82da)](https://github.com/AndriousSolutions/fluttery_framework/blob/0168b3c8a626dfebeb99b28fc3e60cefbba71966/example/lib/src/home/view/counter_app.dart)
 ___
 ![scalability](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/b5af9fb1-9aef-4f05-baa4-98ff3014caef)
 
@@ -36,7 +36,7 @@ ___
 Right at the beginning using the App's own State class, _AppState_, you're able to 
 define in detail how your app is to 'look and behave'. This State class is the 
 amalgamation of both the MaterialApp widget and the CupertinoApp widget and an 
-assortment of other Flutter properties. See the class, _ThisAppState_, below.
+assortment of other Flutter properties. See the class, __ThisAppState_, below.
 
 (See Topic: <a href="https://pub.dev/documentation/fluttery_framework/latest/topics/AppState%20class-topic.html">AppState class</a>)
 ```Dart

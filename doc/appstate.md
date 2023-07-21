@@ -39,8 +39,8 @@ A powerful capability.
 
 ###### (Note: If a parameter is still supplied, any function is ignored. An explicit parameter takes precedence.)
 <div>
-<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/73cc50be-d06b-4bbc-83f1-0d330786c0d0"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/73cc50be-d06b-4bbc-83f1-0d330786c0d0" width="48%" height="60%"></a>
-<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/11e55201-349e-4979-bd82-65914aad57dd"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/11e55201-349e-4979-bd82-65914aad57dd" width="48%" height="60%"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/73cc50be-d06b-4bbc-83f1-0d330786c0d0"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/73cc50be-d06b-4bbc-83f1-0d330786c0d0" width="48%" height="60%"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/11e55201-349e-4979-bd82-65914aad57dd"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/11e55201-349e-4979-bd82-65914aad57dd" width="48%" height="60%"></a>
 </div>
 
 | [app.dart](https://github.com/Andrious/shrine_example_app/blob/d9b0969c40a59c2556b6a86046d20a444155c36b/lib/src/app/view/app.dart#L18) |
@@ -152,7 +152,7 @@ to the widget, **WidgetsApp** (see below). This implies that there's
 nothing stopping you from writing your own 'Design App' widget. The Flutter framework
 can utilize a whole new style of interface if you're so inclined to write one.
 ###### (Screenshot below of CupertinoApp's **_buildWidgetApp**() function)
-<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/79447d0a-887f-4edd-b907-5182312840c3"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/79447d0a-887f-4edd-b907-5182312840c3" width="48%" height="60%"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/79447d0a-887f-4edd-b907-5182312840c3"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/79447d0a-887f-4edd-b907-5182312840c3" width="48%" height="60%"></a>
 
 | [app,dart](https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/cupertino/app.dart#L563) | 
 |:----------------------------------------------------------------------------------------------------------------------------------------------|

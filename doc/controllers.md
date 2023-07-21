@@ -20,7 +20,7 @@ Again, so to deal with the app's business rules and or address any events like t
 
 <h3 id="external">External State Control</h3>
 <div>
-  <a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea" width="48%" height="60%"></a>
+  <a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea" width="48%" height="60%"></a>
 </div>
 
 When a **StateX** object takes in a **StateXController** object through its constructor or though one of its **add**() functions
@@ -45,8 +45,8 @@ A simple demonstration, but a spectacular one if you think about it!
 Notice it's the same controller class object (unimaginatively named Controller) being used, 
 and it can reference all three State objects at the same time!
 <div>
-<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9a4a708a-b1cb-4c62-918a-91980b83e767"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9a4a708a-b1cb-4c62-918a-91980b83e767" width="48%" height="60%"></a>
-<a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55" width="48%" height="60%"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9a4a708a-b1cb-4c62-918a-91980b83e767"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/9a4a708a-b1cb-4c62-918a-91980b83e767" width="48%" height="60%"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/988694d4-326f-474d-9e8e-77ac143e3e55" width="48%" height="60%"></a>
 </div>
 
 | [page_02.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view/page_02.dart#L141) | [page_03.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view/page_03.dart#L18) |
@@ -82,7 +82,7 @@ You're free to organize the degree of abstraction and complexity necessary
 to do so leaving the interface to the StateX object.
 <div>
   <img src="https://github.com/Andrious/bazaar/assets/32497443/f84c06e9-7622-495a-9a8d-91da133311d0">
-  <a target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea" width="48%" height="60%"></a>
+  <a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/cc3f2c03-916a-4169-b141-969d6beeceea" width="48%" height="60%"></a>
 </div>
 
 | [page_01.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view/page_01.dart#L19) |
@@ -105,8 +105,8 @@ The second screenshot below, is of another example app where it appears it's nec
 to instantiate another controller called, _ExampleAppController_. It obviously a requirement and
 part of the 'business process' and so it too resides in a controller.
 <div>
-  <a id="wordPairInit" target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6a66aa52-a66a-4d56-aa2e-62683cc0c681"><img  src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6a66aa52-a66a-4d56-aa2e-62683cc0c681" width="48%" height="60%"></a>
-  <a id="contactListInit" target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/c47cfe0c-0ee1-479f-aa37-59ef378143b7"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/c47cfe0c-0ee1-479f-aa37-59ef378143b7" width="48%" height="60%"></a>
+  <a id="wordPairInit" target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6a66aa52-a66a-4d56-aa2e-62683cc0c681"><img  src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6a66aa52-a66a-4d56-aa2e-62683cc0c681" width="48%" height="60%"></a>
+  <a id="contactListInit" target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/c47cfe0c-0ee1-479f-aa37-59ef378143b7"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/c47cfe0c-0ee1-479f-aa37-59ef378143b7" width="48%" height="60%"></a>
 </div>
 
 | [word_pair_timer.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/app/controller/word_pair_timer.dart#L37) | [contacts_app.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/contacts_app.dart#L7) |
@@ -120,7 +120,7 @@ The timer is re-initialized only if and when the user returns to that app.
 This behavior is easily achieved in that controller as well using its
 **didChangeAppLifecycleState**() and **resumedLifecycleState**() functions to name a few. See below.
 <div>
-  <a id="cancelTimer" target="_blank" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e29083ac-1f1d-4b59-8f77-28aaf8c7d47c"><img  src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e29083ac-1f1d-4b59-8f77-28aaf8c7d47c" width="48%" height="60%"></a>
+  <a id="cancelTimer" target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e29083ac-1f1d-4b59-8f77-28aaf8c7d47c"><img  src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/e29083ac-1f1d-4b59-8f77-28aaf8c7d47c" width="48%" height="60%"></a>
 </div>
 
 | [word_pair_timer.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/master/example/lib/src/app/controller/word_pair_timer.dart#L72) |

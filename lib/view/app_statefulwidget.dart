@@ -41,8 +41,9 @@ abstract class AppStatefulWidget extends StatefulWidget {
     Key? key,
     this.loadingScreen,
     this.circularProgressIndicator = true,
+    @Deprecated("The 'error' parameter is deprecated.")
     bool? allowNewHandlers = true,
-  })  : _app = v.AppObject(allowNewHandlers: allowNewHandlers),
+  })  : _app = v.AppObject(),
         super(key: key ?? GlobalKey<_StateApp>()) {
     // defer displaying anything while starting up
     if (circularProgressIndicator == null || !circularProgressIndicator!) {
@@ -143,6 +144,7 @@ class _StateApp extends State<AppStatefulWidget> {
     } catch (e) {
       init = false;
       v.App.isInit = false;
+      // Rethrow to _futureBuilder()
       rethrow;
     }
     return v.App.isInit = init;

@@ -163,7 +163,7 @@ class AppErrorHandler {
 
     _backgroundColor ??= backgroundColor;
 
-    // Once you're not allowed to reset the handlers, it can't be reversed.
+    // Once you're not allowed to set the handlers, they can't be changed.
     if (!_allowNewHandlers) {
       return false;
     }
@@ -208,6 +208,7 @@ class AppErrorHandler {
     try {
       widget = ErrorWidget.builder(details);
     } catch (ex) {
+      // low-level primitives used to display the error
       widget = errorDisplayWidget(details);
     }
     return widget;
@@ -276,7 +277,7 @@ class AppErrorHandler {
     );
   }
 
-  /// Display the error details.
+  /// Supplies the error details to the designated error handler.
   // This is a copy used in the Flutter Framework.
   FlutterErrorDetails _debugReportException(
     DiagnosticsNode context,

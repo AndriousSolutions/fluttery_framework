@@ -386,9 +386,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Used to complete asynchronous operations
   @override
   Future<bool> initAsync() async {
-    var init = await super.initAsync();
-    if (init && inInitAsync != null) {
-      init = await inInitAsync!();
+    var init = await onInitAsync();
+    if (init) {
+      init = await super.initAsync();
     }
     return init;
   }
@@ -750,22 +750,32 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     // If it involves the widgets library,
     // call the latest SateX object's error routine
     // Possibly the error occurred there.
-    final library = details.library;
-    if (library != null && library.contains('widgets library')) {
-      final state = endState;
-      if (state != null) {
-        try {
-          (state as StateX).onError(details);
-        } catch (e, stack) {
-          recordException(e, stack);
+//    final library = details.library;
+//    if (library != null && 'gesture widgets library'.contains(library)) {
+    final state = endState;
+    if (state != null) {
+      try {
+        final stack = details.stack?.toString();
+        if (stack != null) {
+          //
+          var name = state.toString();
+          name = name.substring(0, name.indexOf('#'));
+          // That State object was called.
+          if (stack.contains(name)) {
+            //
+            (state as StateX).onError(details);
+          }
         }
-        // Always test if there was an error in the error handler
-        // Include it in the error reporting as well.
-        if (hasError) {
-          _onErrorInHandler();
-        }
+      } catch (e, stack) {
+        recordException(e, stack);
+      }
+      // Always test if there was an error in the error handler
+      // Include it in the error reporting as well.
+      if (hasError) {
+        _onErrorInHandler();
       }
     }
+    //   }
 
     // The base Error Handler
     super.onError(details);
@@ -845,6 +855,15 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   /// Reload the whole App
   void reload() => _parentState?.setState(() {});
+
+  /// Used to complete asynchronous operations
+  Future<bool> onInitAsync() async {
+    var init = true;
+    if (inInitAsync != null) {
+      init = await inInitAsync!();
+    }
+    return init;
+  }
 
   /// Returns the App's Navigator Key.
   @Deprecated("App's Navigator's Key is GlobalKey<NavigatorState>()")

@@ -1,7 +1,9 @@
 ## _Mobile Phone Info._
 
-There's an assortment of information about the phone your app is running on
-available to you. Simply using the DeviceInfo class and its omi-presence static properties:
+There's an assortment of information available to you about the phone, for example, your app is running on.
+Simply using the [DeviceInfo](https://pub.dev/documentation/fluttery_framework/latest/controller_device_info/DeviceInfo-class.html)
+class and its omi-presence static properties to retain specific 
+information anywhere at anytime about the host device your app is running on:
 
 ###### (Copy & paste and try it out.)
 ```Dart

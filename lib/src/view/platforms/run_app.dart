@@ -8,36 +8,43 @@ import 'dart:async' show runZonedGuarded;
 
 import 'dart:isolate' show Isolate, RawReceivePort;
 
-import 'package:flutter/foundation.dart' show FlutterExceptionHandler;
+import 'package:flutter/foundation.dart' show FlutterExceptionHandler, kIsWeb;
 
 import 'package:flutter/material.dart' as m
     show ErrorWidgetBuilder, Widget, runApp;
 
 import 'package:fluttery_framework/view.dart' as v
-    show AppErrorHandler, ReportErrorHandler;
+    show AppErrorHandler, AppStatefulWidget, ReportErrorHandler;
 
 /// Add an Error Handler right at the start.
-// The 'error' parameters are deprecated.
 void runApp(
   m.Widget app, {
+  @Deprecated("The 'error' parameters are deprecated.")
   FlutterExceptionHandler? errorHandler,
+  @Deprecated("The 'error' parameters are deprecated.")
   m.ErrorWidgetBuilder? errorScreen,
+  @Deprecated("The 'error' parameters are deprecated.")
   v.ReportErrorHandler? errorReport,
+  @Deprecated("The 'error' parameters are deprecated.")
   bool newErrorHandlers = true,
 }) {
   // Instantiate the app's error handler.
-  final handler = v.AppErrorHandler(newErrorHandlers: newErrorHandlers);
+  final handler = v.AppErrorHandler();
 
-  Isolate.current.addErrorListener(RawReceivePort((dynamic pair) {
+  // Isolate is not available on the Web
+  if (!kIsWeb) {
     //
-    if (pair is List<dynamic>) {
-      final isolateError = pair;
-      handler.isolateError(
-        isolateError.first.toString(),
-        StackTrace.fromString(isolateError.last.toString()),
-      );
-    }
-  }).sendPort);
+    Isolate.current.addErrorListener(RawReceivePort((dynamic pair) {
+      //
+      if (pair is List<dynamic>) {
+        final isolateError = pair;
+        handler.isolateError(
+          isolateError.first.toString(),
+          StackTrace.fromString(isolateError.last.toString()),
+        );
+      }
+    }).sendPort);
+  }
 
   // Catch any errors attempting to execute runApp();
   runZonedGuarded(() {
