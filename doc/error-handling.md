@@ -6,7 +6,7 @@ Error handling
 <br />
 Documentation 
 
-Happily, not only does the Flutter Framework have its own error handler, and you can introduce your own custom error handler if you want.
+Happily, not only does the Flutter Framework have its own error handler, you can introduce your own custom error handler if you want.
 You're encouraged to handle errors in your app because they will happen.
 
 <table>
@@ -35,7 +35,9 @@ mixin StateXonErrorMixin<T extends StatefulWidget> on StateX<T> {
 ```
 
 <h3 id="count">Count On Errors</h3>
-<img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/573eb817-88eb-438c-9360-f7c4449c9449" width="171" height="357">
+<div>
+<img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/665db521-0636-462b-bd01-ee16fbb14955" width="171" height="357">
+</div>
 The example app that accompanies the Fluttery Framework package includes the traditional 'counter app.'
 Note, with every tap of that button, an error is purposely thrown to demonstrate the Fluttery Framework's inate error handling.
 Despite the error, you still see the counter being incremented with every button tap.
