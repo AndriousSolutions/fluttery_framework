@@ -104,8 +104,11 @@ class _CounterPageState extends StateX<CounterPage> {
         floatingActionButton: FloatingActionButton(
           key: const Key('IncrementButton'),
           onPressed: () {
-            // Deliberately throw an error to demonstrate error handling.
-            throw Exception('Fake error to demonstrate error handling!');
+            // Don't interrupt any testing.
+            if (App.inWidgetsFlutterBinding) {
+              // Deliberately throw an error to demonstrate error handling.
+              throw Exception('Fake error to demonstrate error handling!');
+            }
             // This code is greyed out by the IDE because it can never bt reached.
             setState(con.onPressed);
           },
@@ -176,9 +179,12 @@ class _CounterPageState extends StateX<CounterPage> {
                     padding: EdgeInsets.only(top: 5.h),
                     child: CupertinoButton.filled(
                       onPressed: () {
-                        // Deliberately throw an error to demonstrate error handling.
-                        throw Exception(
-                            'Fake error to demonstrate error handling!');
+                        // Don't interrupt any testing.
+                        if (App.inWidgetsFlutterBinding) {
+                          // Deliberately throw an error to demonstrate error handling.
+                          throw Exception(
+                              'Fake error to demonstrate error handling!');
+                        }
                         // This code is greyed out by the IDE because it can never bt reached.
                         setState(con.onPressed);
                       },
