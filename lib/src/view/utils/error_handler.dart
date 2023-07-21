@@ -33,7 +33,7 @@ import 'package:flutter/rendering.dart'
         TextAlign,
         TextDirection;
 
-/// Define the type of function to handle errors.
+/// Define the type of function to handle isolate and run zone errors.
 typedef ReportErrorHandler = Future<void> Function(
     Object exception, StackTrace stack);
 
@@ -234,7 +234,7 @@ class AppErrorHandler {
     return inDebugMode;
   }
 
-  /// Report the error.
+  /// Report the error in an isolate or in a run zone.
   Future<void> reportError(
     dynamic ex,
     StackTrace stack, {

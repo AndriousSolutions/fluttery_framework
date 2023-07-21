@@ -760,10 +760,10 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           //
           var name = state.toString();
           name = name.substring(0, name.indexOf('#'));
-          // That State object was called.
-          if (stack.contains(name)) {
+          // That State object's build() function was called.
+          if (state is StateX && stack.contains('$name.build')) {
             //
-            (state as StateX).onError(details);
+            state.onError(details);
           }
         }
       } catch (e, stack) {

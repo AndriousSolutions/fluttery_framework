@@ -27,6 +27,8 @@ class _CounterPageState extends StateX<CounterPage> {
   @override
   void initState() {
     super.initState();
+    // What happens when this command is uncommented?
+//    throw Exception('Throws an error to demonstrate error handling!');
     appCon = ExampleAppController();
     con.timer.initTimer();
   }
