@@ -14,7 +14,7 @@ import 'package:flutter/material.dart' as m
     show ErrorWidgetBuilder, Widget, runApp;
 
 import 'package:fluttery_framework/view.dart' as v
-    show AppErrorHandler, AppStatefulWidget, ReportErrorHandler;
+    show AppErrorHandler, ReportErrorHandler;
 
 /// Add an Error Handler right at the start.
 void runApp(
