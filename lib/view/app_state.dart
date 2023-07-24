@@ -16,16 +16,6 @@ import 'package:fluttery_framework/view.dart';
 
 import 'package:fluttery_framework/view.dart' as v;
 
-// show
-//     App,
-//     AppRouterDelegate,
-//     AppErrorHandler,
-//     AppRouteInformationParser,
-//     AppStateX,
-//     L10n,
-//     ReportErrorHandler,
-//     Sizer;
-
 /// Highlights UI while debugging.
 import 'package:flutter/rendering.dart' as debug;
 
@@ -62,6 +52,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.builder,
     super.title,
     super.onGenerateTitle,
+    bool? allowChangeTheme,
     super.theme,
     super.iOSTheme,
     super.darkTheme,
@@ -72,13 +63,15 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.themeAnimationCurve,
     super.color,
     super.locale,
+    bool? allowChangeLocale,
     super.localizationsDelegates,
     super.localeListResolutionCallback,
     super.localeResolutionCallback,
     super.supportedLocales,
-    this.useMaterial,
-    this.useCupertino,
-    this.switchUI,
+    bool? useMaterial,
+    bool? useCupertino,
+    bool? switchUI,
+    bool? allowChangeUI,
     super.debugShowMaterialGrid,
     super.showPerformanceOverlay,
     super.checkerboardRasterCacheImages,
@@ -147,39 +140,41 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     this.inAsyncError,
   })  : _stateRouteObserver = StateRouteObserver(),
         super(controller: controller ?? AppController()) {
+    //
+    // Determine what the app can change at runtime
+    _allowChangeTheme = allowChangeTheme ?? false;
+    _allowChangeLocale = allowChangeLocale ?? false;
+    _allowChangeUI = allowChangeUI ?? false;
+
     // In case null was explicitly passed in.
-    useMaterial ??= false;
-    useCupertino ??= false;
-    switchUI ??= false;
+    _useMaterial = useMaterial ?? false;
+    _useCupertino = useCupertino ?? false;
+    _switchUI = switchUI ?? false;
 
     if (UniversalPlatform.isAndroid) {
-      if (switchUI!) {
-        useMaterial = false;
-        useCupertino = true;
-      } else if (useCupertino!) {
-        useMaterial = false;
+      if (_switchUI) {
+        _useMaterial = false;
+        _useCupertino = true;
+      } else if (_useCupertino) {
+        _useMaterial = false;
       } else {
-        useMaterial = true;
-        useCupertino = false;
+        _useMaterial = true;
+        _useCupertino = false;
       }
     } else if (UniversalPlatform.isIOS) {
-      if (switchUI!) {
-        useMaterial = true;
-        useCupertino = false;
-      } else if (useMaterial!) {
-        useCupertino = false;
+      if (_switchUI) {
+        _useMaterial = true;
+        _useCupertino = false;
+      } else if (_useMaterial) {
+        _useCupertino = false;
       } else {
-        useMaterial = false;
-        useCupertino = true;
+        _useMaterial = false;
+        _useCupertino = true;
       }
     } else {
-      useMaterial = true;
-      useCupertino = false;
+      _useMaterial = true;
+      _useCupertino = false;
     }
-
-    // These ones can't be changed.
-    _isMaterial = useMaterial;
-    _isCupertino = useCupertino;
   }
 
   /// The 'App State Objects' [Key]
@@ -188,25 +183,29 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// The App's 'home screen'
   final Widget? home;
 
-  ///
+  /// Use RouterConfig or not
   final bool? useRouterConfig;
 
-  /// Explicitly use the Material theme
-  bool? useMaterial;
+  /// Allow the app to change the theme
+  late bool _allowChangeTheme;
 
-  /// Explicitly use the Cupertino theme
-  bool? useCupertino;
+  /// Allow the app directly change the Locale
+  late bool _allowChangeLocale;
+
+  /// Allow the app to directly change the UI design
+  late bool _allowChangeUI;
 
   /// Use Cupertino UI in Android and vice versa.
-  bool? switchUI;
+  bool get switchUI => _switchUI;
+  late bool _switchUI;
 
-  /// Is using the Material Design UI.
-  bool? get isMaterial => _isMaterial;
-  bool? _isMaterial;
+  /// Explicitly use the Material theme
+  bool get useMaterial => _useMaterial;
+  late bool _useMaterial;
 
-  /// Is using the Cupertino Design UI.
-  bool? get isCupertino => _isCupertino;
-  bool? _isCupertino;
+  /// Explicitly use the Cupertino theme
+  bool get useCupertino => _useCupertino;
+  late bool _useCupertino;
 
   /// Perform asynchronous operations
   final Future<bool> Function()? inInitAsync;
@@ -412,6 +411,10 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Key for the MaterialApp;
   late GlobalKey materialKey;
 
+  /// The app's locale
+  Locale? get locale => _appLocale;
+  Locale? _appLocale;
+
   /// Clean up resources before the app is finally terminated.
   @override
   @mustCallSuper
@@ -471,24 +474,39 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     final _backButtonDispatcher =
         _useRouter ? null : backButtonDispatcher ?? onBackButtonDispatcher();
 
-    // Determine the supported Locales.
-    var _supportedLocales = supportedLocales ??
-        onSupportedLocales() ??
-        App.supportedLocales ??
-        const <Locale>[Locale('en', 'US')];
+    // There's possibly a preferred Locale.
+    Locale? _preferredLocale;
+
+    // The app can specify its own Locale
+    if (_allowChangeLocale) {
+      _preferredLocale = App.preferredLocale;
+    }
+
+    _appLocale = _preferredLocale ?? _locale ?? onLocale();
+
+    // If the locale was saved in the preferences.
+    if (_preferredLocale != null) {
+      App.saveLocale(_appLocale);
+    }
+
+    // Assign to the L10n
+    // IMPORTANT assign L10n.locale before L10n.supportedLocales
+    L10n.locale = _appLocale;
+
     // Can't be empty
     if (_supportedLocales.isEmpty) {
-      _supportedLocales = const <Locale>[Locale('en', 'US')];
+      _supportedLocales =
+          onSupportedLocales() ?? const <Locale>[Locale('en', 'US')];
+      // Still empty
+      if (_supportedLocales.isEmpty) {
+        _supportedLocales = const <Locale>[Locale('en', 'US')];
+      }
     }
-    // Assign the locales to the App
-    App.supportedLocales = _supportedLocales;
 
-    // Locale must explicitly be assigned to Get.locale as well.
-    final _locale = onLocale() ?? locale;
-    // Assign the appropriate Locale to the App's locale
-    locale = _locale;
+    // Note, if it's not empty, it's not set
+    L10n.supportedLocales = _supportedLocales;
 
-    if (useCupertino!) {
+    if (_useCupertino) {
       // A CupertinoApp object has been supplied.
       if (cupertinoApp != null) {
         app = cupertinoApp!;
@@ -498,17 +516,17 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
         app = CupertinoApp(
           key: key ?? cupertinoKey,
           navigatorKey: App.navigatorKey,
-          theme: _iosThemeData(),
+          theme: _setiOSThemeData(),
           routes: routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
           initialRoute: initialRoute ?? onInitialRoute(),
           onGenerateRoute: onGenerateRoute ?? onOnGenerateRoute(),
           onUnknownRoute: onUnknownRoute ?? onOnUnknownRoute(),
           navigatorObservers: _navigatorObservers(),
           builder: builder ?? onBuilder(),
-          title: title = onTitle(), // Important to assign an empty string
-          onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
+// not needed  title: ,
+          onGenerateTitle: _onOnGenerateTitle,
           color: color ?? onColor() ?? Colors.blue,
-          locale: _locale,
+          locale: _appLocale,
           localizationsDelegates:
               localizationsDelegates ?? onLocalizationsDelegates(),
           localeListResolutionCallback:
@@ -545,12 +563,12 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           routerDelegate: _routerDelegate,
           backButtonDispatcher: _backButtonDispatcher,
           routerConfig: _routerConfig,
-          theme: _iosThemeData(),
+          theme: _setiOSThemeData(),
           builder: builder ?? onBuilder(),
-          title: title = onTitle(),
-          onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
+// not needed          title: ,
+          onGenerateTitle: _onOnGenerateTitle,
           color: color ?? onColor() ?? Colors.blue,
-          locale: _locale,
+          locale: _appLocale,
           localizationsDelegates:
               localizationsDelegates ?? onLocalizationsDelegates(),
           localeListResolutionCallback:
@@ -595,10 +613,10 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           onUnknownRoute: onUnknownRoute ?? onOnUnknownRoute(),
           navigatorObservers: _navigatorObservers(),
           builder: builder ?? onBuilder(),
-          title: title = onTitle(),
-          onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
+// not needed          title: ,
+          onGenerateTitle: _onOnGenerateTitle,
           color: color ?? onColor() ?? Colors.white,
-          theme: _themeData(),
+          theme: _setThemeData(),
           darkTheme: darkTheme ?? onDarkTheme(),
           highContrastTheme: highContrastTheme ?? onHighContrastTheme(),
           highContrastDarkTheme:
@@ -609,7 +627,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
               const Duration(milliseconds: 200),
           themeAnimationCurve:
               themeAnimationCurve ?? onThemeAnimationCurve() ?? Curves.linear,
-          locale: _locale,
+          locale: _appLocale,
           localizationsDelegates: onLocalizationsDelegates(),
           localeListResolutionCallback:
               localeListResolutionCallback ?? onLocaleListResolutionCallback,
@@ -650,10 +668,10 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           routerConfig: _routerConfig,
           backButtonDispatcher: _backButtonDispatcher,
           builder: builder ?? onBuilder(),
-          title: title = onTitle(),
-          onGenerateTitle: onGenerateTitle ?? onOnGenerateTitle(context),
+// not needed          title: ,
+          onGenerateTitle: _onOnGenerateTitle,
           color: color ?? onColor() ?? Colors.white,
-          theme: _themeData(),
+          theme: _setThemeData(),
           darkTheme: darkTheme ?? onDarkTheme(),
           highContrastTheme: highContrastTheme ?? onHighContrastTheme(),
           highContrastDarkTheme:
@@ -664,7 +682,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
               const Duration(milliseconds: 200),
           themeAnimationCurve:
               themeAnimationCurve ?? onThemeAnimationCurve() ?? Curves.linear,
-          locale: _locale,
+          locale: _appLocale,
           localizationsDelegates: onLocalizationsDelegates(),
           localeListResolutionCallback:
               localeListResolutionCallback ?? onLocaleListResolutionCallback,
@@ -722,18 +740,27 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Any and all StateX objects are all 'route' observers.
   final StateRouteObserver _stateRouteObserver;
 
-  CupertinoThemeData? _iosThemeData() {
-    // ignore: join_return_with_assignment
-    App.iOSTheme = iOSTheme ??
-        oniOSTheme() ??
-        const CupertinoThemeData(brightness: Brightness.light);
-    return App.iOSTheme;
+  /// Assigning the Cupertino theme
+  CupertinoThemeData? _setiOSThemeData() {
+    //
+    CupertinoThemeData? themeData = iOSTheme ?? oniOSTheme();
+
+    if (themeData == null || _allowChangeTheme) {
+      themeData = App.iOSThemeData ??
+          const CupertinoThemeData(brightness: Brightness.light);
+    }
+    return themeData;
   }
 
-  ThemeData? _themeData() {
-    // ignore: join_return_with_assignment
-    App.themeData = theme ?? onTheme();
-    return App.themeData;
+  /// Assigning the Material theme
+  ThemeData? _setThemeData() {
+    //
+    ThemeData? themeData = theme ?? onTheme();
+
+    if (themeData == null || _allowChangeTheme) {
+      themeData = App.themeData;
+    }
+    return themeData;
   }
 
   /// Override if you like to customize error handling.
@@ -800,7 +827,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
         _onErrorInHandler();
       }
     }
-
     inErrorRoutine = false;
   }
 
@@ -812,8 +838,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       _state = lastContext?.findAncestorStateOfType<_AppState>();
     }
     if (_state == null) {
-      // Rebuild 'latest' State object if any.
-      //rebuildLastState();
       endState?.setState(() {});
       // Refresh the 'root' State object.
       super.setState(() {});
@@ -830,27 +854,36 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   }
 
   /// Explicitly change to a particular interface.
-  void changeUI(String? ui) {
-    //
-    if (ui == null || ui.isEmpty) {
-      return;
+  bool changeUI(String? ui) {
+    // Allow to chang the interface in the first place.
+    bool change = _allowChangeUI;
+
+    if (change) {
+      // The parameter may be null
+      change = ui != null && ui.isNotEmpty;
     }
 
-    ui = ui.trim();
-    if (ui != 'Material' && ui != 'Cupertino') {
-      return;
+    if (change) {
+      ui = ui!.trim();
+      // Must be a recognized interface design
+      change = ui == 'Material' || ui == 'Cupertino';
     }
-    if (ui == 'Material') {
-      useMaterial = true;
-      useCupertino = false;
-      switchUI = !UniversalPlatform.isAndroid;
-    } else {
-      useMaterial = false;
-      useCupertino = true;
-      switchUI = UniversalPlatform.isAndroid;
+
+    if (change) {
+      //
+      if (ui == 'Material') {
+        _useMaterial = true;
+        _useCupertino = false;
+        _switchUI = !UniversalPlatform.isAndroid;
+      } else {
+        _useMaterial = false;
+        _useCupertino = true;
+        _switchUI = UniversalPlatform.isAndroid;
+      }
+      // Reload the whole App so it works in testing
+      reload();
     }
-    // Reload the whole App
-    reload();
+    return change;
   }
 
   /// Reload the whole App
@@ -924,11 +957,23 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       inTransBuilder != null ? inTransBuilder!() : null;
 
   /// Returns the App's title if any.
-  String onTitle() => inTitle != null ? inTitle!() : title ?? '';
+  String onTitle() => inTitle != null ? inTitle!() : '';
 
-  /// Returns the 'Generate Title' routine if any.
-  GenerateAppTitle? onOnGenerateTitle(BuildContext context) =>
-      inGenerateTitle ?? (context) => L10n.s(onTitle());
+  /// Returns the supplied title of the app.
+  // Note OnGenerateTitle takes precedence over the title parameter in WidgetsAppState class
+  String _onOnGenerateTitle(BuildContext context) {
+    final genTitle = onGenerateTitle ??
+        inGenerateTitle ??
+        (context) {
+          // If no title parameter was passed.
+          if (_title.isEmpty) {
+            _title = onTitle();
+          }
+          return _title;
+        };
+    // Get a copy of the title first.
+    return _title = L10n.s(genTitle(context));
+  }
 
   /// Returns the App's [ThemeData] if any.
   ThemeData? onTheme() => inTheme != null ? inTheme!() : null;
@@ -1070,7 +1115,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     this.onUnknownRoute,
     this.navigatorObservers,
     this.builder,
-    this.title,
+    String? title,
     this.onGenerateTitle,
     this.color,
     this.theme,
@@ -1081,11 +1126,11 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     this.themeMode,
     this.themeAnimationDuration,
     this.themeAnimationCurve,
-    this.locale,
+    Locale? locale,
     this.localizationsDelegates,
     this.localeListResolutionCallback,
     this.localeResolutionCallback,
-    this.supportedLocales,
+    List<Locale>? supportedLocales,
     this.debugShowMaterialGrid,
     this.showPerformanceOverlay,
     this.checkerboardRasterCacheImages,
@@ -1118,8 +1163,14 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     }
     // Listen to the device's connectivity.
     App.addConnectivityListener(controller);
-//    title ??= '';
-//    color ??= Colors.blue;
+
+    // Take in the parameters
+    _title = title ?? '';
+    _locale = locale;
+
+    // Take in the parameter
+    _supportedLocales = supportedLocales ?? [];
+
     debugShowMaterialGrid ??= false;
     showPerformanceOverlay ??= false;
     checkerboardRasterCacheImages ??= false;
@@ -1152,34 +1203,36 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   CupertinoApp? cupertinoApp;
 
   /// All the fields found in the widgets, MaterialApp and CupertinoApp
-  RouteInformationProvider? routeInformationProvider;
-  RouteInformationParser<Object>? routeInformationParser;
-  RouterDelegate<Object>? routerDelegate;
-  RouterConfig<Object>? routerConfig;
-  BackButtonDispatcher? backButtonDispatcher;
-  GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
-  Map<String, WidgetBuilder>? routes;
-  String? initialRoute;
-  RouteFactory? onGenerateRoute;
-  RouteFactory? onUnknownRoute;
-  List<NavigatorObserver>? navigatorObservers;
-  TransitionBuilder? builder;
-  String? title;
-  GenerateAppTitle? onGenerateTitle;
-  ThemeData? theme;
-  CupertinoThemeData? iOSTheme;
-  ThemeData? darkTheme;
-  ThemeData? highContrastTheme;
-  ThemeData? highContrastDarkTheme;
-  ThemeMode? themeMode;
-  Duration? themeAnimationDuration;
-  Curve? themeAnimationCurve;
-  Color? color;
-  Locale? locale;
-  Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
-  LocaleListResolutionCallback? localeListResolutionCallback;
-  LocaleResolutionCallback? localeResolutionCallback;
-  List<Locale>? supportedLocales;
+  final RouteInformationProvider? routeInformationProvider;
+  final RouteInformationParser<Object>? routeInformationParser;
+  final RouterDelegate<Object>? routerDelegate;
+  final RouterConfig<Object>? routerConfig;
+  final BackButtonDispatcher? backButtonDispatcher;
+  final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
+  final Map<String, WidgetBuilder>? routes;
+  final String? initialRoute;
+  final RouteFactory? onGenerateRoute;
+  final RouteFactory? onUnknownRoute;
+  final List<NavigatorObserver>? navigatorObservers;
+  final TransitionBuilder? builder;
+  String get title => _title;
+  late String _title;
+  final GenerateAppTitle? onGenerateTitle;
+  final ThemeData? theme;
+  final CupertinoThemeData? iOSTheme;
+  final ThemeData? darkTheme;
+  final ThemeData? highContrastTheme;
+  final ThemeData? highContrastDarkTheme;
+  final ThemeMode? themeMode;
+  final Duration? themeAnimationDuration;
+  final Curve? themeAnimationCurve;
+  final Color? color;
+  Locale? _locale;
+  final Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates;
+  final LocaleListResolutionCallback? localeListResolutionCallback;
+  final LocaleResolutionCallback? localeResolutionCallback;
+  List<Locale> get supportedLocales => _supportedLocales;
+  late List<Locale> _supportedLocales;
   bool? debugShowMaterialGrid;
   bool? showPerformanceOverlay;
   bool? checkerboardRasterCacheImages;
@@ -1187,8 +1240,8 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   bool? showSemanticsDebugger;
   bool? debugShowWidgetInspector;
   bool? debugShowCheckedModeBanner;
-  Map<LogicalKeySet, Intent>? shortcuts;
-  Map<Type, Action<Intent>>? actions;
+  final Map<LogicalKeySet, Intent>? shortcuts;
+  final Map<Type, Action<Intent>>? actions;
 
   String? restorationScopeId;
   ScrollBehavior? scrollBehavior;

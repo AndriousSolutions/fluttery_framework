@@ -1,9 +1,9 @@
 In the Fluttery Framework, the typical controller object extends the **SateXController** class
 and contains the business rules for the app. A controller is also used by a particular 
-State object to deal with any event handling while the State object itself deals with just the interface.
+State object to deal with any event handling. The State object itself deals with just the interface.
 The State object would typically extend the [StateX](https://pub.dev/documentation/fluttery_framework/latest/topics/StateX%20class-topic.html) class, 
-so to utilize the Controller object in its **build**() function or in any other of its functions.
-Again, so to deal with the app's business rules and or address any events like the pushing of a button.
+so to utilize the Controller object in its **build**() function or its other functions.
+Again, the controller is to work with the app's business rules and or address any events like the pushing of a button.
 
 <table>
   	<caption>Contents</caption>
@@ -28,7 +28,7 @@ When a **StateX** object takes in a **StateXController** object through its cons
 That very fact allows for some powerful capabilities. Essentially, you now have the ability to call the State object's 
 **setState**() function from outside its class---through that controller object!
 The basic requirement of any State Management in Flutter is to reliably call the **setState**() function 
-from a particular State object. 
+of a specific State object. Controllers makes this easily possible.
 
 | [page_01.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/23f566a79506e799f7d5af602ccaccb5d3bc533f/example/lib/src/home/view/counter/view/page_01.dart#L19) |
 |:-----------------|

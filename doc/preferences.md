@@ -39,7 +39,7 @@ All easily done by using the static functions found in the **Prefs** class.
 
 <h3 id="settings">A Simple Single Settings Class</h3>
 
-In practice, however, it's not generally wise to look up the same preference setting in two separate regions of your app.
+In practice, however, it's generally not wise to look up the same preference setting in two separate regions of your app.
 For example, the string key parameter, 'locale', in the sample code above will not be easily maintained being located in two separate Dart files. 
 
 The screenshot below is of one specific class called, **Settings**. It's responsible for its apps overall settings and user preferences.

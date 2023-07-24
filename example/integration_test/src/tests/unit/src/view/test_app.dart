@@ -34,55 +34,56 @@ void testAppView(WidgetTester tester) {
 
   App.navigatorKey;
 
-  App.scaffoldMessengerKey = App.scaffoldMessengerKey;
+  GlobalKey<ScaffoldMessengerState>? key = App.scaffoldMessengerKey;
 
-  App.routes = App.routes;
+  Map<String, WidgetBuilder>? routes = App.routes;
 
   App.menu;
 
-  App.initialRoute = App.initialRoute;
+  String? initialRoute = App.initialRoute;
 
-  App.onGenerateRoute = App.onGenerateRoute;
+  RouteFactory? onGenerateRoute = App.onGenerateRoute;
 
-  App.onUnknownRoute = App.onUnknownRoute;
+  RouteFactory? onUnknownRoute = App.onUnknownRoute;
 
-  App.navigatorObservers = App.navigatorObservers;
+  List<NavigatorObserver>? navigatorObservers = App.navigatorObservers;
 
-  App.builder = App.builder;
+  TransitionBuilder? builder = App.builder;
 
-  App.title = App.title;
+  String? title = App.title;
 
-  App.onGenerateTitle = App.onGenerateTitle;
+  GenerateAppTitle? onGenerateTitle = App.onGenerateTitle;
 
   App.getMaterialColor(Colors.red);
 
-  App.color = App.color;
+  Color? color = App.color;
 
-  App.localizationsDelegates = App.localizationsDelegates;
+  Iterable<LocalizationsDelegate<dynamic>>? delegates =
+      App.localizationsDelegates;
 
-  App.localeResolutionCallback = App.localeResolutionCallback;
+  LocaleResolutionCallback? callback = App.localeResolutionCallback;
 
-  App.debugShowMaterialGrid = App.debugShowMaterialGrid;
+  bool? debugShowMaterialGrid = App.debugShowMaterialGrid;
 
-  App.showPerformanceOverlay = App.showPerformanceOverlay;
+  bool? showPerformanceOverlay = App.showPerformanceOverlay;
 
-  App.checkerboardRasterCacheImages = App.checkerboardRasterCacheImages;
+  bool? checkerboardRasterCacheImages = App.checkerboardRasterCacheImages;
 
-  App.checkerboardOffscreenLayers = App.checkerboardOffscreenLayers;
+  bool? checkerboardOffscreenLayers = App.checkerboardOffscreenLayers;
 
-  App.showSemanticsDebugger = App.showSemanticsDebugger;
+  bool? showSemanticsDebugger = App.showSemanticsDebugger;
 
-  App.debugShowCheckedModeBanner = App.debugShowCheckedModeBanner;
+  bool? debugShowCheckedModeBanner = App.debugShowCheckedModeBanner;
 
-  App.debugPaintSizeEnabled = App.debugPaintSizeEnabled;
+  bool? debugPaintSizeEnabled = App.debugPaintSizeEnabled;
 
-  App.debugPaintBaselinesEnabled = App.debugPaintBaselinesEnabled;
+  bool? debugPaintBaselinesEnabled = App.debugPaintBaselinesEnabled;
 
-  App.debugPaintPointersEnabled = App.debugPaintPointersEnabled;
+  bool? debugPaintPointersEnabled = App.debugPaintPointersEnabled;
 
-  App.debugPaintLayerBordersEnabled = App.debugPaintLayerBordersEnabled;
+  bool? debugPaintLayerBordersEnabled = App.debugPaintLayerBordersEnabled;
 
-  App.debugRepaintRainbowEnabled = App.debugRepaintRainbowEnabled;
+  bool? debugRepaintRainbowEnabled = App.debugRepaintRainbowEnabled;
 
   App.platform;
 

@@ -1,7 +1,7 @@
 ## _Testing Made Easy_
 Flutter supplies the means to test your source code right away. This topic will introduce the
 test files used to regularly test the Fluttery Framework package itself. 
-It's hoped this overview will give you an appreciation of how easily testing your own code can be.
+It's hoped this overview will give you an appreciation of how easily testing your own code can be in Flutter.
 
 <table>
   	<caption>Contents</caption>
@@ -28,7 +28,7 @@ As you see in the screenshot below, the example app's main widget, _FlutteryExam
 It's the very widget you'd see passed to the **runApp**() function: `void main() => runApp(FlutteryExampleApp());`.
 Not only is the app started up, but its main controller, _ExampleAppController_, is assigned 
 to the variable, _con_. This is done, in this case, to read its property, **.application**, so to proceed
-with the integration testing of the three small example apps used to, in turn, test the Fluttery Framework package. 
+with the integration testing using the very three small example apps that accompanies the Fluttery Framework package. 
 <div>
   <a id="IntegrateTestVideo" target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1c97b613-3ec5-4280-bdfc-e4d97a9a636f"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/1c97b613-3ec5-4280-bdfc-e4d97a9a636f" width="277" height="579"></a>
 </div>
@@ -44,10 +44,10 @@ with the integration testing of the three small example apps used to, in turn, t
 <h3 id="tester">Test with Tester</h3>
 
 The screenshots below displays the **counterTest**() function and the **contactsTest**() function that are eventually called in the **widget_test.dart** file.
-Both take in the <a href="https://api.flutter.dev/flutter/flutter_test/WidgetTester-class.html">WidgetTester</a> object, _tester_, which serves as the active agent in the test environment performing
-the virtual 'pressing of buttons', the 'swiping of screens' and all the other necessary interactions with the very widgets being tested.
+Both take in the <a href="https://api.flutter.dev/flutter/flutter_test/WidgetTester-class.html">WidgetTester</a> object, _tester_.
+It serves as the active agent in the test environment performing the virtual 'pressing of buttons', the 'swiping of screens' and all the other necessary interactions with the very widgets being tested.
 The test environment also supplies a conglomerate of <a href="https://api.flutter.dev/flutter/flutter_test/Finder-class.html">Finders</a> using the constant, **find**(), 
-as well as the high-level function, <a href="https://api.flutter.dev/flutter/flutter_test/expect.html">expect</a>(), to isolate and test particular widgets for expected outcomes.
+as well as the high-level function, <a href="https://api.flutter.dev/flutter/flutter_test/expect.html">expect</a>(), to both isolate and test particular widgets for expected outcomes.
 If, at any point, such a test fails the whole testing process stops and reports the issue.
 
 
@@ -64,14 +64,14 @@ If, at any point, such a test fails the whole testing process stops and reports 
 The first screenshot below highlights the **data** property referenced in the first screenshot above.
 Note, because the controllers in this app use factory constructors allowing only one single instance
 of a particular controller class, they can be readily used in such test environments to, in this case,
-confirm the counter app has had its button pressed nine times. The CounterController object has the 
+confirm the counter app has had its button pressed nine times. You see, this CounterController object has the 
 public property, _data_, incremented and then tested for the expected count.
 
 The second screenshot is that of the **_deleteContact**() function called in the second screenshot above.
 It demonstrates how you're free to use a static property from the app itself to contribute to its very testing. 
 In this case, the property, **App.useMaterial**, is utilized to determine which interface design the app is current running in (Material or Cupertino).
 This property comes from the [App class](https://pub.dev/documentation/fluttery_framework/latest/topics/App%20object-topic.html)
-and will be available to your next app if written with the Fluttery Framework.
+and will be available to you the next time you write your app with the Fluttery Framework.
 <div>
   <a id="contacts_delete" target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/d5994b18-e1a7-4f0b-9878-65f1e659a74f"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/d5994b18-e1a7-4f0b-9878-65f1e659a74f" width="48%" height="60%"></a>
   <a id="counter_controller" target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/d6b5599f-c6f5-4c14-8ab6-5c5c5df25d4a"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/d6b5599f-c6f5-4c14-8ab6-5c5c5df25d4a" width="48%" height="60%"></a>

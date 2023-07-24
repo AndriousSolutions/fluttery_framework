@@ -21,14 +21,32 @@ void testHandleError(WidgetTester tester) {
     state.onError(FlutterErrorDetails(exception: error));
   }
 
+  final details = FlutterErrorDetails(exception: error);
+
   con = CounterController();
 
   state = con.state;
 
   if (state != null && state is StateXonErrorMixin) {
     //
-    state.onError(FlutterErrorDetails(exception: error));
+    state.onError(details);
   }
+
+  AppErrorHandler? errorHandler = App.errorHandler;
+
+//  AppErrorHandler.errorDisplayWidget(details);
+
+  FlutterExceptionHandler? hnd = errorHandler?.onError;
+
+//  Widget? widget = errorHandler?.displayError(details);
+
+  bool mode = AppErrorHandler.inDebugMode;
+
+  // errorHandler?.reportError(error, StackTrace());
+  //
+  // errorHandler?.isolateError(error, stack);
+  //
+  // errorHandler?.runZonedError(error, StackTrace stack);
 
   final handler = _HandelErrorTester();
 

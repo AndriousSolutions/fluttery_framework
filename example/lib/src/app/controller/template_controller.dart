@@ -129,53 +129,18 @@ class ExampleAppController extends AppController {
     Prefs.setInt('appRun', _appCount).then((value) => App.setState(() {}));
   }
 
-  Locale appLocale() {
-    Locale locale;
-
-    /// Prefer the preference
-    final localeTag = Prefs.getString('locale');
-    final codes = localeTag.split('-');
-    if (codes.length == 2) {
-      locale = Locale(codes[0], codes[1]);
-      App.locale = locale;
-    } else {
-      // the app's locale
-      // Possibly the device's locale.
-      locale = App.locale!;
-    }
-    return locale;
-  }
-
   Future<void> changeLocale() async {
-    //
-
-    /// Prefer the preference
-    final localeTag = Prefs.getString('locale');
-
-    final codes = localeTag.split('-');
-
-    Locale locale;
-    if (codes.length == 2) {
-      locale = Locale(codes[0], codes[1]);
-    } else {
-      locale = App.locale!;
-    }
+    final locale = App.locale;
 
     final locales = App.supportedLocales!;
 
-    final initialItem = locales.indexOf(locale);
+    final initialItem = locales.indexOf(locale!);
 
     final spinner = ISOSpinner(
         initialItem: initialItem,
         supportedLocales: locales,
         onSelectedItemChanged: (int index) async {
-          // Retrieve the available locales.
-          final locale = L10n.getLocale(index);
-          if (locale != null) {
-            await Prefs.setString('locale', locale.toLanguageTag());
-//            App.locale = locale;
-            App.setState(() {});
-          }
+          await App.changeLocale(L10n.getLocale(index));
         });
 
     await DialogBox(

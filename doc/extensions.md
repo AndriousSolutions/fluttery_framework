@@ -1,7 +1,7 @@
 ## _Extending Flutter's Capabilities_
 
 These extensions alone would be reason enough to use the Fluttery Framework.
-Thanks to Jonny Borges (author of GetX), I've incorporated many of his tried
+Thanks to Jonny Borges (author of GetX), under the MIT License, I've incorporated many of his tried
 and true extensions.
 
 <table cellspacing="0" cellpadding="0" border="0" align="center">
@@ -22,6 +22,9 @@ and true extensions.
 <h2 id="context">Context</h2>
 
 ```Dart
+import 'package:fluttery_framework_example/src/view.dart';
+
+
 Widget build(BuildContext context) {
   
   context.mediaQuerySize;

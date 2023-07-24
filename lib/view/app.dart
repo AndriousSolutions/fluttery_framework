@@ -51,6 +51,7 @@ class AppObject
   AppObject._() {
     // Initialize the Error Handler
     _errorHandler = v.AppErrorHandler();
+
     // Monitor the device's connectivity to the Internet.
     addConnectivityListener(this);
   }
@@ -78,9 +79,6 @@ class AppObject
     _menu = null;
     _connectivitySubscription?.cancel();
     _connectivitySubscription = null;
-//    _packageInfo = null;
-    _themeData = null;
-//    _appWidget = null;
     _appState = null;
     // Restore the original error handling.
     _errorHandler!.dispose();
@@ -181,26 +179,6 @@ class AppObject
   /// Flag indicating there was a 'hot reload'
   bool _hotReload = false;
 
-  // // Use Material UI when explicitly specified or even when running in iOS
-  // /// Indicates if the App is running the Material interface theme.
-  // static bool get useMaterial =>
-  //     (_appState != null && _appState!.useMaterial!) ||
-  //     (UniversalPlatform.isAndroid &&
-  //         (_appState == null || !_appState!.switchUI!)) ||
-  //     (UniversalPlatform.isIOS && (_appState == null || _appState!.switchUI!));
-  //
-  // // Use Cupertino UI when explicitly specified or even when running in Android
-  // /// Indicates if the App is running the Cupertino interface theme.
-  // static bool get useCupertino =>
-  //     (_appState != null && _appState!.useCupertino!) ||
-  //     (UniversalPlatform.isIOS &&
-  //         (_appState == null || !_appState!.switchUI!)) ||
-  //     (UniversalPlatform.isAndroid &&
-  //         (_appState == null || _appState!.switchUI!));
-  //
-  // /// Explicitly change to a particular interface.
-  // static void changeUI(String ui) => _appState?.changeUI(ui);
-
   /// Flutter application's main window.
   ui.FlutterView get mainWindow {
     if (_window == null) {
@@ -251,6 +229,30 @@ class AppObject
   }
 
   TargetPlatform? _platform;
+
+  /// Return the saved Locale if any.
+  Locale? get preferredLocale {
+    _getLocale = true;
+    final codes = Prefs.getString('locale').split('-');
+    Locale? locale;
+    if (codes.length == 2) {
+      locale = Locale(codes[0], codes[1]);
+    }
+    return locale;
+  }
+
+  /// Save a locale to the app's locale
+  Future<bool> saveLocale([Locale? locale]) async {
+    final saved = _getLocale && locale != null;
+    //Saved only if first called to look up.
+    if (saved) {
+      await Prefs.setString('locale', locale.toLanguageTag());
+    }
+    return saved;
+  }
+
+  // Only set if getter is called.
+  bool _getLocale = false;
 
   /// Display the SnackBar
   void snackBar({
@@ -312,13 +314,13 @@ class AppObject
     return media.size.width * media.devicePixelRatio;
   }
 
-  /// The logical width of the screen
+  /// The 'logical' width of the screen
   double get screenWidth => MediaQuery.of(context!).size.width;
 
   /// The Physical height of the screen
   double get screenPhysicalHeight => MediaQuery.of(context!).size.height;
 
-  /// The Logical height of the screen
+  /// The 'Logical' height of the screen
   double get screenHeight {
     final media = MediaQuery.of(context!);
     return media.size.height -
@@ -423,7 +425,7 @@ class AppObject
   /// The id for this App's particular installation.
   Future<String?> getInstallNum() => InstallFile.id();
 
-  /// The id for this App's particular installation.
+  /// The unique id for this app's particular installation.
   String? get installNum => _installNum;
   String? _installNum;
 
@@ -474,6 +476,7 @@ mixin _AppThemeDataMixin {
   /// The App's current Material theme.
   ThemeData? get themeData => _themeData;
 
+  /// Assign the ThemeData
   set themeData(dynamic value) {
     if (value == null) {
       return;
@@ -497,32 +500,32 @@ mixin _AppThemeDataMixin {
 
   ThemeData? _themeData;
 
-  /// The Apps's current Cupertino theme.
-  CupertinoThemeData? get iOSTheme => _iOSTheme;
-  set iOSTheme(dynamic value) {
+  /// The app's current Cupertino theme.
+  CupertinoThemeData? get iOSThemeData => _iOSThemeData;
+  set iOSThemeData(dynamic value) {
     if (value == null) {
       return;
     }
     if (value is CupertinoThemeData) {
-      _iOSTheme = value;
+      _iOSThemeData = value;
     } else if (value is ThemeData) {
-      _iOSTheme = MaterialBasedCupertinoThemeData(materialTheme: value);
+      _iOSThemeData = MaterialBasedCupertinoThemeData(materialTheme: value);
     } else if (value is! Color) {
       // Ignore the value
-    } else if (_iOSTheme == null) {
-      _iOSTheme = CupertinoThemeData(
+    } else if (_iOSThemeData == null) {
+      _iOSThemeData = CupertinoThemeData(
         primaryColor: value,
       );
     } else {
-      _iOSTheme = _iOSTheme?.copyWith(
+      _iOSThemeData = _iOSThemeData?.copyWith(
         primaryColor: value,
       );
     }
   }
 
-  CupertinoThemeData? _iOSTheme;
+  CupertinoThemeData? _iOSThemeData;
 
-  /// Set the App's general color theme supplying a [Color] value.
+  /// Set the app's general color theme supplying a [Color] value.
   Color? setThemeData({
     ColorSwatch<int?>? swatch,
     Color? color,
@@ -569,7 +572,8 @@ mixin _AppThemeDataMixin {
         backgroundColor: color,
       ),
     );
-    iOSTheme = color;
+
+    iOSThemeData = color;
     return color;
   }
 

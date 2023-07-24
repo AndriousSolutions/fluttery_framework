@@ -49,11 +49,11 @@ A powerful capability.
 <h3 id="inline">Support for inline functions</h3>
 
 In the second screenshot above, you'll notice the **supportedLocales** parameter in now addressed,
-but it's instead using the inline function, **inSupportedLocales**, to pass a value. Like the other function, it's called **after**
-the AppState object allowing your code to be more conceive, adaptive and modular. Notice in the first
+but it's instead using the inline function to pass a value: **inSupportedLocales**. Like the other function, it's called **after**
+the AppState object is instantiated allowing your code to be more conceive, adaptive and modular. Notice in the first
 screenshot, an required aspect of the **supportedLocales** feature (assigning the *L10n.translation* property)
 had to be called in the State class' **initState**() function.
-In the second screenshot, the process is a little more concise and called just when it's needed by
+In the second screenshot, the process is a little more localized and concise and called just when it's needed by
 using the inline function, **inSupportedLocales**.
 
 ###### (Note: Of the two functions, the 'on' version takes precedence over the inline function.)
@@ -70,12 +70,13 @@ app's general theme:
 , [highContrastTheme](https://api.flutter.dev/flutter/material/MaterialApp/highContrastTheme.html)
 , [themeMode](https://api.flutter.dev/flutter/material/MaterialApp/themeMode.html) 
 and [themeAnimationDuration](https://api.flutter.dev/flutter/material/MaterialApp/themeAnimationDuration.html).
-However, both also have a 'router' version that involves you explicitly listing out specific routes (screens) to be displayed.
+However, both also have a 'router' version that involves you explicitly listing out specific routes or screens.
 In fact, you'll find both **MaterialApp** and **CupertinoApp** pass on all those attributes and properties to
 yet another common 'Design App' widget called, **WidgetsApp**.
 
 There's nothing new here if you know Flutter. And if you don't, working with the Fluttery Framework 
-is a good way to learn Flutter. The Fluttery Frameworks strives use Flutter's own functions and features.
+is a good way to learn Flutter. The Fluttery Frameworks strives to use Flutter's own functions and features
+as well as its own approach of doing things.
 
 <h3 id="materialApp">MaterialApp</h3>
 

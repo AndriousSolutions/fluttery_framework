@@ -11,7 +11,7 @@ There is a number of example apps that use the Fluttery Framework:
 ## _Fluttery Framework's Example App_
 An extensive example app accompanies the Fluttery Framework package itself. You'll find it under the 'pub.dev' 
 folder when you take in the Fluttery Framework through your `pubspec.yaml` file. 
-The code will demonstrate the functions and features that quickly make a multi-platform app.
+The code will demonstrate the functions and features that quickly makes you a multi-platform app.
 
 <img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/573eb817-88eb-438c-9360-f7c4449c9449" width="171" height="357">
 <img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/124d415d-2fd5-4629-a19f-c01bbbae8000" width="171" height="357">

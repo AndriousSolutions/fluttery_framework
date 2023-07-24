@@ -9,152 +9,176 @@ import 'package:fluttery_framework/view.dart';
 
 ///
 extension AppStateExtension on AppObject {
-  // /// Assign the class with the AppState object.
-  // bool setAppState(AppState? state) {
-  //   // Don't continue if an app called an app.
-  //   final set = state != null && (appState == null || hotReload);
-  //   if (set) {
-  //     //
-  //     appState = state;
-  //     // Assign the 'app' object to the app's view
-  //     state.app = this;
-  //   }
-  //   return set;
-  // }
-
   // Use Material UI when explicitly specified or even when running in iOS
   /// Indicates if the App is running the Material interface theme.
   bool get useMaterial {
     final _appState = appState;
-    return (_appState != null && _appState.useMaterial!) ||
+    return (_appState != null && _appState.useMaterial) ||
         (UniversalPlatform.isAndroid &&
-            (_appState == null || !_appState.switchUI!)) ||
-        (UniversalPlatform.isIOS && (_appState == null || _appState.switchUI!));
+            (_appState == null || !_appState.switchUI)) ||
+        (UniversalPlatform.isIOS && (_appState == null || _appState.switchUI));
   }
 
   // Use Cupertino UI when explicitly specified or even when running in Android
   /// Indicates if the App is running the Cupertino interface theme.
   bool get useCupertino {
     final _appState = appState;
-    return (_appState != null && _appState.useCupertino!) ||
+    return (_appState != null && _appState.useCupertino) ||
         (UniversalPlatform.isIOS &&
-            (_appState == null || !_appState.switchUI!)) ||
+            (_appState == null || !_appState.switchUI)) ||
         (UniversalPlatform.isAndroid &&
-            (_appState == null || _appState.switchUI!));
+            (_appState == null || _appState.switchUI));
   }
-
-  /// Explicitly change to a particular interface.
-  void changeUI(String ui) => appState?.changeUI(ui);
 
   /// Return the navigator key used by the App's View.
   GlobalKey<ScaffoldMessengerState>? get scaffoldMessengerKey =>
       appState?.scaffoldMessengerKey;
-  set scaffoldMessengerKey(GlobalKey<ScaffoldMessengerState>? v) {
-    if (v != null) {
-      appState?.scaffoldMessengerKey = v;
-    }
-  }
+  // set scaffoldMessengerKey(GlobalKey<ScaffoldMessengerState>? v) {
+  //   if (v != null) {
+  //     appState?.scaffoldMessengerKey = v;
+  //   }
+  // }
 
   /// Returns the routes used by the App's View.
   Map<String, WidgetBuilder>? get routes => appState?.routes;
-  set routes(Map<String, WidgetBuilder>? v) {
-    if (v != null) {
-      appState?.routes = v;
-    }
-  }
+  // set routes(Map<String, WidgetBuilder>? v) {
+  //   if (v != null) {
+  //     appState?.routes = v;
+  //   }
+  // }
 
-  /// Returns to the initial route used by the App's View.
+  /// Returns to the initial route used by the app.
   String? get initialRoute => appState?.initialRoute;
-  set initialRoute(String? v) {
-    if (v != null) {
-      appState?.initialRoute = v;
-    }
-  }
+  // set initialRoute(String? v) {
+  //   if (v != null) {
+  //     appState?.initialRoute = v;
+  //   }
+  // }
 
   /// The route generator used when the app is navigated to a named route.
   RouteFactory? get onGenerateRoute => appState?.onGenerateRoute;
-  set onGenerateRoute(RouteFactory? v) {
-    if (v != null) {
-      appState?.onGenerateRoute = v;
-    }
-  }
+  // set onGenerateRoute(RouteFactory? v) {
+  //   if (v != null) {
+  //     appState?.onGenerateRoute = v;
+  //   }
+  // }
 
   /// Called when [onGenerateRoute] fails except for the [initialRoute].
   RouteFactory? get onUnknownRoute => appState?.onUnknownRoute;
-  set onUnknownRoute(RouteFactory? v) {
-    if (v != null) {
-      appState?.onUnknownRoute = v;
-    }
-  }
+  // set onUnknownRoute(RouteFactory? v) {
+  //   if (v != null) {
+  //     appState?.onUnknownRoute = v;
+  //   }
+  // }
 
   /// The list of observers for the [Navigator] for this app.
   List<NavigatorObserver>? get navigatorObservers =>
       appState?.navigatorObservers;
-  set navigatorObservers(List<NavigatorObserver>? v) {
-    if (v != null) {
-      appState?.navigatorObservers = v;
-    }
-  }
+  // set navigatorObservers(List<NavigatorObserver>? v) {
+  //   if (v != null) {
+  //     appState?.navigatorObservers = v;
+  //   }
+  // }
 
   /// if neither [routes], or [onGenerateRoute] was passed.
   TransitionBuilder? get builder => appState?.builder;
-  set builder(TransitionBuilder? v) {
-    if (v != null) {
-      appState?.builder = v;
-    }
-  }
+  // set builder(TransitionBuilder? v) {
+  //   if (v != null) {
+  //     appState?.builder = v;
+  //   }
+  // }
 
   /// Returns the title for the App's View.
   String? get title => appState?.title;
-  set title(String? v) {
-    if (v != null) {
-      appState?.title = v;
-    }
-  }
+  // set title(String? v) {
+  //   if (v != null) {
+  //     appState?.title = v;
+  //   }
+  // }
 
   /// Routine used to generate the App's title.
   GenerateAppTitle? get onGenerateTitle => appState?.onGenerateTitle;
-  set onGenerateTitle(GenerateAppTitle? v) {
-    if (v != null) {
-      appState?.onGenerateTitle = v;
-    }
-  }
+  // set onGenerateTitle(GenerateAppTitle? v) {
+  //   if (v != null) {
+  //     appState?.onGenerateTitle = v;
+  //   }
+  // }
 
-  /// Returns the Color passed to the App's View.
+  /// Returns the Color passed to the app.
   Color? get color => appState?.color;
-  set color(Color? v) {
-    if (v != null) {
-      appState?.color = v;
-    }
-  }
+  // set color(Color? v) {
+  //   if (v != null) {
+  //     appState?.color = v;
+  //   }
+  // }
 
-  /// Returns the device's every changing Locale.
+  /// Returns the device's possibly ever-changing Locale.
+  /// Notice how the AppState's locale is always the determined locale.
   Locale? get locale =>
-      appState?.locale = Localizations.maybeLocaleOf(context!) ??
-          _resolveLocales(
-            WidgetsBinding.instance.platformDispatcher.locales,
-            appState?.supportedLocales,
-          );
+      appState?.locale ??
+      Localizations.maybeLocaleOf(context!) ??
+      _resolveLocales(
+        // The full system-reported supported locales of the device.
+        WidgetsBinding.instance.platformDispatcher.locales,
+        appState?.supportedLocales,
+      );
 
-  /// Set the App's Locale
-  /// If 'supportedLocales' are specified, this Locale must be among them.
-  set locale(Locale? locale) {
-    if (locale != null) {
-      L10n.locale = locale;
-      // if (locale != L10n.prevLocale) {
-      //   appState?.locale = locale;
-      // }
-    }
-  }
+  // /// Set the App's Locale
+  // /// If 'supportedLocales' are specified, this Locale must be among them.
+  // set locale(Locale? locale) {
+  //   if (allowNewLocale && locale != null) {
+  //     L10n.locale = locale;
+  //     // if (locale != L10n.prevLocale) {
+  //     //   appState?.locale = locale;
+  //     // }
+  //   }
+  // }
+
+  /// Returns the App's current localizations delegates.
+  Iterable<LocalizationsDelegate<dynamic>>? get localizationsDelegates =>
+      appState?.localizationsDelegates;
+  // set localizationsDelegates(Iterable<LocalizationsDelegate<dynamic>>? v) {
+  //   if (v != null) {
+  //     appState?.localizationsDelegates = v;
+  //   }
+  // }
+
+  /// Resolves the app's locale.
+  LocaleResolutionCallback? get localeResolutionCallback =>
+      appState?.localeResolutionCallback;
+  // set localeResolutionCallback(LocaleResolutionCallback? v) {
+  //   if (v != null) {
+  //     appState?.localeResolutionCallback = v;
+  //   }
+  // }
+
+  /// getter, supportedLocales, returns a List of the App's locales.
+  // More flexible than an iteration.
+  List<Locale>? get supportedLocales =>
+      appState?.supportedLocales ?? L10n.supportedLocales;
+  // set supportedLocales(List<Locale>? locales) {
+  //   if (allowNewLocales && locales != null) {
+  //     if (L10n.supportedLocales.isEmpty) {
+  //       L10n.supportedLocales = appState?.supportedLocales ??= locales;
+  //     } else {
+  //       final appLocales = appState?.supportedLocales ?? [];
+  //       if (appLocales.isEmpty) {
+  //         appState?.supportedLocales?.addAll(L10n.supportedLocales);
+  //       }
+  //     }
+  //   }
+  // }
 
   /// Determine the locale used by the Mobile phone.
   Locale? _resolveLocales(
     List<Locale>? preferredLocales,
     Iterable<Locale>? supportedLocales,
   ) {
+    //
+    final locales = appState?.supportedLocales;
+
     // Attempt to use localeListResolutionCallback.
     if (appState?.localeListResolutionCallback != null) {
-      final locales = appState?.supportedLocales;
       Locale? locale;
       if (locales != null) {
         locale =
@@ -171,7 +195,6 @@ extension AppStateExtension on AppObject {
 
     // localeListResolutionCallback failed, falling back to localeResolutionCallback.
     if (appState?.localeResolutionCallback != null) {
-      final locales = appState?.supportedLocales;
       Locale? locale;
       if (locales != null) {
         locale = appState?.localeResolutionCallback!(preferred, locales);
@@ -183,43 +206,22 @@ extension AppStateExtension on AppObject {
     return preferred;
   }
 
-  /// Returns the App's current localizations delegates.
-  Iterable<LocalizationsDelegate<dynamic>>? get localizationsDelegates =>
-      appState?.localizationsDelegates;
-  set localizationsDelegates(Iterable<LocalizationsDelegate<dynamic>>? v) {
-    if (v != null) {
-      appState?.localizationsDelegates = v;
-    }
-  }
-
-  /// Resolves the App's locale.
-  LocaleResolutionCallback? get localeResolutionCallback =>
-      appState?.localeResolutionCallback;
-  set localeResolutionCallback(LocaleResolutionCallback? v) {
-    if (v != null) {
-      appState?.localeResolutionCallback = v;
-    }
-  }
-
-  /// getter, supportedLocales, returns a List of the App's locales.
-  /// More flexible than an iteration.
-  List<Locale>? get supportedLocales =>
-      appState?.supportedLocales ??= L10n.supportedLocales;
-  set supportedLocales(List<Locale>? locales) {
-    if (locales != null) {
-      if (L10n.supportedLocales.isEmpty) {
-        L10n.supportedLocales = appState?.supportedLocales ??= locales;
-      } else {
-        final appLocales = appState?.supportedLocales ?? [];
-        if (appLocales.isEmpty) {
-          appState?.supportedLocales?.addAll(L10n.supportedLocales);
-        }
+  /// Explicitly change the app's locale.
+  Future<bool> changeLocale(Locale? locale) async {
+    bool change = locale != null;
+    if (change) {
+      change = await App.saveLocale(locale);
+      if (change) {
+        // Reflect the change by rebuilding the app.
+        App.setState(() {});
       }
     }
+    return change;
   }
 
   /// If true, it paints a grid overlay on Material apps.
   bool? get debugShowMaterialGrid => appState?.debugShowMaterialGrid;
+  // Note, won't function in release mode.
   set debugShowMaterialGrid(bool? v) {
     if (v != null) {
       appState?.debugShowMaterialGrid = v;
@@ -228,6 +230,7 @@ extension AppStateExtension on AppObject {
 
   /// If true, it turns on a performance overlay.
   bool? get showPerformanceOverlay => appState?.showPerformanceOverlay;
+  // Note, won't function in release mode.
   set showPerformanceOverlay(bool? v) {
     if (v != null) {
       appState?.showPerformanceOverlay = v;
@@ -237,6 +240,7 @@ extension AppStateExtension on AppObject {
   /// Checkerboard raster cache to speed up overall rendering.
   bool? get checkerboardRasterCacheImages =>
       appState?.checkerboardRasterCacheImages;
+  // Note, won't function in release mode.
   set checkerboardRasterCacheImages(bool? v) {
     if (v != null) {
       appState?.checkerboardRasterCacheImages = v;
@@ -246,6 +250,7 @@ extension AppStateExtension on AppObject {
   /// Checkerboard layers rendered offscreen bitmaps.
   bool? get checkerboardOffscreenLayers =>
       appState?.checkerboardOffscreenLayers;
+  // Note, won't function in release mode.
   set checkerboardOffscreenLayers(bool? v) {
     if (v != null) {
       appState?.checkerboardOffscreenLayers = v;
@@ -254,6 +259,7 @@ extension AppStateExtension on AppObject {
 
   /// Shows an overlay of accessibility information
   bool? get showSemanticsDebugger => appState?.showSemanticsDebugger;
+  // Note, won't function in release mode.
   set showSemanticsDebugger(bool? v) {
     if (v != null) {
       appState?.showSemanticsDebugger = v;
@@ -262,6 +268,7 @@ extension AppStateExtension on AppObject {
 
   /// Shows a little "DEBUG" banner in checked mode.
   bool? get debugShowCheckedModeBanner => appState?.debugShowCheckedModeBanner;
+  // Note, won't function in release mode.
   set debugShowCheckedModeBanner(bool? v) {
     if (v != null) {
       appState?.debugShowCheckedModeBanner = v;
@@ -270,6 +277,7 @@ extension AppStateExtension on AppObject {
 
   /// Each RenderBox to paint a box around its bounds.
   bool? get debugPaintSizeEnabled => appState?.debugPaintSizeEnabled;
+  // Note, won't function in release mode.
   set debugPaintSizeEnabled(bool? v) {
     if (v != null) {
       appState?.debugPaintSizeEnabled = v;
@@ -278,6 +286,7 @@ extension AppStateExtension on AppObject {
 
   /// RenderBox paints a line at its baselines.
   bool? get debugPaintBaselinesEnabled => appState?.debugPaintBaselinesEnabled;
+  // Note, won't function in release mode.
   set debugPaintBaselinesEnabled(bool? v) {
     if (v != null) {
       appState?.debugPaintBaselinesEnabled = v;
@@ -286,6 +295,7 @@ extension AppStateExtension on AppObject {
 
   /// Objects flash while they are being tapped.
   bool? get debugPaintPointersEnabled => appState?.debugPaintPointersEnabled;
+  // Note, won't function in release mode.
   set debugPaintPointersEnabled(bool? v) {
     if (v != null) {
       appState?.debugPaintPointersEnabled = v;
@@ -295,6 +305,7 @@ extension AppStateExtension on AppObject {
   /// Layer paints a box around its bound.
   bool? get debugPaintLayerBordersEnabled =>
       appState?.debugPaintLayerBordersEnabled;
+  // Note, won't function in release mode.
   set debugPaintLayerBordersEnabled(bool? v) {
     if (v != null) {
       appState?.debugPaintLayerBordersEnabled = v;
@@ -303,6 +314,7 @@ extension AppStateExtension on AppObject {
 
   /// Overlay a rotating set of colors when repainting layers in checked mode.
   bool? get debugRepaintRainbowEnabled => appState?.debugRepaintRainbowEnabled;
+  // Note, won't function in release mode.
   set debugRepaintRainbowEnabled(bool? v) {
     if (v != null) {
       appState?.debugRepaintRainbowEnabled = v;
@@ -311,6 +323,11 @@ extension AppStateExtension on AppObject {
 
   /// Determines if running in an IDE or in production.
   bool get inDebugMode => appState?.inDebugMode ?? false;
+
+  /// Explicitly change to a particular interface.
+  void changeUI(String ui) {
+    appState?.changeUI(ui);
+  }
 
   /// Refresh the root State object with the passed function.
   void setState(VoidCallback fn) => appState?.setState(fn);

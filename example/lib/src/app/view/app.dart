@@ -21,7 +21,7 @@ class _ExampleAppState extends AppState {
       : super(
           controller: ExampleAppController(),
           controllers: [CounterController()],
-          inTitle: () => 'Demo App'.tr,
+          inTitle: () => 'Demo App',
           inDebugShowCheckedModeBanner: () => false,
           switchUI: Prefs.getBool('switchUI'),
           useRouterConfig: false,
@@ -43,12 +43,11 @@ class _ExampleAppState extends AppState {
             GlobalCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
           ],
+          allowChangeLocale: true, // Allow the app to change locale
+          allowChangeUI: true, // Allow the app to change its design interface
           inInitAsync: () => Future.value(true), // Merely a test.
           inInitState: () {/* Optional inInitState() function */},
         );
-
-  @override
-  Locale? onLocale() => ExampleAppController().appLocale();
 
   @override
   Widget onHome() => ExampleAppController().onHome();

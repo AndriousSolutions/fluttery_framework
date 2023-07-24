@@ -1,5 +1,13 @@
 
-## 4.1.0+4
+## 4.2.0
+July 24, 2023
+- Introduced allowChangeTheme, allowChangeLocale and allowChangeUI for AppState
+- Added getter preferredLocale and saveLocale() save and retrieve a preferred Locale for AppState
+- Majority of AppState parameters now immutable to retain scope
+- Removed some 11 AppState setters to again tightening the code's scope
+- Continue updating documentation
+
+## 4.1.0+5
 July 20, 2023
 - Implemented onInitAsync() in app_state.dart
 - Adjusted onError() in app_state.dart to call State object's onError()

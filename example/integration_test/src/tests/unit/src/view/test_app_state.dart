@@ -19,11 +19,11 @@ void testAppState(WidgetTester tester) {
 
   bool? use = appState.useCupertino;
 
-  use = appState.isCupertino;
+  use = appState.useCupertino;
 
   use = appState.useMaterial;
 
-  use = appState.isMaterial;
+  use = appState.useMaterial;
 
   appState.onHome();
 
