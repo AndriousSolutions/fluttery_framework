@@ -89,7 +89,7 @@ extension AppStateExtension on AppObject {
   // }
 
   /// Returns the title for the App's View.
-  String? get title => appState?.title;
+  String get title => appState?.title ?? '';
   // set title(String? v) {
   //   if (v != null) {
   //     appState?.title = v;

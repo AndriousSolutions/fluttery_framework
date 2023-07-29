@@ -36,6 +36,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     AppController? controller,
     super.controllers,
     super.object,
+    WidgetBuilder? inAppBuilder,
     super.materialApp,
     super.cupertinoApp,
     super.routeInformationProvider,
@@ -140,7 +141,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     this.inAsyncError,
   })  : _stateRouteObserver = StateRouteObserver(),
         super(controller: controller ?? AppController()) {
-    //
+    // A replacement for the MaterialApp or CupertinoApp
+    _widgetsAppBuilder = inAppBuilder;
+
     // Determine what the app can change at runtime
     _allowChangeTheme = allowChangeTheme ?? false;
     _allowChangeLocale = allowChangeLocale ?? false;
@@ -182,6 +185,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   /// The App's 'home screen'
   final Widget? home;
+
+  /// Allows you to provide the app's widget
+  WidgetBuilder? _widgetsAppBuilder;
 
   /// Use RouterConfig or not
   final bool? useRouterConfig;
@@ -433,7 +439,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   @override
   Widget buildIn(BuildContext context) {
     //
-    Widget app;
+    Widget? app;
 
     assert(() {
       /// Highlights UI while debugging.
@@ -451,13 +457,13 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     // If the Router Configuration is provided.
     final _routerConfig = routerConfig ?? onRouterConfig();
 
-    // Make the GoRouter readily available without requiring a context.
-    if (_routerConfig != null) {
-      App.goRouter = _routerConfig;
-    }
-
     // If the flag was set to true and there is a Router Configuration.
     final _useRouter = (useRouterConfig ?? false) && _routerConfig != null;
+
+    // Make the GoRouter readily available without requiring a context.
+    if (_useRouter) {
+      App.goRouter = _routerConfig;
+    }
 
     // If the routerConfig is to be used, the others must all be null.
     final _routeInformationProvider = _useRouter
@@ -506,212 +512,219 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     // Note, if it's not empty, it's not set
     L10n.supportedLocales = _supportedLocales;
 
-    if (_useCupertino) {
-      // A CupertinoApp object has been supplied.
-      if (cupertinoApp != null) {
-        app = cupertinoApp!;
-        //
-      } else if (_routerDelegate == null && !_useRouter) {
-        //
-        app = CupertinoApp(
-          key: key ?? cupertinoKey,
-          navigatorKey: App.navigatorKey,
-          theme: _setiOSThemeData(),
-          routes: routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
-          initialRoute: initialRoute ?? onInitialRoute(),
-          onGenerateRoute: onGenerateRoute ?? onOnGenerateRoute(),
-          onUnknownRoute: onUnknownRoute ?? onOnUnknownRoute(),
-          navigatorObservers: _navigatorObservers(),
-          builder: builder ?? onBuilder(),
-// not needed  title: ,
-          onGenerateTitle: _onOnGenerateTitle,
-          color: color ?? onColor() ?? Colors.blue,
-          locale: _appLocale,
-          localizationsDelegates:
-              localizationsDelegates ?? onLocalizationsDelegates(),
-          localeListResolutionCallback:
-              localeListResolutionCallback ?? onLocaleListResolutionCallback,
-          localeResolutionCallback:
-              localeResolutionCallback ?? onLocaleResolutionCallback,
-          supportedLocales: _supportedLocales,
-          showPerformanceOverlay:
-              showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
-          checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
-              onCheckerboardRasterCacheImages() ??
-              false,
-          checkerboardOffscreenLayers: checkerboardOffscreenLayers ??
-              onCheckerboardOffscreenLayers() ??
-              false,
-          showSemanticsDebugger:
-              showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
-          debugShowCheckedModeBanner: debugShowCheckedModeBanner ??
-              onDebugShowCheckedModeBanner() ??
-              false,
-          shortcuts: shortcuts ?? onShortcuts(),
-          actions: actions ?? onActions(),
-          restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
-          scrollBehavior: scrollBehavior ?? onScrollBehavior(),
-          // Let the parameters run before the home parameter.
-          home: home ?? onHome(),
-        );
+    // An app builder may instead by supplied.
+    app = onAppBuilder(context);
+
+    if (app == null) {
+      //
+      if (_useCupertino) {
+        // A CupertinoApp object has been supplied.
+        if (cupertinoApp != null) {
+          app = cupertinoApp!;
+          //
+        } else if (_routerDelegate == null && !_useRouter) {
+          //
+          app = CupertinoApp(
+            key: key ?? cupertinoKey,
+            navigatorKey: App.navigatorKey,
+            theme: _setiOSThemeData(),
+            routes: routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
+            initialRoute: initialRoute ?? onInitialRoute(),
+            onGenerateRoute: onGenerateRoute ?? onOnGenerateRoute(),
+            onUnknownRoute: onUnknownRoute ?? onOnUnknownRoute(),
+            navigatorObservers: _navigatorObservers(),
+            builder: builder ?? onBuilder(),
+// not needed  title: ,  // Used instead in _onOnGenerateTitle()
+            onGenerateTitle: _onOnGenerateTitle,
+            color: color ?? onColor() ?? Colors.blue,
+            locale: _appLocale,
+            localizationsDelegates:
+                localizationsDelegates ?? onLocalizationsDelegates(),
+            localeListResolutionCallback:
+                localeListResolutionCallback ?? onLocaleListResolutionCallback,
+            localeResolutionCallback:
+                localeResolutionCallback ?? onLocaleResolutionCallback,
+            supportedLocales: _supportedLocales,
+            showPerformanceOverlay:
+                showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
+            checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
+                onCheckerboardRasterCacheImages() ??
+                false,
+            checkerboardOffscreenLayers: checkerboardOffscreenLayers ??
+                onCheckerboardOffscreenLayers() ??
+                false,
+            showSemanticsDebugger:
+                showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
+            debugShowCheckedModeBanner: debugShowCheckedModeBanner ??
+                onDebugShowCheckedModeBanner() ??
+                false,
+            shortcuts: shortcuts ?? onShortcuts(),
+            actions: actions ?? onActions(),
+            restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
+            scrollBehavior: scrollBehavior ?? onScrollBehavior(),
+            // Let the parameters run before the home parameter.
+            home: home ?? onHome(),
+          );
+        } else {
+          //
+          app = CupertinoApp.router(
+            key: key ?? cupertinoKey,
+            routeInformationProvider: _routeInformationProvider,
+            routeInformationParser: _routeInformationParser,
+            routerDelegate: _routerDelegate,
+            backButtonDispatcher: _backButtonDispatcher,
+            routerConfig: _routerConfig,
+            theme: _setiOSThemeData(),
+            builder: builder ?? onBuilder(),
+// not needed          title: , // Used instead in _onOnGenerateTitle()
+            onGenerateTitle: _onOnGenerateTitle,
+            color: color ?? onColor() ?? Colors.blue,
+            locale: _appLocale,
+            localizationsDelegates:
+                localizationsDelegates ?? onLocalizationsDelegates(),
+            localeListResolutionCallback:
+                localeListResolutionCallback ?? onLocaleListResolutionCallback,
+            localeResolutionCallback:
+                localeResolutionCallback ?? onLocaleResolutionCallback,
+            supportedLocales: _supportedLocales,
+            showPerformanceOverlay:
+                showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
+            checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
+                onCheckerboardRasterCacheImages() ??
+                false,
+            checkerboardOffscreenLayers: checkerboardOffscreenLayers ??
+                onCheckerboardOffscreenLayers() ??
+                false,
+            showSemanticsDebugger:
+                showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
+            debugShowCheckedModeBanner: debugShowCheckedModeBanner ??
+                onDebugShowCheckedModeBanner() ??
+                false,
+            shortcuts: shortcuts ?? onShortcuts(),
+            actions: actions ?? onActions(),
+            restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
+            scrollBehavior: scrollBehavior ?? onScrollBehavior(),
+          );
+        }
       } else {
-        //
-        app = CupertinoApp.router(
-          key: key ?? cupertinoKey,
-          routeInformationProvider: _routeInformationProvider,
-          routeInformationParser: _routeInformationParser,
-          routerDelegate: _routerDelegate,
-          backButtonDispatcher: _backButtonDispatcher,
-          routerConfig: _routerConfig,
-          theme: _setiOSThemeData(),
-          builder: builder ?? onBuilder(),
-// not needed          title: ,
-          onGenerateTitle: _onOnGenerateTitle,
-          color: color ?? onColor() ?? Colors.blue,
-          locale: _appLocale,
-          localizationsDelegates:
-              localizationsDelegates ?? onLocalizationsDelegates(),
-          localeListResolutionCallback:
-              localeListResolutionCallback ?? onLocaleListResolutionCallback,
-          localeResolutionCallback:
-              localeResolutionCallback ?? onLocaleResolutionCallback,
-          supportedLocales: _supportedLocales,
-          showPerformanceOverlay:
-              showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
-          checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
-              onCheckerboardRasterCacheImages() ??
-              false,
-          checkerboardOffscreenLayers: checkerboardOffscreenLayers ??
-              onCheckerboardOffscreenLayers() ??
-              false,
-          showSemanticsDebugger:
-              showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
-          debugShowCheckedModeBanner: debugShowCheckedModeBanner ??
-              onDebugShowCheckedModeBanner() ??
-              false,
-          shortcuts: shortcuts ?? onShortcuts(),
-          actions: actions ?? onActions(),
-          restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
-          scrollBehavior: scrollBehavior ?? onScrollBehavior(),
-        );
-      }
-    } else {
-      // A MaterialApp object has been supplied.
-      if (materialApp != null) {
-        app = materialApp!;
-        //
-      } else if (_routerDelegate == null && !_useRouter) {
-        //
-        app = MaterialApp(
-          key: key ?? materialKey,
-          navigatorKey: App.navigatorKey,
-          scaffoldMessengerKey:
-              scaffoldMessengerKey ?? onScaffoldMessengerKey(),
-          routes: routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
-          initialRoute: initialRoute ?? onInitialRoute(),
-          onGenerateRoute: onGenerateRoute ?? onOnGenerateRoute(),
-          onUnknownRoute: onUnknownRoute ?? onOnUnknownRoute(),
-          navigatorObservers: _navigatorObservers(),
-          builder: builder ?? onBuilder(),
-// not needed          title: ,
-          onGenerateTitle: _onOnGenerateTitle,
-          color: color ?? onColor() ?? Colors.white,
-          theme: _setThemeData(),
-          darkTheme: darkTheme ?? onDarkTheme(),
-          highContrastTheme: highContrastTheme ?? onHighContrastTheme(),
-          highContrastDarkTheme:
-              highContrastDarkTheme ?? onHighContrastDarkTheme(),
-          themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
-          themeAnimationDuration: themeAnimationDuration ??
-              onThemeAnimationDuration() ??
-              const Duration(milliseconds: 200),
-          themeAnimationCurve:
-              themeAnimationCurve ?? onThemeAnimationCurve() ?? Curves.linear,
-          locale: _appLocale,
-          localizationsDelegates: onLocalizationsDelegates(),
-          localeListResolutionCallback:
-              localeListResolutionCallback ?? onLocaleListResolutionCallback,
-          localeResolutionCallback:
-              localeResolutionCallback ?? onLocaleResolutionCallback,
-          supportedLocales: _supportedLocales,
-          debugShowMaterialGrid:
-              debugShowMaterialGrid ?? onDebugShowMaterialGrid() ?? false,
-          showPerformanceOverlay:
-              showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
-          checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
-              onCheckerboardRasterCacheImages() ??
-              false,
-          checkerboardOffscreenLayers: checkerboardOffscreenLayers ??
-              onCheckerboardOffscreenLayers() ??
-              false,
-          showSemanticsDebugger:
-              showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
-          debugShowCheckedModeBanner: debugShowCheckedModeBanner ??
-              onDebugShowCheckedModeBanner() ??
-              false,
-          shortcuts: shortcuts ?? onShortcuts(),
-          actions: actions ?? onActions(),
-          restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
-          scrollBehavior: scrollBehavior ?? onScrollBehavior(),
-          // Let the parameters run before the home parameter.
-          home: home ?? onHome(),
-        );
-      } else {
-        //
-        app = MaterialApp.router(
-          key: key ?? materialKey,
-          scaffoldMessengerKey:
-              scaffoldMessengerKey ?? onScaffoldMessengerKey(),
-          routeInformationProvider: _routeInformationProvider,
-          routeInformationParser: _routeInformationParser,
-          routerDelegate: _routerDelegate,
-          routerConfig: _routerConfig,
-          backButtonDispatcher: _backButtonDispatcher,
-          builder: builder ?? onBuilder(),
-// not needed          title: ,
-          onGenerateTitle: _onOnGenerateTitle,
-          color: color ?? onColor() ?? Colors.white,
-          theme: _setThemeData(),
-          darkTheme: darkTheme ?? onDarkTheme(),
-          highContrastTheme: highContrastTheme ?? onHighContrastTheme(),
-          highContrastDarkTheme:
-              highContrastDarkTheme ?? onHighContrastDarkTheme(),
-          themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
-          themeAnimationDuration: themeAnimationDuration ??
-              onThemeAnimationDuration() ??
-              const Duration(milliseconds: 200),
-          themeAnimationCurve:
-              themeAnimationCurve ?? onThemeAnimationCurve() ?? Curves.linear,
-          locale: _appLocale,
-          localizationsDelegates: onLocalizationsDelegates(),
-          localeListResolutionCallback:
-              localeListResolutionCallback ?? onLocaleListResolutionCallback,
-          localeResolutionCallback:
-              localeResolutionCallback ?? onLocaleResolutionCallback,
-          supportedLocales: _supportedLocales,
-          debugShowMaterialGrid:
-              debugShowMaterialGrid ?? onDebugShowMaterialGrid() ?? false,
-          showPerformanceOverlay:
-              showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
-          checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
-              onCheckerboardRasterCacheImages() ??
-              false,
-          checkerboardOffscreenLayers: checkerboardOffscreenLayers ??
-              onCheckerboardOffscreenLayers() ??
-              false,
-          showSemanticsDebugger:
-              showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
-          debugShowCheckedModeBanner: debugShowCheckedModeBanner ??
-              onDebugShowCheckedModeBanner() ??
-              false,
-          shortcuts: shortcuts ?? onShortcuts(),
-          actions: actions ?? onActions(),
-          restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
-          scrollBehavior: scrollBehavior ?? onScrollBehavior(),
-        );
+        // A MaterialApp object has been supplied.
+        if (materialApp != null) {
+          //
+          app = materialApp!;
+          //
+        } else if (_routerDelegate == null && !_useRouter) {
+          //
+          app = MaterialApp(
+            key: key ?? materialKey,
+            navigatorKey: App.navigatorKey,
+            scaffoldMessengerKey:
+                scaffoldMessengerKey ?? onScaffoldMessengerKey(),
+            routes: routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
+            initialRoute: initialRoute ?? onInitialRoute(),
+            onGenerateRoute: onGenerateRoute ?? onOnGenerateRoute(),
+            onUnknownRoute: onUnknownRoute ?? onOnUnknownRoute(),
+            navigatorObservers: _navigatorObservers(),
+            builder: builder ?? onBuilder(),
+// not needed          title: , // Used instead in _onOnGenerateTitle()
+            onGenerateTitle: _onOnGenerateTitle,
+            color: color ?? onColor() ?? Colors.white,
+            theme: _setThemeData(),
+            darkTheme: darkTheme ?? onDarkTheme(),
+            highContrastTheme: highContrastTheme ?? onHighContrastTheme(),
+            highContrastDarkTheme:
+                highContrastDarkTheme ?? onHighContrastDarkTheme(),
+            themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
+            themeAnimationDuration: themeAnimationDuration ??
+                onThemeAnimationDuration() ??
+                const Duration(milliseconds: 200),
+            themeAnimationCurve:
+                themeAnimationCurve ?? onThemeAnimationCurve() ?? Curves.linear,
+            locale: _appLocale,
+            localizationsDelegates: onLocalizationsDelegates(),
+            localeListResolutionCallback:
+                localeListResolutionCallback ?? onLocaleListResolutionCallback,
+            localeResolutionCallback:
+                localeResolutionCallback ?? onLocaleResolutionCallback,
+            supportedLocales: _supportedLocales,
+            debugShowMaterialGrid:
+                debugShowMaterialGrid ?? onDebugShowMaterialGrid() ?? false,
+            showPerformanceOverlay:
+                showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
+            checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
+                onCheckerboardRasterCacheImages() ??
+                false,
+            checkerboardOffscreenLayers: checkerboardOffscreenLayers ??
+                onCheckerboardOffscreenLayers() ??
+                false,
+            showSemanticsDebugger:
+                showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
+            debugShowCheckedModeBanner: debugShowCheckedModeBanner ??
+                onDebugShowCheckedModeBanner() ??
+                false,
+            shortcuts: shortcuts ?? onShortcuts(),
+            actions: actions ?? onActions(),
+            restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
+            scrollBehavior: scrollBehavior ?? onScrollBehavior(),
+            // Let the parameters run before the home parameter.
+            home: home ?? onHome(),
+          );
+        } else {
+          //
+          app = MaterialApp.router(
+            key: key ?? materialKey,
+            scaffoldMessengerKey:
+                scaffoldMessengerKey ?? onScaffoldMessengerKey(),
+            routeInformationProvider: _routeInformationProvider,
+            routeInformationParser: _routeInformationParser,
+            routerDelegate: _routerDelegate,
+            routerConfig: _routerConfig,
+            backButtonDispatcher: _backButtonDispatcher,
+            builder: builder ?? onBuilder(),
+// not needed          title: , // Used instead in _onOnGenerateTitle()
+            onGenerateTitle: _onOnGenerateTitle,
+            color: color ?? onColor() ?? Colors.white,
+            theme: _setThemeData(),
+            darkTheme: darkTheme ?? onDarkTheme(),
+            highContrastTheme: highContrastTheme ?? onHighContrastTheme(),
+            highContrastDarkTheme:
+                highContrastDarkTheme ?? onHighContrastDarkTheme(),
+            themeMode: themeMode ?? onThemeMode() ?? ThemeMode.system,
+            themeAnimationDuration: themeAnimationDuration ??
+                onThemeAnimationDuration() ??
+                const Duration(milliseconds: 200),
+            themeAnimationCurve:
+                themeAnimationCurve ?? onThemeAnimationCurve() ?? Curves.linear,
+            locale: _appLocale,
+            localizationsDelegates: onLocalizationsDelegates(),
+            localeListResolutionCallback:
+                localeListResolutionCallback ?? onLocaleListResolutionCallback,
+            localeResolutionCallback:
+                localeResolutionCallback ?? onLocaleResolutionCallback,
+            supportedLocales: _supportedLocales,
+            debugShowMaterialGrid:
+                debugShowMaterialGrid ?? onDebugShowMaterialGrid() ?? false,
+            showPerformanceOverlay:
+                showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
+            checkerboardRasterCacheImages: checkerboardRasterCacheImages ??
+                onCheckerboardRasterCacheImages() ??
+                false,
+            checkerboardOffscreenLayers: checkerboardOffscreenLayers ??
+                onCheckerboardOffscreenLayers() ??
+                false,
+            showSemanticsDebugger:
+                showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
+            debugShowCheckedModeBanner: debugShowCheckedModeBanner ??
+                onDebugShowCheckedModeBanner() ??
+                false,
+            shortcuts: shortcuts ?? onShortcuts(),
+            actions: actions ?? onActions(),
+            restorationScopeId: restorationScopeId ?? onRestorationScopeId(),
+            scrollBehavior: scrollBehavior ?? onScrollBehavior(),
+          );
+        }
       }
     }
-    return app;
+    return app!;
   }
 
   /// Supply the appropriate List of 'observers' that are called
@@ -907,6 +920,10 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       _scaffoldMessengerKey ??= GlobalKey<ScaffoldMessengerState>();
 
   GlobalKey<ScaffoldMessengerState>? _scaffoldMessengerKey;
+
+  /// The WidgetsApp builder replaces the MaterialApp & CupertinoApp
+  Widget? onAppBuilder(BuildContext context) =>
+      _widgetsAppBuilder != null ? _widgetsAppBuilder!(context) : null;
 
   /// Returns the home screen if any.
   Widget? onHome() => inHome != null ? inHome!() : null;
@@ -1361,135 +1378,6 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     }
   }
 }
-
-// ///
-// class AppInformationParser extends RouteInformationParser<GetNavConfig> {
-//   /// [initialRoute] => [/]
-//   AppInformationParser({
-//     String? initialRoute,
-//   })  : initialRoute = initialRoute ?? '/',
-//         super();
-//
-//   /// Initial route
-//   /// default '/'
-//   final String initialRoute;
-//
-//   @override
-//   Future<GetNavConfig> parseRouteInformation(
-//     RouteInformation routeInformation,
-//   ) {
-//     String? location = routeInformation.location; // => [/]
-//     if (location == '/') {
-//       if (!Get.routeTree.routes.any((e) => e.name == '/')) {
-//         location = initialRoute;
-//       }
-//     }
-//
-//     // if (!Get.routeTree.routes.any((e) => false)) {
-//     //   location = AppRoutes.notFound;
-//     // }
-//
-//     final matchResult = Get.routeTree.matchRoute(location ?? initialRoute);
-//     String? matchResultLocation = matchResult.route?.name;
-//
-//     if (matchResultLocation != location) {
-//       location = AppRoutes.notFound;
-//     } else if (matchResultLocation == AppRoutes.navigation) {
-//       location = AppRoutes.home;
-//     } else if (matchResultLocation == AppRoutes.list) {
-//       location = AppRoutes.vehicles;
-//     } else if (matchResultLocation == AppRoutes.report) {
-//       location = AppRoutes.vehicleReport;
-//     } else if (matchResultLocation == AppRoutes.map) {
-//       location = AppRoutes.mapVehicles;
-//     }
-//
-//     final result = Get.routeTree.matchRoute(location ?? initialRoute);
-//
-//     return SynchronousFuture(
-//       GetNavConfig(
-//         currentTreeBranch: result.treeBranch,
-//         location: location,
-//         state: routeInformation.state,
-//       ),
-//     );
-//   }
-//
-//   @override
-//   RouteInformation? restoreRouteInformation(GetNavConfig configuration) {
-//     return RouteInformation(
-//       location: configuration.location,
-//       state: configuration.state,
-//     );
-//   }
-// }
-//
-// /// Of course, You're free to override this class if you like
-// class AppRoutes {
-//   /// Identified as the 'home' page.
-//   AppRoutes.home()
-//       : path = '/',
-//         isUnknown = false,
-//         isHomePage = true;
-//
-//   /// Identified as a Page.
-//   AppRoutes.page(this.path)
-//       : isUnknown = false,
-//         isHomePage = false;
-//
-//   /// Indentified as an 'unknown' page.
-//   AppRoutes.unknown([String? _path])
-//       : path = _path ?? '/404',
-//         isUnknown = true,
-//         isHomePage = false;
-//
-// //  final AppRouteState? state;
-//   /// The path
-//   final String? path;
-//
-//   /// Indicates if the page is unknown.
-//   final bool isUnknown;
-//
-//   /// Indicates if it is a 'home' page.
-//   final bool isHomePage;
-//
-//   /// Converts the AppRoutePath object as a Json object.
-//   Map<String, Object> toJson() => <String, Object>{
-//         'path': path ?? '',
-//         'isUnknown': isUnknown,
-//         'isHomePage': isHomePage,
-//       };
-//
-//   /// Returns an AppRoutePath object for a Json object.
-//   AppRoutes fromJson(Map<String, dynamic> json) {
-//     AppRoutes route;
-//
-//     String? path;
-//     final dynamic value = json['path'];
-//
-//     if (value is String) {
-//       path = value;
-//     } else {
-//       path = '';
-//     }
-//
-//     if (path.trim().isEmpty) {
-//       path = '/404';
-//     }
-//
-//     switch (path) {
-//       case '/':
-//         route = AppRoutes.home();
-//         break;
-//       case '/404':
-//         route = AppRoutes.unknown();
-//         break;
-//       default:
-//         route = AppRoutes.page(path);
-//     }
-//     return route;
-//   }
-// }
 
 /// Supply an 'error handler' routine if something goes wrong.
 /// It need not be implemented, but it's their for your consideration.

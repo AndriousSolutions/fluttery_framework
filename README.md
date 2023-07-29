@@ -56,104 +56,81 @@ Free overview article on medium.com:
 
 [Fluttery Framework](https://andrious.medium.com/the-fluttery-framework-35480fb834da)
 
-___
-## The Counter Example App
-###### (Copy & paste and try it out.)
-```Dart
-import 'package:fluttery_framework/view.dart';
+As great as Flutter is, you will not create a ‘production-worthy’ app using Flutter right out of the box. 
+When building a Flutter app, it’s expected to be one codebase that runs on an Android phone, 
+an iOS phone, on Windows, on Linux, and or on the Web---and to do so seamlessly. 
+It is to display the appropriate design interface (Material or Cupertino) depending on the platform it’s running on, 
+it is to have a responsive interface that displays its information correctly no matter the screen size of the device or platform, 
+and it is to fail gracefully if and when it encounters an error. 
+Flutter right out of the box does not have these capabilities fully implemented.
 
-import 'package:fluttery_framework/controller.dart';
+When I first started working with Flutter, 
+I began keeping modular bits of code from past projects that generally accelerated the development process. 
+I’d use those again in future apps---building up a toolkit as we developers often do. 
+Libraries of tried and tested bits of software that I can later put together to reliably supply a particular function or feature.
 
-void main() => runApp(MyApp());
+Over time, I turned to the Flutter community for such libraries, and again, 
+if I didn’t find one I liked, I wrote my own. The Fluttery Framework is the result of this practice.
+The Fluttery Framework uses packages, functions, and features, you will likely need in your own apps. 
+It's a collection of software that's proven to be effective solutions to those capabilities required time and time again by a typical real-world app. 
+It’s an amalgamation of what's great about Flutter and what the Flutter community has contributed over the last few years.
 
-class MyApp extends AppStatefulWidget {
-  MyApp({Key? key}) : super(key: key);
+For example, if you know GetX and its many extensions, you’ll know Fluttery’s extensions as well. 
+Jonny Borges, the author of GetX, did a great job providing these extensions! 
+They’ve proven to be indispensable when writing a production-ready app. 
+As for GetX itself, it never became my chosen approach, but I did like his extensions, 
+and so I took them to be used in the Fluttery Framework…accompanied by Jonny’s MIT license of course.
 
-  @override
-  AppState createAppState() => _CounterAppState();
-}
+The [extensions]( https://github.com/AndriousSolutions/fluttery_framework/tree/3fa2b01917cd975350068b956013eaf2ccadda90/lib/view/extensions) alone are reason enough to use this package frankly:
+- extensions_view.dart
+- context_extensions.dart
+- double_extensions.dart
+- duration_extensions.dart
+- dynamic_extensions.dart
+- gorouter_extension.dart
+- num_extensions.dart
+- string_extensions.dart
+- widget_extensions.dart
 
-class _CounterAppState extends AppState {
-  _CounterAppState()
-      : super(
-    title: 'Flutter Demo',
-    home: const MyHomePage(),
-    debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-      primarySwatch: Colors.blue,
-    ),
-  );
-}
+As the years went by, I found packages that made my life easier and so they too were incorporated into Fluttery Framework:
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, this.title = 'Flutter Demo Home Page'})
-      : super(key: key);
-  // Fields in a StatefulWidget should always be "final".
-  final String title;
-  @override
-  State createState() => _MyHomePageState();
-}
+- [connectivity_plus]( https://pub.dartlang.org/packages/connectivity_plus)
+- [device_info_plus]( https://pub.dev/packages/device_info_plus)
+- [flutter_localizations]( https://pub.dev/packages/flutter_localization)
+- [flutter_material_color_picker]( https://pub.dev/packages/flutter_material_color_picker)
+- [go_router]( https://pub.dev/packages/go_router) (but not before [discovering]( https://github.com/flutter/flutter/issues/123570#issuecomment-1588610299) how to fix it)
+- [http](https://pub.dev/packages/http)
+- [l10n_translator](https://pub.dev/packages/i10n_translator)
+- [package_info_plus](https://pub.dev/packages/package_info_plus)
+- [path_provider](https://pub.dev/packages/path_provider)
+- [prefs](https://pub.dartlang.org/packages/prefs)
+- [sizer](https://pub.dev/packages/sizer)
+- [state_extended](https://pub.dartlang.org/packages/state_extended)
+- [timezone](https://pub.dev/packages/timezone)
+- [universal_io](https://pub.dev/packages/universal_io)
+- [universal_platform](https://pub.dev/packages/universal_platform)
+- [url_launcher](https://pub.dartlang.org/packages/url_launcher)
+- [url_strategy](https://pub.dev/packages/url_strategy)
+- [uuid](https://pub.dartlang.org/packages/uuid)
+- [intl](https://pub.dev/packages/intl)
 
-class _MyHomePageState extends StateX<MyHomePage> {
-  _MyHomePageState() : super(controller: Controller()) {
-    con = controller as Controller;
-  }
-  late Controller con;
+I was careful to choose only packages that fulfill the general requirements of a typical app. 
+I didn’t choose those too specific and only suitable for a particular problem domain. 
+This is a framework after all. It’s to serve as a ‘general framework’ for all my apps no matter how diverse each is. 
+Of course, for your specific app with its specific needs, 
+you then will add additional packages or write your own. 
+The purpose of all this is so you supply that specific code while the Fluttery Framework supplies the rest.
 
-  @override
-  Widget buildAndroid(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text(widget.title),
-    ),
-    body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text('You have pushed the button this many times:'),
-          Text(
-            '${con.counter}',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-        ],
-      ),
-    ),
-    floatingActionButton: FloatingActionButton(
-      /// Try this alternative approach.
-      /// The Controller merely mimics the Flutter's API
-      //         onPressed: con.onPressed,
-      onPressed: () => setState(con.incrementCounter),
-      tooltip: 'Increment',
-      child: const Icon(Icons.add),
-    ),
-  );
-}
+Again, as a framework, it also offers a structured approach to making a production-worthy app. 
+It offers a way of doing things. For we Flutter developers, a ready means to access a State object’s **setState**() function is of particular interest.
+With that, Fluttery Framework's own unique contribution to this package is the concept of a ‘State Object Controller.’ 
+The use of controllers are nothing new to Flutter. It uses controllers in a number of its widgets.
 
-class Controller extends StateXController {
-  factory Controller() => _this ??= Controller._();
-  Controller._()
-      : _model = _Model(),
-        super();
+However, I realized that having a controller object working with a State object would only enhance the development process.
+It would encourage a separation of an app’s interface from its event handling and business rules promoting a clean architecture.
 
-  static Controller? _this;
-  final _Model _model;
+The Fluttery Framework is a culmination of five years of working with Flutter.
+It looks like Flutter and works like Flutter because it works with Flutter 
+as well as sound Dart and Flutter packages from the Flutter community.
 
-  /// You're free to mimic Flutter's own API
-  /// The Controller is able to talk to the View (the State object)
-  void onPressed() => setState(() => _model._incrementCounter());
-
-  int get counter => _model.integer;
-
-  /// The Controller knows how to 'talk to' the Model.
-  void incrementCounter() => _model._incrementCounter();
-}
-
-class _Model {
-  int get integer => _integer;
-  int _integer = 0;
-  int _incrementCounter() => ++_integer;
-}
-```
-##### Note, this package uses at its core the StateX package:
-
-[![statex](https://user-images.githubusercontent.com/32497443/178387749-1e28f27f-f64c-41df-b5c0-a7591f194e22.jpg)](https://pub.dev/packages/state_extended)
-[![Pub.dev](https://img.shields.io/pub/v/state_extended.svg?logo=data:image/png)](https://pub.dev/packages/state_extended) [![GitHub stars](https://img.shields.io/github/stars/AndriousSolutions/state_extended.svg?style=social&amp;logo=github)](https://github.com/AndriousSolutions/state_extended/stargazers)  [![Last Commit](https://img.shields.io/github/last-commit/AndriousSolutions/state_extended)](https://github.com/AndriousSolutions/state_extended/commits/master)
+Enjoy.

@@ -31,7 +31,103 @@ ___
 ___
 ![scalability](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/b5af9fb1-9aef-4f05-baa4-98ff3014caef)
 
+___
+## The Counter Example App
+###### (Copy & paste and try it out.)
+```Dart
+import 'package:fluttery_framework/view.dart';
 
+import 'package:fluttery_framework/controller.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends AppStatefulWidget {
+  MyApp({Key? key}) : super(key: key);
+
+  @override
+  AppState createAppState() => _CounterAppState();
+}
+
+class _CounterAppState extends AppState {
+  _CounterAppState()
+      : super(
+    title: 'Flutter Demo',
+    home: const MyHomePage(),
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+    ),
+  );
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, this.title = 'Flutter Demo Home Page'})
+      : super(key: key);
+  // Fields in a StatefulWidget should always be "final".
+  final String title;
+  @override
+  State createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends StateX<MyHomePage> {
+  _MyHomePageState() : super(controller: Controller()) {
+    con = controller as Controller;
+  }
+  late Controller con;
+
+  @override
+  Widget buildAndroid(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: Text(widget.title),
+    ),
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text('You have pushed the button this many times:'),
+          Text(
+            '${con.counter}',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+        ],
+      ),
+    ),
+    floatingActionButton: FloatingActionButton(
+      /// Try this alternative approach.
+      /// The Controller merely mimics the Flutter's API
+      //         onPressed: con.onPressed,
+      onPressed: () => setState(con.incrementCounter),
+      tooltip: 'Increment',
+      child: const Icon(Icons.add),
+    ),
+  );
+}
+
+class Controller extends StateXController {
+  factory Controller() => _this ??= Controller._();
+  Controller._()
+      : _model = _Model(),
+        super();
+
+  static Controller? _this;
+  final _Model _model;
+
+  /// You're free to mimic Flutter's own API
+  /// The Controller is able to talk to the View (the State object)
+  void onPressed() => setState(() => _model._incrementCounter());
+
+  int get counter => _model.integer;
+
+  /// The Controller knows how to 'talk to' the Model.
+  void incrementCounter() => _model._incrementCounter();
+}
+
+class _Model {
+  int get integer => _integer;
+  int _integer = 0;
+  int _incrementCounter() => ++_integer;
+}
+```
 ## _Define the 'Look and Feel' of your App_
 Right at the beginning using the App's own State class, _AppState_, you're able to 
 define in detail how your app is to 'look and behave'. This State class is the 
@@ -85,3 +181,8 @@ class _ThisAppState extends AppState {
 ```
 ##### There is a long [list of parameters](https://github.com/AndriousSolutions/fluttery_framework/blob/5bf647ed5639739995f8d5b1cd150b03f8f87d23/lib/view/app_state.dart#L33) available to you using the AppState class.
 ##### (If you know the widgets, MaterialApp or CupertinoApp, you'll know these parameters.)
+
+##### Note, this package uses at its core the StateX package:
+
+[![statex](https://user-images.githubusercontent.com/32497443/178387749-1e28f27f-f64c-41df-b5c0-a7591f194e22.jpg)](https://pub.dev/packages/state_extended)
+[![Pub.dev](https://img.shields.io/pub/v/state_extended.svg?logo=data:image/png)](https://pub.dev/packages/state_extended) [![GitHub stars](https://img.shields.io/github/stars/AndriousSolutions/state_extended.svg?style=social&amp;logo=github)](https://github.com/AndriousSolutions/state_extended/stargazers)  [![Last Commit](https://img.shields.io/github/last-commit/AndriousSolutions/state_extended)](https://github.com/AndriousSolutions/state_extended/commits/master)

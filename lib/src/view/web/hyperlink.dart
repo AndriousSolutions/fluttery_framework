@@ -4,8 +4,6 @@
 
 import 'package:fluttery_framework/view.dart';
 
-import 'package:url_launcher/url_launcher.dart';
-
 /// A widget that displays a hyperlink
 class Hyperlink extends StatelessWidget {
   /// Must supply a child widget and a url string.

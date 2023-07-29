@@ -82,6 +82,8 @@ export 'package:fluttery_framework/view/extensions/string_extensions.dart';
 export 'package:fluttery_framework/src/view/uxutils/view.dart';
 
 /// Web
+export 'package:url_launcher/link.dart';
+export 'package:url_launcher/url_launcher.dart';
 export 'package:fluttery_framework/src/view/web/hyperlink.dart';
 export 'package:fluttery_framework/src/view/web/webpage_wrapper.dart';
 

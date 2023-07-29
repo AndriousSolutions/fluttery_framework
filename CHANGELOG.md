@@ -1,4 +1,10 @@
 
+## 4.3.0
+July 28, 2023
+- Supply a third alternative to the MaterialApp or CupertinoApp in the class, AppState
+  inAppBuilder and onAppBuilder
+- Continue updating documentation
+
 ## 4.2.0
 July 24, 2023
 - Introduced allowChangeTheme, allowChangeLocale and allowChangeUI for AppState
