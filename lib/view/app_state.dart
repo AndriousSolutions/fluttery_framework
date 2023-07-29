@@ -724,7 +724,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
         }
       }
     }
-    return app!;
+    return app;
   }
 
   /// Supply the appropriate List of 'observers' that are called
