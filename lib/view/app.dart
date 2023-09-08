@@ -111,19 +111,11 @@ class AppObject
 
   /// App-level error handling.
   void onError(FlutterErrorDetails details) {
-    // Call the App's 'current' error handler.
+    // Call the App's error handler.
     final handler = errorHandler?.flutterExceptionHandler;
     if (handler != null) {
       handler(details);
     }
-    // Don't when in DebugMode.
-    if (!kDebugMode) {
-      // Resets the count of errors to show a complete error message or an abbreviated one.
-      FlutterError.resetErrorCount();
-    }
-    // https://docs.flutter.dev/testing/errors#errors-caught-by-flutter
-    // Log the error.
-    FlutterError.presentError(details);
   }
 
   /// App-level error handling if async operation at start up fails

@@ -30,7 +30,7 @@ It supplies the adaptive functions and features expected of a production-ready a
 ### Installing
 Instead of using version number suggested in the '[Installing](https://pub.dev/packages/fluttery_framework#-installing-tab-)' page, 
 always go up to the '**minor**' semantic version number when installing this library package. 
-This means always have a trailing zero, '**.0**'.
+This means always having a trailing zero, '**.0**'.
 This allows you to take in any '**patch**' versions that involves bugfixes. 
 For example, when installing version 7.9.2, use 7.9.0. That means, the bug fix, 7.9.3, will be 
 installed the next time you 'upgrade' your dependencies.
@@ -132,5 +132,3 @@ It would encourage a separation of an app’s interface from its event handling 
 The Fluttery Framework is a culmination of five years of working with Flutter.
 It looks like Flutter and works like Flutter because it works with Flutter 
 as well as sound Dart and Flutter packages from the Flutter community.
-
-Enjoy.

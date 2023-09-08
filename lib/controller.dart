@@ -15,14 +15,13 @@ export 'package:flutter/cupertino.dart'
 
 // State Object's Controller
 export 'package:state_extended/state_extended.dart'
-    show SetStateMixin, StateListener, RootState, AsyncOps;
+    show StateXController, SetStateMixin, StateListener, RootState, AsyncOps;
 
 // App's View
 export 'package:fluttery_framework/view/app.dart' show App, AppDrawer;
 
 //App's Controller
-export 'package:fluttery_framework/controller/app.dart'
-    show AppController, StateXController;
+export 'package:fluttery_framework/controller/app.dart' show AppController;
 
 // Notifications
 export 'package:fluttery_framework/src/controller/schedule_notificaitons.dart';

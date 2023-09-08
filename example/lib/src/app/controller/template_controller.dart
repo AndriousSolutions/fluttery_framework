@@ -102,7 +102,7 @@ class ExampleAppController extends AppController {
   String get application => _appNames[_appCount];
 
   /// Switch to the other application.
-  void changeApp([String? appName = '']) {
+  Future<void> changeApp([String? appName = '']) async {
     //
     if (appName == null ||
         appName.isEmpty ||
@@ -126,7 +126,9 @@ class ExampleAppController extends AppController {
     unawaited(Prefs.setBool('words', _appNames[_appCount] == 'Word'));
 
     // Rerun the whole app with App.setState(() {})
-    Prefs.setInt('appRun', _appCount).then((value) => App.setState(() {}));
+    await Prefs.setInt('appRun', _appCount);
+
+    App.setState(() {});
   }
 
   Future<void> changeLocale() async {
@@ -260,7 +262,7 @@ class ExampleAppController extends AppController {
     final init = await super.initAsync();
     //
     if (ExampleAppController().allowErrors) {
-      throw AssertionError('error thrown in Page1State.initAsync()');
+      throw Exception('error thrown in template_controller in $state');
     }
     return init;
   }

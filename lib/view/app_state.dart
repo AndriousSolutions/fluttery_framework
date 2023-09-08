@@ -14,8 +14,6 @@ import 'package:state_extended/state_extended.dart' as s show StateX;
 
 import 'package:fluttery_framework/view.dart';
 
-import 'package:fluttery_framework/view.dart' as v;
-
 /// Highlights UI while debugging.
 import 'package:flutter/rendering.dart' as debug;
 
@@ -97,6 +95,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.inErrorHandler,
     super.inErrorScreen,
     super.inErrorReport,
+    super.inError,
     this.inInitState,
     this.inInitAsync,
     this.inHome,
@@ -110,6 +109,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     this.inOnGenerateRoute,
     this.inOnUnknownRoute,
     this.inNavigatorObservers,
+    this.inUpdateShouldNotify,
     this.inTransBuilder,
     this.inTitle,
     this.inGenerateTitle,
@@ -137,7 +137,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     this.inActions,
     this.inRestorationScopeId,
     this.inScrollBehavior,
-    this.inError,
     this.inAsyncError,
   })  : _stateRouteObserver = StateRouteObserver(),
         super(controller: controller ?? AppController()) {
@@ -252,6 +251,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Returns a List of Navigation Observers if any.
   final List<NavigatorObserver> Function()? inNavigatorObservers;
 
+  /// Should update the built-in InheritedWidget's dependencies
+  final bool Function(InheritedWidget oldWidget)? inUpdateShouldNotify;
+
   /// Returns the 'Transition Builder' if any.
   final TransitionBuilder Function()? inTransBuilder;
 
@@ -334,38 +336,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Returns the App's [ScrollBehavior] if any.
   final ScrollBehavior? Function()? inScrollBehavior;
 
-  /// Returns the App's 'Error Handler' if any.
-  final void Function(FlutterErrorDetails details)? inError;
-
   /// Returns the App's 'Async Error Handler' if any.
   final bool? Function(FlutterErrorDetails details)? inAsyncError;
-
-  /// A flag indicating we're running in the error routine.
-  ///
-  /// Set to avoid infinite loop if in errors in the error routine.
-  bool inErrorRoutine = false;
-
-  /// Retrieve and cast as this Framework's own particular 'controller' type.
-  @override
-  StateXController? get controller {
-    StateXController? controller;
-    final con = super.controller;
-    if (con != null) {
-      controller = con as StateXController;
-    }
-    return controller;
-  }
-
-  /// Retrieve and cast as this Framework's own particular 'controller' type.
-  @override
-  StateXController? controllerById(String? id) {
-    StateXController? controller;
-    final con = super.controllerById(id);
-    if (con != null) {
-      controller = con as StateXController;
-    }
-    return controller;
-  }
 
   /// Reference the 'parent' State object
   State? get parentState => _parentState;
@@ -727,6 +699,11 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     return app;
   }
 
+  /// Determine if the dependencies should be updated.
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) =>
+      onUpdateShouldNotify(oldWidget);
+
   /// Supply the appropriate List of 'observers' that are called
   /// when a route is changed in the Navigator.
   List<NavigatorObserver> _navigatorObservers() {
@@ -776,72 +753,69 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     return themeData;
   }
 
-  /// Override if you like to customize error handling.
-  @override
-// Allow a complete override. gp
-//  @mustCallSuper
-  void onError(FlutterErrorDetails details) {
-    // Don't call this routine within itself.
-    if (inErrorRoutine) {
-      return;
-    }
-    inErrorRoutine = true;
-
-    // If it involves the widgets library,
-    // call the latest SateX object's error routine
-    // Possibly the error occurred there.
-//    final library = details.library;
-//    if (library != null && 'gesture widgets library'.contains(library)) {
-    final state = endState;
-    if (state != null) {
-      try {
-        final stack = details.stack?.toString();
-        if (stack != null) {
-          //
-          var name = state.toString();
-          name = name.substring(0, name.indexOf('#'));
-          // That State object's build() function was called.
-          if (state is StateX && stack.contains('$name.build')) {
-            //
-            state.onError(details);
-          }
-        }
-      } catch (e, stack) {
-        recordException(e, stack);
-      }
-      // Always test if there was an error in the error handler
-      // Include it in the error reporting as well.
-      if (hasError) {
-        _onErrorInHandler();
-      }
-    }
-    //   }
-
-    // The base Error Handler
-    super.onError(details);
-
-    // Always test if there was an error in the error handler
-    // Include it in the error reporting as well.
-    if (hasError) {
-      _onErrorInHandler();
-    }
-
-    // If there's any 'inline function' error handler.
-    // It takes last precedence.
-    if (inError != null) {
-      try {
-        inError!(details);
-      } catch (e, stack) {
-        recordException(e, stack);
-      }
-      // Always test if there was an error in the error handler
-      // Include it in the error reporting as well.
-      if (hasError) {
-        _onErrorInHandler();
-      }
-    }
-    inErrorRoutine = false;
-  }
+//   /// Override if you like to customize error handling.
+// // Allow a complete override. gp
+// //  @mustCallSuper
+//   @override
+//   void onError(FlutterErrorDetails details) {
+//     // Don't call this routine within itself.
+//     if (inErrorRoutine) {
+//       return;
+//     }
+//     inErrorRoutine = true;
+//
+//     // If the latest StateX was involved call its error routine
+//     // Possibly the error occurred there.
+//     final state = endState;
+//     if (state != null) {
+//       try {
+//         final stack = details.stack?.toString();
+//         if (stack != null) {
+//           //
+//           var name = state.toString();
+//           name = name.substring(0, name.indexOf('#'));
+//           // That State object's build() function was called.
+//           if (state is StateX && stack.contains('$name.build')) {
+//             //
+//             state.onError(details);
+//           }
+//         }
+//       } catch (e, stack) {
+//         recordException(e, stack);
+//       }
+//       // Always test if there was an error in the error handler
+//       // Include it in the error reporting as well.
+//       if (hasError) {
+//         _onErrorInHandler();
+//       }
+//     }
+//     //   }
+//
+//     // The base Error Handler
+//     super.onError(details);
+//
+//     // Always test if there was an error in the error handler
+//     // Include it in the error reporting as well.
+//     if (hasError) {
+//       _onErrorInHandler();
+//     }
+//
+//     // If there's any 'inline function' error handler.
+//     // It takes last precedence.
+//     if (inError != null) {
+//       try {
+//         inError!(details);
+//       } catch (e, stack) {
+//         recordException(e, stack);
+//       }
+//       // Always test if there was an error in the error handler
+//       // Include it in the error reporting as well.
+//       if (hasError) {
+//         _onErrorInHandler();
+//       }
+//     }
+//     inErrorRoutine = false;
+//   }
 
   /// Rebuild the 'latest/current' State object and the 'root/first' State object
   /// This is to address the possibility an App has called another App.
@@ -968,6 +942,17 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       inNavigatorObservers != null
           ? inNavigatorObservers!()
           : const <NavigatorObserver>[];
+
+  /// Should update the built-in InheritedWidget's dependencies
+  bool onUpdateShouldNotify(covariant InheritedWidget oldWidget) {
+    bool should;
+    if (inUpdateShouldNotify != null) {
+      should = inUpdateShouldNotify!(oldWidget);
+    } else {
+      should = true;
+    }
+    return should;
+  }
 
   /// Returns the 'Transition Builder' if any.
   TransitionBuilder? onBuilder() =>
@@ -1112,7 +1097,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
 /// The underlying State object representing the App's View in the MVC pattern.
 /// Allows for setting debug settings and defining the App's error routine.
-abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
+abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   //
   _AppState({
     AppController? controller,
@@ -1171,6 +1156,7 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     this.inErrorHandler,
     this.inErrorScreen,
     this.inErrorReport,
+    this.inError,
   })  : currentErrorFunc = FlutterError.onError,
         super(controller: controller) {
     // If a tester is running. Don't switch out its error handler.
@@ -1188,19 +1174,20 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     // Take in the parameter
     _supportedLocales = supportedLocales ?? [];
 
-    debugShowMaterialGrid ??= false;
-    showPerformanceOverlay ??= false;
-    checkerboardRasterCacheImages ??= false;
-    checkerboardOffscreenLayers ??= false;
-    showSemanticsDebugger ??= false;
-    debugShowWidgetInspector ??= false;
-    debugShowCheckedModeBanner ??= true;
-    debugPaintSizeEnabled ??= false;
-    debugPaintBaselinesEnabled ??= false;
-    debugPaintPointersEnabled ??= false;
-    debugPaintLayerBordersEnabled ??= false;
-    debugRepaintRainbowEnabled ??= false;
-    debugRepaintTextRainbowEnabled ??= false;
+    /// Don't assign them here. Their ?? operator is then useless.
+    // debugShowMaterialGrid ??= false;
+    // showPerformanceOverlay ??= false;
+    // checkerboardRasterCacheImages ??= false;
+    // checkerboardOffscreenLayers ??= false;
+    // showSemanticsDebugger ??= false;
+    // debugShowWidgetInspector ??= true;
+    // debugShowCheckedModeBanner ??= false;
+    // debugPaintSizeEnabled ??= false;
+    // debugPaintBaselinesEnabled ??= false;
+    // debugPaintPointersEnabled ??= false;
+    // debugPaintLayerBordersEnabled ??= false;
+    // debugRepaintRainbowEnabled ??= false;
+    // debugRepaintTextRainbowEnabled ??= false;
 
     // Supply a customized error handling.
     _errorHandler = AppErrorHandler(
@@ -1301,6 +1288,9 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   ErrorWidgetBuilder? errorScreen;
   ReportErrorHandler? errorReport;
 
+  /// Returns the App's 'Error Handler' if any.
+  final void Function(FlutterErrorDetails details)? inError;
+
   final FlutterExceptionHandler? inErrorHandler;
   final ErrorWidgetBuilder? inErrorScreen;
   final Future<void> Function(Object exception, StackTrace stack)?
@@ -1340,17 +1330,56 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
     FlutterError.onError = _handleError;
   }
 
+  /// A flag indicating we're running in the error routine.
+  ///
+  /// Set to avoid infinite loop if in errors in the error routine.
+  bool inErrorRoutine = false;
+
   /// Supply an 'error handler' routine to fire when an error occurs.
   // details.exception, details.stack
-  @protected
-  @mustCallSuper
+  /// Override if you like to customize error handling.
+  // Allow a complete override. gp
+  //  @mustCallSuper
+  @override
   void onError(FlutterErrorDetails details) {
+    // Don't call this routine within itself.
+    if (inErrorRoutine) {
+      return;
+    }
+    // In case there's an error in this routine
+    inErrorRoutine = true;
+
+    // The base Error Handler
+    super.onError(details);
+
     try {
-      // Call the App's 'current' error handler.
+      // Call the App's error handler.
       App.onError(details);
     } catch (e, stack) {
       recordException(e, stack);
     }
+
+    // Always test if there was an error in the error handler
+    // Include it in the error reporting as well.
+    if (hasError) {
+      _onErrorInHandler();
+    }
+
+    // If there's any 'inline function' error handler.
+    // It takes last precedence.
+    if (inError != null) {
+      try {
+        inError!(details);
+      } catch (e, stack) {
+        recordException(e, stack);
+      }
+      // Always test if there was an error in the error handler
+      // Include it in the error reporting as well.
+      if (hasError) {
+        _onErrorInHandler();
+      }
+    }
+    inErrorRoutine = false;
   }
 
   // Notify the developer there's an error in the error handler.
@@ -1379,27 +1408,14 @@ abstract class _AppState<T extends StatefulWidget> extends v.AppStateX<T> {
   }
 }
 
-/// Supply an 'error handler' routine if something goes wrong.
-/// It need not be implemented, but it's their for your consideration.
-///
-///
-///
-/// dartdoc:
-/// {@category StateX class}
-/// {@category Error handling}
-mixin StateXonErrorMixin<T extends StatefulWidget> on s.StateX<T> {
-  /// This is called within the framework.
-  void onError(FlutterErrorDetails details) {}
-}
-
-/// A State object that implements a built-in InheritedWidget
+/// A State object that uses the built-in InheritedWidget
 ///
 /// dartdoc:
 /// {@category StateX class}
 abstract class StateIn<T extends StatefulWidget> extends StateX<T> {
   ///
   StateIn({StateXController? controller})
-      : super(controller: controller, useInheritedWidget: true);
+      : super(controller: controller, useInherited: true);
 
   /// Build the Android interface
   @override
@@ -1417,21 +1433,9 @@ abstract class StateIn<T extends StatefulWidget> extends StateX<T> {
 /// {@category StateX class}
 /// {@category Testing}
 abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
-    with NavigatorStateMethodsMixin, StateXonErrorMixin {
+    with NavigatorStateMethodsMixin {
   ///
-  StateX({StateXController? controller, this.useInheritedWidget})
-      : super(controller) {
-    // Ensure a default value
-    _useInherited = this.useInheritedWidget ?? false;
-  }
-
-  /// A flag determining whether the built-in InheritedWidget is used or not.
-  final bool? useInheritedWidget;
-  // Same flag but non-nullable
-  late bool _useInherited;
-
-  // Collect any 'widgets' depending on this State's InheritedWidget.
-  final Set<BuildContext> _dependencies = {};
+  StateX({super.controller, super.useInherited});
 
   @override
   void initState() {
@@ -1439,50 +1443,7 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
     _appState = App.appState;
   }
 
-  late v.AppState? _appState;
-
-  /// Returns the 'first' StateX object in the App
-  // Important to prefix with the class name to 'share' this as a mixin.
-  @override
-  AppState? get rootState {
-    AppState? appState;
-    final root = super.rootState;
-    if (root != null) {
-      appState = root as AppState;
-    }
-    return appState;
-  }
-
-  /// Provide the 'main' controller to this State object.
-  ///
-  /// It can have more than one controller.
-  @override
-  StateXController? get controller {
-    final controller = super.controller;
-    return controller == null ? null : controller as StateXController;
-  }
-
-  /// Retrieve and cast as this Framework's own particular 'controller' type.
-  @override
-  StateXController? controllerById(String? id) {
-    StateXController? controller;
-    final con = super.controllerById(id);
-    if (con != null) {
-      controller = con as StateXController;
-    }
-    return controller;
-  }
-
-  /// Retrieve and cast as this Framework's own particular 'controller' type.
-  @override
-  StateXController? get rootCon {
-    StateXController? controller;
-    final con = super.rootCon;
-    if (con != null) {
-      controller = con as StateXController;
-    }
-    return controller;
-  }
+  late AppState? _appState;
 
   /// Build the Android interface.
   ///
@@ -1498,85 +1459,12 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
   /// If only an Android/Windows/Linux/Web app, implement this with '=> buildAndroid(context);'.
   Widget buildiOS(BuildContext context);
 
-  /// Implement the build() function if you don't use initAsync().
-  ///
-  /// Implemented in mixin FutureBuilderStateMixin.
-  ///
-  /// Explicitly implemented here to highlight the override.
-  @override
-  //ignore: unnecessary_overrides
-  Widget build(BuildContext context) => super.build(context);
-
-  @override
-  Widget buildF(BuildContext context) => _useInherited
-      ? _StateXInheritedWidget(
-          key: ValueKey<StateX>(this),
-          state: this,
-          child: _child ??= buildIn(context),
-        )
-      : buildIn(context);
-
   /// Compiled once and passed to an InheritedWidget.
   ///
   /// Supply the appropriate interface depending on the platform.
+  @override
   Widget buildIn(BuildContext context) =>
       App.useMaterial ? buildAndroid(context) : buildiOS(context);
-
-  InheritedElement? _inheritedElement;
-
-  // Widget passed to the InheritedWidget.
-  Widget? _child;
-
-  /// Determine if the dependencies should be updated.
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
-
-  ///
-  ///  Set the specified widget (through its context) as a dependent of the InheritedWidget
-  ///
-  ///  Return false if not configured to use the InheritedWidget
-  @override
-  bool dependOnInheritedWidget(BuildContext? context) {
-    var depend = _useInherited && context != null;
-    if (depend) {
-      if (_inheritedElement == null) {
-        _dependencies.add(context);
-      } else {
-        context.dependOnInheritedElement(_inheritedElement!);
-      }
-    } else {
-      depend = super.dependOnInheritedWidget(context);
-    }
-    return depend;
-  }
-
-  /// In harmony with Flutter's own API
-  /// Rebuild the InheritedWidget of the 'closes' InheritedStateX object if any.
-  @override
-  void notifyClients() {
-    if (_useInherited) {
-      setState(() {});
-    } else {
-      super.notifyClients();
-    }
-  }
-
-  @override
-  void dispose() {
-    _appState = null;
-    _child = null;
-    _inheritedElement = null;
-    _dependencies.clear();
-    super.dispose();
-  }
-
-  /// Called when the State's InheritedWidget is called again
-  /// This 'widget function' will be called again.
-  Widget state(WidgetBuilder? widgetFunc) {
-    widgetFunc ??= (_) => const SizedBox();
-    return _useInherited
-        ? _SetStateWidget(stateX: this, widgetFunc: widgetFunc)
-        : widgetFunc(context);
-  }
 
   /// Use this to navigate throughout the your app
   static NavigatorState get router => App.router;
@@ -1603,52 +1491,6 @@ abstract class StateX<T extends StatefulWidget> extends s.StateX<T>
     super.deactivate();
     // No longer informed about changes to its route.
     _appState?.unsubscribe(this);
-  }
-}
-
-/// The InheritedWidget used by StateX
-class _StateXInheritedWidget extends InheritedWidget {
-  const _StateXInheritedWidget({
-    super.key,
-    required this.state,
-    required super.child,
-  });
-
-  final StateX state;
-
-  @override
-  InheritedElement createElement() {
-    //
-    final element = InheritedElement(this);
-    state._inheritedElement = element;
-    // Associate any dependencies widgets to this InheritedWidget
-    // toList(growable: false) prevent concurrent error
-    for (final context in state._dependencies.toList(growable: false)) {
-      context.dependOnInheritedElement(element);
-      state._dependencies.remove(context);
-    }
-    return element;
-  }
-
-  /// Use the StateX's updateShouldNotify() function
-  @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) =>
-      state.updateShouldNotify(oldWidget);
-}
-
-/// Supply a widget to depend upon a StateX's InheritedWidget
-class _SetStateWidget extends StatelessWidget {
-  const _SetStateWidget({
-    Key? key,
-    required this.stateX,
-    required this.widgetFunc,
-  }) : super(key: key);
-  final StateX stateX;
-  final WidgetBuilder widgetFunc;
-  @override
-  Widget build(BuildContext context) {
-    context.dependOnInheritedElement(stateX._inheritedElement!);
-    return widgetFunc(context);
   }
 }
 

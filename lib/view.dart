@@ -26,7 +26,7 @@ export 'package:flutter/foundation.dart'; // show kDebugMode, kIsWeb, mustCallSu
 
 /// StateX
 export 'package:state_extended/state_extended.dart'
-    show AppStateX, InheritedStateX, SetState;
+    show AppStateX, SetState, StateXonErrorMixin;
 
 /// App
 export 'package:fluttery_framework/view/app.dart';

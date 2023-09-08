@@ -15,7 +15,7 @@ class _CounterPageState extends StateX<CounterPage> {
   _CounterPageState()
       : super(
           controller: CounterController(),
-          useInheritedWidget: CounterController().useInherited,
+          useInherited: CounterController().useInherited,
         ) {
     con = controller as CounterController;
   }
@@ -85,14 +85,11 @@ class _CounterPageState extends StateX<CounterPage> {
                           await Navigator.push(
                             context,
                             MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  Page1(key: UniqueKey()),
+                              builder: (BuildContext context) => const Page1(),
                             ),
                           );
                         },
-                        child: const Text(
-                          'Page 1',
-                        ),
+                        child: L10n.t('Page 1'),
                       ),
                     ),
                   ),
@@ -175,6 +172,29 @@ class _CounterPageState extends StateX<CounterPage> {
                       ],
                     ),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 50.0),
+                          child: ElevatedButton(
+                            key: const Key('Page 1'),
+                            onPressed: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (BuildContext context) =>
+                                      const Page1(),
+                                ),
+                              );
+                            },
+                            child: L10n.t('Page 1'),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 5.h),
                     child: CupertinoButton.filled(
@@ -205,4 +225,13 @@ class _CounterPageState extends StateX<CounterPage> {
       setState(con.onPressed);
     }
   }
+
+  /// Place breakpoints and step through the functions below
+  /// to see how this all works.
+
+  @override
+  Widget build(BuildContext context) => super.build(context);
+
+  @override
+  Widget buildF(BuildContext context) => super.buildF(context);
 }

@@ -20,7 +20,7 @@ class AppMenu {
           _con.changeUI();
           break;
         case 'application':
-          _con.changeApp();
+          await _con.changeApp();
           break;
         case 'locale':
           _con.changeLocale();

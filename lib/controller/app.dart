@@ -15,7 +15,7 @@ import 'package:fluttery_framework/view.dart';
 ///
 /// dartdoc:
 /// {@category State Object Controller}
-class AppController extends StateXController implements ConnectivityListener {
+class AppController extends c.StateXController implements ConnectivityListener {
   /// Optionally supply a 'State' object to be linked to this State Controller.
   AppController([super.state]);
 
@@ -38,41 +38,4 @@ class AppController extends StateXController implements ConnectivityListener {
   /// If the device's connectivity changes.
   @override
   void onConnectivityChanged(ConnectivityResult result) {}
-}
-
-///
-///
-/// dartdoc:
-/// {@category State Object Controller}
-/// {@category Get started}
-class StateXController extends c.StateXController {
-  ///
-  StateXController([super.state]);
-
-  /// Link a widget to a InheritedWidget
-  @override
-  bool dependOnInheritedWidget(BuildContext? context) =>
-      state?.dependOnInheritedWidget(context) ?? false;
-
-  /// Retrieve the State object by its StatefulWidget. Returns null if not found.
-  @override
-  StateX? stateOf<T extends StatefulWidget>() {
-    final state = super.stateOf<T>();
-    return state == null ? null : state as StateX;
-  }
-
-  /// Return a Set of State objects.
-  @override
-  Set<StateX> get states => Set.from(super.states.whereType<StateX>());
-
-  /// Retrieve and cast as this Framework's own particular 'AppState' type.
-  @override
-  AppState? get rootState {
-    AppState? appState;
-    final state = super.rootState;
-    if (state != null) {
-      appState = state as AppState;
-    }
-    return appState;
-  }
 }

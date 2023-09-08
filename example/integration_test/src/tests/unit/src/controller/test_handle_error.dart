@@ -27,7 +27,7 @@ void testHandleError(WidgetTester tester) {
 
   state = con.state;
 
-  if (state != null && state is StateXonErrorMixin) {
+  if (state != null) {
     //
     state.onError(details);
   }

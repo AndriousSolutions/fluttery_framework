@@ -20,7 +20,7 @@ This class allows you to use a [State Object Controller](https://pub.dev/documen
 </table>
 The StateX class gives you five new functions and features:
 
-<ul style="list-style-type: none">
+<ul>
    <li>The State Object Controller separates the interface (i.e. the State object's <b>build</b>() function) from everything else:
    <b><a href="https://pub.dev/documentation/fluttery_framework/latest/controller_app/StateXController-class.html" style="text-decoration:none;">StateXController</a></b></li>
    <li>Two functions to supply the Material interface and the Cupertino interface:
@@ -84,9 +84,9 @@ Each has its own individual asynchronous operation loading a animal graphic from
 The last gif file shows the whole startup process for this particular app.
 It carry's on and shows you they are indeed individual operations ending with a different picture.
 <div>
-<img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6ccff53b-da0e-41b9-aace-81dc95111254" width="171" height="357">
-<img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/25ab69de-b9eb-4c8c-a2d0-9598152bf360" width="171" height="357">
-<img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/009afbfb-40a3-4c69-8813-7d7e71e21888" width="171" height="357">
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6ccff53b-da0e-41b9-aace-81dc95111254"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6ccff53b-da0e-41b9-aace-81dc95111254" width="171" height="357"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/25ab69de-b9eb-4c8c-a2d0-9598152bf360"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/25ab69de-b9eb-4c8c-a2d0-9598152bf360" width="171" height="357"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/009afbfb-40a3-4c69-8813-7d7e71e21888"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/009afbfb-40a3-4c69-8813-7d7e71e21888" width="171" height="357"></a>
 </div>
 In this case, since they're running on an Android emulator, those spinners are from the 
 <a href="https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/material/progress_indicator.dart#L554">CircularProgressIndicator</a> widget.

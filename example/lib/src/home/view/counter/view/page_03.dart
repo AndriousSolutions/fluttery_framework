@@ -22,9 +22,6 @@ class _Page3State extends StateX<Page3> {
   @override
   Widget buildAndroid(BuildContext context) => _buildPage3(
         count: count,
-        newKey: () {
-          startState?.setState(() {});
-        },
         counter: () {
           setState(() => count++);
         },
@@ -42,7 +39,7 @@ class _Page3State extends StateX<Page3> {
   Widget _buildPage3({
     int count = 0,
     required void Function() counter,
-    required void Function() newKey,
+    // required void Function() newKey,
     required void Function() page1counter,
     required void Function() page2counter,
   }) =>
@@ -50,15 +47,15 @@ class _Page3State extends StateX<Page3> {
         label: '3',
         count: count,
         counter: counter,
-        column: (_) => [
-          Flexible(
-            child: ElevatedButton(
-              key: const Key('New Key'),
-              onPressed: newKey,
-              child: const Text('New Key for Page 1'),
-            ),
-          ),
-        ],
+        // column: (_) => [
+        //   Flexible(
+        //     child: ElevatedButton(
+        //       key: const Key('New Key'),
+        //       onPressed: newKey,
+        //       child: const Text('New Key for Page 1'),
+        //     ),
+        //   ),
+        // ],
         row: (BuildContext context) => [
           Flexible(
             child: ElevatedButton(
@@ -68,7 +65,7 @@ class _Page3State extends StateX<Page3> {
                   ..pop()
                   ..pop();
               },
-              child: const Text('Page 1'),
+              child: L10n.t('Page 1'),
             ),
           ),
           Flexible(
@@ -77,7 +74,7 @@ class _Page3State extends StateX<Page3> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Page 2'),
+              child: L10n.t('Page 2'),
             ),
           ),
         ],
@@ -85,12 +82,12 @@ class _Page3State extends StateX<Page3> {
           ElevatedButton(
             key: const Key('Page 1 Counter'),
             onPressed: page1counter,
-            child: const Text('Page 1 Counter'),
+            child: L10n.t('Page 1 Counter'),
           ),
           ElevatedButton(
             key: const Key('Page 2 Counter'),
             onPressed: page2counter,
-            child: const Text('Page 2 Counter'),
+            child: L10n.t('Page 2 Counter'),
           ),
         ],
       );
@@ -98,4 +95,13 @@ class _Page3State extends StateX<Page3> {
   // This Cupertino interface is not implemented.
   @override
   Widget buildiOS(BuildContext context) => buildAndroid(context);
+
+  /// Place breakpoints and step through the functions below
+  /// to see how this all works.
+
+  @override
+  Widget build(BuildContext context) => super.build(context);
+
+  @override
+  Widget buildF(BuildContext context) => super.buildF(context);
 }

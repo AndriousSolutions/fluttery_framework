@@ -169,33 +169,30 @@ class WordPairsTimer extends StateXController {
 
     _initTimer = true;
 
-    Duration? duration;
+    Duration duration;
     void Function()? callback;
 
     /// Supply a 'default' duration if one is not provided.
-    if (duration == null) {
-      int? seconds;
-      if (seconds == null) {
+    if (this.duration == null) {
+      int seconds;
+      if (this.seconds == null) {
         seconds = 5;
       } else {
-        seconds = seconds;
+        seconds = this.seconds!;
       }
       duration = Duration(seconds: seconds);
     } else {
-      duration = duration;
+      duration = this.duration!;
     }
 
     /// Supply a 'default' callback function
-    if (callback == null) {
+    if (this.callback == null) {
       callback = _getWordPair;
     } else {
       callback = callback;
     }
 
-    timer = Timer.periodic(
-      duration,
-      (timer) => callback!(),
-    );
+    timer = Timer.periodic(duration, (timer) => callback!());
   }
 }
 

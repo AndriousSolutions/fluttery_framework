@@ -18,7 +18,7 @@ class Page2 extends StatefulWidget {
 /// This works with a separate 'data source'
 /// It a separate data source, and so the count is never reset to zero.
 class Page2State extends StateX<Page2> {
-  /// Define an InheritedWidget to be inserted above this Widget on the Widget tree.
+  ///
   Page2State() : super(controller: Controller()) {
     /// Cast to type, Controller
     con = controller as Controller;
@@ -98,9 +98,7 @@ class Page2State extends StateX<Page2> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text(
-              'Page 1',
-            ),
+            child: L10n.t('Page 1'),
           ),
         ),
         Flexible(
@@ -118,9 +116,7 @@ class Page2State extends StateX<Page2> {
               /// In this case, to show the count may have changed.
               setState(() {});
             },
-            child: const Text(
-              'Page 3',
-            ),
+            child: L10n.t('Page 3'),
           ),
         ),
       ],
@@ -132,7 +128,7 @@ class Page2State extends StateX<Page2> {
           key: const Key('Page 1 Counter'),
           style: flatButtonStyle,
           onPressed: onPressed,
-          child: const Text('Page 1 Counter'),
+          child: L10n.t('Page 1 Counter'),
         ),
       ],
     );

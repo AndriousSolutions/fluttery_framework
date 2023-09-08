@@ -104,9 +104,7 @@ class Page1State extends StateX<Page1> {
                   ),
                 );
               },
-              child: const Text(
-                'Page 2',
-              ),
+              child: L10n.t('Page 2'),
             ),
           ),
         ],
@@ -114,4 +112,13 @@ class Page1State extends StateX<Page1> {
 
   @override
   Widget buildiOS(BuildContext context) => buildAndroid(context);
+
+  /// Place breakpoints and step through the functions below
+  /// to see how this all works.
+
+  @override
+  Widget build(BuildContext context) => super.build(context);
+
+  @override
+  Widget buildF(BuildContext context) => super.buildF(context);
 }

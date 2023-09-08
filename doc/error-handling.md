@@ -36,7 +36,7 @@ mixin StateXonErrorMixin<T extends StatefulWidget> on StateX<T> {
 
 <h3 id="count">Count On Errors</h3>
 <div>
-<img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/665db521-0636-462b-bd01-ee16fbb14955" width="171" height="357">
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/665db521-0636-462b-bd01-ee16fbb14955"><img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/665db521-0636-462b-bd01-ee16fbb14955" width="171" height="357"></a>
 </div>
 <p>The example app that accompanies the Fluttery Framework package includes the traditional 'counter app.'
 Note, with every tap of that button, an error is purposely thrown to demonstrate the Fluttery Framework's innate error handling.

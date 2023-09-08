@@ -69,4 +69,8 @@ class _ExampleAppState extends AppState {
           ),
         ],
       );
+
+  /// Place a breakpoint to see how it's built
+  @override
+  Widget build(BuildContext context) => super.build(context);
 }
