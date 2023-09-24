@@ -1,6 +1,4 @@
 //
-import 'dart:async' show unawaited;
-
 import 'package:fluttery_framework_example/src/controller.dart';
 
 import 'package:fluttery_framework_example/src/model.dart' show Settings;
@@ -8,7 +6,6 @@ import 'package:fluttery_framework_example/src/model.dart' show Settings;
 // You can see 'at a glance' this Controller also 'talks to' the interface (View).
 import 'package:fluttery_framework_example/src/view.dart';
 
-///
 ///
 class ExampleAppController extends AppController {
   factory ExampleAppController() => _this ??= ExampleAppController._();
@@ -81,16 +78,24 @@ class ExampleAppController extends AppController {
 
     switch (_appNames[_appCount]) {
       case 'Word Pairs':
-        widget = WordPairs(key: key);
+//        widget = const WordPairs(key: ValueKey<String>('Word Pairs'));
+//        widget = WordPairs(key: key);
+        widget = const WordPairs();
         break;
       case 'Counter':
-        widget = CounterPage(key: key);
+//        widget = const CounterPage(key: ValueKey<String>('Counter'));
+//        widget = CounterPage(key: key);
+        widget = const CounterPage();
         break;
       case 'Contacts':
-        widget = ContactsList(key: key);
+//        widget = const ContactsList(key: ValueKey<String>('Contacts'));
+//        widget = ContactsList(key: key);
+        widget = const ContactsList();
         break;
       case 'Inherited':
-        widget = HomePage(key: key);
+//        widget = const HomePage(key: ValueKey<String>('Inherited'));
+//        widget = HomePage(key: key);
+        widget = const HomePage();
         break;
       default:
         widget = const SizedBox();
@@ -123,7 +128,7 @@ class ExampleAppController extends AppController {
       _appCount = 0;
     }
 
-    unawaited(Prefs.setBool('words', _appNames[_appCount] == 'Word'));
+    await Prefs.setBool('words', _appNames[_appCount] == 'Word');
 
     // Rerun the whole app with App.setState(() {})
     await Prefs.setInt('appRun', _appCount);
@@ -132,26 +137,28 @@ class ExampleAppController extends AppController {
   }
 
   Future<void> changeLocale() async {
+    //
     final locale = App.locale;
 
     final locales = App.supportedLocales!;
 
     final initialItem = locales.indexOf(locale!);
 
+    // record selected locale
+    Locale? appLocale;
+
     final spinner = ISOSpinner(
         initialItem: initialItem,
         supportedLocales: locales,
         onSelectedItemChanged: (int index) async {
-          await App.changeLocale(L10n.getLocale(index));
+          appLocale = L10n.getLocale(index);
         });
 
     await DialogBox(
       title: 'Current Language'.tr,
       body: [spinner],
-      press01: () {
-        spinner.onSelectedItemChanged(initialItem);
-      },
-      press02: () {},
+      press01: () {},
+      press02: () => App.changeLocale(appLocale),
       switchButtons: Settings.getLeftHanded(),
     ).show();
 
@@ -176,7 +183,7 @@ class ExampleAppController extends AppController {
         App.setThemeData(swatch: value);
         App.setState(() {});
       },
-      shrinkWrap: true,
+//      alignment: WrapAlignment.center,
     );
   }
 

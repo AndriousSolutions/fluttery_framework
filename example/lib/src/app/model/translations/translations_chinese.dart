@@ -35,4 +35,9 @@ Map<String, String> zhCN = {
   'Saved Suggestions': '保存的建议',
   'Current Language': '当前语言',
   'Use built-in InheritedWidget': '使用内置的 InheritedWidget',
+  'Inherited State Object Demo': '继承状态对象演示',
+  'New Dogs': '新狗',
+  'New Cats': '新猫',
+  'New Foxes': '新狐狸',
+  'New Birds': '新鸟',
 };

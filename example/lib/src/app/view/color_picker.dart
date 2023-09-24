@@ -1,8 +1,8 @@
-//
 /// Import the interface
 import 'package:fluttery_framework_example/src/view.dart';
 
-import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart'
+    show MaterialColorPicker;
 
 class ColorPicker {
   //
@@ -45,8 +45,6 @@ class ColorPicker {
   static ValueChanged<ColorSwatch<int?>>? _onChange;
 
   static List<ColorSwatch<int?>> get colors => Colors.primaries;
-
-//  static Text title = const Text('Colour Theme');
 
   static Future<ColorSwatch<int>?> showColorPicker({
     required BuildContext context,

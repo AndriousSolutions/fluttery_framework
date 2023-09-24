@@ -84,7 +84,7 @@ void integrationTestFlutteryFramework() {
         case 'Word Pairs':
 
           /// Random Word Pairs app
-//          await wordsTest(tester);
+          await wordsTest(tester);
 
           /// Test dialog windows
           await dialogTests(tester);

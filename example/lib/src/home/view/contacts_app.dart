@@ -6,6 +6,7 @@ import 'package:fluttery_framework_example/src/controller.dart';
 class ContactsList extends StatefulWidget {
   const ContactsList({Key? key, this.title = 'Contacts App'}) : super(key: key);
   final String title;
+
   @override
   State createState() => _ContactListState();
 }
@@ -19,7 +20,7 @@ class _ContactListState extends StateX<ContactsList> {
   @override
   void initState() {
     super.initState();
-    _title = App.title!;
+    _title = App.title;
     appCon = ExampleAppController();
   }
 
@@ -196,7 +197,6 @@ Widget _buildAndroid(_ContactListState state) {
               color: Colors.white),
         ),
         AppMenu().popupMenuButton,
-//        appCon.menu,
       ],
     ),
     drawer: AppDrawer(key: const Key('AppDrawer')),

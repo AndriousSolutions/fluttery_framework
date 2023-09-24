@@ -27,7 +27,7 @@ class _HomePageState extends StateX<HomePage> {
   @override
   Widget buildAndroid(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text(widget.title ?? 'Inherited State Object Demo'),
+          title: L10n.t(widget.title ?? 'Inherited State Object Demo'),
           actions: [AppMenu().popupMenuButton],
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -57,25 +57,25 @@ class _HomePageState extends StateX<HomePage> {
               Flexible(
                 child: TextButton(
                   onPressed: () => con.newDogs(),
-                  child: const Text('New Dogs'),
+                  child: Text('New Dogs'.tr),
                 ),
               ),
               Flexible(
                 child: TextButton(
                   onPressed: () => con.newCats(),
-                  child: const Text('New Cats'),
+                  child: Text('New Cats'.tr),
                 ),
               ),
               Flexible(
                 child: TextButton(
                   onPressed: () => con.newFoxes(),
-                  child: const Text('New Foxes'),
+                  child: Text('New Foxes'.tr),
                 ),
               ),
               Flexible(
                 child: TextButton(
                   onPressed: () => con.newBirds(),
-                  child: const Text('New Birds'),
+                  child: Text('New Birds'.tr),
                 ),
               ),
             ],

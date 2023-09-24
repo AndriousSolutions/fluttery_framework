@@ -37,4 +37,9 @@ Map<String, String> deDE = {
   'Current Language': 'Aktuelle Sprache',
   'Use built-in InheritedWidget':
       'Verwenden Sie das integrierte InheritedWidget',
+  'Inherited State Object Demo': 'Demo zum geerbten Zustandsobjekt',
+  'New Dogs': 'Neue Hunde',
+  'New Cats': 'Neue Katzen',
+  'New Foxes': 'Neue Füchse',
+  'New Birds': 'Neue Vögel',
 };

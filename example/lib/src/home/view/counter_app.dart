@@ -161,7 +161,7 @@ class _CounterPageState extends StateX<CounterPage> {
                     padding: EdgeInsets.only(top: 5.h),
                     child: Column(
                       children: [
-                        const Text('Use built-in InheritedWidget'),
+                        Text('Use built-in InheritedWidget'.tr),
                         CupertinoSwitch(
                           value: con.useInherited,
                           onChanged: (v) {

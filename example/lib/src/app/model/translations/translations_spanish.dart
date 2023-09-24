@@ -36,4 +36,9 @@ Map<String, String> esAR = {
   'Saved Suggestions': 'Sugerencias guardadas',
   'Current Language': 'Idioma actual',
   'Use built-in InheritedWidget': 'Usar widget heredado incorporado',
+  'Inherited State Object Demo': 'Demostración de objeto de estado heredado',
+  'New Dogs': 'Perros nuevos',
+  'New Cats': 'Nuevos gatos',
+  'New Foxes': 'Nuevos zorros',
+  'New Birds': 'Nuevas aves',
 };

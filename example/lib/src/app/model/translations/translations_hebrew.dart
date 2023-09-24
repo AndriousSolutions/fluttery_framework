@@ -36,4 +36,9 @@ Map<String, String> heIL = {
   'Saved Suggestions': 'הצעות שמורות',
   'Current Language': 'שפה נוכחית',
   'Use built-in InheritedWidget': 'השתמש ב-InheritedWidget מובנה',
+  'Inherited State Object Demo': 'הדגמה של אובייקט מדינה בירושה',
+  'New Dogs': 'כלבים חדשים',
+  'New Cats': 'חתולים חדשים',
+  'New Foxes': 'שועלים חדשים',
+  'New Birds': 'ציפורים חדשות',
 };

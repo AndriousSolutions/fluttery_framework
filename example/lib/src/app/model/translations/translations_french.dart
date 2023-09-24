@@ -36,4 +36,9 @@ Map<String, String> frFR = {
   'Saved Suggestions': 'Suggestions enregistrées',
   'Current Language': 'Langue courante',
   'Use built-in InheritedWidget': 'Utiliser le InheritedWidget intégré',
+  'Inherited State Object Demo': "Démo d'objet d'état hérité",
+  'New Dogs': 'Nouveaux chiens',
+  'New Cats': 'Nouveaux chats',
+  'New Foxes': 'Nouveaux renards',
+  'New Birds': 'Nouveaux oiseaux',
 };

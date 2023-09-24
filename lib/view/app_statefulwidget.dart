@@ -160,6 +160,8 @@ class _StateApp extends State<AppStatefulWidget> {
     disposeStatic = state == null || state == this;
     // A flag indicating if this app is called by another app
     _appInApp = state != null && state != this;
+    // Not called by another app
+    v.App.standAloneApp = _appInApp;
   }
 
   // Flag to dispose static objects

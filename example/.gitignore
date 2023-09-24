@@ -19,7 +19,7 @@ out/
 .dart_tool/
 .pub-cache/
 # Ignore API documentation directory created by dartdoc:
-/doc/api/
+#/doc/api/
 
 # Android Studio
 /*.iml

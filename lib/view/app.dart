@@ -155,6 +155,18 @@ class AppObject
   set isInit(bool? init) => _isInit ??= init;
   bool? _isInit;
 
+  /// Determine if this app is running alone
+  bool? get standAloneApp => _standAlone;
+  set standAloneApp(bool? alone) {
+    if (!_standAlone) {
+      if (alone != null && alone) {
+        _standAlone = true;
+      }
+    }
+  }
+
+  bool _standAlone = false;
+
   /// Flag to set hot reload from now on.
   // ignore: unnecessary_getters_setters
   bool get hotReload => _hotReload;
@@ -502,6 +514,10 @@ mixin _AppThemeDataMixin {
       _iOSThemeData = value;
     } else if (value is ThemeData) {
       _iOSThemeData = MaterialBasedCupertinoThemeData(materialTheme: value);
+      final context = App.context;
+      if (context != null) {
+        _iOSThemeData = _iOSThemeData?.resolveFrom(context);
+      }
     } else if (value is! Color) {
       // Ignore the value
     } else if (_iOSThemeData == null) {
@@ -564,8 +580,6 @@ mixin _AppThemeDataMixin {
         backgroundColor: color,
       ),
     );
-
-    iOSThemeData = color;
     return color;
   }
 

@@ -36,6 +36,8 @@ dependencies:
   # https://pub.dev/packages/http
   http: ^1.0.0
 
+  flutter_material_color_picker: ^1.0.0
+
 dev_dependencies:
 
   flutter_test:
@@ -53,10 +55,6 @@ dev_dependencies:
 
   # https://pub.dev/packages/path_provider
   path_provider: ^2.0.0
-
-  # https://pub.dartlang.org/packages/state_extended
-  state_extended: ^4.6.0 #^4.3.0
-#    path: ../../../packages/state_extended
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

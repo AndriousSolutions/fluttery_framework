@@ -36,4 +36,10 @@ Map<String, String> ruRU = {
   'Saved Suggestions': 'Сохраненные предложения',
   'Current Language': 'Текущий язык',
   'Use built-in InheritedWidget': 'Используйте встроенный InheritedWidget',
+  'Inherited State Object Demo':
+      'Демонстрация объекта унаследованного состояния',
+  'New Dogs': 'Новые собаки',
+  'New Cats': 'Новые кошки',
+  'New Foxes': 'Новые Лисы',
+  'New Birds': 'Новые птицы',
 };

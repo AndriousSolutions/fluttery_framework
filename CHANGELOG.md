@@ -1,6 +1,14 @@
 
 ## 4.4.0
-September 07, 2023
+September 18, 2023
+- AppState parameters have corresponding getters 
+- AppState.buildApp();
+- Removed parameter inAppBuilder in AppState
+- Included App.standAloneApp
+- enhanced getter iOSThemeData
+- bool? onDebugShowWidgetInspector()
+- Included Widget builder(BuildContext context) in StateX
+- Entered more translations
 - Updated to state_extended: ^4.6.0
 
 ## 4.3.0+1
