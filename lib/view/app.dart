@@ -12,11 +12,7 @@ import 'dart:ui' as ui show FlutterView;
 
 import 'package:universal_io/io.dart' show Platform;
 
-// // Replace 'dart:io' for Web applications
-// import 'package:universal_platform/universal_platform.dart'
-//     show UniversalPlatform;
-
-import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:package_info_plus/package_info_plus.dart' show PackageInfo;
 
