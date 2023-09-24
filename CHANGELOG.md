@@ -1,4 +1,8 @@
 
+# 4.4.1
+September 24, 2023
+- Corrected get localizationsDelegates in _AppState
+
 ## 4.4.0
 September 18, 2023
 - AppState parameters have corresponding getters 

@@ -461,7 +461,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             themeAnimationDuration: themeAnimationDuration,
             themeAnimationCurve: themeAnimationCurve,
             locale: _locale,
-            localizationsDelegates: onLocalizationsDelegates(),
+            localizationsDelegates: localizationsDelegates,
             localeListResolutionCallback: localeListResolutionCallback,
             localeResolutionCallback: localeResolutionCallback,
             supportedLocales: _supportedLocales,
@@ -500,7 +500,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             themeAnimationDuration: themeAnimationDuration,
             themeAnimationCurve: themeAnimationCurve,
             locale: _locale,
-            localizationsDelegates: onLocalizationsDelegates(),
+            localizationsDelegates: localizationsDelegates,
             localeListResolutionCallback: localeListResolutionCallback,
             localeResolutionCallback: localeResolutionCallback,
             supportedLocales: _supportedLocales,
@@ -838,8 +838,18 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   Locale? get locale => _locale;
   Locale? _locale;
 
-  Iterable<LocalizationsDelegate<dynamic>>? get localizationsDelegates =>
-      _localizationsDelegates ?? onLocalizationsDelegates();
+  Iterable<LocalizationsDelegate<dynamic>>? get localizationsDelegates sync* {
+    Iterable<LocalizationsDelegate<dynamic>>? delegates;
+    if (_localizationsDelegates != null) {
+      delegates = _localizationsDelegates;
+    } else {
+      delegates = onLocalizationsDelegates();
+    }
+    if (delegates != null) {
+      yield* delegates;
+    }
+  }
+
   Iterable<LocalizationsDelegate<dynamic>>? _localizationsDelegates;
 
   LocaleListResolutionCallback? get localeListResolutionCallback =>
@@ -1107,14 +1117,11 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   Locale? onLocale() => inLocale != null ? inLocale!() : null;
 
   /// Returns the 'Localization Delegates' if any.
-  @mustCallSuper
-  Iterable<LocalizationsDelegate<dynamic>>? onLocalizationsDelegates() sync* {
-    if (localizationsDelegates != null) {
-      yield* localizationsDelegates!;
-    }
+  Iterable<LocalizationsDelegate<dynamic>>? onLocalizationsDelegates() {
     if (inLocalizationsDelegates != null) {
-      yield* inLocalizationsDelegates!();
+      return inLocalizationsDelegates!();
     }
+    return null;
   }
 
   /// Returns 'Locale Resolutions' routine if any.

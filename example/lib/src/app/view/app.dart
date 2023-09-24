@@ -52,6 +52,14 @@ class _ExampleAppState extends AppState {
   @override
   Widget onHome() => ExampleAppController().onHome();
 
+  // @override
+  // Iterable<LocalizationsDelegate<dynamic>>? onLocalizationsDelegates() => [
+  //       L10n.delegate,
+  //       GlobalWidgetsLocalizations.delegate,
+  //       GlobalCupertinoLocalizations.delegate,
+  //       GlobalMaterialLocalizations.delegate,
+  //     ];
+
   @override
   RouterConfig<Object>? onRouterConfig() => GoRouter(
         routes: <RouteBase>[

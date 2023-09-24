@@ -68,9 +68,6 @@ class ContactsController extends StateXController {
 
   @override
   void dispose() {
-    if (state?.mounted ?? true) {
-      return;
-    }
     model.dispose();
     if (inDebugMode) {
       //ignore: avoid_print
