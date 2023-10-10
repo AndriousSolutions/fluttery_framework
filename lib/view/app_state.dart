@@ -284,7 +284,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.dispose();
   }
 
-  /// Override build to avoid the built-in Future Builder. It's been run.
+  /// Override build to avoid the built-in Future Builder.
   @override
   Widget build(BuildContext context) =>
       Sizer(builder: (context, orientation, deviceType) => buildF(context));
@@ -348,6 +348,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     L10n.locale = _locale;
 
     // Can't be empty
+    // Thus, only set once!
     if (_supportedLocales.isEmpty) {
       _supportedLocales =
           onSupportedLocales() ?? const <Locale>[Locale('en', 'US')];
@@ -358,6 +359,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     }
 
     // Note, if it's not empty, it's not set
+    // Can only set once!
     L10n.supportedLocales = _supportedLocales;
 
     // An app builder may instead by supplied.
@@ -836,6 +838,14 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   Color? _color;
 
   Locale? get locale => _locale;
+  set locale(Locale? locale) {
+    if (locale != null &&
+        (_supportedLocales.isEmpty || _supportedLocales.contains(locale))) {
+      _locale = locale;
+      L10n.locale = locale; // Ensure L10n is updated
+    }
+  }
+
   Locale? _locale;
 
   Iterable<LocalizationsDelegate<dynamic>>? get localizationsDelegates sync* {
@@ -1508,7 +1518,8 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
 
   late AppState? _appState;
 
-  /// Use this function is wrapped in a Builder widget.
+  /// This function is wrapped in a Builder widget.
+  /// If you don't use it, use the buildAndroid() or buildiOS() function.
   Widget builder(BuildContext context) =>
       App.useMaterial ? buildAndroid(context) : buildiOS(context);
 
@@ -1520,8 +1531,12 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
   /// This is an optional function allowing you to make the distinction.
   /// Build the iOS interface.
   /// By convention, this involves Cupertino Interface
-  Widget buildiOS(BuildContext context) => const SizedBox();
+  /// Defaults to the Material interface design if called yet not implemented
+  Widget buildiOS(BuildContext context) => buildAndroid(context);
 
+  /// Called by the built-in InheritedWidget
+  /// Only every called once and so use the state() or dependOnInheritedWidget()
+  /// functions to update particular parts of the returned interface.
   @override
   Widget buildIn(BuildContext context) => Builder(builder: builder);
 

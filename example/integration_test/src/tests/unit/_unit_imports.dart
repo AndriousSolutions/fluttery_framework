@@ -7,7 +7,7 @@ export 'package:fluttery_framework_example/src/app/view.dart';
 export 'package:flutter_test/flutter_test.dart';
 
 export 'package:fluttery_framework/view.dart'
-    hide AppDrawer, AppMenu, ISOSpinner;
+    hide AppDrawer, PopupMenuWidget, ISOSpinner;
 
 export 'package:fluttery_framework/controller.dart' hide AppDrawer;
 

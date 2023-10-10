@@ -38,8 +38,6 @@ void testAppView(WidgetTester tester) {
 
   Map<String, WidgetBuilder>? routes = App.routes;
 
-  App.menu;
-
   String? initialRoute = App.initialRoute;
 
   RouteFactory? onGenerateRoute = App.onGenerateRoute;
@@ -64,26 +62,37 @@ void testAppView(WidgetTester tester) {
   LocaleResolutionCallback? callback = App.localeResolutionCallback;
 
   bool? debugShowMaterialGrid = App.debugShowMaterialGrid;
+  App.debugShowMaterialGrid = debugShowMaterialGrid;
 
   bool? showPerformanceOverlay = App.showPerformanceOverlay;
+  App.showPerformanceOverlay = showPerformanceOverlay;
 
   bool? checkerboardRasterCacheImages = App.checkerboardRasterCacheImages;
+  App.checkerboardRasterCacheImages = checkerboardRasterCacheImages;
 
   bool? checkerboardOffscreenLayers = App.checkerboardOffscreenLayers;
+  App.checkerboardOffscreenLayers = checkerboardOffscreenLayers;
 
   bool? showSemanticsDebugger = App.showSemanticsDebugger;
+  App.showSemanticsDebugger = showSemanticsDebugger;
 
   bool? debugShowCheckedModeBanner = App.debugShowCheckedModeBanner;
+  App.debugShowCheckedModeBanner = debugShowCheckedModeBanner;
 
   bool? debugPaintSizeEnabled = App.debugPaintSizeEnabled;
+  App.debugPaintSizeEnabled = debugPaintSizeEnabled;
 
   bool? debugPaintBaselinesEnabled = App.debugPaintBaselinesEnabled;
+  App.debugPaintBaselinesEnabled = debugPaintBaselinesEnabled;
 
   bool? debugPaintPointersEnabled = App.debugPaintPointersEnabled;
+  App.debugPaintPointersEnabled = debugPaintPointersEnabled;
 
   bool? debugPaintLayerBordersEnabled = App.debugPaintLayerBordersEnabled;
+  App.debugPaintLayerBordersEnabled = debugPaintLayerBordersEnabled;
 
   bool? debugRepaintRainbowEnabled = App.debugRepaintRainbowEnabled;
+  App.debugRepaintRainbowEnabled = debugRepaintRainbowEnabled;
 
   App.platform;
 

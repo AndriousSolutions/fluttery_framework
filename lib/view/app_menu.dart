@@ -31,167 +31,84 @@ export 'package:flutter/material.dart'
         Text,
         Widget;
 
-/// Create a customized [PopupMenuButton].
+/// A popupmenu that takes in String menu options.
+/// Imposes rounded corners and the 'under' position
 ///
+/// dartdoc:
 /// {@category Get started}
-class AppMenu<T> with PopupMenuButtonFunctions<T> {
-  /// Supply all the properties to instantiate a custom [PopupMenuButton].
-  AppMenu({
-    this.key,
-    this.items,
-    this.menuEntries,
-    this.itemBuilder,
-    this.initialValue,
-    this.onSelected,
-    this.onCanceled,
-    this.tooltip,
-    this.elevation,
-    this.padding,
-    this.child,
-    this.splashRadius,
-    this.icon,
-    this.iconSize,
-    this.offset,
-    this.enabled,
-    this.shape,
-    this.color,
-    this.enableFeedback,
-    this.constraints,
-    this.position, // Either PopupMenuPosition.over or PopupMenuPosition.under
-  });
-
-  /// Key to the PopupMenuButton
-  Key? key;
-
-  /// Optional list of menu items to appear in the popup menu.
-  List<T>? items;
-
-  /// Optional list of PopupMenuEntries to appear in the popup menu.
-  List<PopupMenuEntry<T>>? menuEntries;
-
-  /// override in subclass
-  List<PopupMenuEntry<T>> get menuItems => [];
-
-  /// The item builder if no List is available.
-  PopupMenuItemBuilder<T>? itemBuilder;
-
-  /// The value of the menu item, if any, that should be highlighted when the menu opens.
-  T? initialValue;
-
-  /// Called when a menu item is selected.
-  PopupMenuItemSelected<T>? onSelected;
-
-  /// Called when the user dismisses the popup menu without selecting an item.
-  PopupMenuCanceled? onCanceled;
-
-  /// Text that describes the action that will occur when the button is pressed.
-  String? tooltip;
-
-  /// The z-coordinate at which to place the menu when open. This controls the
-  /// size of the shadow below the menu.
-  double? elevation;
-
-  /// Matches IconButton's 8 dps padding by default. In some cases, notably where
-  /// this button appears as the trailing element of a list item, it's useful to be able
-  /// to set the padding to zero.
-  EdgeInsetsGeometry? padding;
-
-  /// The splash radius.If null, default splash radius of [InkWell] or [IconButton] is used.
-  double? splashRadius;
-
-  /// If provided, [child] is the widget used for this button
-  Widget? child;
-
-  /// If provided, the [icon] is used for this button
-  Widget? icon;
-
-  /// The offset applied to the Popup Menu Button.
+class AppPopupMenu extends PopupMenuWidget<String> {
   ///
-  /// When not set, the Popup Menu Button will be positioned directly next to
-  /// the button that was used to create it.
-  Offset? offset;
-
-  /// Whether this popup menu button is interactive.
-  bool? enabled;
-
-  /// If provided, the shape used for the menu.
-  ShapeBorder? shape;
-
-  /// If provided, the background color used for the menu.
-  Color? color;
-
-  /// Whether detected gestures should provide acoustic and/or haptic feedback.
-  bool? enableFeedback;
-
-  /// If provided, the size of the [Icon].
-  double? iconSize;
-
-  /// Optional size constraints for the menu.
-  BoxConstraints? constraints;
-
-  /// Whether the popup menu is positioned over or under the popup menu button.
-  /// Either PopupMenuPosition.over or PopupMenuPosition.under
-  PopupMenuPosition? position;
-
-  /// Return the state object with the name, button.
-  Widget get popupMenuButton => _popupMenuButton<T>(this);
-
-  /// [BuildContext] objects are actually [Element] objects. The [BuildContext]
-  /// interface is used to discourage direct manipulation of [Element] objects.
-  BuildContext? get context => _context;
-  BuildContext? _context;
+  AppPopupMenu({
+    super.key,
+    super.controller,
+    super.items,
+    super.menuEntries,
+    super.itemBuilder,
+    super.initialValue,
+    super.inOpened,
+    super.inSelected,
+    super.inCanceled,
+    super.tooltip,
+    super.elevation,
+    super.padding,
+    super.child,
+    super.splashRadius,
+    super.icon,
+    super.iconSize,
+    super.offset,
+    super.enabled,
+    ShapeBorder? shape,
+    super.color,
+    super.enableFeedback,
+    super.constraints,
+    PopupMenuPosition? position,
+    super.clipBehavior,
+    super.inTooltip,
+    super.inElevation,
+    super.inPadding,
+    super.inSplashRadius,
+    super.inChild,
+    super.inIcon,
+    super.inIconSize,
+    super.inOffset,
+    super.inEnabled,
+    super.inShape,
+    super.inColor,
+    super.inEnableFeedback,
+    super.inConstraints,
+    super.inPosition,
+    super.inClipBehavior,
+  }) : super(
+          shape: shape ??
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+          position: position ?? PopupMenuPosition.under,
+        );
 }
 
-///
-Widget _popupMenuButton<T>(AppMenu<T> app) => Builder(builder: (context) {
-      app._context = context;
-      Widget button = PopupMenu<T>(
-        key: app.key,
-        items: app.items ?? app.onItems(),
-        menuEntries: app.menuEntries ?? app.menuItems,
-        itemBuilder: app.itemBuilder,
-        initialValue: app.initialValue ?? app.onInitialValue(),
-        onSelected: app.onSelected ?? app.selected,
-        onCanceled: app.onCanceled ?? app.canceled,
-        tooltip: app.tooltip ?? app.onTooltip(),
-        elevation: app.elevation ?? app.onElevation(),
-        padding: app.padding ?? app.onPadding() ?? const EdgeInsets.all(8),
-        splashRadius: app.splashRadius ?? app.onSplashRadius(),
-        icon: app.icon ?? app.onIcon(),
-        iconSize: app.iconSize ?? app.onIconSize(),
-        offset: app.offset ?? app.onOffset() ?? Offset.zero,
-        enabled: app.enabled ?? app.onEnabled() ?? true,
-        shape: app.shape ?? app.onShape(),
-        color: app.color ?? app.onColor(),
-        enableFeedback: app.enableFeedback ?? app.onEnableFeedback(),
-        constraints: app.constraints ?? app.onConstraints(),
-        position: app.position ?? app.onPosition() ?? PopupMenuPosition.over,
-        child: app.child ?? app.onChild(),
-      );
-      // If not running under the MaterialApp widget.
-      if (context.widget is! Material &&
-          context.findAncestorWidgetOfExactType<Material>() == null) {
-        button = Material(child: button);
-      }
-      return button;
-    });
-
 /// Create a customized [PopupMenuButton].
-class PopupMenu<T> extends StatelessWidget {
-  /// Supply all the properties to instantiate a custom [PopupMenuButton].
-  const PopupMenu({
+///
+/// dartdoc:
+/// {@category Get started}
+class PopupMenuWidget<T> extends StatefulWidget
+    with PopupMenuButtonFunctions<T> {
+  /// A controller takes precedence over the supplied properties and functions
+  PopupMenuWidget({
     super.key,
+    PopupMenuController<T>? controller,
     this.items,
     this.menuEntries,
     this.itemBuilder,
     this.initialValue,
-    this.onSelected,
-    this.onCanceled,
+    this.inOpened,
+    this.inSelected,
+    this.inCanceled,
     this.tooltip,
     this.elevation,
     this.padding,
-    this.splashRadius,
     this.child,
+    this.splashRadius,
     this.icon,
     this.iconSize,
     this.offset,
@@ -201,6 +118,7 @@ class PopupMenu<T> extends StatelessWidget {
     this.enableFeedback,
     this.constraints,
     this.position,
+    this.clipBehavior,
     this.inTooltip,
     this.inElevation,
     this.inPadding,
@@ -215,17 +133,17 @@ class PopupMenu<T> extends StatelessWidget {
     this.inEnableFeedback,
     this.inConstraints,
     this.inPosition,
-  });
+    this.inClipBehavior,
+  }) : _con = controller ?? PopupMenuController<T>();
 
-  /// List of menu items to appear in the popup menu.
+  ///
+  final PopupMenuController<T> _con;
+
+  /// Optional list of menu items to appear in the popup menu.
   final List<T>? items;
 
   /// Optional list of PopupMenuEntries to appear in the popup menu.
   final List<PopupMenuEntry<T>>? menuEntries;
-
-  /// Optional list of PopupMenuEntries to appear in the popup menu.
-  /// Initialized only when the getter is accessed!
-  List<PopupMenuEntry<T>> get menuItems => [];
 
   /// The item builder if no List is available.
   final PopupMenuItemBuilder<T>? itemBuilder;
@@ -233,11 +151,14 @@ class PopupMenu<T> extends StatelessWidget {
   /// The value of the menu item, if any, that should be highlighted when the menu opens.
   final T? initialValue;
 
+  /// Called when the popup menu is shown.
+  final VoidCallback? inOpened;
+
   /// Called when a menu item is selected.
-  final PopupMenuItemSelected<T>? onSelected;
+  final PopupMenuItemSelected<T>? inSelected;
 
   /// Called when the user dismisses the popup menu without selecting an item.
-  final PopupMenuCanceled? onCanceled;
+  final PopupMenuCanceled? inCanceled;
 
   /// Text that describes the action that will occur when the button is pressed.
   final String? tooltip;
@@ -260,9 +181,6 @@ class PopupMenu<T> extends StatelessWidget {
   /// If provided, the [icon] is used for this button
   final Widget? icon;
 
-  /// The size of the [icon].
-  final double? iconSize;
-
   /// The offset applied to the Popup Menu Button.
   /// When not set, the Popup Menu Button will be positioned directly next to
   /// the button that was used to create it.
@@ -280,127 +198,118 @@ class PopupMenu<T> extends StatelessWidget {
   /// Whether detected gestures should provide acoustic and/or haptic feedback.
   final bool? enableFeedback;
 
+  /// If provided, the size of the [Icon].
+  final double? iconSize;
+
   /// Optional size constraints for the menu.
   final BoxConstraints? constraints;
 
   /// Whether the popup menu is positioned over or under the popup menu button.
+  /// Either PopupMenuPosition.over or PopupMenuPosition.under
   final PopupMenuPosition? position;
 
-  /// Produce the menu items for a List of items of type T.
-  PopupMenuItemBuilder<T> _onItems(List<T>? menuItems) {
-    menuItems ??= items;
-    final popupMenuItems = menuItems!
-        .map((T? item) =>
-            PopupMenuItem<T>(value: item, child: Text(item.toString())))
-        .toList();
-    return (BuildContext context) => <PopupMenuEntry<T>>[
-          ...popupMenuItems,
-        ];
-  }
+  /// The clip shape of the menu.
+  final Clip? clipBehavior;
 
-  ///
-  List<PopupMenuEntry<T>> onItemBuilder(BuildContext context) {
-    List<PopupMenuEntry<T>>? menuOptions;
-    // items or onItems()
-    final List<T>? options = items ?? onItems();
-    if (options != null && options.isNotEmpty) {
-      menuOptions = _onItems(options).call(context);
-    }
-    // menuEntries
-    if (menuOptions == null) {
-      final entries = menuEntries;
-      if (entries != null && entries.isNotEmpty) {
-        menuOptions = entries;
-      }
-    }
-    // the getter, menuItems
-    if (menuOptions == null && menuItems.isNotEmpty) {
-      menuOptions = menuItems;
-    }
-    // itemBuilder()
-    menuOptions ??= itemBuilder == null ? null : itemBuilder!(context);
-    return menuOptions ??= <PopupMenuEntry<T>>[];
-  }
-
-  /// List of menu items to appear in the popup menu.
+  /// List of menu items of type T to appear in the popup menu.
+  @override
   List<T>? onItems() => [];
 
+  /// List of menuentry items to appear in the popup menu.
+  @override
+  List<PopupMenuEntry<T>>? onMenuEntries() => [];
+
   /// The value of the menu item, if any, that should be highlighted when the menu opens.
+  @override
   T? onInitialValue() => null;
 
   /// Called when the user selects a value from the popup menu created by this button.
-  void selected(T value) {}
+  @override
+  void onSelected(T value) {}
 
   /// Called when the user dismisses the popup menu without selecting an item.
-  void canceled() {}
+  @override
+  void onCanceled() {}
 
   /// Text that describes the action that will occur when the button is pressed.
+  @override
   String? onTooltip() => inTooltip == null ? null : inTooltip!();
 
   /// 'in Parameters' function
   final String? Function()? inTooltip;
 
   /// This controls the size of the shadow below the menu.
+  @override
   double? onElevation() => inElevation == null ? null : inElevation!();
 
   /// 'in Parameters' function
   final double? Function()? inElevation;
 
   /// In some cases, it's useful to be able to set the padding to zero.
+  @override
   EdgeInsetsGeometry? onPadding() => inPadding == null ? null : inPadding!();
 
   /// 'in Parameters' function
   final EdgeInsetsGeometry? Function()? inPadding;
 
   /// The splash radius. If null, default splash radius of [InkWell] or [IconButton] is used.
+  @override
   double? onSplashRadius() => inSplashRadius == null ? null : inSplashRadius!();
 
   /// 'in Parameters' function
   final double? Function()? inSplashRadius;
 
   /// The widget used for this button
+  @override
   Widget? onChild() => inChild == null ? null : inChild!();
 
   /// 'in Parameters' function
   final Widget? Function()? inChild;
 
   /// The icon is used for this button
+  @override
   Widget? onIcon() => inIcon == null ? null : inIcon!();
 
   /// 'in Parameters' function
   final Widget? Function()? inIcon;
 
   /// the size of the [Icon].
+  @override
   double? onIconSize() => inIconSize == null ? null : inIconSize!();
 
   /// 'in Parameters' function
   final double? Function()? inIconSize;
 
   /// The offset is applied relative to the initial position
+  @override
   Offset? onOffset() => inOffset == null ? null : inOffset!();
 
   /// 'in Parameters' function
   final Offset? Function()? inOffset;
 
   /// Whether this popup menu button is interactive
+  @override
   bool? onEnabled() => inEnabled == null ? true : inEnabled!();
 
   /// 'in Parameters' function
   final bool? Function()? inEnabled;
 
   /// The shape used for the menu
+  @override
   ShapeBorder? onShape() => inShape == null ? null : inShape!();
 
   /// 'in Parameters' function
   final ShapeBorder? Function()? inShape;
 
   /// The background color used for the menu
+  @override
   Color? onColor() => inColor == null ? null : inColor!();
 
   /// 'in Parameters' function
   final Color? Function()? inColor;
 
   /// Whether detected gestures should provide acoustic and/or haptic feedback
+  @override
   bool? onEnableFeedback() =>
       inEnableFeedback == null ? null : inEnableFeedback!();
 
@@ -408,6 +317,7 @@ class PopupMenu<T> extends StatelessWidget {
   final bool? Function()? inEnableFeedback;
 
   /// Make the menu wider than the default maximum width
+  @override
   BoxConstraints? onConstraints() =>
       inConstraints == null ? null : inConstraints!();
 
@@ -416,53 +326,298 @@ class PopupMenu<T> extends StatelessWidget {
 
   /// Whether the menu is positioned over or under the popup menu button
   /// PopupMenuPosition.over or PopupMenuPosition.under
+  @override
   PopupMenuPosition? onPosition() => inPosition == null ? null : inPosition!();
 
   /// 'in Parameters' function
   final PopupMenuPosition? Function()? inPosition;
 
   @override
+  Clip? onClipBehavior() => inClipBehavior == null ? null : inClipBehavior!();
+
+  /// 'in Parameters' function
+  final Clip? Function()? inClipBehavior;
+
+  /// Refresh the PopupMenu
+  void refresh() => _con.refresh();
+
+  ///
+  @override
+  State createState() => _PopupMenuWidgetState<T>();
+}
+
+/// Create a customized [PopupMenuButton].
+class _PopupMenuWidgetState<T> extends State<PopupMenuWidget<T>> {
+  ///
+  @override
+  void initState() {
+    super.initState();
+    widget._con._state = this;
+    useMaterial = context.widget is! Material &&
+        context.findAncestorWidgetOfExactType<Material>() == null;
+  }
+
+  // Use the Material widget if not running under the MaterialApp widget.
+  late bool useMaterial;
+
+  ///
+  @override
+  void didUpdateWidget(oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    widget._con._state = this;
+  }
+
+  // Supply the popupMenu button displayed on the AppBar
+  Widget? popupButton;
+
+  @override
   Widget build(BuildContext context) {
-    // final _widget = widget;
+    //
+    final _widget = widget;
+
+    final con = _widget._con;
+
+    var icon = con.onIcon() ?? _widget.icon ?? _widget.onIcon();
+
+    final child = con.onChild() ?? _widget.child ?? _widget.onChild();
+
+    // One or the other, but not both.
+    // Default to child
+    if (child != null && icon != null) {
+      icon = null;
+    }
+
+    double? iconSize =
+        con.onIconSize() ?? _widget.iconSize ?? _widget.onIconSize();
+
+    if (child == null) {
+      popupButton = icon;
+    } else {
+      iconSize = 0.0;
+      popupButton = child;
+    }
+
     Widget popupMenu = PopupMenuButton<T>(
       itemBuilder: onItemBuilder,
-      initialValue: initialValue ?? onInitialValue(),
-      onSelected: (T value) {
-        if (onSelected == null) {
-          selected(value);
+      initialValue: con.onInitialValue() ??
+          _widget.initialValue ??
+          _widget.onInitialValue(),
+      onOpened: () {
+        // The controller's function is always called.
+        con.onOpened();
+
+        if (_widget.inOpened == null) {
+          _widget.onOpened();
         } else {
-          onSelected!(value);
+          _widget.inOpened!();
+        }
+      },
+      onSelected: (T value) {
+        // The controller's function is always called.
+        con.onSelected(value);
+
+        if (_widget.inSelected == null) {
+          _widget.onSelected(value);
+        } else {
+          _widget.inSelected!(value);
         }
       },
       onCanceled: () {
-        if (onCanceled == null) {
-          canceled();
+        // The controller's function is always called.
+        con.onCanceled();
+
+        if (_widget.inCanceled == null) {
+          _widget.onCanceled();
         } else {
-          onCanceled!();
+          _widget.inCanceled!();
         }
       },
-      tooltip: tooltip ?? onTooltip(),
-      elevation: elevation ?? onElevation(),
-      padding: padding ?? onPadding() ?? const EdgeInsets.all(8),
-      splashRadius: splashRadius ?? onSplashRadius(),
-      icon: icon ?? onIcon(),
-      iconSize: iconSize ?? onIconSize(),
-      offset: offset ?? onOffset() ?? Offset.zero,
-      enabled: enabled ?? onEnabled() ?? true,
-      shape: shape ?? onShape(),
-      color: color ?? onColor(),
-      enableFeedback: enableFeedback ?? onEnableFeedback(),
-      constraints: constraints ?? onConstraints(),
-      position: position ?? onPosition() ?? PopupMenuPosition.over,
-      child: child ?? onChild(),
+      tooltip: con.onTooltip() ?? _widget.tooltip ?? _widget.onTooltip(),
+      elevation:
+          con.onElevation() ?? _widget.elevation ?? _widget.onElevation(),
+      padding: con.onPadding() ??
+          _widget.padding ??
+          _widget.onPadding() ??
+          const EdgeInsets.all(8),
+      splashRadius: con.onSplashRadius() ??
+          _widget.splashRadius ??
+          _widget.onSplashRadius(),
+      icon: popupButton,
+      iconSize: iconSize,
+      offset:
+          con.onOffset() ?? _widget.offset ?? _widget.onOffset() ?? Offset.zero,
+      enabled:
+          con.onEnabled() ?? _widget.enabled ?? _widget.onEnabled() ?? true,
+      shape: con.onShape() ?? _widget.shape ?? _widget.onShape(),
+      color: con.onColor() ?? _widget.color ?? _widget.onColor(),
+      enableFeedback: con.onEnableFeedback() ??
+          _widget.enableFeedback ??
+          _widget.onEnableFeedback(),
+      constraints:
+          con.onConstraints() ?? _widget.constraints ?? _widget.onConstraints(),
+      position: con.onPosition() ??
+          _widget.position ??
+          _widget.onPosition() ??
+          PopupMenuPosition.over,
+      clipBehavior: con.onClipBehavior() ??
+          _widget.clipBehavior ??
+          _widget.onClipBehavior() ??
+          Clip.none,
     );
+
     // If not running under the MaterialApp widget.
-    if (context.widget is! Material &&
-        context.findAncestorWidgetOfExactType<Material>() == null) {
+    if (useMaterial) {
       popupMenu = Material(child: popupMenu);
     }
     return popupMenu;
   }
+
+  ///
+  List<PopupMenuEntry<T>> onItemBuilder(BuildContext context) {
+    //
+    List<PopupMenuEntry<T>>? menuOptions;
+
+    final widget = this.widget;
+
+    // items or onItems()
+    final List<T>? options = widget.items ?? widget.onItems();
+    if (options != null && options.isNotEmpty) {
+      menuOptions = onItems(options).call(context);
+    }
+
+    // menuEntries
+    if (menuOptions == null) {
+      final entries = widget.menuEntries;
+      if (entries != null && entries.isNotEmpty) {
+        menuOptions = widget.menuEntries;
+      }
+      if (menuOptions == null) {
+        final items = widget.onMenuEntries();
+        if (items != null && items.isNotEmpty) {
+          menuOptions = items;
+        }
+      }
+    }
+
+    // itemBuilder()
+    menuOptions ??=
+        widget.itemBuilder == null ? null : widget.itemBuilder!(context);
+
+    menuOptions ??= <PopupMenuEntry<T>>[];
+
+    // Don't display the three little dots
+    if (menuOptions.isEmpty) {
+      popupButton = const SizedBox();
+    }
+
+    return menuOptions;
+  }
+
+  /// Produce the menu items for a List of items of type T.
+  PopupMenuItemBuilder<T> onItems(List<T> menuItems) {
+    //
+    final popupMenuItems = menuItems
+        .map((T? item) =>
+            PopupMenuItem<T>(value: item, child: Text(item.toString())))
+        .toList();
+
+    return (BuildContext context) => <PopupMenuEntry<T>>[...popupMenuItems];
+  }
+}
+
+/// Uses the String type as menu options
+class AppPopupMenuController extends PopupMenuController<String> {}
+
+///
+class PopupMenuController<T> implements PopupMenuButtonFunctions<T> {
+  /// The link to the App menu's State object
+  _PopupMenuWidgetState<T>? _state;
+
+  @override
+  List<T>? onItems() => null;
+
+  @override
+  List<PopupMenuEntry<T>>? onMenuEntries() => null;
+
+  ///
+  // ignore: INVALID_USE_OF_PROTECTED_MEMBER
+  void refresh() => _state?.setState(() {});
+
+  /// Called when the popup menu is shown.
+  @override
+  void onOpened() {}
+
+  /// Called when the user selects a value from the popup menu created by this button.
+  @override
+  void onSelected(T value) {}
+
+  /// Called when the user dismisses the popup menu without selecting an item.
+  @override
+  void onCanceled() {}
+
+  /// The value of the menu item, if any, that should be highlighted when the menu opens.
+  @override
+  T? onInitialValue() => null;
+
+  /// Text that describes the action that will occur when the button is pressed.
+  @override
+  String? onTooltip() => null;
+
+  /// This controls the size of the shadow below the menu.
+  @override
+  double? onElevation() => null;
+
+  /// In some cases, it's useful to be able to set the padding to zero.
+  @override
+  EdgeInsetsGeometry? onPadding() => null;
+
+  /// The splash radius. If null, default splash radius of [InkWell] or [IconButton] is used.
+  @override
+  double? onSplashRadius() => null;
+
+  /// The widget used for this button
+  @override
+  Widget? onChild() => null;
+
+  /// The icon is used for this button
+  @override
+  Widget? onIcon() => null;
+
+  /// the size of the [Icon].
+  @override
+  double? onIconSize() => null;
+
+  /// The offset is applied relative to the initial position
+  @override
+  Offset? onOffset() => null;
+
+  /// Whether this popup menu button is interactive
+  @override
+  bool? onEnabled() => null;
+
+  /// The shape used for the menu
+  @override
+  ShapeBorder? onShape() => null;
+
+  /// The background color used for the menu
+  @override
+  Color? onColor() => null;
+
+  /// Whether detected gestures should provide acoustic and/or haptic feedback
+  @override
+  bool? onEnableFeedback() => null;
+
+  /// Make the menu wider than the default maximum width
+  @override
+  BoxConstraints? onConstraints() => null;
+
+  /// Whether the menu is positioned over or under the popup menu button
+  @override
+  PopupMenuPosition? onPosition() => null;
+
+  /// The clip shape of the menu.
+  @override
+  Clip? onClipBehavior() => null;
 }
 
 ///
@@ -470,14 +625,20 @@ mixin PopupMenuButtonFunctions<T> {
   /// List of menu items to appear in the popup menu.
   List<T>? onItems() => [];
 
+  /// List of menu entry items of type T to appear in the popup menu.
+  List<PopupMenuEntry<T>>? onMenuEntries() => [];
+
   /// The value of the menu item, if any, that should be highlighted when the menu opens.
   T? onInitialValue() => null;
 
+  /// Called when the popup menu is shown.
+  void onOpened() {}
+
   /// Called when the user selects a value from the popup menu created by this button.
-  void selected(T value) {}
+  void onSelected(T value) {}
 
   /// Called when the user dismisses the popup menu without selecting an item.
-  void canceled() {}
+  void onCanceled() {}
 
   /// Text that describes the action that will occur when the button is pressed.
   String? onTooltip() => null;
@@ -520,110 +681,7 @@ mixin PopupMenuButtonFunctions<T> {
 
   /// Whether the menu is positioned over or under the popup menu button
   PopupMenuPosition? onPosition() => null;
-}
 
-// /// A generic class to provide the App's popup menu.
-// class AppMenu {
-//   /// The App's popup is instantiated only once.
-//   factory AppMenu() => _this ??= AppMenu._();
-//   AppMenu._();
-//   static AppMenu? _this;
-//
-//   static StateX? _state;
-//
-//   Menu? _menu;
-//   String? _applicationName;
-//   String? _applicationVersion;
-//   Widget? _applicationIcon;
-//   String? _applicationLegalese;
-//   List<Widget>? _children;
-//
-//   /// Display the popup menu.
-//   PopupMenuButton<dynamic> show(
-//     StateX state, {
-//     String? applicationName,
-//     Widget? applicationIcon,
-//     String? applicationLegalese,
-//     List<Widget>? children,
-//     bool useRootNavigator = true,
-//     Menu? menu,
-//   }) {
-//     _state = state;
-//     _menu = menu;
-//     _applicationName = applicationName;
-//     _applicationVersion = 'version: ${App.version} build: ${App.buildNumber}';
-//     _applicationIcon = applicationIcon;
-//     _applicationLegalese = applicationLegalese;
-//     _children = children;
-//
-//     var menuItems = <PopupMenuEntry<dynamic>>[
-// //      PopupMenuItem<dynamic>(value: 'Color', child: I10n.t('Colour Theme')),
-//       PopupMenuItem<dynamic>(value: 'About', child: L10n.t('About'))
-//     ];
-//
-//     if (_menu != null) {
-//       final temp = <PopupMenuEntry<dynamic>>[
-//         ..._menu!.menuItems(),
-//         const PopupMenuDivider(),
-//         ...menuItems
-//       ];
-//       menuItems = temp;
-//
-//       if (_menu!.tailItems.isNotEmpty) {
-//         menuItems.add(const PopupMenuDivider());
-//         menuItems.addAll(_menu!.tailItems);
-//       }
-//     }
-//
-//     return PopupMenuButton<dynamic>(
-//       onSelected: _showMenuSelection,
-//       itemBuilder: (BuildContext context) => menuItems,
-//     );
-//   }
-//
-//   void _showMenuSelection(dynamic value) {
-//     if (_menu != null) {
-//       _menu!.onSelected(value);
-//     }
-//     if (value is! String) {
-//       return;
-//     }
-//     switch (value) {
-//       case 'About':
-//         showAboutDialog(
-//             context: _state!.context,
-//             applicationName: L10n.s(_applicationName ?? App.state?.title ?? ''),
-//             applicationVersion: _applicationVersion,
-//             applicationIcon: _applicationIcon,
-//             applicationLegalese: _applicationLegalese,
-//             children: _children);
-//         break;
-//       default:
-//     }
-//   }
-// }
-//
-// /// Abstract class to implement the App's popup menu.
-// abstract class Menu {
-//   /// Called to instantiate an App popup menu object.
-//   Menu() : _appMenu = AppMenu();
-//   final AppMenu _appMenu;
-//
-//   /// The List of defined Popup Menu Items at the tail end of the menu.
-//   List<PopupMenuItem<dynamic>> tailItems = [];
-//
-//   /// The List of defined Popup Menu Items.
-//   List<PopupMenuItem<dynamic>> menuItems();
-//
-//   /// Called when a menu item is selected.
-//   void onSelected(dynamic menuItem);
-//
-//   /// Display the popup menu.
-//   /// Passed in a 'State' object and the Application's very name.
-//   PopupMenuButton<dynamic> show(StateX state, {String? applicationName}) =>
-//       _appMenu.show(
-//         state,
-//         applicationName: applicationName,
-//         menu: this,
-//       );
-// }
+  /// The clip shape of the menu.
+  Clip? onClipBehavior() => null;
+}

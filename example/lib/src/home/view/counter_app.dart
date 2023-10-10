@@ -44,7 +44,7 @@ class _CounterPageState extends StateX<CounterPage> {
         key: const Key('Scaffold'),
         appBar: AppBar(
           title: Text('Counter Page Demo'.tr),
-          actions: [AppMenu().popupMenuButton],
+          actions: [AppMenu()],
         ),
         drawer: AppDrawer(),
         body: Center(
@@ -130,9 +130,7 @@ class _CounterPageState extends StateX<CounterPage> {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                AppMenu().popupMenuButton,
-              ],
+              children: [AppMenu()],
             ),
           ),
           SliverToBoxAdapter(

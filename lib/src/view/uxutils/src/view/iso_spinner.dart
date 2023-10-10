@@ -58,6 +58,7 @@ class _SpinnerState extends State<ISOSpinner> {
   Widget build(BuildContext context) {
     //
     Widget widget = CupertinoPicker.builder(
+      key: const Key('LocaleCupertinoSpinner'),
       itemExtent: 25, //height of each item
       childCount: locales.length,
       scrollController: controller,

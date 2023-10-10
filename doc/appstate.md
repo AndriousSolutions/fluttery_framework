@@ -50,7 +50,7 @@ A powerful capability.
 
 In the second screenshot above, you'll notice the **supportedLocales** parameter in now addressed,
 but it's instead using the inline function to pass a value: **inSupportedLocales**. Like the other function, it's called **after**
-the AppState object is instantiated allowing your code to be more conceive, adaptive and modular. Notice in the first
+the AppState object is instantiated allowing your code to be more concise, adaptive and modular. Notice in the first
 screenshot, an required aspect of the **supportedLocales** feature (assigning the *L10n.translation* property)
 had to be called in the State class' **initState**() function.
 In the second screenshot, the process is a little more localized and concise and called just when it's needed by

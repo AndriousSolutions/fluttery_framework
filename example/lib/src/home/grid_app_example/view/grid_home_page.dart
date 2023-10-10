@@ -28,7 +28,7 @@ class _HomePageState extends StateX<HomePage> {
   Widget buildAndroid(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: L10n.t(widget.title ?? 'Inherited State Object Demo'),
-          actions: [AppMenu().popupMenuButton],
+          actions: [AppMenu()],
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(30),

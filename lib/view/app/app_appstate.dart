@@ -123,16 +123,13 @@ extension AppStateExtension on AppObject {
         appState?.supportedLocales,
       );
 
-  // /// Set the App's Locale
-  // /// If 'supportedLocales' are specified, this Locale must be among them.
-  // set locale(Locale? locale) {
-  //   if (allowNewLocale && locale != null) {
-  //     L10n.locale = locale;
-  //     // if (locale != L10n.prevLocale) {
-  //     //   appState?.locale = locale;
-  //     // }
-  //   }
-  // }
+  /// Set the App's Locale
+  set locale(Locale? locale) {
+    if (locale != null) {
+      /// If 'supportedLocales' are specified, this Locale must be among them.
+      appState?.locale = locale;
+    }
+  }
 
   /// Returns the App's current localizations delegates.
   Iterable<LocalizationsDelegate<dynamic>>? get localizationsDelegates =>
@@ -354,6 +351,6 @@ extension AppStateExtension on AppObject {
     appState?.catchError(ex);
   }
 
-  /// Retrieve the 'lastest' context
+  /// Retrieve the 'latest' context
   BuildContext? get context => appState?.lastContext;
 }

@@ -206,7 +206,7 @@ class ExampleAppController extends AppController {
 
   /// Supply the app's popupmenu
   /// an immutable menu
-  Widget get menu => PopupMenu(
+  Widget get menu => AppPopupMenu(
         key: const Key('appMenuButton'),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         position: PopupMenuPosition.under,
@@ -239,7 +239,7 @@ class ExampleAppController extends AppController {
             child: L10n.t('About'),
           ),
         ],
-        onSelected: (String value) async {
+        inSelected: (String value) async {
           switch (value) {
             case 'interface':
               changeUI();

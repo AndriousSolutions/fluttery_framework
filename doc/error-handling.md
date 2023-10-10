@@ -100,4 +100,4 @@ An example of it is displayed below (see <a href="#seeing">Seeing Red</a>).
 As you know, typically when an error occurs while developing in Flutter and a widget fails to display, the 'Read Screen of Despair' appears.
 Using the Fluttery Framework, you're greeted with something a little more helpful that displays the stack trace to the developer.
 Further, as you see, it's a little more aesthetically pleasing as well.
-Of course, you're free to implement your own custom screen if you like, and assign it to the **onErrorScreen**() function introduced earlier..
+Of course, you're free to implement your own custom screen if you like, and assign it to the **onErrorScreen**() function introduced earlier.

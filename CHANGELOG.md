@@ -1,5 +1,14 @@
 
-# 4.4.1
+## 4.5.0
+October 10, 2023
+- Rewrote App's menu:
+  AppPopupMenu, PopupMenuWidget, AppPopupMenuController, PopupMenuController
+- AppState setter locale includes _supportedLocales
+- Introduced builder() as the default 'build' function
+- buildiOS() defaults to buildAndroid() if not implemented
+- Continue updating documentation
+
+## 4.4.1
 September 24, 2023
 - Corrected get localizationsDelegates in _AppState
 

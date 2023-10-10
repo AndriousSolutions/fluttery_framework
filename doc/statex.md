@@ -9,33 +9,73 @@ This class allows you to use a [State Object Controller](https://pub.dev/documen
   	<caption>Contents</caption>
     <tbody>
     <tr>
-       <td><a href="#code">Control Your Code</a></td>
+       <td><a href="#code">Control</a></td>
        <td><a href="#page">_HomePageState</a></td>
-       <td><a href="#sync">Sync The State</a></td>
+       <td><a href="#sync">Sync</a></td>
        <td><a href="#control">Control The Sync</a></td>
-       <td><a href="#interface">Which Interface?</a></td>
-       <td><a href="#inherit">Inherit The State</a></td>
+       <td><a href="#interface">Interface?</a></td>
+       <td><a href="#inherit">Inherit</a></td>
       </tr>
     </tbody>
 </table>
-The StateX class gives you five new functions and features:
-
+Of course, this State subclass has the <b>build</b>() function to return your interface has expected as if using the traditional State class.
+However, you now have 5 more 'build' functions available to you for even further capabilities.
+Note, for most of my projects, I use the <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/builder.html">builder</a></b>() function 
+as it allows for most of the desired capabilities.
+All six are listed below in order of precedence: 
 <ul>
-   <li>The State Object Controller separates the interface (i.e. the State object's <b>build</b>() function) from everything else:
-   <b><a href="https://pub.dev/documentation/fluttery_framework/latest/controller_app/StateXController-class.html" style="text-decoration:none;">StateXController</a></b></li>
-   <li>Two functions to supply the Material interface and the Cupertino interface:
-   <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildAndroid.html" style="text-decoration:none">buildAndroid</a></b>() and <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildiOS.html"  style="text-decoration:none">buildiOS</a></b>()</li>
-   <li>A function to perform any necessary asynchronous operations before displaying the interface:
-   <b><a href="https://pub.dev/documentation/state_extended/latest/state_extended/AsyncOps/initAsync.html" style="text-decoration:none;">initAsync</a></b>()</li>
-   <li>A means to update only <i>particular</i> widgets in the interface and not the whole screen improving performance:
-   <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/dependOnInheritedWidget.html" style="text-decoration:none;">dependOnInheritedWidget</a></b>()
-, <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/didChangeDependencies.html" style="text-decoration:none;">didChangeDependencies</a></b>()
-, <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/notifyClients.html" style="text-decoration:none">notifyClient</a></b>()
-, <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/state.html" style="text-decoration:none">state</a></b>()
-, <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/updateShouldNotify.html" style="text-decoration:none">updateShouldNotify</a></b>()</li>
-   <li>A function that runs if any error occurs. Allows you to 'clean up' and fail gracefully:
-   <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateXonErrorMixin/onError.html" style="text-decoration:none;">onError</a></b>()</li>
+    <li>Use the <b><a href="https://api.flutter.dev/flutter/widgets/State/build.html">build</a></b>() function, of course, as you would the original State class.</li>
+
+   <li>Use the <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildF.html">buildF</a></b>() function instead if you want to have the <b><a href="https://pub.dev/documentation/state_extended/latest/state_extended/AsyncOps/initAsync.html">initAsync</a></b>() function perform any asynchronous operations before displaying the interface.
+   You see, a <a href="https://api.flutter.dev/flutter/widgets/FutureBuilder-class.html"><b>FutureBuilder</b></a> is then utilised.
+   It calls the <b><a href="https://pub.dev/documentation/state_extended/latest/state_extended/AsyncOps/initAsync.html">initAsync</a></b>() function, and when the asynchronous operations are completed,
+   the <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildF.html">buildF</a></b>() function is then called to display the interface.</li>
+   
+   <li>Next, if you use the <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildIn.html">buildIn</a></b>() function instead to return your interface,
+   note that this is a progressive list of capabilities, 
+   You're still free to implement the <b><a href="https://pub.dev/documentation/state_extended/latest/state_extended/AsyncOps/initAsync.html">initAsync</a></b>() function with its FutureBuilder widget,
+   but now an <b><a href="https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html">InheritedWidget</a></b> is involved as well.
+   As just, the <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildIn.html">buildIn</a></b>() function will only run once and is never called again.
+   and so only the <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/state.html">state</a></b>() function and 
+   <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/dependOnInheritedWidget.html">dependOnInheritedWidget</a></b>() function will then dictate which widgets are updated when something changes.
+   Instead of building the interface again and again from scratch, only specified portions on the interface is rebuilt improving performance.
+   Note, using InheritedWidgets in this fashion is an advanced feature, and so by default, is disabled in the StateX class.
+   Pass true to the StateX class' <a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/StateX.html">useInherited</a> parameter 
+   when you're more comfortable in Flutter and ready to use the built-in InheritedWidget.
+   Three more functions that works with the InheritedWidget are then available to you in the StateX class:
+   <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/didChangeDependencies.html">didChangeDependencies</a></b>()
+   , <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/updateShouldNotify.html">updateShouldNotify</a></b>()
+   and <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/notifyClients.html">notifyClient</a></b>().
+   Optionally, use the <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateIn-class.html">StateIn</a></b> class that has the InheritedWidget always enabled.</li>
+
+   <li>Next, use the <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/builder.html">builder</a></b>() function 
+   that encompasses the capabilities listed above as well as reliably accesses the widget tree's BuildContext variable, <i>context</i>,
+   since it is wrapped by a <b><a href="https://api.flutter.dev/flutter/widgets/Builder-class.html">Builder</a></b> widget.</li>
+   
+   <li>Finally, there are the build functions:
+   <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildAndroid.html">buildAndroid</a></b>()
+   and <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildiOS.html">buildiOS</a></b>().</li>
+   Again, you have the option to take advantage of a built-in <a href="https://api.flutter.dev/flutter/widgets/FutureBuilder-class.html"><b>FutureBuilder</b></a> 
+   and a built-in <b><a href="https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html">InheritedWidget</a></b> or not,
+   but you also have the option to supply both the Material interface and the Cupertino interface to your app.
+   The framework will run one or the other depending on whether your app is running on a Android phone or iOS phone.
+   As always, you have options.
+   If you don't want to the Cupertino interface, 
+   simply implement the <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateX/buildAndroid.html">buildAndroid</a></b>() function,
+   and it will run by default---even on an iOS phone.
 </ul>
+
+Like any good app framework, you've got options. 
+From left to right, the number of options only grows:
+
+<b>build</b>()  ->  <b>buildF</b>() -> <b>buildIn</b>() -> <b>builder</b>() -> <b>buildAndroid</b>() ->  <b>buildiOS</b>()
+
+<h3 id="handle">Handle Your Errors</h3>
+Error handling should always be top of mind when developing software,
+and so every StateX object now has the <b><a href="https://pub.dev/documentation/fluttery_framework/latest/view_app_state/StateXonErrorMixin/onError.html">onError</a></b>() function
+that's called if an error occurs in the State object.
+This allows you to 'clean up' and fail gracefully. And remember, the <b><a href="https://pub.dev/documentation/fluttery_framework/latest/controller_app/StateXController-class.html">State Object Controller</a></b> separates that interface (i.e. the State object's <b>build</b>() function) from the business rules and event handling.
+Such an arrangement has proven to be very powerful encouraging a clean architecture <b>within</b> the State class itself!
 
 <h3 id="code">Control Your Code</h3>
 All your ‘mutable’ code should go into your State Object Controller.
@@ -50,9 +90,9 @@ This promotes more modular development where each controller is dedicated to a p
 other controllers. This further relieves any 'controller bloat' common when involving a controller
 (see [State Object Controller](https://pub.dev/documentation/fluttery_framework/latest/topics/State%20Object%20Controller-topic.html)).
 
-<h3 id="page">_HomePageState</h3>
+<h3 id="page">The State Pattern</h3>
 A common pattern seen when implementing a controller for use by a StateX object will have the controller object
-instantiated right in the State object and then referenced here and there in the State object’s <b>build</b>() function.
+instantiated right in the State object and then referenced here and there in one of the StateX object’s many <b>'build'</b> functions.
 Thus providing the data and the event handling. For example, the first screenshot below is of the 'counter example app'
 that accompanies the Flutter Framework package. The second screenshot shows how a number of controllers can be added.
 
@@ -76,19 +116,21 @@ A FutureBuilder widget is built into the StateX class, and has its <b>initAsync<
 perform such asynchronous operations. As a result, when such a State object is called,
 it can wait for its asynchronous operations to complete before proceeding. As easy as that.</p>
 
-Below are three gif files. The first one depicts what a user will see more often than not when
+Below are four gif files. The first one depicts what a user will see more often than not when
 starting up an app written with the Fluttery Framework. There's always a remote database to open or web services
 to connect to and this takes a little time. You don't want your user staring at a blank screen. They'll think
 the app is frozen! Fluttery displays a spinner indicating the app is indeed running. The second gif file depicts twelve separate StateX objects waiting to continue.
 Each has its own individual asynchronous operation loading a animal graphic from some REST api somewhere.
-The last gif file shows the whole startup process for this particular app.
+The third gif file shows the whole startup process for this particular app.
 It carry's on and shows you they are indeed individual operations ending with a different picture.
+Note, in the last gif file, you've the option to implement a splash screen instead.
 <div>
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6ccff53b-da0e-41b9-aace-81dc95111254"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6ccff53b-da0e-41b9-aace-81dc95111254" width="171" height="357"></a>
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/25ab69de-b9eb-4c8c-a2d0-9598152bf360"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/25ab69de-b9eb-4c8c-a2d0-9598152bf360" width="171" height="357"></a>
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/009afbfb-40a3-4c69-8813-7d7e71e21888"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/009afbfb-40a3-4c69-8813-7d7e71e21888" width="171" height="357"></a>
+<a id="loadingScreen" target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/4172e252-9633-42fd-80ff-5adc3b1dab4f"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/4172e252-9633-42fd-80ff-5adc3b1dab4f" width="171" height="357"></a>
 </div>
-In this case, since they're running on an Android emulator, those spinners are from the 
+Since I'm using an Android emulator, those spinners are from the 
 <a href="https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/material/progress_indicator.dart#L554">CircularProgressIndicator</a> widget.
 If they were running on an iOS phone, the 
 <a href="https://github.com/flutter/flutter/blob/e1702a96f679772847459650670bbe9f04480840/packages/flutter/lib/src/cupertino/activity_indicator.dart#L32">CupertinoActivityIndicator</a>

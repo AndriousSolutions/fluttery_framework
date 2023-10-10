@@ -25,6 +25,7 @@ The code will demonstrate the functions and features that quickly makes you a mu
 4. Cast your Controller with the State object's property, **controller**.
 5. Supply the 'Material' interface to the **buildAndroid**() function.
 6. Supply the 'Cupertino' interface to the **buildiOS**() function.
+7. If you don't have a preference, supply the interface to the **build**() function.
 ###### (See the little red arrows in the picture below)
 ___
 [![counter_app](https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/67c2ff90-9589-4b70-95e0-ad932aba82da)](https://github.com/AndriousSolutions/fluttery_framework/blob/0168b3c8a626dfebeb99b28fc3e60cefbba71966/example/lib/src/home/view/counter_app.dart)
@@ -179,10 +180,28 @@ class _ThisAppState extends AppState {
 
 }
 ```
-##### There is a long [list of parameters](https://github.com/AndriousSolutions/fluttery_framework/blob/5bf647ed5639739995f8d5b1cd150b03f8f87d23/lib/view/app_state.dart#L33) available to you using the AppState class.
-##### (If you know the widgets, MaterialApp or CupertinoApp, you'll know these parameters.)
+There is a long [list of parameters](https://github.com/AndriousSolutions/fluttery_framework/blob/5bf647ed5639739995f8d5b1cd150b03f8f87d23/lib/view/app_state.dart#L33) available to you using the AppState class.
+<br />
+(If you know the widgets, MaterialApp or CupertinoApp, you'll know these parameters.)
 
-##### Note, this package uses at its core the StateX package:
+## _A Responsive Interface_
+This package utilises the [Sizer](https://pub.dev/packages/sizer) package right at the start.
+The screenshot below is of the Fluttery Framework's <b>build</b>() function wrapping your app in the Sizer widget.
+It's a very popular means to implement a responsive interface for Flutter apps. 
+You're able to specify a percentage and not a set number when defining the size and position of widgets on the screen.
+<br />
+For example, `Container(width: 20.w, height: 30.h)` means 20% of the screen's width and 30% of the screen's height.
+<br />
+Doing so allows your app's interface to readily adapt to different screen sizes.
+
+<a id="Sizer" target="_blank" rel="noopener noreferrer" href="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6f302e30-9512-4ba3-9cbb-83092478c016"><img src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/6f302e30-9512-4ba3-9cbb-83092478c016" width="48%" height="60%"></a>
+
+| [app_state.dart](https://github.com/AndriousSolutions/fluttery_framework/blob/master/lib/view/app_state.dart#L289) |
+|:---------------------------------------------------------------------------------------------------------------------|
+<br />
+<br />
+<br />
+Note, this package uses at its core the StateX package:
 
 [![statex](https://user-images.githubusercontent.com/32497443/178387749-1e28f27f-f64c-41df-b5c0-a7591f194e22.jpg)](https://pub.dev/packages/state_extended)
 [![Pub.dev](https://img.shields.io/pub/v/state_extended.svg?logo=data:image/png)](https://pub.dev/packages/state_extended) [![GitHub stars](https://img.shields.io/github/stars/AndriousSolutions/state_extended.svg?style=social&amp;logo=github)](https://github.com/AndriousSolutions/state_extended/stargazers)  [![Last Commit](https://img.shields.io/github/last-commit/AndriousSolutions/state_extended)](https://github.com/AndriousSolutions/state_extended/commits/master)

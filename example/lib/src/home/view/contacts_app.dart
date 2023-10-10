@@ -196,7 +196,7 @@ Widget _buildAndroid(_ContactListState state) {
           child: Icon(con.sortedAlpha ? Icons.sort : Icons.sort_by_alpha,
               color: Colors.white),
         ),
-        AppMenu().popupMenuButton,
+        AppMenu(),
       ],
     ),
     drawer: AppDrawer(key: const Key('AppDrawer')),
@@ -315,7 +315,7 @@ Widget _buildiOS(_ContactListState state) {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              AppMenu().popupMenuButton,
+              AppMenu(),
             ],
           ),
         ),

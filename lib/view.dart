@@ -70,7 +70,7 @@ export 'package:fluttery_framework/src/view/utils/inherited_state.dart'
     show InheritedStates, InheritedStateWidget;
 
 /// Menus
-export 'package:fluttery_framework/view/app_menu.dart' show AppMenu, PopupMenu;
+export 'package:fluttery_framework/view/app_menu.dart';
 
 /// Extensions
 export 'package:fluttery_framework/view/app/app_appstate.dart';

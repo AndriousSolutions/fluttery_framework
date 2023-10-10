@@ -72,7 +72,6 @@ class AppObject
   /// Dispose the App properties.
   @override
   void dispose() {
-    _menu = null;
     _connectivitySubscription?.cancel();
     _connectivitySubscription = null;
     _appState = null;
@@ -213,13 +212,6 @@ class AppObject
   /// Gain a reference of the GoRouter and not use the bad GoRouter.of()
   v.GoRouter? _goRouter;
 
-  /// A mutable menu
-  v.AppMenu<String> get menu => _menu ??= v.AppMenu(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        position: PopupMenuPosition.under,
-      );
-  v.AppMenu<String>? _menu;
-
   /// The running platform
   TargetPlatform? get platform {
     if (_platform == null && context != null) {
@@ -246,6 +238,7 @@ class AppObject
     final saved = _getLocale && locale != null;
     //Saved only if first called to look up.
     if (saved) {
+      appState?.locale = locale; // Ensure AppState gets updated
       await Prefs.setString('locale', locale.toLanguageTag());
     }
     return saved;
