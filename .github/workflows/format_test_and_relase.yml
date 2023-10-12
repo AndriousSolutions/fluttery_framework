@@ -31,7 +31,8 @@ jobs:
       # Repository: https://github.com/actions/setup-java
       - uses: actions/setup-java@v3
         with:
-         java-version: '17' #'12.x'
+          distribution: 'zulu'
+          java-version: '17' #'12.x'
           
       # Use the community Action to install Flutter we want the stable channel
       # Repository: https://github.com/subosito/flutter-action for latest version
