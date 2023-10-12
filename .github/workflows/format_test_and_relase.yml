@@ -26,12 +26,12 @@ jobs:
       # Repository: https://github.com/actions/checkout
       - uses: actions/checkout@v3
 
-#      # Use the standard Java Action to setup Java
-#      # we want the latest Java 12
-#      # Repository: https://github.com/actions/setup-java
-#      - uses: actions/setup-java@v3
-#        with:
-#         java-version: '17' #'12.x'
+      # Use the standard Java Action to setup Java
+      # we want the latest Java 12
+      # Repository: https://github.com/actions/setup-java
+      - uses: actions/setup-java@v3
+        with:
+         java-version: '17' #'12.x'
           
       # Use the community Action to install Flutter we want the stable channel
       # Repository: https://github.com/subosito/flutter-action for latest version
@@ -52,6 +52,7 @@ jobs:
       - run: flutter test --coverage
 
       # Upload to codecov
+      # Repository: https://github.com/codecov/codecov-action
       - uses: codecov/codecov-action@v3
         with:
           token: ${{secrets.CODECOV_TOKEN}}
@@ -65,6 +66,7 @@ jobs:
 
         
       # Create a Release
+      # Repository: https://github.com/softprops/action-gh-release
       - uses: softprops/action-gh-release@v1
         env:
           # This token is provided by Actions, you do not need to create your own token
