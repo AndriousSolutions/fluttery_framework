@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:fluttery_framework_example/src/controller.dart'
-    show AppController, StateXController;
+    show StateXController;
 
 import 'package:fluttery_framework_example/src/view.dart';
 
@@ -82,7 +82,7 @@ class AnotherController extends StateXController {
   /// [RouteInformation] and a restoration state onto the router.
   @override
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) =>
-      didPushRoute(routeInformation.location!);
+      didPushRoute(routeInformation.uri.toString());
 
   /// Called when the application's dimensions change. For example,
   /// when a phone is rotated.

@@ -30,8 +30,7 @@ Future<void> openLocaleMenu(WidgetTester tester) async {
 
 Future<void> selectLanguage(WidgetTester tester) async {
   //
-//  final listFinder = find.byType(Scrollable); //, skipOffstage: false);
-  final listFinder = find.byKey(const Key('LocaleCupertinoSpinner'));
+  final listFinder = find.byType(Scrollable); //, skipOffstage: false);
 
   expect(listFinder, findsWidgets, reason: _location);
 
