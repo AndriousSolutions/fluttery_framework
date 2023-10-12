@@ -23,16 +23,20 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      # Repository: https://github.com/actions/checkout
+      - uses: actions/checkout@v3
 
       # Use the standard Java Action to setup Java
       # we want the latest Java 12
-      - uses: actions/setup-java@v1
+      # Repository: https://github.com/actions/setup-java
+      - uses: actions/setup-java@v3
         with:
-          java-version: '12.x'
-      # Use the community Action to install Flutter
-      # we want the stable channel
-      - uses: subosito/flutter-action@v1
+          distribution: 'zulu'
+          java-version: '17' #'12.x'
+          
+      # Use the community Action to install Flutter we want the stable channel
+      # Repository: https://github.com/subosito/flutter-action for latest version
+      - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
@@ -49,6 +53,7 @@ jobs:
       - run: flutter test --coverage
 
       # Upload to codecov
+      # Repository: https://github.com/codecov/codecov-action
       - uses: codecov/codecov-action@v3
         with:
           token: ${{secrets.CODECOV_TOKEN}}
@@ -62,6 +67,7 @@ jobs:
 
         
       # Create a Release
+      # Repository: https://github.com/softprops/action-gh-release
       - uses: softprops/action-gh-release@v1
         env:
           # This token is provided by Actions, you do not need to create your own token
