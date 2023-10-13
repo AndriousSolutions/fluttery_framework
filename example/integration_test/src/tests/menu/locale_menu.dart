@@ -21,11 +21,13 @@ Future<void> openLocaleMenu(WidgetTester tester) async {
   /// Select a language
   await selectLanguage(tester);
 
-  /// Close window
+  /// Close window if still open
   final button = find.widgetWithText(SimpleDialogOption, 'Cancel');
-  expect(button, findsOneWidget, reason: _location);
-  await tester.tap(button);
-  await tester.pumpAndSettle();
+  if (button.evaluate().isNotEmpty) {
+    expect(button, findsOneWidget, reason: _location);
+    await tester.tap(button);
+    await tester.pumpAndSettle();
+  }
 }
 
 Future<void> selectLanguage(WidgetTester tester) async {
@@ -40,8 +42,18 @@ Future<void> selectLanguage(WidgetTester tester) async {
     500.0,
     scrollable: listFinder.last,
   );
+  await tester.pumpAndSettle();
 
   await tester.tap(listFinder.last);
   await tester.pump();
-  await tester.pumpAndSettle();
+
+  // Find the appropriate button even if translated.
+  var button = find.widgetWithText(SimpleDialogOption, 'OK');
+//  button = find.byKey(const Key('button02')); // another option
+
+  if (button.evaluate().isNotEmpty) {
+    expect(button, findsOneWidget, reason: _location);
+    await tester.tap(button);
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+  }
 }

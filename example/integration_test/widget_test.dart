@@ -106,9 +106,6 @@ void integrationTestFlutteryFramework() {
     /// Switch the app through the popupmenu
     await openApplicationMenu(tester);
 
-    /// Open the Locale window
-    await openLocaleMenu(tester);
-
     /// Open About menu
     await openAboutMenu(tester);
 
@@ -117,6 +114,9 @@ void integrationTestFlutteryFramework() {
 
     /// WordPairs App Model Unit Testing
     await wordPairsModelTest(tester);
+
+    /// Open the Locale window
+    await openLocaleMenu(tester);
 
     /// Unit testing
     await unitTests(tester);

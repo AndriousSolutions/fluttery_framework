@@ -1,5 +1,5 @@
 
-## 4.5.0+1
+## 4.5.0+2
 October 10, 2023
 - Rewrote App's menu:
   AppPopupMenu, PopupMenuWidget, AppPopupMenuController, PopupMenuController
@@ -8,7 +8,7 @@ October 10, 2023
 - buildiOS() defaults to buildAndroid() if not implemented
 - Continue updating documentation
 - Updated dependencies: connectivity_plus, device_info_plus, package_info_plus
-- find.byType(Scrollable) in locale_menu.dart
+- find.byType(Scrollable) and find.widgetWithText(SimpleDialogOption, 'OK') in locale_menu.dart
 
 ## 4.4.1
 September 24, 2023
