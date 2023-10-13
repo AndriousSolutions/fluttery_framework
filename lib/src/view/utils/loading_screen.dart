@@ -73,12 +73,14 @@ class _LoadingScreenState extends State<LoadingScreen>
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-            appBar: AppBar(title: const Text('Loading...')),
-            body: AnimatedBuilder(
-                animation: _animation,
-                builder: (BuildContext context, Widget? child) {
-                  return const Center(child: CircularProgressIndicator());
-                })));
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Loading...')),
+        body: AnimatedBuilder(
+            animation: _animation,
+            builder: (BuildContext context, Widget? child) {
+              return const Center(child: CircularProgressIndicator());
+            }),
+      ),
+    );
   }
 }
