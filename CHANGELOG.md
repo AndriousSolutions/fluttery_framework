@@ -1,7 +1,9 @@
 
-## 4.5.1
+## 4.5.1+2
 October 13, 2023
-- package_info_plus: ^5.0.0 doesn't exist?? Back to ^4.0.0
+- AppMenu renamed to AppPopupMenu
+- package_info_plus: ^5.0.0 was removed?? Back to ^4.0.0
+- device_info_plus: ^10.0.0 was removed?? Back to ^9.0.0
 
 ## 4.5.0+2
 October 10, 2023
