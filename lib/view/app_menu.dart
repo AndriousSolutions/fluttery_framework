@@ -135,8 +135,7 @@ class PopupMenuWidget<T> extends StatefulWidget
     this.inPosition,
     this.inClipBehavior,
   }) : _con = controller ?? PopupMenuController<T>();
-
-  ///
+  // Supplies the controller
   final PopupMenuController<T> _con;
 
   /// Optional list of menu items to appear in the popup menu.
@@ -341,6 +340,9 @@ class PopupMenuWidget<T> extends StatefulWidget
   /// Refresh the PopupMenu
   void refresh() => _con.refresh();
 
+  /// Show the PopupMenu
+  void showButtonMenu() => _con.showButtonMenu();
+
   ///
   @override
   State createState() => _PopupMenuWidgetState<T>();
@@ -352,13 +354,22 @@ class _PopupMenuWidgetState<T> extends State<PopupMenuWidget<T>> {
   @override
   void initState() {
     super.initState();
+    //
     widget._con._state = this;
-    useMaterial = context.widget is! Material &&
+    //
+    hasMaterial = context.widget is! Material &&
         context.findAncestorWidgetOfExactType<Material>() == null;
+    //
+    popupKey = _PopupMenuButtonKey<PopupMenuButtonState<T>>(this);
   }
 
   // Use the Material widget if not running under the MaterialApp widget.
-  late bool useMaterial;
+  late bool hasMaterial;
+
+  late GlobalKey<PopupMenuButtonState<T>> popupKey;
+
+  /// Popup menu's State object
+  PopupMenuButtonState<T>? get popupMenuState => popupKey.currentState;
 
   ///
   @override
@@ -367,9 +378,6 @@ class _PopupMenuWidgetState<T> extends State<PopupMenuWidget<T>> {
     widget._con._state = this;
   }
 
-  // Supply the popupMenu button displayed on the AppBar
-  Widget? popupButton;
-
   @override
   Widget build(BuildContext context) {
     //
@@ -377,27 +385,67 @@ class _PopupMenuWidgetState<T> extends State<PopupMenuWidget<T>> {
 
     final con = _widget._con;
 
+    // Could be changed in the function, onItemBuilder
+    var enabled =
+        con.onEnabled() ?? _widget.enabled ?? _widget.onEnabled() ?? true;
+
     var icon = con.onIcon() ?? _widget.icon ?? _widget.onIcon();
 
-    final child = con.onChild() ?? _widget.child ?? _widget.onChild();
+    var child = con.onChild() ?? _widget.child ?? _widget.onChild();
 
-    // One or the other, but not both.
-    // Default to child
-    if (child != null && icon != null) {
-      icon = null;
-    }
-
-    double? iconSize =
+    final iconSize =
         con.onIconSize() ?? _widget.iconSize ?? _widget.onIconSize();
 
-    if (child == null) {
-      popupButton = icon;
-    } else {
-      iconSize = 0.0;
-      popupButton = child;
+    // One or the other, but not both.
+    if (child != null && icon != null) {
+      if (iconSize != null) {
+        child = null;
+      } else {
+        icon = null;
+      }
+      // Default to child
+    } else if (child == null) {
+      // Supply the icon instead
+      if (icon != null) {
+        // May be changed in onItemBuilder() function
+        child = icon;
+        icon = null;
+      } else {
+        // Supply the three dots
+        // May be changed in onItemBuilder() function
+        child = Icon(Icons.adaptive.more);
+        child = Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: Align(
+            widthFactor: 1,
+            heightFactor: 1,
+            child: child,
+          ),
+        );
+      }
+    }
+
+    List<PopupMenuEntry<T>> menuOptions;
+    // A flag if an error occurs
+    var itemError = false;
+
+    try {
+      // Determine first if there is any menu options
+      menuOptions = onItemBuilder(context);
+    } catch (e) {
+      itemError = true;
+      menuOptions = <PopupMenuEntry<T>>[];
+    }
+
+    // Don't display the menu popup if there's nothing to display
+    // If errors, possibly will not error when the user opens the menu
+    if (menuOptions.isEmpty && !itemError) {
+      enabled = false;
+      child = const SizedBox();
     }
 
     Widget popupMenu = PopupMenuButton<T>(
+      key: popupKey,
       itemBuilder: onItemBuilder,
       initialValue: con.onInitialValue() ??
           _widget.initialValue ??
@@ -442,12 +490,11 @@ class _PopupMenuWidgetState<T> extends State<PopupMenuWidget<T>> {
       splashRadius: con.onSplashRadius() ??
           _widget.splashRadius ??
           _widget.onSplashRadius(),
-      icon: popupButton,
+      icon: icon,
       iconSize: iconSize,
       offset:
           con.onOffset() ?? _widget.offset ?? _widget.onOffset() ?? Offset.zero,
-      enabled:
-          con.onEnabled() ?? _widget.enabled ?? _widget.onEnabled() ?? true,
+      enabled: enabled,
       shape: con.onShape() ?? _widget.shape ?? _widget.onShape(),
       color: con.onColor() ?? _widget.color ?? _widget.onColor(),
       enableFeedback: con.onEnableFeedback() ??
@@ -463,10 +510,11 @@ class _PopupMenuWidgetState<T> extends State<PopupMenuWidget<T>> {
           _widget.clipBehavior ??
           _widget.onClipBehavior() ??
           Clip.none,
+      child: child,
     );
 
     // If not running under the MaterialApp widget.
-    if (useMaterial) {
+    if (hasMaterial) {
       popupMenu = Material(child: popupMenu);
     }
     return popupMenu;
@@ -505,11 +553,6 @@ class _PopupMenuWidgetState<T> extends State<PopupMenuWidget<T>> {
 
     menuOptions ??= <PopupMenuEntry<T>>[];
 
-    // Don't display the three little dots
-    if (menuOptions.isEmpty) {
-      popupButton = const SizedBox();
-    }
-
     return menuOptions;
   }
 
@@ -525,13 +568,22 @@ class _PopupMenuWidgetState<T> extends State<PopupMenuWidget<T>> {
   }
 }
 
+// This is the GlobalKey that identifies the PopupMenuButton's State object
+class _PopupMenuButtonKey<T extends State<StatefulWidget>>
+    extends GlobalObjectKey<T> {
+  const _PopupMenuButtonKey(super.value);
+}
+
 /// Uses the String type as menu options
 class AppPopupMenuController extends PopupMenuController<String> {}
 
 ///
 class PopupMenuController<T> implements PopupMenuButtonFunctions<T> {
-  /// The link to the App menu's State object
+  // The link to the App menu's State object
   _PopupMenuWidgetState<T>? _state;
+
+  /// Show the popup menu
+  void showButtonMenu() => _state?.popupMenuState?.showButtonMenu();
 
   @override
   List<T>? onItems() => null;

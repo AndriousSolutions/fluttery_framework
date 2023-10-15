@@ -1,7 +1,11 @@
 
+## 4.5.2
+October 15, 2023
+- AppPopupMenu not displayed if no menu items
+
 ## 4.5.1+2
 October 13, 2023
-- AppMenu renamed to AppPopupMenu
+- AppMenu renamed to AppPopupMenu  Removed popupbutton property
 - package_info_plus: ^5.0.0 was removed?? Back to ^4.0.0
 - device_info_plus: ^10.0.0 was removed?? Back to ^9.0.0
 
