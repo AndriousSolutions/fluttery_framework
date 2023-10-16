@@ -6,7 +6,7 @@ It literally defines how your app will look and behave to the user.
 You should take the time to understand this class, and if you know Flutter, that'll take seconds.
 That's because all its properties and parameters come from the **MaterialApp** widget and the **CupertinoApp** widget.
 However, it does have some additional functions for you.
-<table cellspacing="0" cellpadding="0" border="0" align="center">
+<table>
   	<caption>Contents</caption>
     <tbody>
     <tr>

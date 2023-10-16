@@ -527,22 +527,30 @@ class _PopupMenuWidgetState<T> extends State<PopupMenuWidget<T>> {
 
     final widget = this.widget;
 
+    final con = widget._con;
+
     // items or onItems()
-    final List<T>? options = widget.items ?? widget.onItems();
+    final List<T>? options = con.onItems() ?? widget.items ?? widget.onItems();
     if (options != null && options.isNotEmpty) {
       menuOptions = onItems(options).call(context);
     }
 
     // menuEntries
     if (menuOptions == null) {
-      final entries = widget.menuEntries;
+      var entries = con.onMenuEntries();
       if (entries != null && entries.isNotEmpty) {
-        menuOptions = widget.menuEntries;
+        menuOptions = entries;
       }
       if (menuOptions == null) {
-        final items = widget.onMenuEntries();
-        if (items != null && items.isNotEmpty) {
-          menuOptions = items;
+        entries = widget.menuEntries;
+        if (entries != null && entries.isNotEmpty) {
+          menuOptions = entries;
+        }
+      }
+      if (menuOptions == null) {
+        entries = widget.onMenuEntries();
+        if (entries != null && entries.isNotEmpty) {
+          menuOptions = entries;
         }
       }
     }
