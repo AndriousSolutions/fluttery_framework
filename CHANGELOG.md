@@ -1,4 +1,10 @@
 
+## 4.6.0
+November 21, 2023
+- Upgraded to go_router `12.0.0` and package_info_plus `5.0.0`
+- Removed deprecated Text widget field, textScaleFactorOf, from use.
+- Changed class, PopupMenuController<T>, to a mixin, PopupMenuFunctionsMixin<T>
+
 ## 4.5.3
 October 15, 2023
 - con.onItems() in app_menu.dart

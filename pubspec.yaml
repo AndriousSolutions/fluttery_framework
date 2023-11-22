@@ -30,7 +30,7 @@ dependencies:
     sdk: flutter
 
   # https://pub.dev/packages/go_router/
-  go_router: ^11.0.0
+  go_router: ^12.0.0
 
   # https://pub.dev/packages/http/
   http: ^1.0.0
@@ -40,7 +40,7 @@ dependencies:
 #        path: ../../packages/l10n_translator
 
   # https://pub.dev/packages/package_info_plus
-  package_info_plus: ^4.0.0
+  package_info_plus: ^5.0.0
 
   # https://pub.dev/packages/path_provider
   path_provider: ^2.0.0
@@ -53,8 +53,8 @@ dependencies:
   sizer: ^2.0.0
 
   # https://pub.dartlang.org/packages/state_extended
-  state_extended: ^4.0.0
-#    path: ../../packages/state_extended
+  state_extended: #^4.0.0
+    path: ../../packages/state_extended
 
   # https://pub.dev/packages/timezone
   timezone: ^0.9.0

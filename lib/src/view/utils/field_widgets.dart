@@ -273,7 +273,8 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
     this.locale,
     this.softWrap,
     this.overflow,
-    this.textScaleFactor,
+    @Deprecated('Deprecated. Use textScaler instead.') double? textScaleFactor,
+    this.textScaler,
     this.semanticsLabel,
     this.textWidthBasis,
     this.textHeightBehavior,
@@ -612,8 +613,8 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
   /// How visual overflow should be handled.
   TextOverflow? overflow;
 
-  /// The number of font pixels for each logical pixel.
-  double? textScaleFactor;
+  /// The font scaling strategy to use when laying out and rendering the text.
+  TextScaler? textScaler;
 
 //final int maxLines;
   /// An alternative semantics label for this text.
@@ -1119,7 +1120,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
       locale: locale,
       softWrap: softWrap,
       overflow: overflow,
-      textScaleFactor: textScaleFactor,
+      textScaler: textScaler,
       maxLines: maxLines,
       semanticsLabel: semanticsLabel,
       textWidthBasis: textWidthBasis,
@@ -1137,7 +1138,8 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
     Locale? locale,
     bool? softWrap,
     TextOverflow? overflow,
-    double? textScaleFactor,
+    @Deprecated('Deprecated. Use textScaler instead.') double? textScaleFactor,
+    TextScaler? textScaler,
     int? maxLines,
     String? semanticsLabel,
     TextWidthBasis? textWidthBasis,
@@ -1149,7 +1151,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
     this.locale = locale ?? this.locale;
     this.softWrap = softWrap ?? this.softWrap;
     this.overflow = overflow ?? this.overflow;
-    this.textScaleFactor = textScaleFactor ?? this.textScaleFactor;
+    this.textScaler = textScaler ?? this.textScaler;
     this.maxLines = maxLines ?? this.maxLines;
     this.semanticsLabel = semanticsLabel ?? this.semanticsLabel;
     this.textWidthBasis = textWidthBasis ?? this.textWidthBasis;
@@ -1181,7 +1183,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
         locale: locale,
         softWrap: softWrap,
         overflow: overflow,
-        textScaleFactor: textScaleFactor,
+        textScaler: textScaler,
         maxLines: maxLines,
         semanticsLabel: semanticsLabel,
         textWidthBasis: textWidthBasis,
@@ -1200,7 +1202,8 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
     Locale? locale,
     bool? softWrap,
     TextOverflow? overflow,
-    double? textScaleFactor,
+    @Deprecated('Deprecated. Use textScaler instead.') double? textScaleFactor,
+    TextScaler? textScaler,
     int? maxLines,
     String? semanticsLabel,
     TextWidthBasis? textWidthBasis,
@@ -1212,7 +1215,7 @@ class FieldWidgets<T> extends DataFieldItem with StateGetter {
     this.locale = locale ?? this.locale;
     this.softWrap = softWrap ?? this.softWrap;
     this.overflow = overflow ?? this.overflow;
-    this.textScaleFactor = textScaleFactor ?? this.textScaleFactor;
+    this.textScaler = textScaler ?? this.textScaler;
     this.maxLines = maxLines ?? this.maxLines;
     this.semanticsLabel = semanticsLabel ?? this.semanticsLabel;
     this.textWidthBasis = textWidthBasis ?? this.textWidthBasis;

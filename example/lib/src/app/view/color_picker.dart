@@ -78,7 +78,7 @@ class ColorPicker {
             }
             Navigator.pop(context, color);
           },
-          colors: colors,
+          alignment: WrapAlignment.center,
           allowShades: allowShades, // default true
           iconSelected: iconSelected,
           circleSize: circleSize,
