@@ -1,9 +1,10 @@
 
-## 4.6.0
+## 4.6.1
 November 21, 2023
 - Upgraded to go_router `12.0.0` and package_info_plus `5.0.0`
 - Removed deprecated Text widget field, textScaleFactorOf, from use.
 - Changed class, PopupMenuController<T>, to a mixin, PopupMenuFunctionsMixin<T>
+- Corrected pubspec.yaml to state_extended ^4.0.0
 
 ## 4.5.3
 October 15, 2023
