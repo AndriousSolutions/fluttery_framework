@@ -1,8 +1,9 @@
 
-## 4.7.0
+## 4.7.0+1
 November 23, 2023
 - app_state.dart build() function incorrectly wrapped in Builder()
 - Removed unused classes FieldWidgets InheritedStates and ScheduleNotifications
+- Corrected Testing of a 'Close' button with if (button.evaluate().isEmpty) {
 
 ## 4.6.1
 November 21, 2023
