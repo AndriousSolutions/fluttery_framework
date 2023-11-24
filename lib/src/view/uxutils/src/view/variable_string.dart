@@ -17,7 +17,7 @@ class VarStr {
   static String get get => _varStr.value;
 }
 
-/// Variable String Clas
+/// Variable String Class
 class VariableString {
   /// Variable String Constructor.
   VariableString() {

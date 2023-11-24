@@ -1,4 +1,9 @@
 
+## 4.7.0
+November 23, 2023
+- app_state.dart build() function incorrectly wrapped in Builder()
+- Removed unused classes FieldWidgets InheritedStates and ScheduleNotifications
+
 ## 4.6.1
 November 21, 2023
 - Upgraded to go_router `12.0.0` and package_info_plus `5.0.0`

@@ -17,4 +17,4 @@ export 'tests/menu/open_menu.dart';
 /// Individual Tests
 export 'tests/counter_test.dart';
 export 'tests/words_test.dart';
-export 'tests/contacts_test.dart';
+// export 'tests/contacts_test.dart';

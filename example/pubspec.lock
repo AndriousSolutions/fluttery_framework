@@ -85,10 +85,10 @@ packages:
     dependency: transitive
     description:
       name: connectivity_plus
-      sha256: b502a681ba415272ecc41400bd04fe543ed1a62632137dc84d25a91e7746f55f
+      sha256: "224a77051d52a11fbad53dd57827594d3bd24f945af28bd70bab376d68d437f0"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.1"
+    version: "5.0.2"
   connectivity_plus_platform_interface:
     dependency: transitive
     description:
@@ -304,7 +304,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "4.6.1"
+    version: "4.7.0"
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter

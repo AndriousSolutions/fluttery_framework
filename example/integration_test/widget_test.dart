@@ -93,7 +93,7 @@ void integrationTestFlutteryFramework() {
         case 'Contacts':
 
           /// Contacts app
-          await contactsTest(tester);
+//          await contactsTest(tester);
           break;
       }
 

@@ -8,15 +8,21 @@
 import '../_unit_test_controller.dart';
 
 Future<void> testAssets() async {
-//  test('Test Assets class', () async {
-  //
+//
   final byteData = await Assets.getStreamF('key');
 
   final string = await Assets.getStringF('key');
 
   final assets = Assets();
 
-  final data =
+  final String? data =
       await assets.getData<String>('key', (value) => Future.value('test'));
-//  });
+
+  final String? stringData =
+      await assets.getStringData('key', (value) => Future.value('test'));
+
+  final bool boolData =
+      await assets.getBoolData('key', (value) => Future.value(true));
+
+  final String? path = Assets.setPath('key');
 }

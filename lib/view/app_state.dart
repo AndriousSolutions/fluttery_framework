@@ -1538,7 +1538,7 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
   /// Only every called once and so use the state() or dependOnInheritedWidget()
   /// functions to update particular parts of the returned interface.
   @override
-  Widget buildIn(BuildContext context) => Builder(builder: builder);
+  Widget buildIn(BuildContext context) => builder(context);
 
   /// Use this to navigate throughout the your app
   static NavigatorState get router => App.router;

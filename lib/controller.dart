@@ -23,9 +23,6 @@ export 'package:fluttery_framework/view/app.dart' show App, AppDrawer;
 //App's Controller
 export 'package:fluttery_framework/controller/app.dart' show AppController;
 
-// Notifications
-export 'package:fluttery_framework/src/controller/schedule_notificaitons.dart';
-
 // Device Info
 export 'package:fluttery_framework/controller/device_info.dart' show DeviceInfo;
 

@@ -60,7 +60,8 @@ class ExampleAppController extends AppController {
   bool get contactsApp => _appNames[_appCount] == 'Contacts';
 
   int _appCount = 0;
-  final _appNames = ['Counter', 'Word Pairs', 'Contacts', 'Inherited'];
+//  final _appNames = ['Counter', 'Word Pairs', 'Contacts', 'Inherited'];
+  final _appNames = ['Counter', 'Word Pairs', 'Inherited'];
 
   Widget onHome() {
     //
@@ -87,11 +88,11 @@ class ExampleAppController extends AppController {
 //        widget = CounterPage(key: key);
         widget = const CounterPage();
         break;
-      case 'Contacts':
-//        widget = const ContactsList(key: ValueKey<String>('Contacts'));
-//        widget = ContactsList(key: key);
-        widget = const ContactsList();
-        break;
+//      case 'Contacts':
+// //        widget = const ContactsList(key: ValueKey<String>('Contacts'));
+// //        widget = ContactsList(key: key);
+//         widget = const ContactsList();
+//        break;
       case 'Inherited':
 //        widget = const HomePage(key: ValueKey<String>('Inherited'));
 //        widget = HomePage(key: key);

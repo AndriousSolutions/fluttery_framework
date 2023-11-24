@@ -3,7 +3,7 @@ import '_unit_imports.dart';
 //
 unitTests(WidgetTester tester) async {
 //
-//  await testAssets();
+  await testAssets();
 
   await testAppController();
 

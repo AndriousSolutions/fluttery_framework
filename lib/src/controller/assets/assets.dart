@@ -65,16 +65,17 @@ class Assets {
   /// Retrieve an object of type, T, by its String value.
   /// Supply a parser function to process the operation.
   /// (See. Flutter's [AssetBundle.loadStructuredData]
-  Future<T>? getData<T>(
+  Future<T?> getData<T>(
       String key, Future<T> Function(String value) parser) async {
     assert(Assets._assets != null, 'Assets.init() must be called first.');
-    Future<T>? data;
+    T? data;
     try {
-      data = Assets._assets!.loadStructuredData('$setPath(key)$key', parser);
+      data =
+          await Assets._assets!.loadStructuredData('$setPath(key)$key', parser);
     } catch (ex) {
       data = null;
     }
-    return data!;
+    return data;
   }
 
   /// Retrieve a String by its Key value.
@@ -126,11 +127,4 @@ class Assets {
             : '$_dir/';
     return path;
   }
-}
-
-/// Saved for the Testing code to work.
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
 }

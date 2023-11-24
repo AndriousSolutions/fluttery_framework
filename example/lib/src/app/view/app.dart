@@ -50,7 +50,7 @@ class _ExampleAppState extends AppState {
         );
 
   @override
-  Widget onHome() => ExampleAppController().onHome();
+  Widget onHome() => (controller as ExampleAppController).onHome();
 
   @override
   RouterConfig<Object>? onRouterConfig() => GoRouter(
@@ -61,12 +61,12 @@ class _ExampleAppState extends AppState {
               return onHome();
             },
           ),
-          GoRoute(
-            path: '/add',
-            builder: (BuildContext context, GoRouterState state) {
-              return const AddContact();
-            },
-          ),
+          // GoRoute(
+          //   path: '/add',
+          //   builder: (BuildContext context, GoRouterState state) {
+          //     return const AddContact();
+          //   },
+          // ),
         ],
       );
 

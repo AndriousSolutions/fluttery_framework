@@ -17,7 +17,7 @@ Future<void> openAboutMenu(WidgetTester tester) async {
 
   /// Close window
   // Find the appropriate button even if translated.
-  final button = find.widgetWithText(TextButton, L10n.s('Close'));
+  final button = find.widgetWithText(TextButton, L10n.s('CLOSE'));
   expect(button, findsOneWidget, reason: _location);
   await tester.tap(button);
   await tester.pumpAndSettle();
