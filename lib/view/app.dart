@@ -342,8 +342,8 @@ class AppObject
   }
 
   /// The local directory for this App.
-  String? get filesDir => _path;
-  String? _path;
+  String? get filesDir => _appDirPath;
+  String? _appDirPath;
 
   /// Determine the connectivity.
   final _connectivity = Connectivity();
@@ -448,7 +448,7 @@ class AppObject
     _installNum ??= await InstallFile.id();
 
     // Determine the location to the files directory.
-    _path ??= await Files.localPath;
+    _appDirPath ??= await Files.localPath;
   }
 
   Future<String> _initConnectivity() async {

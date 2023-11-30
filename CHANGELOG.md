@@ -1,4 +1,9 @@
 
+## 4.8.0
+November 30, 2023
+- Updated example app
+- localPath is current working directory depending on platform
+
 ## 4.7.0+1
 November 23, 2023
 - app_state.dart build() function incorrectly wrapped in Builder()

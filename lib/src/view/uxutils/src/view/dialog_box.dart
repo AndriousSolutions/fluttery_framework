@@ -155,9 +155,7 @@ Future<bool> showBox({
   return result ?? false;
 }
 
-/// A high-level function
-/// Displays a String passing specific one to two button options
-/// and their corresponding function calls.
+/// This dialog doesn't stop. The app continues with it displayed.
 void dialogBox({
   String? title,
   Option? button01,

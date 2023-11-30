@@ -1,5 +1,5 @@
 //
-import 'package:fluttery_framework_example/src/controller.dart';
+import '../../controller.dart';
 
 /// The App's theme controller
 ///

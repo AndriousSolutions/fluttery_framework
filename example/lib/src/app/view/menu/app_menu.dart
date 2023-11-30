@@ -1,7 +1,7 @@
 //
-import 'package:fluttery_framework_example/src/controller.dart';
+import '../../../controller.dart';
 
-import 'package:fluttery_framework_example/src/view.dart';
+import '../../../view.dart';
 
 /// The App's menu
 class AppMenu extends AppPopupMenu {

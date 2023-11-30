@@ -5,7 +5,8 @@
 ///          Created  11 May 2018
 ///
 import 'dart:async' show Future;
-import 'dart:io' show File;
+import 'dart:io' show Directory, File, Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:path_provider/path_provider.dart'
     if (dart.library.html) 'package:fluttery_framework/src/fake_classes_for_web.dart'
@@ -19,8 +20,23 @@ class Files {
   /// Return the local path location.
   static Future<String?> get localPath async {
     if (_path == null) {
-      final directory = await getApplicationDocumentsDirectory();
-      _path = directory.path;
+      if (kIsWeb) {
+        _path = '';
+      } else {
+        switch (Platform.operatingSystem) {
+          case 'android':
+          case 'ios':
+            final directory = await getApplicationDocumentsDirectory();
+            _path = directory.path;
+            break;
+          case 'macos':
+          case 'windows':
+          case 'fuchsia':
+          case 'linux':
+            _path = Directory.current.path;
+            break;
+        }
+      }
     }
     return _path;
   }

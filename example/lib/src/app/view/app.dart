@@ -1,9 +1,9 @@
 //
-import 'package:fluttery_framework_example/src/controller.dart';
+import '../../controller.dart';
 
-import 'package:fluttery_framework_example/src/model.dart';
+import '../../model.dart';
 
-import 'package:fluttery_framework_example/src/view.dart';
+import '../../view.dart';
 
 /// App
 class FlutteryExampleApp extends AppStatefulWidget {

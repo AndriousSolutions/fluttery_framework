@@ -40,7 +40,6 @@ class InstallFile {
 
       if (!exists) {
         _justInstalled = true;
-
         sID = writeInstallationFile(installFile);
       } else {
         sID = await readInstallationFile(installFile);
@@ -55,10 +54,9 @@ class InstallFile {
   /// Returns the content of the 'install file.'
   /// Pass in a File object of the install file.
   static Future<String> readInstallationFile(File installFile) async {
+    //
     final file = await Files.get(FILE_NAME);
-
     final content = await Files.readFile(file);
-
     return content;
   }
 

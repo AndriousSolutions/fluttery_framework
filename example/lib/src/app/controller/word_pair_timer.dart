@@ -1,9 +1,9 @@
 //
 import 'dart:async';
 
-import 'package:fluttery_framework_example/src/model.dart';
+import '../../model.dart';
 
-import 'package:fluttery_framework_example/src/view.dart';
+import '../../view.dart';
 
 import 'package:fluttery_framework/controller.dart';
 

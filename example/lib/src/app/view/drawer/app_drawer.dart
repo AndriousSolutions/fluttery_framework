@@ -1,5 +1,6 @@
 //
 import 'package:fluttery_framework/view.dart' as v;
+
 import 'package:fluttery_framework/view.dart' hide AppDrawer;
 
 class AppDrawer extends v.AppDrawer {
