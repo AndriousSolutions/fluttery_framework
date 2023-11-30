@@ -1,5 +1,5 @@
 
-## 1.1.0
+## 1.1.1
 November 29, 2023
 - Relative paths now in import statements.
 

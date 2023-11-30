@@ -1,4 +1,4 @@
 //
-import 'package:fluttery_framework_example/src/view.dart';
+import 'src/view.dart';
 
 void main() => runApp(FlutteryExampleApp());
