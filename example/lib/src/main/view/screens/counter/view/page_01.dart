@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../../../../controller.dart';
+/// An absolute path is preferred but this source code is copied by other app.
+import '../../../../../controller.dart';
 
-import '../../../../view.dart';
+import '../../../../../view.dart';
 
 /// The first page displayed in this app.
 class Page1 extends StatefulWidget {

@@ -1,8 +1,9 @@
 
-## 4.8.0
+## 4.8.1
 November 30, 2023
 - Updated example app
 - localPath is current working directory depending on platform
+- Additional directory changes to example app
 
 ## 4.7.0+1
 November 23, 2023
