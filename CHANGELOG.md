@@ -1,4 +1,8 @@
 
+## 4.8.2
+December 01, 2023
+- Continue to insert relative paths in the example app
+
 ## 4.8.1+1
 November 30, 2023
 - Updated example app

@@ -4,8 +4,7 @@ import 'dart:async' show Future;
 import 'package:flutter/material.dart'
     show StatelessWidget, TextStyle, VoidCallback;
 
-import 'package:fluttery_framework_example/src/view.dart'
-    show AppSettings, Prefs;
+import '../../view.dart' show AppSettings, Prefs;
 
 class Settings {
   //
