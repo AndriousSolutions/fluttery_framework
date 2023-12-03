@@ -210,7 +210,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   Key? _key;
 
   /// Use RouterConfig or not
-  final bool? useRouterConfig;
+  late bool? useRouterConfig;
 
   /// Allow the app to change the theme
   late bool _allowChangeTheme;
@@ -306,11 +306,15 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       return true;
     }());
 
-    // If the flag was set to true and there is a Router Configuration.
-    final _useRouter = (useRouterConfig ?? false) && routerConfig != null;
+    // A Route Configuration was provided
+    final _useRouter =
+        routerConfig != null && (home == null || (useRouterConfig ?? false));
 
-    // Make the GoRouter readily available without requiring a context.
+    // Set the flag if not provided or home == null;
+    useRouterConfig ??= _useRouter;
+
     if (_useRouter) {
+      // Make the GoRouter readily available without requiring a context.
       App.goRouter = routerConfig;
     }
 
@@ -412,7 +416,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             routeInformationParser: _routeInformationParser,
             routerDelegate: _routerDelegate,
             backButtonDispatcher: _backButtonDispatcher,
-            routerConfig: _routerConfig,
+            routerConfig: routerConfig,
             theme: _setiOSThemeData(),
             builder: builder,
 // not needed          title: , // Used instead in _onOnGenerateTitle()
@@ -488,7 +492,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             routeInformationProvider: _routeInformationProvider,
             routeInformationParser: _routeInformationParser,
             routerDelegate: _routerDelegate,
-            routerConfig: _routerConfig,
+            routerConfig: routerConfig,
             backButtonDispatcher: _backButtonDispatcher,
             builder: builder,
 // not needed          title: , // Used instead in _onOnGenerateTitle()

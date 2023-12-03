@@ -46,22 +46,21 @@ class AppErrorHandler {
     FlutterExceptionHandler? handler,
     ErrorWidgetBuilder? screen,
     ReportErrorHandler? report,
-    bool? newErrorHandlers,
+    bool? allowNewErrorHandlers,
   }) {
     //
     _this ??= AppErrorHandler._();
 
-    /// Allows you to set an error handler more than once.
-    final reassigned = set(handler: handler, screen: screen, report: report);
-
-    // Allow for null. Simply allow new handles by default
-    newErrorHandlers ??= true;
-
-    // Once set to false, you can't assign different handlers anymore.
-    // However, it's set to false only if one of the handlers was reassigned.
-    if (!newErrorHandlers && reassigned) {
-      _allowNewHandlers = false;
+    /// Allow for a new Error handler in the future
+    if (AppErrorHandler.allowNewErrorHandlers &&
+        !(allowNewErrorHandlers ?? true)) {
+      // Once set to false, it's unchangeable
+      AppErrorHandler.allowNewErrorHandlers = false;
     }
+
+    /// Allows you to set an error handler more than once.
+    set(handler: handler, screen: screen, report: report);
+
     return _this!;
   }
 
@@ -115,7 +114,10 @@ class AppErrorHandler {
     _flutterExceptionHandler = FlutterError.onError;
   }
   static AppErrorHandler? _this;
-  static bool _allowNewHandlers = true;
+
+  /// Allow new handlers in the future
+  static bool allowNewErrorHandlers = true;
+  static bool _givenErrorHandler = false;
 
   // FlutterExceptionHandler get oldOnError => _oldOnError;
   static FlutterExceptionHandler? _oldOnError;
@@ -164,7 +166,7 @@ class AppErrorHandler {
     _backgroundColor ??= backgroundColor;
 
     // Once you're not allowed to set the handlers, they can't be changed.
-    if (!_allowNewHandlers) {
+    if (_givenErrorHandler && !allowNewErrorHandlers) {
       return false;
     }
 
@@ -190,6 +192,12 @@ class AppErrorHandler {
       ErrorWidget.builder = screen;
       reset = true;
     }
+
+    // Set only once
+    if (!_givenErrorHandler && reset) {
+      _givenErrorHandler = true;
+    }
+
     // Something was set;
     return reset;
   }

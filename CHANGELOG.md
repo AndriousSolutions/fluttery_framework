@@ -1,4 +1,10 @@
 
+## 4.8.3
+December 02, 2023
+- AppErrorHandler.allowNewErrorHandlers once set false new handlers are not allowed
+- AppState.useRouterConfig set true if home == null
+- Updated example app
+
 ## 4.8.2
 December 01, 2023
 - Continue to insert relative paths in the example app

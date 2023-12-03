@@ -32,7 +32,7 @@ void runApp(
       handler: errorHandler,
       screen: errorScreen,
       report: errorReport,
-      newErrorHandlers: allowNewHandlers);
+      allowNewErrorHandlers: allowNewHandlers);
 
   // Here we set the URL strategy for our web app.
   // It is safe to call this function when running on mobile or desktop as well.

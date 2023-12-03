@@ -1,2 +1,2 @@
-// Counter app data source
-export 'screens/counter/model/data_source.dart';
+// Data source in the counter folder
+export 'screens/counter/model_counter.dart';
