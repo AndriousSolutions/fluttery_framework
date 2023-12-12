@@ -1580,9 +1580,9 @@ mixin NavigatorStateMethodsMixin {
   /// Complete the lifecycle for a route that has been popped off the navigator.
   void finalizeRoute(Route<dynamic> route) => App.router.finalizeRoute(route);
 
-  /// Consults the current route's [Route.willPop] method, and acts accordingly,
-  /// potentially popping the route as a result; returns whether the pop request
-  /// should be considered handled.
+  /// Consults the current route's [Route.popDisposition] method, and acts
+  /// accordingly, potentially popping the route as a result; returns whether
+  /// the pop request should be considered handled.
   @optionalTypeArgs
   Future<bool> maybePop<T extends Object?>([T? result]) =>
       App.router.maybePop<T>(result);

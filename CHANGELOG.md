@@ -1,5 +1,5 @@
 
-## 4.9.0
+## 4.10.0
 December 11, 2023
 - 'textScaleFactorOf' is deprecated
 

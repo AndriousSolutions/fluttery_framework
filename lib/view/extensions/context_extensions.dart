@@ -118,8 +118,13 @@ extension ContextExtension on BuildContext {
   /// similar to [MediaQuery.of(this).devicePixelRatio]
   double get devicePixelRatio => MediaQuery.of(this).devicePixelRatio;
 
+  @Deprecated('Use the TextScaler object now instead')
+
   /// similar to [MediaQuery.of(this).textScaleFactor]
-  double get textScaleFactor => MediaQuery.of(this).textScaleFactor;
+  double get textScaleFactor => 0;
+
+  /// The font scaling strategy to use for laying out textual contents.
+  TextScaler get textScaler => MediaQuery.of(this).textScaler;
 
   /// get the shortestSide from screen
   double get mediaQueryShortestSide => mediaQuerySize.shortestSide;
