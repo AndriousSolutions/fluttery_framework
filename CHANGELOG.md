@@ -1,4 +1,8 @@
 
+## 4.9.0
+December 11, 2023
+- 'textScaleFactorOf' is deprecated
+
 ## 4.8.3
 December 02, 2023
 - AppErrorHandler.allowNewErrorHandlers once set false new handlers are not allowed

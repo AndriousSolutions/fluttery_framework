@@ -103,7 +103,9 @@ class _OptionsItem extends StatelessWidget {
     return MergeSemantics(
       child: Container(
         constraints: BoxConstraints(
-            minHeight: 48.0 * MediaQuery.textScaleFactorOf(context)),
+            minHeight: 48.0 *
+                MediaQuery.textScalerOf(context)
+                    .scale(DefaultTextStyle.of(context).style.fontSize ?? 14)),
         padding: const EdgeInsetsDirectional.only(start: 56),
         alignment: AlignmentDirectional.centerStart,
         child: DefaultTextStyle(

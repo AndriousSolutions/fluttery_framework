@@ -15,7 +15,6 @@ extension AppNavigationExtension on AppObject {
   /// Complete the lifecycle for a route that has been popped off the navigator.
   void finalizeRoute(Route<dynamic> route) => appState!.finalizeRoute(route);
 
-  /// Consults the current route's [Route.willPop] method, and acts accordingly,
   /// potentially popping the route as a result; returns whether the pop request
   /// should be considered handled.
   @optionalTypeArgs
