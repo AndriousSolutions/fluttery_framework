@@ -68,6 +68,9 @@ export 'package:fluttery_framework/view/app/app_navigation.dart';
 export 'package:fluttery_framework/view/extensions/_extensions_view.dart';
 export 'package:fluttery_framework/view/extensions/string_extensions.dart';
 
+/// Reactive
+export 'package:fluttery_framework/view/rx_core/_view_rx.dart';
+
 /// UX Utils
 export 'package:fluttery_framework/src/view/uxutils/view.dart';
 

@@ -1,6 +1,7 @@
 //
 
 /// An absolute path is preferred but this source code is copied by other app.
+
 import '../../../view.dart';
 
 import '../../../controller.dart';
@@ -37,89 +38,98 @@ class _CounterPageState extends StateX<CounterPage> {
 
   late ExampleAppController appCon;
 
+  TextStyle? style;
+
   Widget get wordPair => con.wordPair;
+
+  int counter = 0;
+
+  late final rxCounter = watch(0);
 
   /// Supply the 'Material' Interface for the Android platform and
   /// as the default interface for the Web and Windows platform.
   @override
-  Widget buildAndroid(BuildContext context) => Scaffold(
-        key: const Key('Scaffold'),
-        appBar: AppBar(
-          title: Text('Counter Page Demo'.tr),
-          actions: [AppMenu()],
-        ),
-        drawer: AppDrawer(),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              con.wordPair,
-              SizedBox(height: 10.h),
-              Text('You have pushed the button this many times:'.tr,
-                  style: const TextStyle(fontSize: 15)),
-              state((context) => Text(con.data,
-                  style: Theme.of(context).textTheme.headlineMedium)),
-              Padding(
-                padding: EdgeInsets.only(top: 10.h),
-                child: Column(
-                  children: [
-                    Text('Use built-in InheritedWidget'.tr),
-                    CupertinoSwitch(
-                      key: const Key('InheritedSwitch'),
-                      value: con.useInherited,
-                      onChanged: (v) {
-                        con.useInherited = v;
-                        App.setState(() {});
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+  Widget buildAndroid(BuildContext context) {
+    style ??= Theme.of(context).textTheme.headlineMedium;
+    return Scaffold(
+      key: const Key('Scaffold'),
+      appBar: AppBar(
+        title: Text('Counter Page Demo'.tr),
+        actions: [AppMenu()],
+      ),
+      drawer: AppDrawer(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            con.wordPair,
+            SizedBox(height: 10.h),
+            Text('You have pushed the button this many times:'.tr,
+                style: const TextStyle(fontSize: 15)),
+//            state((_) => Text(con.data, style: style)),
+            Text('$rxCounter', style: style),
+            Padding(
+              padding: EdgeInsets.only(top: 10.h),
+              child: Column(
                 children: [
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 50.0),
-                      child: ElevatedButton(
-                        key: const Key('Page 1'),
-                        onPressed: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute<void>(
-                              builder: (BuildContext context) => const Page1(),
-                            ),
-                          );
-                        },
-                        child: L10n.t('Page 1'),
-                      ),
-                    ),
+                  Text('Use built-in InheritedWidget'.tr),
+                  CupertinoSwitch(
+                    key: const Key('InheritedSwitch'),
+                    value: con.useInherited,
+                    onChanged: (v) {
+                      con.useInherited = v;
+                      App.setState(() {});
+                    },
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 50.0),
+                    child: ElevatedButton(
+                      key: const Key('Page 1'),
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) => const Page1(),
+                          ),
+                        );
+                      },
+                      child: L10n.t('Page 1'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
-        floatingActionButton: FloatingActionButton(
-          key: const Key('IncrementButton'),
-          onPressed: () {
-            // Don't interrupt any testing.
-            if (App.inWidgetsFlutterBinding) {
-              // Deliberately throw an error to demonstrate error handling.
-              throw Exception('Fake error to demonstrate error handling!');
-            }
-            // This code is greyed out by the IDE because it can never bt reached.
-            setState(con.onPressed);
-          },
-          child: const Icon(Icons.add),
-        ),
-        bottomNavigationBar: SimpleBottomAppBar(
-          button01: HomeBarButton(),
-          button02: StatsBarButton(),
-          button03: EventsBarButton(),
-          button04: HistoryBarButton(),
-        ),
-      );
+      ),
+      floatingActionButton: FloatingActionButton(
+        key: const Key('IncrementButton'),
+        onPressed: () {
+          // Don't interrupt any testing.
+          if (App.inWidgetsFlutterBinding) {
+            // Deliberately throw an error to demonstrate error handling.
+            throw Exception('Fake error to demonstrate error handling!');
+          }
+//          setState(con.onPressed);
+          rxCounter.value++;
+        },
+        child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: SimpleBottomAppBar(
+        button01: HomeBarButton(),
+        button02: StatsBarButton(),
+        button03: EventsBarButton(),
+        button04: HistoryBarButton(),
+      ),
+    );
+  }
 
   /// Supply the 'Cupertino' Interface for the iOS platform.
   /// If not supplied, an iOS phone calls instead the buildAndroid() function.
@@ -222,7 +232,8 @@ class _CounterPageState extends StateX<CounterPage> {
   void onError(FlutterErrorDetails details) {
     final stack = details.stack;
     if (stack != null && stack.toString().contains('handleTap')) {
-      setState(con.onPressed);
+//      setState(con.onPressed);
+      rxCounter.value++;
     }
   }
 

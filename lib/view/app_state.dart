@@ -1510,7 +1510,7 @@ class StateIn<T extends StatefulWidget> extends StateX<T> {
 /// {@category StateX class}
 /// {@category Testing}
 class StateX<T extends StatefulWidget> extends s.StateX<T>
-    with NavigatorStateMethodsMixin {
+    with NavigatorStateMethodsMixin, RxStates {
   ///
   StateX({super.controller, super.useInherited});
 

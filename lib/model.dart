@@ -18,5 +18,8 @@ export 'package:fluttery_framework/src/model/fileutils/files.dart';
 /// Install file
 export 'package:fluttery_framework/src/model/fileutils/installfile.dart';
 
+/// Hash codes
+export 'package:fluttery_framework/src/model/utils/hash.dart';
+
 /// Preferences
 export 'package:prefs/prefs.dart' show Prefs;

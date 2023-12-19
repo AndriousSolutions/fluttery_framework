@@ -21,20 +21,19 @@ export 'package:state_extended/state_extended.dart'
 export 'package:fluttery_framework/view/app.dart' show App, AppDrawer;
 
 //App's Controller
-export 'package:fluttery_framework/controller/app.dart' show AppController;
+export 'controller/app.dart' show AppController;
 
 // Device Info
-export 'package:fluttery_framework/controller/device_info.dart' show DeviceInfo;
+export 'controller/device_info.dart' show DeviceInfo;
 
 // Assets
-export 'package:fluttery_framework/src/controller/assets/assets.dart';
+export 'src/controller/assets/assets.dart';
 
 // Get Utils
-export 'package:fluttery_framework/src/controller/get_utils/get_utils.dart';
+export 'src/controller/get_utils/get_utils.dart';
 
 // Error Handler
-export 'package:fluttery_framework/src/controller/util/handle_error.dart'
-    show HandleError;
+export 'src/controller/util/handle_error.dart' show HandleError;
 
 // Preferences
 export 'package:prefs/prefs.dart' show Prefs, SharedPreferences;

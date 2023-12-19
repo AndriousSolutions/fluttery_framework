@@ -1,4 +1,8 @@
 
+## 4.11.0
+December 19, 2023
+- Supply Reactive capabilities: mixin RxStates on State and type Rx<T>
+
 ## 4.10.0
 December 11, 2023
 - 'textScaleFactorOf' is deprecated
