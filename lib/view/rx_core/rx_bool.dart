@@ -24,30 +24,6 @@
 import 'package:fluttery_framework/view.dart';
 
 ///
-class RxBool extends Rx<bool> {
-  ///
-  //ignore: avoid_positional_boolean_parameters
-  RxBool(super.value, super.hashCode, super.stateCode);
-
-  @override
-  String toString() {
-    return value ? 'true' : 'false';
-  }
-}
-
-// ///
-// class RxnBool extends Rx<bool?> {
-//   ///
-//   //ignore: avoid_positional_boolean_parameters
-//   RxnBool(super.value);
-//
-//   @override
-//   String toString() {
-//     return '$value';
-//   }
-// }
-
-///
 extension RxBoolExt on Rx<bool> {
   ///
   bool get isTrue => value;
@@ -74,51 +50,3 @@ extension RxBoolExt on Rx<bool> {
 //   return this;
 // }
 }
-
-// ///
-// extension RxnBoolExt on Rx<bool?> {
-//   ///
-//   bool? get isTrue => value;
-//
-//   ///
-//   bool? get isFalse {
-//     if (value != null) {
-//       return !isTrue!;
-//     }
-//     return null;
-//   }
-//
-//   ///
-//   bool? operator &(bool other) {
-//     //
-//     if (value != null) {
-//       return other && value!;
-//     }
-//     return null;
-//   }
-//
-//   ///
-//   bool? operator |(bool other) {
-//     //
-//     if (value != null) {
-//       return other || value!;
-//     }
-//     return null;
-//   }
-//
-//   ///
-//   bool? operator ^(bool other) => !other == value;
-//
-//   // /// Toggles the bool [value] between false and true.
-//   // /// A shortcut for `flag.value = !flag.value;`
-//   // /// FIXME: why return this? fluent interface is not
-//   // ///  not really a dart thing since we have '..' operator
-//   // // ignore: avoid_returning_this
-//   // Rx<bool?>? toggle() {
-//   //   if (_value != null) {
-//   //     subject.add(_value = !_value!);
-//   //     return this;
-//   //   }
-//   //   return null;
-//   // }
-// }

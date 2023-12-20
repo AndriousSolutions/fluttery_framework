@@ -44,7 +44,9 @@ class _CounterPageState extends StateX<CounterPage> {
 
   int counter = 0;
 
-  late final rxCounter = watch(0);
+  /// Try the 'reactive' option
+  /// Increment this variable and the value displayed will 'magically' update
+//  late Rx<int> rxCounter = watch(0); // or use  rxInt(0);
 
   /// Supply the 'Material' Interface for the Android platform and
   /// as the default interface for the Web and Windows platform.
@@ -66,8 +68,10 @@ class _CounterPageState extends StateX<CounterPage> {
             SizedBox(height: 10.h),
             Text('You have pushed the button this many times:'.tr,
                 style: const TextStyle(fontSize: 15)),
-//            state((_) => Text(con.data, style: style)),
-            Text('$rxCounter', style: style),
+            state((_) {
+              return Text(con.data, style: style);
+            }),
+//            Text('$rxCounter', style: style),
             Padding(
               padding: EdgeInsets.only(top: 10.h),
               child: Column(
@@ -117,8 +121,7 @@ class _CounterPageState extends StateX<CounterPage> {
             // Deliberately throw an error to demonstrate error handling.
             throw Exception('Fake error to demonstrate error handling!');
           }
-//          setState(con.onPressed);
-          rxCounter.value++;
+          setState(con.onPressed);
         },
         child: const Icon(Icons.add),
       ),
@@ -215,8 +218,9 @@ class _CounterPageState extends StateX<CounterPage> {
                           throw Exception(
                               'Fake error to demonstrate error handling!');
                         }
-                        // This code is greyed out by the IDE because it can never bt reached.
+                        // This code is not reached unless in testing.
                         setState(con.onPressed);
+//                       rxCounter.value++;
                       },
                       child: const Text('Add'),
                     ),
@@ -232,8 +236,8 @@ class _CounterPageState extends StateX<CounterPage> {
   void onError(FlutterErrorDetails details) {
     final stack = details.stack;
     if (stack != null && stack.toString().contains('handleTap')) {
-//      setState(con.onPressed);
-      rxCounter.value++;
+      setState(con.onPressed);
+//      rxCounter.value++;
     }
   }
 
@@ -241,8 +245,10 @@ class _CounterPageState extends StateX<CounterPage> {
   /// to see how this all works.
 
   @override
+  //ignore: unnecessary_overrides
   Widget build(BuildContext context) => super.build(context);
 
   @override
+  //ignore: unnecessary_overrides
   Widget buildF(BuildContext context) => super.buildF(context);
 }

@@ -1,7 +1,8 @@
 
-## 4.11.0
+## 4.11.1
 December 19, 2023
 - Supply Reactive capabilities: mixin RxStates on State and type Rx<T>
+- Adjusted code testing
 
 ## 4.10.0
 December 11, 2023

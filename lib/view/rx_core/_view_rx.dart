@@ -2,7 +2,7 @@
 
 export 'rx_impl.dart';
 
-export 'rx_interface.dart';
+export 'rx_bool.dart';
 
 export 'rx_num.dart';
 

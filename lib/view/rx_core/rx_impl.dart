@@ -30,29 +30,45 @@ final _rxDependencies = <Rx<dynamic>, int>{};
 
 final _stateHashCodes = <int, State>{};
 
-/// Works with the App's StateX objects
+/// Associate an object with the current State object
 ///
 /// dartdoc:
 /// {@category StateX class}
 mixin RxStates on State {
   ///
-  Rx<T> watch<T>(T obj) {
+  Rx<T> watch<T>(T? obj) {
     Rx<T> rx;
-    switch (T) {
-      case Rx<dynamic>:
-        rx = watch((obj as Rx<dynamic>).value);
-        break;
-      case String:
-        rx = RxString(obj as String, obj.hashCode, hashCode) as Rx<T>;
-        break;
-      case int:
-        rx = RxInt(obj as int, obj.hashCode, hashCode) as Rx<T>;
-        break;
-      case double:
-        rx = RxDouble(obj as double, obj.hashCode, hashCode) as Rx<T>;
-        break;
-      default:
-        rx = Rx<T>(obj, obj.hashCode, hashCode);
+    //
+    if (obj == null) {
+      throw FlutterError.fromParts(<DiagnosticsNode>[
+        ErrorSummary(
+            "You can't 'watch' null to change! Null has been passed the a State object's watch() function."),
+        ErrorDescription(
+            "The watch() function is found only in the Fluttery Framework's State objects and cannot accept a null parameter value."),
+        ErrorHint(
+          'Typically ensure the object can never be null by testing for null before calling watch().',
+        ),
+      ]);
+    } else {
+      switch (T) {
+        case Rx<dynamic>:
+          rx = watch((obj as Rx<dynamic>).value);
+          break;
+        case String:
+          rx = Rx<String>(obj as String, obj.hashCode, hashCode) as Rx<T>;
+          break;
+        case int:
+          rx = Rx<int>(obj as int, obj.hashCode, hashCode) as Rx<T>;
+          break;
+        case double:
+          rx = Rx<double>(obj as double, obj.hashCode, hashCode) as Rx<T>;
+          break;
+        case bool:
+          rx = Rx<bool>(obj as bool, obj.hashCode, hashCode) as Rx<T>;
+          break;
+        default:
+          rx = Rx<T>(obj, obj.hashCode, hashCode);
+      }
     }
     _rxDependencies.putIfAbsent(rx, () => hashCode);
     _stateHashCodes.putIfAbsent(hashCode, () => this);
@@ -90,7 +106,7 @@ class Rx<T> {
   ///
   /// Example:
   /// ```
-  /// final myText = 'GetX rocks!'.obs;
+  /// final myText = Rx<String>('GetX rocks!');
   ///
   /// // in your Constructor, just to check it works :P
   /// ever( myText, print ) ;
@@ -113,12 +129,9 @@ class Rx<T> {
   /// Returns the json representation of `value`.
   dynamic toJson() => value;
 
-  /// This equality override works for _RxImpl instances and the internal
-  /// values.
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
   bool operator ==(Object o) {
-    // Todo, find a common implementation for the hashCode of different Types.
     if (o is T) {
       return value == o;
     }

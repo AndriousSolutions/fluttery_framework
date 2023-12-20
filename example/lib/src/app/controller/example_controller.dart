@@ -84,9 +84,7 @@ class ExampleAppController extends AppController {
         widget = const WordPairs();
         break;
       case 'Counter':
-//        widget = const CounterPage(key: ValueKey<String>('Counter'));
-//        widget = CounterPage(key: key);
-        widget = const CounterPage();
+        widget = CounterPage(key: key);
         break;
 //      case 'Contacts':
 // //        widget = const ContactsList(key: ValueKey<String>('Contacts'));
