@@ -1,4 +1,8 @@
 
+## 4.12.0
+January 13, 2023
+- Reorganised example app
+
 ## 4.11.1
 December 19, 2023
 - Supply Reactive capabilities: mixin RxStates on State and type Rx<T>

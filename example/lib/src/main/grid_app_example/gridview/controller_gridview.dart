@@ -4,4 +4,4 @@
 
 export 'controller/image_api_controller.dart';
 
-export 'images/images_controller.dart';
+export 'images/controller_images.dart';

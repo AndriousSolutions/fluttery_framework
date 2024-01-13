@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-export 'controller/home_controller.dart';
+export 'gridview/view_gridview.dart';
 
-export 'gridview/gridview_controller.dart';
+export 'inherited/inherited_view.dart';
 
-export 'inherited/inherited_controller.dart';
+export 'view/grid_home_page.dart';

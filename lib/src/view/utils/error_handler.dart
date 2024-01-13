@@ -600,6 +600,9 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   @override
   double computeMaxIntrinsicHeight(double width) => 100000;
 
+  // 'RenderBox subclasses need to either override performLayout() to '
+  // 'set a size and lay out any children, or, set sizedByParent to true '
+  // 'so that performResize() sizes the render object.',
   @override
   bool get sizedByParent => true;
 

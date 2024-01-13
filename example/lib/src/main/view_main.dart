@@ -5,4 +5,4 @@
 export 'view/view_screens.dart';
 
 // Grid View app
-export 'grid_app_example/grid_view.dart';
+export 'grid_app_example/view_grid.dart';

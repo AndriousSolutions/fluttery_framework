@@ -23,10 +23,8 @@ class InheritCat extends StatefulWidget {
 /// Supply an InheritedWidget to a StateX object: InheritedStateX
 class _InheritCatState extends StateIn<InheritCat> {
   _InheritCatState() : super(controller: CatController());
-  @override
-  Widget buildAndroid(BuildContext context) => widget.child!;
 
-  /// Currently not providing an 'iOS' version of the interface.
+  /// Use buildIn() or builder() instead of build() to call the built-in InheritedWidget
   @override
-  Widget buildiOS(BuildContext context) => buildAndroid(context);
+  Widget buildIn(BuildContext context) => widget.child!;
 }

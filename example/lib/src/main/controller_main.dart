@@ -5,7 +5,7 @@ export 'controller/counter_controller.dart';
 export 'controller/wordpairs_controller.dart';
 
 // Grid View app
-export 'grid_app_example/grid_controller.dart';
+export 'grid_app_example/contoller_grid.dart';
 
 // the 'screens' folder controllers
 export 'view/controller_screens.dart';

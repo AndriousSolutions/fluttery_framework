@@ -23,6 +23,9 @@ class InheritFox extends StatefulWidget {
 /// Supply an InheritedWidget to a StateX object: InheritedStateX
 class _InheritFoxState extends StateIn<InheritFox> {
   _InheritFoxState() : super(controller: FoxController());
+
+  /// Should use these two if you've two separate interfaces:
+  /// Material for Android and Cupertino for iOS.
   @override
   Widget buildAndroid(BuildContext context) => widget.child!;
 

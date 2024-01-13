@@ -53,6 +53,7 @@ class _CounterPageState extends StateX<CounterPage> {
   @override
   Widget buildAndroid(BuildContext context) {
     style ??= Theme.of(context).textTheme.headlineMedium;
+    final isPortrait = context.isPortrait;
     return Scaffold(
       key: const Key('Scaffold'),
       appBar: AppBar(
@@ -72,44 +73,46 @@ class _CounterPageState extends StateX<CounterPage> {
               return Text(con.data, style: style);
             }),
 //            Text('$rxCounter', style: style),
-            Padding(
-              padding: EdgeInsets.only(top: 10.h),
-              child: Column(
+            if (isPortrait)
+              Padding(
+                padding: EdgeInsets.only(top: 10.h),
+                child: Column(
+                  children: [
+                    Text('Use built-in InheritedWidget'.tr),
+                    CupertinoSwitch(
+                      key: const Key('InheritedSwitch'),
+                      value: con.useInherited,
+                      onChanged: (v) {
+                        con.useInherited = v;
+                        App.setState(() {});
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            if (isPortrait)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text('Use built-in InheritedWidget'.tr),
-                  CupertinoSwitch(
-                    key: const Key('InheritedSwitch'),
-                    value: con.useInherited,
-                    onChanged: (v) {
-                      con.useInherited = v;
-                      App.setState(() {});
-                    },
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 50.0),
+                      child: ElevatedButton(
+                        key: const Key('Page 1'),
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (BuildContext context) => const Page1(),
+                            ),
+                          );
+                        },
+                        child: L10n.t('Page 1'),
+                      ),
+                    ),
                   ),
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 50.0),
-                    child: ElevatedButton(
-                      key: const Key('Page 1'),
-                      onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext context) => const Page1(),
-                          ),
-                        );
-                      },
-                      child: L10n.t('Page 1'),
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),
@@ -125,12 +128,14 @@ class _CounterPageState extends StateX<CounterPage> {
         },
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: SimpleBottomAppBar(
-        button01: HomeBarButton(),
-        button02: StatsBarButton(),
-        button03: EventsBarButton(),
-        button04: HistoryBarButton(),
-      ),
+      bottomNavigationBar: !isPortrait
+          ? null
+          : SimpleBottomAppBar(
+              button01: HomeBarButton(),
+              button02: StatsBarButton(),
+              button03: EventsBarButton(),
+              button04: HistoryBarButton(),
+            ),
     );
   }
 
