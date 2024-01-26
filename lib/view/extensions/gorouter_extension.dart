@@ -1,4 +1,4 @@
-import 'package:fluttery_framework/view.dart';
+import '/view.dart';
 
 /// Supply a reference to the GoRouter itself.
 ///

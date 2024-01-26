@@ -1,7 +1,13 @@
 
+## 4.13.0
+January 25, 2023
+- abstract class RadioButtons<T> extends StatefulWidget {
+- Removed package name from import statements: import 'package:fluttery_framework/...'
+
 ## 4.12.0
 January 13, 2023
 - Reorganised example app
+- Supplied hash code capability in hash.dart
 
 ## 4.11.1
 December 19, 2023

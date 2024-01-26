@@ -22,7 +22,7 @@
 ///
 /// Original source: get 4.6.1
 
-import 'package:fluttery_framework/src/controller/get_utils/get_utils.dart';
+import '/src/controller/get_utils/get_utils.dart';
 
 ///
 ///

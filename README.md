@@ -10,7 +10,7 @@
 ![Fluttery_Framework](https://user-images.githubusercontent.com/32497443/185770676-89af0669-9040-4dc6-ad5b-412ed9fed5e5.jpg)
 Allows for faster and easier development with better maintainability. It looks like Flutter because it works like Flutter.
 There's no 're-inventing of the wheel' here.
-No an extra learning curve.
+No more of a learning curve.
 If you know Flutter, you'll know Fluttery.  
 
 It supplies the adaptive functions and features expected of a production-ready app:

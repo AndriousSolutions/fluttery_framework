@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fluttery_framework/src/controller/get_utils/get_utils.dart';
+import '/src/controller/get_utils/get_utils.dart';
 
 ///
 ///

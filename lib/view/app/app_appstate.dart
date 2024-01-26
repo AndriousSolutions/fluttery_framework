@@ -5,7 +5,7 @@
 ///          Created  01 Apr 2023
 ///
 
-import 'package:fluttery_framework/view.dart';
+import '/view.dart';
 
 ///
 extension AppStateExtension on AppObject {

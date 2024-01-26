@@ -13,13 +13,13 @@ export 'package:flutter/material.dart' hide runApp;
 export 'package:flutter/cupertino.dart' hide RefreshCallback, runApp;
 
 /// file utils
-export 'package:fluttery_framework/src/model/fileutils/files.dart';
+export '/src/model/fileutils/files.dart';
 
 /// Install file
-export 'package:fluttery_framework/src/model/fileutils/installfile.dart';
+export '/src/model/fileutils/installfile.dart';
 
 /// Hash codes
-export 'package:fluttery_framework/src/model/utils/hash.dart';
+export '/src/model/utils/hash.dart';
 
 /// Preferences
 export 'package:prefs/prefs.dart' show Prefs;

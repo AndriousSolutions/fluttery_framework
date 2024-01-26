@@ -12,7 +12,7 @@ import 'package:flutter/material.dart' show ErrorWidgetBuilder, Widget;
 
 import 'package:flutter/foundation.dart' show FlutterExceptionHandler;
 
-import 'package:fluttery_framework/view.dart' show ReportErrorHandler;
+import '/view.dart' show ReportErrorHandler;
 
 /// Used in the conditional export statement:
 /// Found in 'package:fluttery_framework/view.dart'

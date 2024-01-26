@@ -5,7 +5,7 @@
 ///          Created  05 Feb 2019
 ///
 
-import 'package:fluttery_framework/view.dart';
+import '/view.dart';
 
 /// A high-level function
 /// Displays a String passing specific one to two button options

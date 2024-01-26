@@ -4,7 +4,7 @@
 
 import 'package:flutter/gestures.dart' show DragStartBehavior;
 
-import 'package:fluttery_framework/view.dart';
+import '/view.dart';
 
 // I'd prefer you use a subclass
 //class WebPage extends WebWrapper {

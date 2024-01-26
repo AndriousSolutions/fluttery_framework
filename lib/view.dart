@@ -14,9 +14,8 @@ export 'package:flutter/cupertino.dart'
     hide RefreshCallback, runApp, StateSetter;
 
 /// Supply the custom runApp function
-export 'package:fluttery_framework/src/view/platforms/run_app.dart'
-    if (dart.library.html) 'package:fluttery_framework/src/view/platforms/run_webapp.dart'
-    show runApp;
+export '/src/view/platforms/run_app.dart'
+    if (dart.library.html) '/src/view/platforms/run_webapp.dart' show runApp;
 
 /// Replace 'dart:io' for Web applications
 export 'package:universal_platform/universal_platform.dart';
@@ -29,24 +28,23 @@ export 'package:state_extended/state_extended.dart'
     show AppStateX, SetState, StateXonErrorMixin;
 
 /// App
-export 'package:fluttery_framework/view/app.dart';
+export '/view/app.dart';
 
 /// App StatefulWidget
-export 'package:fluttery_framework/view/app_statefulwidget.dart'
-    hide ErrorWidgetBuilder;
+export '/view/app_statefulwidget.dart' hide ErrorWidgetBuilder;
 
 /// App State Object
-export 'package:fluttery_framework/view/app_state.dart';
+export '/view/app_state.dart';
 
 /// Settings
-export 'package:fluttery_framework/src/view/utils/app_settings.dart';
+export '/src/view/utils/app_settings.dart';
 
 /// Error Handling
-export 'package:fluttery_framework/src/view/utils/error_handler.dart';
+export '/src/view/utils/error_handler.dart';
 //    show AppErrorHandler, displayErrorWidgetChild, ReportErrorHandler;
 
 /// Routing
-export 'package:fluttery_framework/src/view/utils/state_route_observer.dart';
+export '/src/view/utils/state_route_observer.dart';
 
 /// Navigation
 /// Hide its BuildContext extension. It's been replaced.
@@ -60,25 +58,25 @@ export 'package:flutter_localizations/flutter_localizations.dart'
         GlobalWidgetsLocalizations;
 
 /// Menus
-export 'package:fluttery_framework/view/app_menu.dart';
+export '/view/app_menu.dart';
 
 /// Extensions
-export 'package:fluttery_framework/view/app/app_appstate.dart';
-export 'package:fluttery_framework/view/app/app_navigation.dart';
-export 'package:fluttery_framework/view/extensions/_extensions_view.dart';
-export 'package:fluttery_framework/view/extensions/string_extensions.dart';
+export '/view/app/app_appstate.dart';
+export '/view/app/app_navigation.dart';
+export '/view/extensions/_extensions_view.dart';
+export '/view/extensions/string_extensions.dart';
 
 /// Reactive
-export 'package:fluttery_framework/view/rx_core/_view_rx.dart';
+export '/view/rx_core/_view_rx.dart';
 
 /// UX Utils
-export 'package:fluttery_framework/src/view/uxutils/view.dart';
+export '/src/view/uxutils/view.dart';
 
 /// Web
 export 'package:url_launcher/link.dart';
 export 'package:url_launcher/url_launcher.dart';
-export 'package:fluttery_framework/src/view/web/hyperlink.dart';
-export 'package:fluttery_framework/src/view/web/webpage_wrapper.dart';
+export '/src/view/web/hyperlink.dart';
+export '/src/view/web/webpage_wrapper.dart';
 
 /// Preferences
 export 'package:prefs/prefs.dart' show Prefs;

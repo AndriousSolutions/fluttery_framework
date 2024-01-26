@@ -7,12 +7,11 @@
 
 // Replace 'dart:io' for Web applications
 
-import 'package:fluttery_framework/controller.dart'
-    show AppController, StateXController;
+import '/controller.dart' show AppController, StateXController;
 
 import 'package:state_extended/state_extended.dart' as s show StateX;
 
-import 'package:fluttery_framework/view.dart';
+import '/view.dart';
 
 /// Highlights UI while debugging.
 import 'package:flutter/rendering.dart' as debug;
@@ -1493,6 +1492,16 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   }
 }
 
+/// A State object the runs its built-in FuturBuilder with every setState()
+///
+/// dartdoc:
+/// {@category StateX class}
+abstract class StateF<T extends StatefulWidget> extends StateX<T> {
+  ///
+  StateF({StateXController? controller})
+      : super(controller: controller, runAsync: true);
+}
+
 /// A State object that uses the built-in InheritedWidget
 ///
 /// dartdoc:
@@ -1512,7 +1521,7 @@ class StateIn<T extends StatefulWidget> extends StateX<T> {
 class StateX<T extends StatefulWidget> extends s.StateX<T>
     with NavigatorStateMethodsMixin, RxStates {
   ///
-  StateX({super.controller, super.useInherited});
+  StateX({super.controller, super.runAsync, super.useInherited});
 
   @override
   void initState() {

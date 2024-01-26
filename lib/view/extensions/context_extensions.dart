@@ -22,7 +22,7 @@
 ///
 /// Original source: get 4.6.1
 
-import 'package:fluttery_framework/view.dart';
+import '/view.dart';
 
 /// An extension on BuildContext
 ///

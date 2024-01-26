@@ -6,4 +6,4 @@
 ///
 ///
 
-// export 'package:mxc_application/src/view/uxutils/src/controller';
+// export '/src/view/uxutils/src/controller';

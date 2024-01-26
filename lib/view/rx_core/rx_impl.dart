@@ -131,12 +131,12 @@ class Rx<T> {
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  bool operator ==(Object o) {
-    if (o is T) {
-      return value == o;
+  bool operator ==(Object other) {
+    if (other is T) {
+      return value == other;
     }
-    if (o is Rx) {
-      return value == o.value;
+    if (other is Rx) {
+      return value == other.value;
     }
     return false;
   }

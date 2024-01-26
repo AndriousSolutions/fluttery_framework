@@ -6,6 +6,6 @@
 ///
 ///
 
-export 'package:fluttery_framework/src/view/utils/app_settings.dart';
+export '/src/view/utils/app_settings.dart';
 
 export 'package:prefs/prefs.dart';

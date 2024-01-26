@@ -19,11 +19,11 @@ import 'package:package_info_plus/package_info_plus.dart' show PackageInfo;
 import 'package:connectivity_plus/connectivity_plus.dart'
     show Connectivity, ConnectivityResult;
 
-import 'package:fluttery_framework/model.dart';
+import '/model.dart';
 
-import 'package:fluttery_framework/view.dart' as v;
+import '/view.dart' as v;
 
-import 'package:fluttery_framework/controller.dart' show DeviceInfo;
+import '/controller.dart' show DeviceInfo;
 
 /// Supply a 'high level' reference to the 'App object.'
 // ignore: non_constant_identifier_names

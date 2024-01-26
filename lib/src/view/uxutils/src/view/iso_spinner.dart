@@ -2,7 +2,7 @@
 /// Use of this source code is governed by a 2-clause BSD License.
 /// The main directory contains that LICENSE file.
 
-import 'package:fluttery_framework/view.dart';
+import '/view.dart';
 
 import 'package:flutter/gestures.dart' show PointerDeviceKind;
 

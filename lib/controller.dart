@@ -18,7 +18,7 @@ export 'package:state_extended/state_extended.dart'
     show StateXController, SetStateMixin, StateListener, RootState, AsyncOps;
 
 // App's View
-export 'package:fluttery_framework/view/app.dart' show App, AppDrawer;
+export '/view/app.dart' show App, AppDrawer;
 
 //App's Controller
 export 'controller/app.dart' show AppController;
@@ -27,13 +27,13 @@ export 'controller/app.dart' show AppController;
 export 'controller/device_info.dart' show DeviceInfo;
 
 // Assets
-export 'src/controller/assets/assets.dart';
+export '/src/controller/assets/assets.dart';
 
 // Get Utils
-export 'src/controller/get_utils/get_utils.dart';
+export '/src/controller/get_utils/get_utils.dart';
 
 // Error Handler
-export 'src/controller/util/handle_error.dart' show HandleError;
+export '/src/controller/util/handle_error.dart' show HandleError;
 
 // Preferences
 export 'package:prefs/prefs.dart' show Prefs, SharedPreferences;

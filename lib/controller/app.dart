@@ -8,7 +8,7 @@
 // The original StateXController
 import 'package:state_extended/state_extended.dart' as c;
 
-import 'package:fluttery_framework/view.dart';
+import '/view.dart';
 
 ///
 /// A Controller for the 'app level'.

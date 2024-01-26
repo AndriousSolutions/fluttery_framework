@@ -2,7 +2,7 @@
 /// Use of this source code is governed by a 2-clause BSD License.
 /// found in the LICENSE file.
 
-import 'package:fluttery_framework/view.dart';
+import '/view.dart';
 
 /// A widget that displays a hyperlink
 class Hyperlink extends StatelessWidget {
