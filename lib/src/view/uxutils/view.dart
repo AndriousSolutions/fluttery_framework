@@ -22,4 +22,4 @@ export '/src/view/uxutils/src/view/show_cupertino_date_picker.dart';
 
 export '/src/view/uxutils/src/view/tab_buttons.dart';
 
-export '/src/view/uxutils/src/view/iso_spinner.dart';
+export '/src/view/uxutils/src/view/spinner_cupertino.dart';

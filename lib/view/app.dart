@@ -222,6 +222,10 @@ class AppObject
 
   TargetPlatform? _platform;
 
+  /// App is allowed to change the app's theme
+  /// Is this app allowed to manually change locale?
+  bool get allowChangeTheme => appState?.allowChangeTheme ?? false;
+
   /// Return the saved Locale if any.
   Locale? get preferredLocale {
     _getLocale = true;
@@ -233,9 +237,12 @@ class AppObject
     return locale;
   }
 
+  /// Is this app allowed to manually change locale?
+  bool get allowChangeLocale => appState?.allowChangeLocale ?? false;
+
   /// Save a locale to the app's locale
   Future<bool> saveLocale([Locale? locale]) async {
-    final saved = _getLocale && locale != null;
+    final saved = allowChangeLocale && locale != null;
     //Saved only if first called to look up.
     if (saved) {
       appState?.locale = locale; // Ensure AppState gets updated
@@ -246,6 +253,9 @@ class AppObject
 
   // Only set if getter is called.
   bool _getLocale = false;
+
+  /// Is this app allowed to change the very UI (Material, Cupertino, etc.)
+  bool get allowChangeUI => appState?.allowChangeUI ?? false;
 
   /// Display the SnackBar
   void snackBar({

@@ -1,4 +1,10 @@
 
+## 4.14.0
+February 03, 2023
+- App.allowChangeTheme, App.allowChangeLocale, App.allowChangeUI
+- showBox(useRootNavigator: false
+- Custom widget, SpinnerCupertino
+
 ## 4.13.0
 January 25, 2023
 - abstract class RadioButtons<T> extends StatefulWidget {

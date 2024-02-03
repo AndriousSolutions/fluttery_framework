@@ -35,11 +35,12 @@ class AppMenu extends AppPopupMenu {
           value: 'application',
           child: Text('${'Application:'.tr} ${_con.application}'),
         ),
-        PopupMenuItem(
-          key: const Key('localeMenuItem'),
-          value: 'locale',
-          child: Text('${'Locale:'.tr} ${App.locale!.toLanguageTag()}'),
-        ),
+        if (App.allowChangeLocale)
+          PopupMenuItem(
+            key: const Key('localeMenuItem'),
+            value: 'locale',
+            child: Text('${'Locale:'.tr} ${App.locale!.toLanguageTag()}'),
+          ),
         if (App.useMaterial)
           PopupMenuItem(
             key: const Key('colorMenuItem'),

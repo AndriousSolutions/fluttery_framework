@@ -212,12 +212,15 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   late bool? useRouterConfig;
 
   /// Allow the app to change the theme
+  bool get allowChangeTheme => _allowChangeTheme;
   late bool _allowChangeTheme;
 
   /// Allow the app directly change the Locale
+  bool get allowChangeLocale => _allowChangeLocale;
   late bool _allowChangeLocale;
 
   /// Allow the app to directly change the UI design
+  bool get allowChangeUI => _allowChangeUI;
   late bool _allowChangeUI;
 
   /// Use Cupertino UI in Android and vice versa.

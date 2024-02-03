@@ -146,12 +146,19 @@ class ExampleAppController extends AppController {
     // record selected locale
     Locale? appLocale;
 
-    final spinner = ISOSpinner(
-        initialItem: initialItem,
-        supportedLocales: locales,
-        onSelectedItemChanged: (int index) async {
-          appLocale = L10n.getLocale(index);
-        });
+    final spinner = SpinnerCupertino<Locale>(
+      initValue: locale,
+      values: locales,
+      itemBuilder: (BuildContext context, int index) => Text(
+        locales[index].countryCode == null
+            ? locales[index].languageCode
+            : '${locales[index].languageCode}-${locales[index].countryCode}',
+        style: const TextStyle(fontSize: 20),
+      ),
+      onSelectedItemChanged: (int index) async {
+        appLocale = L10n.getLocale(index);
+      },
+    );
 
     await DialogBox(
       title: 'Current Language'.tr,

@@ -56,7 +56,7 @@ Future<bool> showBox({
       barrierColor: barrierColor ?? Colors.black54,
       barrierLabel: barrierLabel,
       useSafeArea: useSafeArea ?? true,
-      useRootNavigator: useRootNavigator ?? true,
+      useRootNavigator: useRootNavigator ?? false,
       routeSettings: routeSettings,
       builder: (BuildContext context) => AlertDialog(
           title: title,
