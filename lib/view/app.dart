@@ -228,7 +228,6 @@ class AppObject
 
   /// Return the saved Locale if any.
   Locale? get preferredLocale {
-    _getLocale = true;
     final codes = Prefs.getString('locale').split('-');
     Locale? locale;
     if (codes.length == 2) {
@@ -250,9 +249,6 @@ class AppObject
     }
     return saved;
   }
-
-  // Only set if getter is called.
-  bool _getLocale = false;
 
   /// Is this app allowed to change the very UI (Material, Cupertino, etc.)
   bool get allowChangeUI => appState?.allowChangeUI ?? false;

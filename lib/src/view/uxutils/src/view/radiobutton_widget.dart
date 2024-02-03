@@ -43,6 +43,7 @@ class RadioButtonsController<T> extends StateXController {
     groupValue = initialValue;
   }
 
+  /// The radio button initial selected
   final T? initialValue;
 
   ///
