@@ -48,6 +48,7 @@ Future<bool> showBox({
   button01 ??= OKOption();
 //  button02 ??= CancelOption();
   bool? result;
+
   if (App.useMaterial) {
     //
     result = await showDialog<bool>(
@@ -112,8 +113,14 @@ Future<bool> showBox({
     //
     result = await showCupertinoDialog<bool>(
       context: context,
+      barrierDismissible: barrierDismissible ?? true,
+      barrierLabel: barrierLabel,
+      useRootNavigator: useRootNavigator ?? false,
+      routeSettings: routeSettings,
+      anchorPoint: anchorPoint,
       builder: (BuildContext context) => CupertinoAlertDialog(
-        content: Text(text ?? ' '),
+        title: title,
+        content: Material(child: content) ?? Text(text ?? ' '),
         actions: <Widget>[
           if (button02 != null)
             CupertinoDialogAction(
@@ -146,10 +153,6 @@ Future<bool> showBox({
           ),
         ],
       ),
-      barrierDismissible: barrierDismissible ?? true,
-      useRootNavigator: useRootNavigator ?? true,
-      routeSettings: routeSettings,
-      anchorPoint: anchorPoint,
     );
   }
   return result ?? false;

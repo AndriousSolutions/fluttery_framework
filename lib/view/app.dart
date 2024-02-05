@@ -509,10 +509,10 @@ mixin _AppThemeDataMixin {
       _iOSThemeData = value;
     } else if (value is ThemeData) {
       _iOSThemeData = MaterialBasedCupertinoThemeData(materialTheme: value);
-      final context = App.context;
-      if (context != null) {
-        _iOSThemeData = _iOSThemeData?.resolveFrom(context);
-      }
+     final context = App.context;
+     if (context != null) {
+       _iOSThemeData = _iOSThemeData?.resolveFrom(context);
+     }
     } else if (value is! Color) {
       // Ignore the value
     } else if (_iOSThemeData == null) {
@@ -565,16 +565,18 @@ mixin _AppThemeDataMixin {
     final index = Colors.primaries.indexOf(materialColor!);
 
     if (index > -1) {
+      //
       materialColor = Colors.primaries[index];
+
+      /// Assign the colour to the floating button as well.
+      themeData = ThemeData(
+         primarySwatch: materialColor,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+         backgroundColor: color,
+       ),
+     );
     }
 
-    /// Assign the colour to the floating button as well.
-    themeData = ThemeData(
-      primarySwatch: materialColor,
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: color,
-      ),
-    );
     return color;
   }
 

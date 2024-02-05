@@ -1,4 +1,9 @@
 
+## 4.15.0
+February 05, 2023
+- Adjusted how the app sets its theme: _setThemeData(context)
+- Corrected showCupertinoDialog() to take in the 'content' widget
+
 ## 4.14.0+1
 February 03, 2023
 - App.allowChangeTheme, App.allowChangeLocale, App.allowChangeUI

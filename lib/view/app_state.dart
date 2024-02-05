@@ -383,7 +383,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           app = CupertinoApp(
             key: key,
             navigatorKey: App.navigatorKey,
-            theme: _setiOSThemeData(),
+            theme: _setiOSThemeData(context),
             routes: routes,
             initialRoute: initialRoute,
             onGenerateRoute: onGenerateRoute,
@@ -419,7 +419,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             routerDelegate: _routerDelegate,
             backButtonDispatcher: _backButtonDispatcher,
             routerConfig: routerConfig,
-            theme: _setiOSThemeData(),
+            theme: _setiOSThemeData(context),
             builder: builder,
 // not needed          title: , // Used instead in _onOnGenerateTitle()
             onGenerateTitle: _onOnGenerateTitle,
@@ -461,7 +461,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 // not needed          title: , // Used instead in _onOnGenerateTitle()
             onGenerateTitle: _onOnGenerateTitle,
             color: color,
-            theme: _setThemeData(),
+            theme: _setThemeData(context),
             darkTheme: darkTheme,
             highContrastTheme: highContrastTheme,
             highContrastDarkTheme: highContrastDarkTheme,
@@ -500,7 +500,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 // not needed          title: , // Used instead in _onOnGenerateTitle()
             onGenerateTitle: _onOnGenerateTitle,
             color: color,
-            theme: _setThemeData(),
+            theme: _setThemeData(context),
             darkTheme: darkTheme,
             highContrastTheme: highContrastTheme,
             highContrastDarkTheme: highContrastDarkTheme,
@@ -538,21 +538,31 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       onUpdateShouldNotify(oldWidget);
 
   /// Assigning the Cupertino theme
-  CupertinoThemeData? _setiOSThemeData() {
+  CupertinoThemeData? _setiOSThemeData(BuildContext context) {
     //
-    CupertinoThemeData? cupertinoThemeData = _iOSTheme ?? oniOSTheme();
+    CupertinoThemeData? cupertinoThemeData = _iOSTheme ?? oniOSTheme() ?? App.iOSThemeData;
 
     if (_allowChangeTheme) {
-      cupertinoThemeData = App.iOSThemeData ??
-          const CupertinoThemeData(brightness: Brightness.light);
-    } else if (cupertinoThemeData == null) {
-      //
-      final themeData = _theme ?? onTheme();
+      // If a saved preference
+      final theme = App.iOSThemeData;
+      if (theme != null) {
+        cupertinoThemeData = theme;
+      }
+    }
+
+    // final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
+    // bool isDark = brightnessValue == Brightness.dark;
+
+    if (cupertinoThemeData == null) {
+      // Possibly Material can provide
+      final themeData = _theme ?? onTheme() ?? App.themeData;
 
       if (themeData == null) {
-        cupertinoThemeData = App.iOSThemeData ??
-            const CupertinoThemeData(brightness: Brightness.light);
+        // Retrieve the default values
+        App.iOSThemeData ??= CupertinoTheme.of(context);
+        cupertinoThemeData = App.iOSThemeData;
       } else {
+        // Assign the provided theme
         App.iOSThemeData = themeData;
         cupertinoThemeData = App.iOSThemeData;
       }
@@ -563,17 +573,31 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   }
 
   /// Assigning the Material theme
-  ThemeData? _setThemeData() {
+  ThemeData? _setThemeData(BuildContext context) {
     //
-    ThemeData? themeData = _theme ?? onTheme();
+    ThemeData? themeData = _theme ?? onTheme() ?? App.themeData;
 
     if (_allowChangeTheme) {
-      themeData = App.themeData;
-    } else if (themeData == null) {
-      final cupertinoThemeData = _iOSTheme ?? oniOSTheme();
+      // If a saved preference
+      final theme = App.themeData;
+      if (theme != null) {
+        themeData = theme;
+      }
+    }
+
+    if (themeData == null) {
+      // possibly Cupertino can provide
+      final cupertinoThemeData = _iOSTheme ?? oniOSTheme() ?? App.iOSThemeData;
+
       if (cupertinoThemeData == null) {
+        // Retrieve any defaults
+        App.themeData ??= Theme.of(context);
         themeData = App.themeData;
-      } else {}
+      } else {
+        // Cupertino values
+        App.themeData = cupertinoThemeData;
+        themeData = App.themeData;
+      }
     } else {
       App.themeData = themeData;
     }
