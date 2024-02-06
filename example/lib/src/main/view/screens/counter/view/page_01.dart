@@ -3,9 +3,9 @@
 // found in the LICENSE file.
 
 /// An absolute path is preferred but this source code is copied by other app.
-import '../../../../../controller.dart';
+import '/src/controller.dart';
 
-import '../../../../../view.dart';
+import '/src/view.dart';
 
 /// The first page displayed in this app.
 class Page1 extends StatefulWidget {

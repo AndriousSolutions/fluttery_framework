@@ -3,7 +3,7 @@
 ///
 
 //
-import '../../../../../controller.dart';
+import '/src/controller.dart';
 
 ///
 class CatController extends InheritController {

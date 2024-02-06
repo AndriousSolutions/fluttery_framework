@@ -9,9 +9,9 @@ import 'dart:async';
 
 import 'dart:convert' show json;
 
-import '../../../../controller.dart';
+import '/src/controller.dart';
 
-import '../../../../view.dart';
+import '/src/view.dart';
 
 import 'package:http/http.dart' as http;
 

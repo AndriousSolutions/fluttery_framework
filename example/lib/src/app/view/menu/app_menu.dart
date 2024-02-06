@@ -1,7 +1,7 @@
 //
-import '../../../controller.dart';
+import '/src/controller.dart';
 
-import '../../../view.dart';
+import '/src/view.dart';
 
 /// The App's menu
 class AppMenu extends AppPopupMenu {
@@ -40,6 +40,14 @@ class AppMenu extends AppPopupMenu {
             key: const Key('localeMenuItem'),
             value: 'locale',
             child: Text('${'Locale:'.tr} ${App.locale!.toLanguageTag()}'),
+          ),
+        if (App.useMaterial)
+          PopupMenuItem(
+            key: const Key('materialMenuItem'),
+            value: 'material',
+            child: MaterialVersion(
+              controller: MaterialController(),
+            ),
           ),
         if (App.useMaterial)
           PopupMenuItem(

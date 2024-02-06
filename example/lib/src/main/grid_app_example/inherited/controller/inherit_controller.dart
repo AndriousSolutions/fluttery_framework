@@ -5,7 +5,7 @@
 ///  The 'Animal' Controller to call the appropriate InheritedWidget.
 ///
 
-import '../../../../controller.dart';
+import '/src/controller.dart';
 
 ///
 class InheritController extends StateXController {

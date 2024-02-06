@@ -2,9 +2,9 @@
 
 /// An absolute path is preferred but this source code is copied by other app.
 
-import '../../../view.dart';
+import '/src/view.dart';
 
-import '../../../controller.dart';
+import '/src/controller.dart';
 
 ///
 class CounterPage extends StatefulWidget {

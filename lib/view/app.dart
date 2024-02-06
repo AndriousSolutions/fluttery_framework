@@ -509,10 +509,10 @@ mixin _AppThemeDataMixin {
       _iOSThemeData = value;
     } else if (value is ThemeData) {
       _iOSThemeData = MaterialBasedCupertinoThemeData(materialTheme: value);
-     final context = App.context;
-     if (context != null) {
-       _iOSThemeData = _iOSThemeData?.resolveFrom(context);
-     }
+      final context = App.context;
+      if (context != null) {
+        _iOSThemeData = _iOSThemeData?.resolveFrom(context);
+      }
     } else if (value is! Color) {
       // Ignore the value
     } else if (_iOSThemeData == null) {
@@ -531,52 +531,43 @@ mixin _AppThemeDataMixin {
   /// Set the app's general color theme supplying a [Color] value.
   Color? setThemeData({
     ColorSwatch<int?>? swatch,
-    Color? color,
   }) {
     //
-    int? value = color?.value ?? swatch?.value;
+    final value = swatch?.value;
 
     if (!Prefs.ready()) {
       return value == null ? null : Color(value);
     }
 
-    if (value != null) {
-      Prefs.setInt('primaryColor', value);
-      color = Color(value);
-    } else {
-      value = Prefs.getInt('primaryColor', -1);
-      // If never set in the first place, ignore
-      if (value > -1) {
-        color = Color(value);
-      } else {
-        color = Colors.blue;
-        Prefs.setInt('primaryColor', color.value);
-      }
-    }
-
     MaterialColor? materialColor;
+    Color? color;
+    int index = -1;
 
-    if (swatch == null) {
-      materialColor = _materialColor(color);
-    } else {
+    if (value != null) {
+      color = Color(value);
       materialColor = swatch as MaterialColor;
+      index =
+          Colors.primaries.indexOf(materialColor); // Returns -1 if not found.
+      Prefs.setInt('primaryIndex', index);
+    } else {
+      index = Prefs.getInt('primaryIndex', -1);
     }
-
-    final index = Colors.primaries.indexOf(materialColor!);
 
     if (index > -1) {
       //
       materialColor = Colors.primaries[index];
 
+      color ??= Color(materialColor.value);
+
       /// Assign the colour to the floating button as well.
       themeData = ThemeData(
-         primarySwatch: materialColor,
+        useMaterial3: false,
+        primarySwatch: materialColor,
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-         backgroundColor: color,
-       ),
-     );
+          backgroundColor: color,
+        ),
+      );
     }
-
     return color;
   }
 
@@ -607,7 +598,12 @@ mixin _AppThemeDataMixin {
   }
 
   ///
-  MaterialColor getMaterialColor(Color color) {
+  MaterialColor? getMaterialColor(Color? color) {
+    //
+    if (color == null) {
+      return null;
+    }
+
     final int red = color.red;
     final int green = color.green;
     final int blue = color.blue;

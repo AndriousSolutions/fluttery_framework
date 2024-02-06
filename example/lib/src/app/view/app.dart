@@ -1,9 +1,9 @@
 //
-import '../../controller.dart';
+import '/src/controller.dart';
 
-import '../../model.dart';
+import '/src/model.dart';
 
-import '../../view.dart';
+import '/src/view.dart';
 
 /// App
 class FlutteryExampleApp extends AppStatefulWidget {
@@ -43,6 +43,7 @@ class _ExampleAppState extends AppState {
             GlobalCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
           ],
+          allowChangeTheme: true, // Allow the App's theme to change
           allowChangeLocale: true, // Allow the app to change locale
           allowChangeUI: true, // Allow the app to change its design interface
           inInitAsync: () => Future.value(true), // Merely a test.

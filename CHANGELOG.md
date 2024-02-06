@@ -1,4 +1,13 @@
 
+## 4.16.0
+February 06, 2023
+- allowChangeTheme: true, // Explicitly allow the App's theme to change
+- In setThemeData(), adjusted how and app's general Theme is acquired 
+- content = content ?? Text(text ?? ' '); in dialog_box.dart
+- Example app:
+  All import statements made more effective
+  New menu option: Material Design version 2 and 3 
+
 ## 4.15.0
 February 05, 2023
 - Adjusted how the app sets its theme: _setThemeData(context)

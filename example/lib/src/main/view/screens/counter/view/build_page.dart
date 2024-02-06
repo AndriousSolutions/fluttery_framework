@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 /// An absolute path is preferred but this source code is copied by other app.
-import '../../../../../view.dart';
+import '/src/view.dart';
 
 /// Standard Counter Screen
 ///

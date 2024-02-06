@@ -1,10 +1,10 @@
 //
-import '../../controller.dart';
+import '/src/controller.dart';
 
-import '../../model.dart' show Settings;
+import '/src/model.dart' show Settings;
 
 // You can see 'at a glance' this Controller also 'talks to' the interface (View).
-import '../../view.dart';
+import '/src/view.dart';
 
 ///
 class ExampleAppController extends AppController {

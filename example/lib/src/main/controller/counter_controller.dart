@@ -1,9 +1,9 @@
 //
-import '../../controller.dart';
+import '/src/controller.dart';
 
-import '../../model.dart';
+import '/src/model.dart';
 
-import '../../view.dart';
+import '/src/view.dart';
 
 class CounterController extends AppController {
   factory CounterController() => _this ??= CounterController._();

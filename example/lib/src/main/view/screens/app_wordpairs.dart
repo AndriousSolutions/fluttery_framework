@@ -1,8 +1,8 @@
 /// An absolute path is preferred but this source code is copied by other app.
-import '../../../view.dart';
+import '/src/view.dart';
 
 /// An absolute path is preferred but this source code is copied by other app.
-import '../../../controller.dart';
+import '/src/controller.dart';
 
 class WordPairs extends StatefulWidget {
   const WordPairs({Key? key}) : super(key: key);

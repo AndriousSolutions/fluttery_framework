@@ -5,9 +5,9 @@
 ///  This widget works with the free Cat API.
 ///
 
-import '../../../../../controller.dart';
+import '/src/controller.dart';
 
-import '../../../../../view.dart';
+import '/src/view.dart';
 
 ///
 class RandomCat extends StatefulWidget {

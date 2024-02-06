@@ -110,7 +110,9 @@ Future<bool> showBox({
           ]),
     );
   } else {
-    //
+    // Ensure there's content
+    content = content ?? Text(text ?? ' ');
+
     result = await showCupertinoDialog<bool>(
       context: context,
       barrierDismissible: barrierDismissible ?? true,
@@ -120,7 +122,7 @@ Future<bool> showBox({
       anchorPoint: anchorPoint,
       builder: (BuildContext context) => CupertinoAlertDialog(
         title: title,
-        content: Material(child: content) ?? Text(text ?? ' '),
+        content: Material(child: content),
         actions: <Widget>[
           if (button02 != null)
             CupertinoDialogAction(

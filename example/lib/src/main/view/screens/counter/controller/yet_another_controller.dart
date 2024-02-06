@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 /// An absolute path is preferred but this source code is copied by other app.
-import '../../../../../controller.dart';
+import '/src/controller.dart';
 
 /// Yet another Controller for demonstration purposes.
 class YetAnotherController extends StateXController {

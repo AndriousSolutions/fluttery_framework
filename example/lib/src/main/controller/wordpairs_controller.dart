@@ -1,10 +1,10 @@
 //
-import '../../controller.dart';
+import '/src/controller.dart';
 
-import '../../model.dart';
+import '/src/model.dart';
 
 // You can see 'at a glance' this Controller also 'talks to' the interface (View).
-import '../../view.dart';
+import '/src/view.dart';
 
 class WordPairsController extends StateXController {
   factory WordPairsController([StateX? state]) =>

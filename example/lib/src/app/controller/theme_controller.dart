@@ -1,5 +1,5 @@
 //
-import '../../controller.dart';
+import '/src/controller.dart';
 
 /// The App's theme controller
 ///

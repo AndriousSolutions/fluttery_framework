@@ -540,7 +540,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Assigning the Cupertino theme
   CupertinoThemeData? _setiOSThemeData(BuildContext context) {
     //
-    CupertinoThemeData? cupertinoThemeData = _iOSTheme ?? oniOSTheme() ?? App.iOSThemeData;
+    CupertinoThemeData? cupertinoThemeData = _iOSTheme ?? oniOSTheme();
 
     if (_allowChangeTheme) {
       // If a saved preference
@@ -550,15 +550,12 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       }
     }
 
-    // final Brightness brightnessValue = MediaQuery.of(context).platformBrightness;
-    // bool isDark = brightnessValue == Brightness.dark;
-
     if (cupertinoThemeData == null) {
       // Possibly Material can provide
       final themeData = _theme ?? onTheme() ?? App.themeData;
 
       if (themeData == null) {
-        // Retrieve the default values
+        // Retrieve default theme
         App.iOSThemeData ??= CupertinoTheme.of(context);
         cupertinoThemeData = App.iOSThemeData;
       } else {
@@ -575,7 +572,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Assigning the Material theme
   ThemeData? _setThemeData(BuildContext context) {
     //
-    ThemeData? themeData = _theme ?? onTheme() ?? App.themeData;
+    ThemeData? themeData = _theme ?? onTheme();
 
     if (_allowChangeTheme) {
       // If a saved preference
@@ -590,7 +587,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       final cupertinoThemeData = _iOSTheme ?? oniOSTheme() ?? App.iOSThemeData;
 
       if (cupertinoThemeData == null) {
-        // Retrieve any defaults
+        // Retrieve default theme
         App.themeData ??= Theme.of(context);
         themeData = App.themeData;
       } else {

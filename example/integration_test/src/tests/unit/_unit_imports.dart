@@ -8,8 +8,7 @@ export 'package:fluttery_framework_example/src/view.dart';
 /// Supply all the dependencies necessary to complete the testing.
 export 'package:flutter_test/flutter_test.dart';
 
-export 'package:fluttery_framework/view.dart'
-    hide AppDrawer, PopupMenuWidget, ISOSpinner;
+export 'package:fluttery_framework/view.dart' hide AppDrawer, PopupMenuWidget;
 
 export 'package:fluttery_framework/controller.dart' hide AppDrawer;
 

@@ -5,9 +5,9 @@
 ///  This StatefulWidget works with the Fox InheritedWidget.
 ///
 
-import '../../../../controller.dart';
+import '/src/controller.dart';
 
-import '../../../../view.dart';
+import '/src/view.dart';
 
 /// This StatefulWidget stores an InheritedWidget
 class InheritFox extends StatefulWidget {

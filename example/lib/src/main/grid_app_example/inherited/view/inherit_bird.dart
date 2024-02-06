@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../../../../controller.dart';
+import '/src/controller.dart';
 
-import '../../../../view.dart';
+import '/src/view.dart';
 
 /// This StatefulWidget stores an InheritedWidget
 class InheritBird extends StatefulWidget {

@@ -3,10 +3,10 @@
 // found in the LICENSE file.
 
 /// An absolute path is preferred but this source code is copied by other app.
-import '../../../../../controller.dart' show StateXController;
+import '/src/controller.dart' show StateXController;
 
 /// An absolute path is preferred but this source code is copied by other app.
-import '../../../../../view.dart';
+import '/src/view.dart';
 
 /// Multiple Controllers can be assigned to one State object.
 class AnotherController extends StateXController {

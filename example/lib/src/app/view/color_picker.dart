@@ -1,5 +1,5 @@
 /// Import the interface
-import '../../view.dart';
+import '/src/view.dart';
 
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart'
     show MaterialColorPicker;

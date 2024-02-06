@@ -5,9 +5,9 @@
 ///  Manages the API request for specifically 'image' public API's
 ///
 
-import '../../../../controller.dart';
+import '/src/controller.dart';
 
-import '../../../../view.dart';
+import '/src/view.dart';
 
 /// The State object allows for a web service to be called.
 class ImageAPIStateX<T extends StatefulWidget> extends StateX<T>

@@ -1,7 +1,7 @@
 //
-import '../../../view.dart';
+import '/src/view.dart';
 
-import '../../../controller.dart';
+import '/src/controller.dart';
 
 import 'package:english_words/english_words.dart';
 
