@@ -1,4 +1,9 @@
 
+## 4.17.0
+February 09, 2023
+- App.baseTheme = Theme.of(context); // Retain the original theme
+- MainAxisAlignment? actionsAlignment in dialog_box.dart // Left-handed IU
+
 ## 4.16.0
 February 06, 2023
 - allowChangeTheme: true, // Explicitly allow the App's theme to change

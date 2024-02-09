@@ -499,6 +499,17 @@ mixin _AppThemeDataMixin {
 
   ThemeData? _themeData;
 
+  /// Retain the original Android theme
+  ThemeData? get baseTheme => _baseTheme;
+  set baseTheme(ThemeData? theme) {
+    if (_baseTheme == null && theme != null) {
+      _baseTheme = theme;
+    }
+  }
+
+  // Stores the original theme of the app;
+  ThemeData? _baseTheme;
+
   /// The app's current Cupertino theme.
   CupertinoThemeData? get iOSThemeData => _iOSThemeData;
   set iOSThemeData(dynamic value) {
@@ -527,6 +538,17 @@ mixin _AppThemeDataMixin {
   }
 
   CupertinoThemeData? _iOSThemeData;
+
+  /// Retain the original iOS theme
+  CupertinoThemeData? get baseiOSTheme => _baseiOSTheme;
+  set baseiOSTheme(CupertinoThemeData? theme) {
+    if (_baseiOSTheme != null && theme != null) {
+      _baseiOSTheme = theme;
+    }
+  }
+
+  // Stores the original theme of the app;
+  CupertinoThemeData? _baseiOSTheme;
 
   /// Set the app's general color theme supplying a [Color] value.
   Color? setThemeData({

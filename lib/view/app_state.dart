@@ -539,7 +539,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   /// Assigning the Cupertino theme
   CupertinoThemeData? _setiOSThemeData(BuildContext context) {
-    //
+    // Retain the original theme
+    App.baseiOSTheme = CupertinoTheme.of(context);
+
     CupertinoThemeData? cupertinoThemeData = _iOSTheme ?? oniOSTheme();
 
     if (_allowChangeTheme) {
@@ -555,8 +557,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       final themeData = _theme ?? onTheme() ?? App.themeData;
 
       if (themeData == null) {
-        // Retrieve default theme
-        App.iOSThemeData ??= CupertinoTheme.of(context);
+        // The original theme
+        App.iOSThemeData ??= App.baseiOSTheme;
         cupertinoThemeData = App.iOSThemeData;
       } else {
         // Assign the provided theme
@@ -571,7 +573,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   /// Assigning the Material theme
   ThemeData? _setThemeData(BuildContext context) {
-    //
+    // Retain the original theme
+    App.baseTheme = Theme.of(context);
+
     ThemeData? themeData = _theme ?? onTheme();
 
     if (_allowChangeTheme) {
@@ -587,8 +591,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       final cupertinoThemeData = _iOSTheme ?? oniOSTheme() ?? App.iOSThemeData;
 
       if (cupertinoThemeData == null) {
-        // Retrieve default theme
-        App.themeData ??= Theme.of(context);
+        // The original theme
+        App.themeData ??= App.baseTheme;
         themeData = App.themeData;
       } else {
         // Cupertino values
