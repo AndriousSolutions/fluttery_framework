@@ -593,31 +593,31 @@ mixin _AppThemeDataMixin {
     return color;
   }
 
-  ///
-  MaterialColor? _materialColor(Color? color) {
-    //
-    if (color == null) {
-      return null;
-    }
-    final strengths = <double>[.05];
-    final swatch = <int, Color>{};
-    final int r = color.red, g = color.green, b = color.blue;
-    for (int i = 1; i < 10; i++) {
-      strengths.add(double.parse((0.1 * i).toStringAsFixed(2)));
-    }
-    int cnt = 0;
-    for (final strength in strengths) {
-      final double ds = 0.5 - strength;
-      cnt = cnt + 1;
-      swatch[(strength * 1000).round()] = Color.fromRGBO(
-        r + ((ds < 0 ? r : (255 - r)) * ds).round(),
-        g + ((ds < 0 ? g : (255 - g)) * ds).round(),
-        b + ((ds < 0 ? b : (255 - b)) * ds).round(),
-        0.1 * cnt,
-      );
-    }
-    return MaterialColor(color.value, swatch);
-  }
+  /// No longer used
+  // MaterialColor? _materialColor(Color? color) {
+  //   //
+  //   if (color == null) {
+  //     return null;
+  //   }
+  //   final strengths = <double>[.05];
+  //   final swatch = <int, Color>{};
+  //   final int r = color.red, g = color.green, b = color.blue;
+  //   for (int i = 1; i < 10; i++) {
+  //     strengths.add(double.parse((0.1 * i).toStringAsFixed(2)));
+  //   }
+  //   int cnt = 0;
+  //   for (final strength in strengths) {
+  //     final double ds = 0.5 - strength;
+  //     cnt = cnt + 1;
+  //     swatch[(strength * 1000).round()] = Color.fromRGBO(
+  //       r + ((ds < 0 ? r : (255 - r)) * ds).round(),
+  //       g + ((ds < 0 ? g : (255 - g)) * ds).round(),
+  //       b + ((ds < 0 ? b : (255 - b)) * ds).round(),
+  //       0.1 * cnt,
+  //     );
+  //   }
+  //   return MaterialColor(color.value, swatch);
+  // }
 
   ///
   MaterialColor? getMaterialColor(Color? color) {

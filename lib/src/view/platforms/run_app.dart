@@ -8,13 +8,11 @@ import 'dart:async' show runZonedGuarded;
 
 import 'dart:isolate' show Isolate, RawReceivePort;
 
-import 'package:flutter/foundation.dart' show FlutterExceptionHandler, kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
-import 'package:flutter/material.dart' as m
-    show ErrorWidgetBuilder, Widget, runApp;
+import 'package:flutter/material.dart' as m show Widget, runApp;
 
-import 'package:fluttery_framework/view.dart' as v
-    show AppErrorHandler, ReportErrorHandler;
+import 'package:fluttery_framework/view.dart' as v show AppErrorHandler;
 
 /// Add an Error Handler right at the start.
 void runApp(m.Widget app) {
