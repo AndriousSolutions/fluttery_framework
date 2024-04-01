@@ -1,12 +1,12 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
-/// Copyright 2019 Andrious Solutions Ltd. All rights reserved.
-/// Use of this source code is governed by a 2-clause BSD License.
-/// The main directory contains that LICENSE file.
-///
-///          Created  11 Feb 2019
-///
-///
+// Copyright 2019 Andrious Solutions Ltd. All rights reserved.
+// Use of this source code is governed by a 2-clause BSD License.
+// The main directory contains that LICENSE file.
+//
+//          Created  11 Feb 2019
+//
+//
 
 import 'package:device_info_plus/device_info_plus.dart';
 

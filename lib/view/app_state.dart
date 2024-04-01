@@ -1,9 +1,9 @@
-/// Copyright 2020 Andrious Solutions Ltd. All rights reserved.
-/// Use of this source code is governed by a 2-clause BSD License.
-/// The main directory contains that LICENSE file.
-///
-///          Created  27 Oct 2020
-///
+// Copyright 2020 Andrious Solutions Ltd. All rights reserved.
+// Use of this source code is governed by a 2-clause BSD License.
+// The main directory contains that LICENSE file.
+//
+//          Created  27 Oct 2020
+//
 
 // Replace 'dart:io' for Web applications
 

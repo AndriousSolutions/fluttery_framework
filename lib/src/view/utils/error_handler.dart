@@ -1,12 +1,12 @@
 // ignore_for_file: unused_element
 
-/// Copyright 2020 Andrious Solutions Ltd. All rights reserved.
-/// Use of this source code is governed by a 2-clause BSD License.
-/// The main directory contains that LICENSE file.
-///
-///          Created  10 Feb 2020
-///
-///
+// Copyright 2020 Andrious Solutions Ltd. All rights reserved.
+// Use of this source code is governed by a 2-clause BSD License.
+// The main directory contains that LICENSE file.
+//
+//          Created  10 Feb 2020
+//
+//
 import 'dart:ui' as i
     show
 //        Paragraph,

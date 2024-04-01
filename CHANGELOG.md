@@ -1,5 +1,5 @@
 
-## 4.18.0+1
+## 4.18.0+2
 April 01, 2024
 - New getters for App object: allowChangeTheme, allowChangeLocale, allowChangeUI, switchUI
 - if (widget.loadingScreen != null) { in app_statefulwidget.dart
@@ -7,6 +7,7 @@ April 01, 2024
 - Removed deprecated errorHandler from runApp()
 - Commented out _materialColor() in app.dart
 - Updated show clause in run_app.dart
+- Removed dangling library doc comment:  /// to //
 
 ## 4.17.0
 February 09, 2023

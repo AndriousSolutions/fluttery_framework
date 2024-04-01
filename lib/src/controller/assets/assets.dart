@@ -1,10 +1,10 @@
-/// Copyright 2019 Andrious Solutions Ltd. All rights reserved.
-/// Use of this source code is governed by a 2-clause BSD License.
-/// The main directory contains that LICENSE file.
-///
-///          Created  09 Mar 2019
-///
-///
+// Copyright 2019 Andrious Solutions Ltd. All rights reserved.
+// Use of this source code is governed by a 2-clause BSD License.
+// The main directory contains that LICENSE file.
+//
+//          Created  09 Mar 2019
+//
+//
 
 import 'dart:async' show Future;
 

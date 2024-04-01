@@ -1,6 +1,6 @@
-/// Copyright 2024 Andrious Solutions Ltd. All rights reserved.
-/// Use of this source code is governed by a 2-clause BSD License.
-/// The main directory contains that LICENSE file.
+// Copyright 2024 Andrious Solutions Ltd. All rights reserved.
+// Use of this source code is governed by a 2-clause BSD License.
+// The main directory contains that LICENSE file.
 import '/view.dart';
 
 import 'package:flutter/gestures.dart' show PointerDeviceKind;

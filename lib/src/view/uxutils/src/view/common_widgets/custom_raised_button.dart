@@ -1,9 +1,9 @@
-/// Copyright 2019 Andrious Solutions Ltd. All rights reserved.
-/// Use of this source code is governed by a 2-clause BSD License.
-/// The main directory contains that LICENSE file.
-///
-///
-///
+// Copyright 2019 Andrious Solutions Ltd. All rights reserved.
+// Use of this source code is governed by a 2-clause BSD License.
+// The main directory contains that LICENSE file.
+//
+//
+//
 import 'package:flutter/material.dart';
 
 /// A Elevated button with a built-in spinner

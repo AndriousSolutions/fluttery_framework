@@ -1,13 +1,13 @@
-/// Copyright 2019 Andrious Solutions Ltd. All rights reserved.
-/// Use of this source code is governed by a 2-clause BSD License.
-/// The main directory contains that LICENSE file.
-///
-///          Created  05 Feb 2019
-///
-/// Special thanks to Manas Gupta for the class, SimpleBottomAppBarState
-/// https://medium.com/@guptamanas1998/get-fluttered-a-deceptively-simple-bottom-app-bar-part-2-879ddb7b063c
-///
-///
+// Copyright 2019 Andrious Solutions Ltd. All rights reserved.
+// Use of this source code is governed by a 2-clause BSD License.
+// The main directory contains that LICENSE file.
+//
+//          Created  05 Feb 2019
+//
+// Special thanks to Manas Gupta for the class, SimpleBottomAppBarState
+// https://medium.com/@guptamanas1998/get-fluttered-a-deceptively-simple-bottom-app-bar-part-2-879ddb7b063c
+//
+//
 import 'package:flutter/material.dart'
     show
         Animation,

@@ -1,12 +1,12 @@
-/// Copyright 2020 Andrious Solutions Ltd. All rights reserved.
-/// Use of this source code is governed by a 2-clause BSD License.
-/// The main directory contains that LICENSE file.
-///
-///          Created  02 Oct 2020
-///
-///
+// Copyright 2020 Andrious Solutions Ltd. All rights reserved.
+// Use of this source code is governed by a 2-clause BSD License.
+// The main directory contains that LICENSE file.
+//
+//          Created  02 Oct 2020
+//
+//
 
-/// Merely a 'stub' used by conditional import and export statements.
+// Merely a 'stub' used by conditional import and export statements.
 
 import 'package:flutter/material.dart' show ErrorWidgetBuilder, Widget;
 
