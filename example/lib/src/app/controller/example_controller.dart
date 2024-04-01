@@ -141,13 +141,13 @@ class ExampleAppController extends AppController {
 
     final locales = App.supportedLocales!;
 
-    final initialItem = locales.indexOf(locale!);
+//    final initialItem = locales.indexOf(locale!);
 
     // record selected locale
     Locale? appLocale;
 
     final spinner = SpinnerCupertino<Locale>(
-      initValue: locale,
+      initValue: locale!,
       values: locales,
       itemBuilder: (BuildContext context, int index) => Text(
         locales[index].countryCode == null

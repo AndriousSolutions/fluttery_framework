@@ -75,9 +75,9 @@ mixin RxStates on State {
     return rx;
   }
 
+  // dispose() fires at the system's convenience.
   @override
   void dispose() {
-    //
     _stateHashCodes.remove(hashCode);
     _rxDependencies.removeWhere((_, value) => value == hashCode);
     super.dispose();

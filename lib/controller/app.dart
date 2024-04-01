@@ -1,9 +1,9 @@
-/// Copyright 2018 Andrious Solutions Ltd. All rights reserved.
-/// Use of this source code is governed by a 2-clause BSD License.
-/// The main directory contains that LICENSE file.
-///
-///          Created  24 Dec 2018
-///
+// Copyright 2018 Andrious Solutions Ltd. All rights reserved.
+// Use of this source code is governed by a 2-clause BSD License.
+// The main directory contains that LICENSE file.
+//
+//          Created  24 Dec 2018
+//
 
 // The original StateXController
 import 'package:state_extended/state_extended.dart' as c;

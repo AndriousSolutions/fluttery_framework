@@ -94,7 +94,7 @@ class _StateApp extends State<AppStatefulWidget> {
       key: UniqueKey(), // UniqueKey() for hot reload
       future: initAsync(),
       initialData: false,
-      builder: (_, snapshot) => _futureBuilder(snapshot, widget.loadingScreen),
+      builder: (_, snapshot) => _futureBuilder(snapshot),
     );
   }
 
@@ -203,7 +203,7 @@ class _StateApp extends State<AppStatefulWidget> {
 
   /// Run the CircularProgressIndicator() until asynchronous operations are
   /// completed before the app proceeds.
-  Widget _futureBuilder(AsyncSnapshot<bool> snapshot, Widget? loading) {
+  Widget _futureBuilder(AsyncSnapshot<bool> snapshot) {
     //
     Widget _widget;
 
@@ -257,9 +257,9 @@ class _StateApp extends State<AppStatefulWidget> {
       _widget = ErrorWidget.builder(details);
     } else {
       //
-      if (loading != null) {
+      if (widget.loadingScreen != null) {
         //
-        _widget = loading;
+        _widget = widget.loadingScreen!;
       } else {
         //
         if (UniversalPlatform.isAndroid || UniversalPlatform.isWeb) {

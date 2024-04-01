@@ -1,4 +1,11 @@
 
+## 4.18.0
+April 01, 2024
+- New getters for App object: allowChangeTheme, allowChangeLocale, allowChangeUI, switchUI
+- if (widget.loadingScreen != null) { in app_statefulwidget.dart
+- Allows you to set an error handler more than once.
+- Removed deprecated errorHandler from runApp()
+
 ## 4.17.0
 February 09, 2023
 - App.baseTheme = Theme.of(context); // Retain the original theme

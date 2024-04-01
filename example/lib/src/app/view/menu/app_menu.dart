@@ -24,12 +24,13 @@ class AppMenu extends AppPopupMenu {
   /// Supply the menu options
   @override
   List<PopupMenuEntry<String>>? onMenuEntries() => [
-        PopupMenuItem(
-          key: const Key('interfaceMenuItem'),
-          value: 'interface',
-          child: Text(
-              '${'Interface:'.tr} ${App.useMaterial ? 'Material' : 'Cupertino'}'),
-        ),
+        if (App.allowChangeUI)
+          PopupMenuItem(
+            key: const Key('interfaceMenuItem'),
+            value: 'interface',
+            child: Text(
+                '${'Interface:'.tr} ${App.useMaterial ? 'Material' : 'Cupertino'}'),
+          ),
         PopupMenuItem(
           key: const Key('applicationMenuItem'),
           value: 'application',

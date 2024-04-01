@@ -51,15 +51,13 @@ class AppErrorHandler {
     //
     _this ??= AppErrorHandler._();
 
-    /// Allow for a new Error handler in the future
-    if (AppErrorHandler.allowNewErrorHandlers &&
-        !(allowNewErrorHandlers ?? true)) {
-      // Once set to false, it's unchangeable
-      AppErrorHandler.allowNewErrorHandlers = false;
-    }
-
     /// Allows you to set an error handler more than once.
-    set(handler: handler, screen: screen, report: report);
+    set(
+      handler: handler,
+      screen: screen,
+      report: report,
+      allowNewErrorHandlers: allowNewErrorHandlers,
+    );
 
     return _this!;
   }
@@ -148,6 +146,7 @@ class AppErrorHandler {
     FlutterExceptionHandler? handler,
     ErrorWidgetBuilder? screen,
     ReportErrorHandler? report,
+    bool? allowNewErrorHandlers,
     i.ParagraphStyle? paragraphStyle,
     i.TextStyle? textStyle,
     EdgeInsets? padding,
@@ -166,7 +165,7 @@ class AppErrorHandler {
     _backgroundColor ??= backgroundColor;
 
     // Once you're not allowed to set the handlers, they can't be changed.
-    if (_givenErrorHandler && !allowNewErrorHandlers) {
+    if (_givenErrorHandler && !AppErrorHandler.allowNewErrorHandlers) {
       return false;
     }
 
@@ -196,6 +195,13 @@ class AppErrorHandler {
     // Set only once
     if (!_givenErrorHandler && reset) {
       _givenErrorHandler = true;
+    }
+
+    /// Allow for a new Error handler in the future
+    if (AppErrorHandler.allowNewErrorHandlers &&
+        !(allowNewErrorHandlers ?? true)) {
+      // Once set to false, it's unchangeable
+      AppErrorHandler.allowNewErrorHandlers = false;
     }
 
     // Something was set;

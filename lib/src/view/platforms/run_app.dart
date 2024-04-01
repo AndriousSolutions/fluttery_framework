@@ -17,17 +17,7 @@ import 'package:fluttery_framework/view.dart' as v
     show AppErrorHandler, ReportErrorHandler;
 
 /// Add an Error Handler right at the start.
-void runApp(
-  m.Widget app, {
-  @Deprecated("The 'error' parameters are deprecated.")
-  FlutterExceptionHandler? errorHandler,
-  @Deprecated("The 'error' parameters are deprecated.")
-  m.ErrorWidgetBuilder? errorScreen,
-  @Deprecated("The 'error' parameters are deprecated.")
-  v.ReportErrorHandler? errorReport,
-  @Deprecated("The 'error' parameters are deprecated.")
-  bool newErrorHandlers = true,
-}) {
+void runApp(m.Widget app) {
   // Instantiate the app's error handler.
   final handler = v.AppErrorHandler();
 

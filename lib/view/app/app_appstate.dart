@@ -326,6 +326,18 @@ extension AppStateExtension on AppObject {
     appState?.changeUI(ui);
   }
 
+  /// Allow the app to change the theme
+  bool get allowChangeTheme => appState?.allowChangeTheme ?? false;
+
+  /// Allow the app directly change the Locale
+  bool get allowChangeLocale => appState?.allowChangeLocale ?? false;
+
+  /// Allow the app to directly change the UI design
+  bool get allowChangeUI => appState?.allowChangeUI ?? false;
+
+  /// Use Cupertino UI in Android and vice versa.
+  bool get switchUI => appState?.switchUI ?? false;
+
   /// Refresh the root State object with the passed function.
   void setState(VoidCallback fn) => appState?.setState(fn);
 

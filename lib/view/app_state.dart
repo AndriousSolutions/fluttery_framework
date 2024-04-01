@@ -266,7 +266,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     return init;
   }
 
-  /// Supply a GlobalKey to the CupertinoApp and the MaterialApp
+  /// The traditional initState for the App's first State object
   @override
   @mustCallSuper
   void initState() {
