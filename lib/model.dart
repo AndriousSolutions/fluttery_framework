@@ -6,20 +6,20 @@
 //
 //
 
-/// Material
+// Material
 export 'package:flutter/material.dart' hide runApp;
 
-/// Cupertino
+// Cupertino
 export 'package:flutter/cupertino.dart' hide RefreshCallback, runApp;
 
-/// file utils
+// file utils
 export '/src/model/fileutils/files.dart';
 
-/// Install file
+// Install file
 export '/src/model/fileutils/installfile.dart';
 
-/// Hash codes
+// Hash codes
 export '/src/model/utils/hash.dart';
 
-/// Preferences
+// Preferences
 export 'package:prefs/prefs.dart' show Prefs;

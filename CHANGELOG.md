@@ -1,5 +1,5 @@
 
-## 4.18.0+2
+## 4.18.0+3
 April 01, 2024
 - New getters for App object: allowChangeTheme, allowChangeLocale, allowChangeUI, switchUI
 - if (widget.loadingScreen != null) { in app_statefulwidget.dart
