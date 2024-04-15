@@ -4,7 +4,7 @@
 //
 //          Created  28 Sep 2021
 //
-import 'dart:async' show runZonedGuarded;
+//import 'dart:async' show runZonedGuarded;
 
 import 'dart:isolate' show Isolate, RawReceivePort;
 
@@ -34,8 +34,11 @@ void runApp(m.Widget app) {
     }).sendPort);
   }
 
-  // Catch any errors attempting to execute runApp();
-  runZonedGuarded(() {
-    m.runApp(app);
-  }, handler.runZonedError);
+  // // Catch any errors attempting to execute runApp();
+  // runZonedGuarded(() {
+  //   m.runApp(app);
+  // }, handler.runZonedError);
+
+  // Since Flutter 3.10, must now run in the 'root' zone
+  m.runApp(app);
 }

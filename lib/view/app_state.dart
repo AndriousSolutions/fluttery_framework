@@ -613,7 +613,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       _state = lastContext?.findAncestorStateOfType<_AppState>();
     }
     if (_state == null) {
-      endState?.setState(() {});
+      lastState?.setState(() {});
       // Refresh the 'root' State object.
       super.setState(() {});
     } else {
@@ -1559,6 +1559,12 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
 
   late AppState? _appState;
 
+  /// Called by the built-in InheritedWidget
+  /// Only every called once and so use the state() or dependOnInheritedWidget()
+  /// functions to update particular parts of the returned interface.
+  @override
+  Widget buildIn(BuildContext context) => builder(context);
+
   /// This function is wrapped in a Builder widget.
   /// If you don't use it, use the buildAndroid() or buildiOS() function.
   Widget builder(BuildContext context) =>
@@ -1574,12 +1580,6 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
   /// By convention, this involves Cupertino Interface
   /// Defaults to the Material interface design if called yet not implemented
   Widget buildiOS(BuildContext context) => buildAndroid(context);
-
-  /// Called by the built-in InheritedWidget
-  /// Only every called once and so use the state() or dependOnInheritedWidget()
-  /// functions to update particular parts of the returned interface.
-  @override
-  Widget buildIn(BuildContext context) => builder(context);
 
   /// Use this to navigate throughout the your app
   static NavigatorState get router => App.router;

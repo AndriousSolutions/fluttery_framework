@@ -44,9 +44,11 @@ abstract class AppStatefulWidget extends StatefulWidget {
     bool? allowNewHandlers = true,
   })  : _app = v.AppObject(),
         super(key: key ?? GlobalKey<_StateApp>()) {
+    // Right at the start! Initialise the binding.
+    final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     // defer displaying anything while starting up
     if (circularProgressIndicator == null || !circularProgressIndicator!) {
-      WidgetsFlutterBinding.ensureInitialized().deferFirstFrame();
+      widgetsBinding.deferFirstFrame();
     }
   }
   //

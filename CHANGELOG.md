@@ -1,5 +1,13 @@
 
-## 4.18.0+3
+
+## 4.18.1
+April 15, 2024
+- Since Flutter 3.10, runApp() must now run in the 'root' zone
+  Removed runZonedGuarded() from run_app.dart
+- Call WidgetsFlutterBinding.ensureInitialized() right away in AppStatefulWidget
+
+
+## 4.18.0+4
 April 01, 2024
 - New getters for App object: allowChangeTheme, allowChangeLocale, allowChangeUI, switchUI
 - if (widget.loadingScreen != null) { in app_statefulwidget.dart
