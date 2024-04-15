@@ -8,6 +8,7 @@
 //
 
 // \Pub\Cache\hosted\pub.dev\path_provider-2.0.13\lib\path_provider.dart
+/// This supplies a directory though not as intended since on the Web
 Future<Directory> getApplicationDocumentsDirectory() async => Directory();
 
 /// A 'fake' Directory class.

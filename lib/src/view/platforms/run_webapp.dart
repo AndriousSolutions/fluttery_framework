@@ -5,8 +5,6 @@
 //          Created  28 Sep 2021
 //
 
-import 'dart:async' show runZonedGuarded;
-
 import 'package:flutter/foundation.dart' show FlutterExceptionHandler;
 
 import 'package:flutter/material.dart' as m
@@ -28,7 +26,7 @@ void runApp(
   bool allowNewHandlers = false,
 }) {
   // Instantiate the app's error handler.
-  final handler = v.AppErrorHandler(
+  v.AppErrorHandler(
       handler: errorHandler,
       screen: errorScreen,
       report: errorReport,
@@ -37,11 +35,6 @@ void runApp(
   // Here we set the URL strategy for our web app.
   // It is safe to call this function when running on mobile or desktop as well.
   setPathUrlStrategy();
-
-  // // Catch any errors attempting to execute runApp();
-  // runZonedGuarded(() {
-  //   m.runApp(app);
-  // }, handler.runZonedError);
 
   // Since Flutter 3.10, must now run in the 'root' zone
   m.runApp(app);

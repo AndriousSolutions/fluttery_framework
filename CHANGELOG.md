@@ -1,5 +1,5 @@
 
-## 4.18.2
+## 4.18.2+1
 April 15, 2024
 - Since Flutter 3.10, runApp() must now run in the 'root' zone
   Removed runZonedGuarded() from run_webapp.dart
