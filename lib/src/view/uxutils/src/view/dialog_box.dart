@@ -162,6 +162,99 @@ Future<bool> showBox({
   return result ?? false;
 }
 
+/// Return a value T
+Future<T?> showDialogBox<T>(
+    BuildContext context, {
+      String? title,
+      Widget? content,
+      List<Widget>? actions,
+      bool? barrierDismissible,
+      Color? barrierColor,
+      String? barrierLabel,
+      bool? useSafeArea,
+      bool? useRootNavigator,
+      RouteSettings? routeSettings,
+      Offset? anchorPoint,
+      TraversalEdgeBehavior? traversalEdgeBehavior,
+      Widget? icon,
+      EdgeInsetsGeometry? iconPadding,
+      Color? iconColor,
+      EdgeInsetsGeometry? titlePadding,
+      TextStyle? titleTextStyle,
+      EdgeInsetsGeometry? contentPadding,
+      TextStyle? contentTextStyle,
+      EdgeInsetsGeometry? actionsPadding,
+      MainAxisAlignment? actionsAlignment,
+      OverflowBarAlignment? actionsOverflowAlignment,
+      VerticalDirection? actionsOverflowDirection,
+      double? actionsOverflowButtonSpacing,
+      EdgeInsetsGeometry? buttonPadding,
+      Color? backgroundColor,
+      double? elevation,
+      Color? shadowColor,
+      Color? surfaceTintColor,
+      String? semanticLabel,
+      EdgeInsets? insetPadding,
+      Clip? clipBehavior,
+      ShapeBorder? shape,
+      AlignmentGeometry? alignment,
+      bool? scrollable,
+    }) {
+  //
+  title ??= '';
+  content ??= const Text('');
+  actions ??= [
+    TextButton(
+      style: TextButton.styleFrom(
+        textStyle: Theme.of(context).textTheme.labelLarge,
+      ),
+      child: const Text('OK'),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    ),
+  ];
+  return showDialog<T>(
+    context: context,
+    builder: (_) => AlertDialog(
+      title: Text(title!),
+      content: content,
+      actions: actions,
+      icon: icon,
+      iconPadding: iconPadding,
+      iconColor: iconColor,
+      titlePadding: titlePadding,
+      titleTextStyle: titleTextStyle,
+      contentPadding: contentPadding,
+      contentTextStyle: contentTextStyle,
+      actionsPadding: actionsPadding,
+      actionsAlignment: actionsAlignment,
+      actionsOverflowAlignment: actionsOverflowAlignment,
+      actionsOverflowDirection: actionsOverflowDirection,
+      actionsOverflowButtonSpacing: actionsOverflowButtonSpacing,
+      buttonPadding: buttonPadding,
+      backgroundColor: backgroundColor,
+      elevation: elevation,
+      shadowColor: shadowColor,
+      surfaceTintColor: surfaceTintColor,
+      insetPadding: insetPadding ??
+          EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
+      clipBehavior: clipBehavior ?? Clip.none,
+      shape: shape,
+      alignment: alignment,
+      scrollable: scrollable ?? false,
+    ),
+    barrierDismissible: barrierDismissible ?? true,
+    barrierColor: barrierColor,
+    barrierLabel: barrierLabel,
+    useSafeArea: useSafeArea ?? true,
+    useRootNavigator: useRootNavigator ?? true,
+    routeSettings: routeSettings,
+    anchorPoint: anchorPoint,
+    traversalEdgeBehavior: traversalEdgeBehavior,
+  );
+}
+
 /// This dialog doesn't stop. The app continues with it displayed.
 void dialogBox({
   String? title,

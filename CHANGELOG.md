@@ -1,4 +1,9 @@
 
+## 4.19.0
+April 17, 2024
+- catchError() in app_appstate.dart takes in FlutterErrorDetails parameters
+- Additional dialog window, Future<T?> showDialogBox<T>()
+
 ## 4.18.2+1
 April 15, 2024
 - Since Flutter 3.10, runApp() must now run in the 'root' zone

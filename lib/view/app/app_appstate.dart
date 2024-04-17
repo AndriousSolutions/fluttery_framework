@@ -356,11 +356,29 @@ extension AppStateExtension on AppObject {
   void notifyClients() => appState?.notifyClients();
 
   /// Catch and explicitly handle the error.
-  void catchError(Object ex) {
+  void catchError(
+    Object? ex, {
+    StackTrace? stack,
+    String? library,
+    DiagnosticsNode? context,
+    IterableFilter<String>? stackFilter,
+    InformationCollector? informationCollector,
+    bool? silent,
+  }) {
     if (ex is! Exception) {
       ex = Exception(ex.toString());
     }
-    appState?.catchError(ex);
+
+    appState?.catchError(
+      ex,
+      stack: stack,
+      // Supply the app's name instead.
+      library: library ?? App.packageInfo?.appName,
+      context: context,
+      stackFilter: stackFilter,
+      informationCollector: informationCollector,
+      silent: silent ?? false,
+    );
   }
 
   /// Retrieve the 'latest' context
