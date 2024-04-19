@@ -1,4 +1,9 @@
 
+## 4.19.1
+April 18, 2024
+- _isAppInApp() in app_statefulwidget.dart
+- _errorHandler?.dispose() in app.dart
+
 ## 4.19.0
 April 17, 2024
 - catchError() in app_appstate.dart takes in FlutterErrorDetails parameters

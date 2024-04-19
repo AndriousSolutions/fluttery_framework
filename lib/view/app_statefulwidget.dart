@@ -81,6 +81,7 @@ class _StateApp extends State<AppStatefulWidget> {
   @override
   void initState() {
     super.initState();
+    _isAppInApp();
     _appGlobalKey = GlobalKey<v.AppState>();
     _assets = Assets();
   }
@@ -149,20 +150,6 @@ class _StateApp extends State<AppStatefulWidget> {
       rethrow;
     }
     return v.App.isInit = init;
-  }
-
-  @override
-  @mustCallSuper
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Determine if this app has been called by another app.
-    final state = context.findRootAncestorStateOfType<_StateApp>();
-    // Don't dispose if this app is called by another app
-    disposeStatic = state == null || state == this;
-    // A flag indicating if this app is called by another app
-    _appInApp = state != null && state != this;
-    // Not called by another app
-    v.App.standAloneApp = _appInApp;
   }
 
   // Flag to dispose static objects
@@ -277,6 +264,17 @@ class _StateApp extends State<AppStatefulWidget> {
     v.App.hotReload = false;
 
     return _widget;
+  }
+
+  // Determine if this app has been called by another _StateApp.
+  void _isAppInApp() {
+    final state = context.findRootAncestorStateOfType<_StateApp>();
+    // A flag indicating if this app is called by another app
+    _appInApp = state != null && state != this;
+    // Not called by another app
+    v.App.standAloneApp = _appInApp;
+    // Don't dispose if this app is called by another app
+    disposeStatic = !_appInApp;
   }
 }
 

@@ -76,7 +76,7 @@ class AppObject
     _connectivitySubscription = null;
     _appState = null;
     // Restore the original error handling.
-    _errorHandler!.dispose();
+    _errorHandler?.dispose();
     _errorHandler = null;
   }
 
