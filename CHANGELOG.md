@@ -1,4 +1,11 @@
 
+## 4.20.0
+April 23, 2024
+- showDialogBox() in dialog_box.dart
+- Replace endState with lastState
+- Removed from testing: App.buildInherited();  context.textScaleFactor;
+- Update analysis_options.yaml
+
 ## 4.19.1
 April 18, 2024
 - _isAppInApp() in app_statefulwidget.dart

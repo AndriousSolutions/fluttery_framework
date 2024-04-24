@@ -121,5 +121,6 @@ class Page1State extends StateX<Page1> {
   Widget build(BuildContext context) => super.build(context);
 
   @override
+  // ignore: unnecessary_overrides
   Widget buildF(BuildContext context) => super.buildF(context);
 }

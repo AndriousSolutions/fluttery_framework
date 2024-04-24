@@ -44,8 +44,8 @@ class Page2State extends StateX<Page2> {
     /// The latest BuildContext in the app.
     /// This is so important, there's a number of ways to get it.
     // ignore: unused_local_variable
-    BuildContext? lastContext = controller?.state?.endState?.context;
-    lastContext = controller?.rootState?.endState?.context;
+    BuildContext? lastContext = controller?.state?.lastState?.context;
+    lastContext = controller?.rootState?.lastState?.context;
     lastContext = controller?.lastContext;
 
     /// The app's data object

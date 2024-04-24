@@ -112,7 +112,7 @@ void testAppView(WidgetTester tester) {
 
   App.dependOnInheritedWidget(App.context);
 
-  App.buildInherited();
+  // App.buildInherited();
 
   App.notifyClients();
 

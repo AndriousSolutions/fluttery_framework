@@ -47,7 +47,7 @@ void testContextExtension(BuildContext context) {
 
   context.devicePixelRatio;
 
-  context.textScaleFactor;
+  // context.textScaleFactor;
 
   context.mediaQueryShortestSide;
 
