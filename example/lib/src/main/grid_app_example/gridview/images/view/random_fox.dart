@@ -28,4 +28,9 @@ class _RandomFoxState extends ImageAPIStateX<RandomFox> {
           ),
           message: 'image',
         );
+
+  /// Place a breakpoint and see the process
+  @override
+  // ignore: unnecessary_overrides
+  Widget build(BuildContext context) => super.build(context);
 }

@@ -21,8 +21,8 @@ class InheritDog extends StatefulWidget {
 }
 
 /// Supply an InheritedWidget to a StateX object: InheritedStateX
-class _InheritDogState extends StateIn<InheritDog> {
-  _InheritDogState() : super(controller: DogController());
+class _InheritDogState extends StateX<InheritDog> {
+  _InheritDogState() : super(controller: DogController(), useInherited: true);
 
   /// Should use these two if you've two separate interfaces:
   /// Material for Android and Cupertino for iOS.

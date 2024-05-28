@@ -9,12 +9,32 @@
 
 import '/controller.dart' show AppController, StateXController;
 
-import 'package:state_extended/state_extended.dart' as s show StateX;
+import 'package:state_extended/state_extended.dart' as s
+    show StateX, StateXInheritedWidget;
 
 import '/view.dart';
 
 /// Highlights UI while debugging.
-import 'package:flutter/rendering.dart' as debug;
+import 'package:flutter/rendering.dart' as debug
+    show
+        debugPaintSizeEnabled,
+        debugPaintBaselinesEnabled,
+        debugPaintPointersEnabled,
+        debugPaintLayerBordersEnabled,
+        debugRepaintRainbowEnabled,
+        debugRepaintTextRainbowEnabled;
+
+import 'package:flutter/widgets.dart' as debug
+    show
+        debugPrintRebuildDirtyWidgets,
+        debugOnRebuildDirtyWidget,
+        debugPrintBuildScope,
+        debugPrintScheduleBuildForStacks,
+        debugPrintGlobalKeyedWidgetLifecycle,
+        debugProfileBuildsEnabled,
+        debugProfileBuildsEnabledUserWidgets,
+        debugEnhanceBuildTimelineArguments,
+        debugHighlightDeprecatedWidgets;
 
 ///
 /// The View for the app. The 'look and feel' for the whole app.
@@ -44,12 +64,14 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey,
     Map<String, WidgetBuilder>? routes,
     String? initialRoute,
-    RouteFactory? onGenerateRoute,
-    RouteFactory? onUnknownRoute,
+    Route<dynamic>? Function(RouteSettings settings)? onGenerateRoute,
+    Route<dynamic>? Function(RouteSettings settings)? onUnknownRoute,
+    bool Function(NavigationNotification notification)?
+        onNavigationNotification,
     List<NavigatorObserver>? navigatorObservers,
     TransitionBuilder? builder,
     String? title,
-    GenerateAppTitle? onGenerateTitle,
+    String Function(BuildContext context)? onGenerateTitle,
     Color? color,
     bool? allowChangeTheme,
     ThemeData? theme,
@@ -83,6 +105,16 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     bool? debugPaintLayerBordersEnabled,
     bool? debugRepaintRainbowEnabled,
     bool? debugRepaintTextRainbowEnabled,
+    bool? debugPrintRebuildDirtyWidgets,
+    // ignore avoid_positional_boolean_parameters
+    void Function(Element e, bool builtOnce)? debugOnRebuildDirtyWidget,
+    bool? debugPrintBuildScope,
+    bool? debugPrintScheduleBuildForStacks,
+    bool? debugPrintGlobalKeyedWidgetLifecycle,
+    bool? debugProfileBuildsEnabled,
+    bool? debugProfileBuildsEnabledUserWidgets,
+    bool? debugEnhanceBuildTimelineArguments,
+    bool? debugHighlightDeprecatedWidgets,
     Map<LogicalKeySet, Intent>? shortcuts,
     Map<Type, Action<Intent>>? actions,
     String? restorationScopeId,
@@ -104,8 +136,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.inBackButtonDispatcher,
     super.inRoutes,
     super.inInitialRoute,
-    super.inOnGenerateRoute,
-    super.inOnUnknownRoute,
     super.inNavigatorObservers,
     super.inUpdateShouldNotify,
     super.inTransBuilder,
@@ -165,6 +195,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     _initialRoute = initialRoute;
     _onGenerateRoute = onGenerateRoute;
     _onUnknownRoute = onUnknownRoute;
+    _onNavigationNotification = onNavigationNotification;
     _navigatorObservers = navigatorObservers;
     _builder = builder;
     _onGenerateTitle = onGenerateTitle;
@@ -197,6 +228,21 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     this.debugRepaintRainbowEnabled = debugRepaintRainbowEnabled ?? false;
     this.debugRepaintTextRainbowEnabled =
         debugRepaintTextRainbowEnabled ?? false;
+
+    this.debugPrintRebuildDirtyWidgets = debugPrintRebuildDirtyWidgets ?? false;
+    this.debugOnRebuildDirtyWidget = debugOnRebuildDirtyWidget;
+    this.debugPrintBuildScope = debugPrintBuildScope ?? false;
+    this.debugPrintScheduleBuildForStacks =
+        debugPrintScheduleBuildForStacks ?? false;
+    this.debugPrintGlobalKeyedWidgetLifecycle =
+        debugPrintGlobalKeyedWidgetLifecycle ?? false;
+    this.debugProfileBuildsEnabled = debugProfileBuildsEnabled ?? false;
+    this.debugProfileBuildsEnabledUserWidgets =
+        debugProfileBuildsEnabledUserWidgets ?? false;
+    this.debugEnhanceBuildTimelineArguments =
+        debugEnhanceBuildTimelineArguments ?? false;
+    this.debugHighlightDeprecatedWidgets =
+        debugHighlightDeprecatedWidgets ?? false;
 
     _shortcuts = shortcuts;
     _actions = actions;
@@ -305,6 +351,22 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       debug.debugPaintLayerBordersEnabled = debugPaintLayerBordersEnabled;
       debug.debugRepaintRainbowEnabled = debugRepaintRainbowEnabled;
       debug.debugRepaintTextRainbowEnabled = debugRepaintTextRainbowEnabled;
+
+      /// Log how widgets are built
+      debug.debugPrintRebuildDirtyWidgets = this.debugPrintRebuildDirtyWidgets;
+      debug.debugOnRebuildDirtyWidget = this.debugOnRebuildDirtyWidget;
+      debug.debugPrintBuildScope = this.debugPrintBuildScope;
+      debug.debugPrintScheduleBuildForStacks =
+          this.debugPrintScheduleBuildForStacks;
+      debug.debugPrintGlobalKeyedWidgetLifecycle =
+          this.debugPrintGlobalKeyedWidgetLifecycle;
+      debug.debugProfileBuildsEnabled = this.debugProfileBuildsEnabled;
+      debug.debugProfileBuildsEnabledUserWidgets =
+          this.debugProfileBuildsEnabledUserWidgets;
+      debug.debugEnhanceBuildTimelineArguments =
+          this.debugEnhanceBuildTimelineArguments;
+      debug.debugHighlightDeprecatedWidgets =
+          this.debugHighlightDeprecatedWidgets;
       return true;
     }());
 
@@ -388,10 +450,11 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             initialRoute: initialRoute,
             onGenerateRoute: onGenerateRoute,
             onUnknownRoute: onUnknownRoute,
+            onNavigationNotification: onNavigationNotification,
             navigatorObservers: _onNavigatorObservers(),
             builder: builder,
 // not needed  title: ,  // Used instead in _onOnGenerateTitle()
-            onGenerateTitle: _onOnGenerateTitle,
+            onGenerateTitle: onGenerateTitle,
             color: color,
             locale: _locale,
             localizationsDelegates: localizationsDelegates,
@@ -422,7 +485,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             theme: _setiOSThemeData(context),
             builder: builder,
 // not needed          title: , // Used instead in _onOnGenerateTitle()
-            onGenerateTitle: _onOnGenerateTitle,
+            onGenerateTitle: onGenerateTitle,
+            onNavigationNotification: onNavigationNotification,
             color: color,
             locale: _locale,
             localizationsDelegates: localizationsDelegates,
@@ -456,10 +520,11 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             initialRoute: initialRoute,
             onGenerateRoute: onGenerateRoute,
             onUnknownRoute: onUnknownRoute,
+            onNavigationNotification: onNavigationNotification,
             navigatorObservers: _onNavigatorObservers(),
             builder: builder,
 // not needed          title: , // Used instead in _onOnGenerateTitle()
-            onGenerateTitle: _onOnGenerateTitle,
+            onGenerateTitle: onGenerateTitle,
             color: color,
             theme: _setThemeData(context),
             darkTheme: darkTheme,
@@ -498,7 +563,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             backButtonDispatcher: _backButtonDispatcher,
             builder: builder,
 // not needed          title: , // Used instead in _onOnGenerateTitle()
-            onGenerateTitle: _onOnGenerateTitle,
+            onGenerateTitle: onGenerateTitle,
+            onNavigationNotification: onNavigationNotification,
             color: color,
             theme: _setThemeData(context),
             darkTheme: darkTheme,
@@ -722,8 +788,6 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     this.inBackButtonDispatcher,
     this.inRoutes,
     this.inInitialRoute,
-    this.inOnGenerateRoute,
-    this.inOnUnknownRoute,
     this.inNavigatorObservers,
     this.inUpdateShouldNotify,
     this.inTransBuilder,
@@ -756,7 +820,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     this.inScrollBehavior,
     this.inAsyncError,
   })  : currentErrorFunc = FlutterError.onError,
-        _stateRouteObserver = StateRouteObserver(),
+        _statesRouteObserver = StatesRouteObserver(),
         super(controller: controller) {
     // If a tester is running. Don't switch out its error handler.
     if (WidgetsBinding.instance is WidgetsFlutterBinding) {
@@ -819,11 +883,16 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   String? get initialRoute => _initialRoute ?? onInitialRoute();
   String? _initialRoute;
 
-  RouteFactory? get onGenerateRoute => _onGenerateRoute ?? onOnGenerateRoute();
+  RouteFactory? get onGenerateRoute => _onOnGenerateRoute;
   RouteFactory? _onGenerateRoute;
 
-  RouteFactory? get onUnknownRoute => _onUnknownRoute ?? onOnUnknownRoute();
+  RouteFactory? get onUnknownRoute => _onOnUnknownRoute;
   RouteFactory? _onUnknownRoute;
+
+  NotificationListenerCallback<NavigationNotification>?
+      get onNavigationNotification => _onOnNavigationNotification;
+  NotificationListenerCallback<NavigationNotification>?
+      _onNavigationNotification;
 
   List<NavigatorObserver>? get navigatorObservers => _onNavigatorObservers();
   List<NavigatorObserver>? _navigatorObservers;
@@ -984,6 +1053,34 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   late bool debugRepaintRainbowEnabled;
   late bool debugRepaintTextRainbowEnabled;
 
+  /// Log the dirty widgets that are built each frame.
+  late bool debugPrintRebuildDirtyWidgets;
+
+  /// Callback invoked for every dirty widget built each frame.
+  // ignore: avoid_positional_boolean_parameters
+  void Function(Element e, bool builtOnce)? debugOnRebuildDirtyWidget;
+
+  /// Log all calls to [BuildOwner.buildScope].
+  late bool debugPrintBuildScope;
+
+  /// Log the call stacks that mark widgets as needing to be rebuilt.
+  late bool debugPrintScheduleBuildForStacks;
+
+  /// Log when widgets with global keys are deactivated and log when they are reactivated (retaken).
+  late bool debugPrintGlobalKeyedWidgetLifecycle;
+
+  /// Adds 'Timeline' events for every Widget built.
+  late bool debugProfileBuildsEnabled;
+
+  /// Adds 'Timeline' events for every user-created [Widget] built.
+  late bool debugProfileBuildsEnabledUserWidgets;
+
+  /// Adds debugging information to 'Timeline' events related to [Widget] builds.
+  late bool debugEnhanceBuildTimelineArguments;
+
+  /// Show banners for deprecated widgets.
+  late bool debugHighlightDeprecatedWidgets;
+
   Map<LogicalKeySet, Intent>? get shortcuts => _shortcuts ?? onShortcuts();
   Map<LogicalKeySet, Intent>? _shortcuts;
 
@@ -1045,12 +1142,14 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   String? onInitialRoute() => inInitialRoute != null ? inInitialRoute!() : null;
 
   /// Returns the 'Generate Routes' routine if any.
-  RouteFactory? onOnGenerateRoute() =>
-      inOnGenerateRoute != null ? inOnGenerateRoute!() : null;
+  Route<dynamic>? onOnGenerateRoute(RouteSettings settings) => null;
 
   /// Returns the 'Unknown Route' if any.
-  RouteFactory? onOnUnknownRoute() =>
-      inOnUnknownRoute != null ? inOnUnknownRoute!() : null;
+  Route<dynamic>? onOnUnknownRoute(RouteSettings settings) => null;
+
+  /// Called when a navigation event occurs
+  /// Return true if you deem this change is handled.
+  bool onOnNavigationNotification(NavigationNotification notification) => false;
 
   /// Returns a List of Navigation Observers if any.
   List<NavigatorObserver> onNavigatorObservers() => inNavigatorObservers != null
@@ -1060,8 +1159,8 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   /// Supply the appropriate List of 'observers' that are called
   /// when a route is changed in the Navigator.
   List<NavigatorObserver> _onNavigatorObservers() {
-    // Supply the StateX objects to observe the route changes
-    final observers = <NavigatorObserver>[_stateRouteObserver.routeObserver];
+    // Supply the StateX objects if any to observe the route changes
+    final observers = <NavigatorObserver>[_statesRouteObserver];
     // Observers from parameter?
     if (_navigatorObservers != null) {
       observers.addAll(_navigatorObservers!);
@@ -1075,13 +1174,13 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   }
 
   /// State object becomes a route observer.
-  bool subscribe(State state) => _stateRouteObserver.subscribe(state);
+  bool subscribe(State state) => _statesRouteObserver.subscribeState(state);
 
   /// No longer a route observer
-  bool unsubscribe(State state) => _stateRouteObserver.unsubscribe(state);
+  bool unsubscribe(State state) => _statesRouteObserver.unsubscribeState(state);
 
   /// Any and all StateX objects are all 'route' observers.
-  final StateRouteObserver _stateRouteObserver;
+  final StatesRouteObserver _statesRouteObserver;
 
   /// Should update the built-in InheritedWidget's dependencies
   bool onUpdateShouldNotify(covariant InheritedWidget oldWidget) {
@@ -1100,6 +1199,28 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   /// Returns the App's title if any.
   String onTitle() => inTitle != null ? inTitle!() : '';
+
+  Route<dynamic>? _onOnGenerateRoute(RouteSettings settings) {
+    Route<dynamic>? route;
+    route = _onGenerateRoute?.call(settings);
+    // Passed parameter takes precedence over the function below.
+    route ??= onOnGenerateRoute(settings);
+    return route;
+  }
+
+  Route<dynamic>? _onOnUnknownRoute(RouteSettings settings) {
+    Route<dynamic>? route;
+    route = _onUnknownRoute?.call(settings);
+    // Passed parameter takes precedence over the function below.
+    route ??= onOnUnknownRoute(settings);
+    return route;
+  }
+
+  bool _onOnNavigationNotification(NavigationNotification notification) {
+    final canHandlePop = _onNavigationNotification?.call(notification);
+    final handled = onOnNavigationNotification(notification);
+    return (canHandlePop ?? false) || handled;
+  }
 
   /// Returns the supplied title of the app.
   // Note OnGenerateTitle takes precedence over the title parameter in WidgetsAppState class
@@ -1269,12 +1390,6 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   /// Returns the initial Route if any.
   final String Function()? inInitialRoute;
-
-  /// Returns the 'Generate Routes' routine if any.
-  final RouteFactory Function()? inOnGenerateRoute;
-
-  /// Returns the 'Unknown Route' if any.
-  final RouteFactory Function()? inOnUnknownRoute;
 
   /// Returns a List of Navigation Observers if any.
   final List<NavigatorObserver> Function()? inNavigatorObservers;
@@ -1520,10 +1635,11 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   }
 }
 
-/// A State object the runs its built-in FuturBuilder with every setState()
+/// A State object the runs its built-in FutureBuilder with every setState()
 ///
 /// dartdoc:
 /// {@category StateX class}
+@Deprecated("Use StateX class with 'runAsync: true' instead")
 abstract class StateF<T extends StatefulWidget> extends StateX<T> {
   ///
   StateF({StateXController? controller})
@@ -1534,7 +1650,8 @@ abstract class StateF<T extends StatefulWidget> extends StateX<T> {
 ///
 /// dartdoc:
 /// {@category StateX class}
-class StateIn<T extends StatefulWidget> extends StateX<T> {
+@Deprecated("Use StateX class with 'useInherited: true' instead")
+abstract class StateIn<T extends StatefulWidget> extends StateX<T> {
   ///
   StateIn({StateXController? controller})
       : super(controller: controller, useInherited: true);
@@ -1547,28 +1664,91 @@ class StateIn<T extends StatefulWidget> extends StateX<T> {
 /// {@category StateX class}
 /// {@category Testing}
 class StateX<T extends StatefulWidget> extends s.StateX<T>
-    with NavigatorStateMethodsMixin, RxStates {
-  ///
-  StateX({super.controller, super.runAsync, super.useInherited});
+    with NavigatorStateMethodsMixin, RxStates, StateXRouteAware {
+  /// Default useInherited to false
+  StateX(
+      {super.controller, super.runAsync, bool? useInherited, bool? routeAware})
+      : routeAware = routeAware ?? false,
+        super(useInherited: useInherited ?? false);
 
   @override
   void initState() {
     super.initState();
-    _appState = App.appState;
+    _appSubscribe();
+    // Supply an identifier to the InheritedWidget
+    _key = ValueKey<StateX>(this as StateX);
   }
 
-  late AppState? _appState;
+  AppState? _appState;
 
-  /// Called by the built-in InheritedWidget
-  /// Only every called once and so use the state() or dependOnInheritedWidget()
-  /// functions to update particular parts of the returned interface.
+  late Key _key;
+
+  // Widget passed to the InheritedWidget.
+  Widget? _child;
+
+  /// A flag. Note if buildF() function was overridden or not.
   @override
-  Widget buildIn(BuildContext context) => builder(context);
+  bool get buildFOverridden => _buildFOverridden;
+  bool _buildFOverridden = true;
+
+  /// If you don't use it, use the buildAndroid() or buildiOS() function.
+  /// dartdoc:
+  /// {@category StateX class}
+  @override
+  Widget buildF(BuildContext context) {
+    //
+    _buildFOverridden = false;
+    //
+    if (!buildInOverridden) {
+      if (useInherited) {
+        _child ??= builder(context);
+      } else {
+        _child = builder(context);
+      }
+    } else {
+      bool firstPass;
+      if (_child == null) {
+        firstPass = true;
+      } else {
+        firstPass = false;
+      }
+      // First case: buildInOverridden is always true
+      _child ??= buildIn(context);
+
+      if (!buildInOverridden) {
+        if (useInherited) {
+          if (firstPass) {
+            _child = builder(context);
+          }
+        } else {
+          _child = builder(context);
+        }
+      }
+    }
+    // If buildIn() function is being used, always use InheritedWidget
+    return useInherited || buildInOverridden
+        ? s.StateXInheritedWidget(
+            key: _key,
+            state: this as StateX,
+            child: _child!,
+          )
+        : _child!;
+  }
 
   /// This function is wrapped in a Builder widget.
   /// If you don't use it, use the buildAndroid() or buildiOS() function.
-  Widget builder(BuildContext context) =>
-      App.useMaterial ? buildAndroid(context) : buildiOS(context);
+  Widget builder(BuildContext context) {
+    // Although buildAndroid() might be overridden
+    _builderOverridden = false;
+    return App.useMaterial ? buildAndroid(context) : buildiOS(context);
+  }
+
+  /// A flag. Note if builder() function was overridden or not.
+  bool get builderOverridden => _builderOverridden;
+  bool _builderOverridden = true;
+
+  /// A flag.Is this State aware of changes in route or not.
+  final bool routeAware;
 
   /// This is an optional function allowing you to make the distinction.
   /// Build the Android interface.
@@ -1586,26 +1766,97 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
 
   @override
   @mustCallSuper
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Subscribe this to be informed about changes to route.
-    _appState?.subscribe(this);
-  }
-
-  @override
-  @mustCallSuper
   void activate() {
     super.activate();
-    // Subscribe this to be informed about changes to route.
-    _appState?.subscribe(this);
+    _appSubscribe();
   }
 
   @override
   @mustCallSuper
   void deactivate() {
     super.deactivate();
-    // No longer informed about changes to its route.
-    _appState?.unsubscribe(this);
+    _appUnsubscribe();
+  }
+
+  /// Called when the State's InheritedWidget is called again
+  /// This 'widget function' will be called again.
+  @override
+  Widget state(WidgetBuilder? widgetFunc) {
+    final widget = super.state(widgetFunc);
+    assert(() {
+      _debugTestBuiltInInheritedWidget(
+          'Note, this state() function call will never work properly.');
+      return true;
+    }());
+    return widget;
+  }
+
+  ///
+  ///  Set the specified widget (through its context) as a dependent of the InheritedWidget
+  ///
+  ///  Return false if not configured to use the InheritedWidget
+  @override
+  bool dependOnInheritedWidget(BuildContext? context) {
+    final depend = super.dependOnInheritedWidget(context);
+    assert(() {
+      if (!depend) {
+        _debugTestBuiltInInheritedWidget(
+            'Note, this dependOnInheritedWidget() function call will never work properly.');
+      }
+      return true;
+    }());
+    return depend;
+  }
+
+  /// In harmony with Flutter's own API there's also a notifyClients() function
+  /// Rebuild the InheritedWidget of the 'closes' InheritedStateX object if any.
+  @override
+  bool notifyClients() {
+    final notify = super.notifyClients();
+    assert(() {
+      if (!notify) {
+        _debugTestBuiltInInheritedWidget(
+            'Note, this notifyClients() function call will never work properly.');
+      }
+      return true;
+    }());
+    return notify;
+  }
+
+  // Notify the class is under utilized. InheritedWidget is not fully used.
+  void _debugTestBuiltInInheritedWidget(String? line) {
+    //
+    if (buildInOverridden && !useInherited) {
+      debugPrint('▀▀▀▀▀ StateX Warning ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀');
+      if (line != null) {
+        debugPrint(line.trim());
+      }
+      debugPrint('The class, $this, uses the buildIn() function, '
+          "but its 'useInherited' parameter is not true.");
+      debugPrint('▀' * 40);
+    }
+  }
+
+  /// Make a reference to the App's State object
+  bool _appSubscribe() {
+    // Subscribe to a Navigator observer
+    if (routeAware) {
+      _appState ??= App.appState;
+    }
+    // Subscribe this to be informed about changes to route.
+    _appState?.subscribe(this);
+    return _appState != null;
+  }
+
+  /// Drop a reference to the App's State object
+  bool _appUnsubscribe() {
+    final unsubscribe = _appState != null;
+    if (unsubscribe) {
+      //// No longer informed about changes to its route.
+      _appState?.unsubscribe(this);
+      _appState = null;
+    }
+    return unsubscribe;
   }
 }
 

@@ -17,7 +17,7 @@ class ImageAPIStateX<T extends StatefulWidget> extends StateX<T>
     required this.uri,
     this.message,
     StateXController? controller,
-  }) : super(controller: controller) {
+  }) : super(controller: controller, runAsync: true) {
     //
     final id = add(ImageAPIController());
     // Retrieve the Controller by its unique id.
@@ -34,6 +34,11 @@ class ImageAPIStateX<T extends StatefulWidget> extends StateX<T>
 
   late ImageAPIController _con;
 
+  /// Place a breakpoint and see the process
+  @override
+  // ignore: unnecessary_overrides
+  Widget build(BuildContext context) => super.build(context);
+
   @override
   Widget buildAndroid(context) {
     controller?.dependOnInheritedWidget(context);
@@ -43,10 +48,6 @@ class ImageAPIStateX<T extends StatefulWidget> extends StateX<T>
       child: Card(child: _con.image ?? const SizedBox()),
     );
   }
-
-  /// Allow initAsync() to run repeatedly.
-  @override
-  Future<bool> runAsync() => initAsync();
 
   /// Supply an 'error handler' routine if something goes wrong
   /// in the corresponding initAsync() routine.

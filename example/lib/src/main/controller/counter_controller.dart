@@ -24,9 +24,9 @@ class CounterController extends AppController {
 
   @override
   void initState() {
-    super.initState();
     // Add this controller to the State object's lifecycle.
     wordPairsTimer.addState(state);
+    super.initState();
     if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: initState in $state');

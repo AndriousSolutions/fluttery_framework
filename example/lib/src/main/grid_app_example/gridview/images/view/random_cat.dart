@@ -21,11 +21,11 @@ class _RandomCatState extends ImageAPIStateX<RandomCat> {
   _RandomCatState()
       : super(
           controller: CatController(),
+          message: 'message',
           uri: Uri(
             scheme: 'https',
-            host: 'shibe.online',
-            path: 'api/cats',
+            host: 'api.sefinek.net',
+            path: 'api/v2/random/animal/cat',
           ),
-          message: 'file',
         );
 }

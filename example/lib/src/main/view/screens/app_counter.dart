@@ -2,6 +2,8 @@
 
 /// An absolute path is preferred but this source code is copied by other app.
 
+import 'dart:ui';
+
 import '/src/view.dart';
 
 import '/src/controller.dart';
@@ -19,6 +21,7 @@ class _CounterPageState extends StateX<CounterPage> {
       : super(
           controller: CounterController(),
           useInherited: CounterController().useInherited,
+          routeAware: true,
         ) {
     con = controller as CounterController;
   }
@@ -33,7 +36,6 @@ class _CounterPageState extends StateX<CounterPage> {
     // What happens when this command is uncommented?
 //    throw Exception('Throws an error to demonstrate error handling!');
     appCon = ExampleAppController();
-    con.timer.initTimer();
   }
 
   late ExampleAppController appCon;
@@ -256,4 +258,268 @@ class _CounterPageState extends StateX<CounterPage> {
   @override
   //ignore: unnecessary_overrides
   Widget buildF(BuildContext context) => super.buildF(context);
+
+  /// The framework calls this method whenever it removes this [StateX] object
+  /// from the tree.
+  @override
+  // ignore: unnecessary_overrides
+  void deactivate() {
+    super.deactivate();
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: deactivate in $this');
+    }
+  }
+
+  /// Called when this object is reinserted into the tree after having been
+  /// removed via [deactivate].
+  @override
+  // ignore: unnecessary_overrides
+  void activate() {
+    super.activate();
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: activate in $this');
+    }
+  }
+
+  /// The framework calls this method when this [StateX] object will never
+  /// build again.
+  /// Note: YOU WILL HAVE NO IDEA WHEN THIS WILL RUN in the Framework.
+  @override
+  // ignore: unnecessary_overrides
+  void dispose() {
+    super.dispose();
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: dispose in $this');
+    }
+  }
+
+  /// Override this method to respond when the [StatefulWidget] is recreated.
+  @override
+  // ignore: unnecessary_overrides
+  void didUpdateWidget(StatefulWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didUpdateWidget in $this');
+    }
+  }
+
+  /// Called when immediately after [initState].
+  /// Otherwise called only if a dependency of an [InheritedWidget].
+  @override
+  // ignore: unnecessary_overrides
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangeDependencies in $this');
+    }
+  }
+
+  /// Called whenever the application is reassembled during debugging, for
+  /// example during hot reload.
+  @override
+  // ignore: unnecessary_overrides
+  void reassemble() {
+    super.reassemble();
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: reassemble in $this');
+    }
+  }
+
+  /// Called when the host tells the application to push a new
+  /// [RouteInformation] and a restoration state onto the router.
+  @override
+  Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didPushRouteInformation in $this');
+    }
+    return super.didPushRouteInformation(routeInformation);
+  }
+
+  /// Called when this State is *first* added to as a Route observer?!
+  @override
+  void didPush() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didPush in $this');
+    }
+    super.didPush();
+  }
+
+  /// New route has been pushed, and this State object's route is no longer current.
+  @override
+  void didPushNext() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didPushNext in $this');
+    }
+    super.didPushNext();
+  }
+
+  /// Called when this State is popped off a route.
+  @override
+  void didPop() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didPop in $this');
+    }
+    super.didPop();
+  }
+
+  /// The top route has been popped off, and this route shows up.
+  @override
+  void didPopNext() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didPopNext in $this');
+    }
+    super.didPopNext();
+  }
+
+  /// Called when the application's dimensions change. For example,
+  /// when a phone is rotated.
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangeMetrics in $this');
+    }
+  }
+
+  /// Called when the platform's text scale factor changes.
+  @override
+  void didChangeTextScaleFactor() {
+    super.didChangeTextScaleFactor();
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangeTextScaleFactor in $this');
+    }
+  }
+
+  /// Brightness changed.
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangePlatformBrightness in $this');
+    }
+  }
+
+  /// Called when the system tells the app that the user's locale has changed.
+  @override
+  void didChangeLocales(List<Locale>? locales) {
+    super.didChangeLocales(locales);
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangeLocales in $this');
+    }
+  }
+
+  /// Called when the system puts the app in the background or returns the app to the foreground.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangeAppLifecycleState in $this');
+    }
+
+    super.didChangeAppLifecycleState(state);
+
+    /// Passing these possible values:
+    /// AppLifecycleState.detached
+    /// AppLifecycleState.resumed
+    /// AppLifecycleState.inactive (may be paused at any time)
+    /// AppLifecycleState.hidden
+    /// AppLifecycleState.paused (may enter the suspending state at any time)
+  }
+
+  /// The application is visible and responding to user input.
+  @override
+  void resumedLifecycleState() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: resumedLifecycleState in $this');
+    }
+  }
+
+  /// The application is in an inactive state and is not receiving user input.
+  @override
+  void inactiveLifecycleState() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: inactiveLifecycleState in $this');
+    }
+  }
+
+  /// All views of an application are hidden, either because the application is
+  /// about to be paused (on iOS and Android), or because it has been minimized
+  /// or placed on a desktop that is no longer visible (on non-web desktop), or
+  /// is running in a window or tab that is no longer visible (on the web).
+  @override
+  void hiddenLifecycleState() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: hiddenLifecycleState in $this');
+    }
+  }
+
+  /// The application is not currently visible to the user, not responding to
+  /// user input, and running in the background.
+  @override
+  void pausedLifecycleState() {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: pausedLifecycleState in $this');
+    }
+  }
+
+  /// Called when the system is running low on memory.
+  @override
+  void didHaveMemoryPressure() {
+    super.didHaveMemoryPressure();
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didHaveMemoryPressure in $this');
+    }
+  }
+
+  /// Called when a request is received from the system to exit the application.
+  @override
+  Future<AppExitResponse> didRequestAppExit() async {
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didRequestAppExit in $this');
+    }
+    super.didRequestAppExit();
+    return AppExitResponse.exit;
+  }
+
+  /// Called when the system changes the set of active accessibility features.
+  @override
+  void didChangeAccessibilityFeatures() {
+    super.didChangeAccessibilityFeatures();
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: didChangeAccessibilityFeatures in $this');
+    }
+  }
 }

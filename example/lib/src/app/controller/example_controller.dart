@@ -9,12 +9,8 @@ import '/src/view.dart';
 ///
 class ExampleAppController extends AppController {
   factory ExampleAppController() => _this ??= ExampleAppController._();
-  ExampleAppController._()
-      : wordPairsTimer = WordPairsController(),
-        super();
+  ExampleAppController._() : super();
   static ExampleAppController? _this;
-
-  final WordPairsController wordPairsTimer;
 
   /// Store the boolean allowing for errors or not.
   bool allowErrors = false;
@@ -167,12 +163,6 @@ class ExampleAppController extends AppController {
       press02: () => App.changeLocale(appLocale),
       switchButtons: Settings.getLeftHanded(),
     ).show();
-
-    // If the current app is the 'counter' app
-    if (counterApp) {
-      // Has to be initialized again for some reason??
-      initTimer();
-    }
   }
 
   /// Change the app's colour theme
@@ -189,7 +179,6 @@ class ExampleAppController extends AppController {
         App.setThemeData(swatch: value);
         App.setState(() {});
       },
-//      alignment: WrapAlignment.center,
     );
   }
 
@@ -198,17 +187,6 @@ class ExampleAppController extends AppController {
         applicationName: App.appState?.title ?? '',
         applicationVersion: 'version: ${App.version} build: ${App.buildNumber}',
       );
-
-  // /// Retrieve the app's own controller.
-  // TemplateController get appController =>
-  //     _appController ??= App.vw!.con as TemplateController;
-  // TemplateController? _appController;
-
-  /// Start up the timer
-  void initTimer() => wordPairsTimer.initTimer();
-
-  /// Cancel the timer
-  void cancelTimer() => wordPairsTimer.cancelTimer();
 
   /// Supply the app's popupmenu
   /// an immutable menu

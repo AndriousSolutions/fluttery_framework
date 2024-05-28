@@ -34,31 +34,43 @@ void testAppView(WidgetTester tester) {
 
   App.navigatorKey;
 
+  // ignore: unused_local_variable
   GlobalKey<ScaffoldMessengerState>? key = App.scaffoldMessengerKey;
 
+  // ignore: unused_local_variable
   Map<String, WidgetBuilder>? routes = App.routes;
 
+  // ignore: unused_local_variable
   String? initialRoute = App.initialRoute;
 
+  // ignore: unused_local_variable
   RouteFactory? onGenerateRoute = App.onGenerateRoute;
 
+  // ignore: unused_local_variable
   RouteFactory? onUnknownRoute = App.onUnknownRoute;
 
+  // ignore: unused_local_variable
   List<NavigatorObserver>? navigatorObservers = App.navigatorObservers;
 
+  // ignore: unused_local_variable
   TransitionBuilder? builder = App.builder;
 
+  // ignore: unused_local_variable
   String? title = App.title;
 
+  // ignore: unused_local_variable
   GenerateAppTitle? onGenerateTitle = App.onGenerateTitle;
 
   App.getMaterialColor(Colors.red);
 
+  // ignore: unused_local_variable
   Color? color = App.color;
 
+  // ignore: unused_local_variable
   Iterable<LocalizationsDelegate<dynamic>>? delegates =
       App.localizationsDelegates;
 
+  // ignore: unused_local_variable
   LocaleResolutionCallback? callback = App.localeResolutionCallback;
 
   bool? debugShowMaterialGrid = App.debugShowMaterialGrid;

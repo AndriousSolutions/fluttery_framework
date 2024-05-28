@@ -18,10 +18,10 @@ class InheritBird extends StatefulWidget {
 }
 
 /// Supply an InheritedWidget to a StateX object, InheritedStateX
-class _InheritBirdState extends StateIn<InheritBird> {
-  _InheritBirdState() : super(controller: BirdController());
+class _InheritBirdState extends StateX<InheritBird> {
+  _InheritBirdState() : super(controller: BirdController(), useInherited: true);
 
-  /// Use builder() or buildIn() instead of build() to call the built-in InheritedWidget
+  /// Use builder() to call buildAndroid() and buildiOS() with the built-in InheritedWidget
   @override
   Widget builder(BuildContext context) => widget.child!;
 }

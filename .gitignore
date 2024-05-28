@@ -122,3 +122,6 @@ flutter_assets/
 ServiceDefinitions.json
 GeneratedPluginRegistrant.*
 Info.plist
+
+# Ignore Flutter app's install file
+.install

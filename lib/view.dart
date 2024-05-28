@@ -44,7 +44,7 @@ export '/src/view/utils/error_handler.dart';
 //    show AppErrorHandler, displayErrorWidgetChild, ReportErrorHandler;
 
 /// Routing
-export '/src/view/utils/state_route_observer.dart';
+export '/src/view/utils/app_route_observer.dart';
 
 /// Navigation
 /// Hide its BuildContext extension. It's been replaced.

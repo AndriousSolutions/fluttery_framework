@@ -43,7 +43,7 @@ class HomeController extends StateXController {
             continue;
           } else {
             dog++;
-            images.add(const RandomDog());
+            images.add(RandomDog(key: Key('dog$dog')));
           }
           break;
         case 2:
@@ -52,7 +52,7 @@ class HomeController extends StateXController {
             continue;
           } else {
             cat++;
-            images.add(const RandomCat());
+            images.add(RandomCat(key: Key('cat$cat')));
           }
           break;
         case 3:
@@ -61,7 +61,7 @@ class HomeController extends StateXController {
             continue;
           } else {
             fox++;
-            images.add(const RandomFox());
+            images.add(RandomFox(key: Key('fox$fox')));
           }
           break;
         case 4:
@@ -70,7 +70,7 @@ class HomeController extends StateXController {
             continue;
           } else {
             bird++;
-            images.add(const RandomBird());
+            images.add(RandomBird(key: Key('bird$bird')));
           }
           break;
       }

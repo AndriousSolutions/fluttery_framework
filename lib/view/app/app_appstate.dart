@@ -33,84 +33,34 @@ extension AppStateExtension on AppObject {
   /// Return the navigator key used by the App's View.
   GlobalKey<ScaffoldMessengerState>? get scaffoldMessengerKey =>
       appState?.scaffoldMessengerKey;
-  // set scaffoldMessengerKey(GlobalKey<ScaffoldMessengerState>? v) {
-  //   if (v != null) {
-  //     appState?.scaffoldMessengerKey = v;
-  //   }
-  // }
 
   /// Returns the routes used by the App's View.
   Map<String, WidgetBuilder>? get routes => appState?.routes;
-  // set routes(Map<String, WidgetBuilder>? v) {
-  //   if (v != null) {
-  //     appState?.routes = v;
-  //   }
-  // }
 
   /// Returns to the initial route used by the app.
   String? get initialRoute => appState?.initialRoute;
-  // set initialRoute(String? v) {
-  //   if (v != null) {
-  //     appState?.initialRoute = v;
-  //   }
-  // }
 
   /// The route generator used when the app is navigated to a named route.
   RouteFactory? get onGenerateRoute => appState?.onGenerateRoute;
-  // set onGenerateRoute(RouteFactory? v) {
-  //   if (v != null) {
-  //     appState?.onGenerateRoute = v;
-  //   }
-  // }
 
   /// Called when [onGenerateRoute] fails except for the [initialRoute].
   RouteFactory? get onUnknownRoute => appState?.onUnknownRoute;
-  // set onUnknownRoute(RouteFactory? v) {
-  //   if (v != null) {
-  //     appState?.onUnknownRoute = v;
-  //   }
-  // }
 
   /// The list of observers for the [Navigator] for this app.
   List<NavigatorObserver>? get navigatorObservers =>
       appState?.navigatorObservers;
-  // set navigatorObservers(List<NavigatorObserver>? v) {
-  //   if (v != null) {
-  //     appState?.navigatorObservers = v;
-  //   }
-  // }
 
   /// if neither [routes], or [onGenerateRoute] was passed.
   TransitionBuilder? get builder => appState?.builder;
-  // set builder(TransitionBuilder? v) {
-  //   if (v != null) {
-  //     appState?.builder = v;
-  //   }
-  // }
 
   /// Returns the title for the App's View.
   String get title => appState?.title ?? '';
-  // set title(String? v) {
-  //   if (v != null) {
-  //     appState?.title = v;
-  //   }
-  // }
 
   /// Routine used to generate the App's title.
   GenerateAppTitle? get onGenerateTitle => appState?.onGenerateTitle;
-  // set onGenerateTitle(GenerateAppTitle? v) {
-  //   if (v != null) {
-  //     appState?.onGenerateTitle = v;
-  //   }
-  // }
 
   /// Returns the Color passed to the app.
   Color? get color => appState?.color;
-  // set color(Color? v) {
-  //   if (v != null) {
-  //     appState?.color = v;
-  //   }
-  // }
 
   /// Returns the device's possibly ever-changing Locale.
   /// Notice how the AppState's locale is always the determined locale.
@@ -134,37 +84,15 @@ extension AppStateExtension on AppObject {
   /// Returns the App's current localizations delegates.
   Iterable<LocalizationsDelegate<dynamic>>? get localizationsDelegates =>
       appState?.localizationsDelegates;
-  // set localizationsDelegates(Iterable<LocalizationsDelegate<dynamic>>? v) {
-  //   if (v != null) {
-  //     appState?.localizationsDelegates = v;
-  //   }
-  // }
 
   /// Resolves the app's locale.
   LocaleResolutionCallback? get localeResolutionCallback =>
       appState?.localeResolutionCallback;
-  // set localeResolutionCallback(LocaleResolutionCallback? v) {
-  //   if (v != null) {
-  //     appState?.localeResolutionCallback = v;
-  //   }
-  // }
 
   /// getter, supportedLocales, returns a List of the App's locales.
   // More flexible than an iteration.
   List<Locale>? get supportedLocales =>
       appState?.supportedLocales ?? L10n.supportedLocales;
-  // set supportedLocales(List<Locale>? locales) {
-  //   if (allowNewLocales && locales != null) {
-  //     if (L10n.supportedLocales.isEmpty) {
-  //       L10n.supportedLocales = appState?.supportedLocales ??= locales;
-  //     } else {
-  //       final appLocales = appState?.supportedLocales ?? [];
-  //       if (appLocales.isEmpty) {
-  //         appState?.supportedLocales?.addAll(L10n.supportedLocales);
-  //       }
-  //     }
-  //   }
-  // }
 
   /// Determine the locale used by the Mobile phone.
   Locale? _resolveLocales(

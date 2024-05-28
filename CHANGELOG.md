@@ -1,4 +1,28 @@
 
+## 4.21.0
+May 27, 2024
+- Updated sdk: '>=3.0.0 <4.0.0'
+- *Deprecated* StateIn() and StateF() class are deprecated.
+  Use the StateX parameters, *runAsync* and *useInherited*, instead.
+- class StatesRouteObserver extends RouteObserver<Route<dynamic>>
+- import 'package:flutter/widgets.dart' for the following debug tools:
+  debugPrintRebuildDirtyWidgets
+  debugOnRebuildDirtyWidget
+  debugPrintBuildScope
+  debugPrintScheduleBuildForStacks
+  debugPrintGlobalKeyedWidgetLifecycle
+  debugProfileBuildsEnabled
+  debugProfileBuildsEnabledUserWidgets
+  debugEnhanceBuildTimelineArguments
+  debugHighlightDeprecatedWidgets
+- Removed the parameters, inOnGenerateRoute and inOnUnknownRoute, in app_state.dart
+  Use parameter onGenerateRoute or method onOnGenerateRoute() equivalent instead.
+- class StateX():super(useInherited: useInherited ?? false);
+  Use of Built-in InheritedWidget defaults to false
+- new getter, builderOverridden, in StateX class.
+- Tests StateX class if uses the buildIn() function but its 'useInherited' parameter is not true.
+- Cat and Bird images now come from https:\\api.sefinek.net
+
 ## 4.20.0
 April 23, 2024
 - showDialogBox() in dialog_box.dart

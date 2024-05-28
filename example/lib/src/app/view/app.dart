@@ -20,11 +20,25 @@ class _ExampleAppState extends AppState {
   _ExampleAppState()
       : super(
           controller: ExampleAppController(),
-          controllers: [CounterController()],
           inTitle: () => 'Demo App',
-          inDebugShowCheckedModeBanner: () => false,
+          debugShowCheckedModeBanner: false,
           switchUI: Prefs.getBool('switchUI'),
           useRouterConfig: false,
+          onNavigationNotification: (notification) {
+            if (kDebugMode) {
+              //ignore: avoid_print
+              print('############ Event: onNavigationNotification()');
+            }
+            return notification.canHandlePop;
+          },
+          onUnknownRoute: (settings) {
+            Route<dynamic>? route;
+            if (kDebugMode) {
+              //ignore: avoid_print
+              print('############ Event: onUnknownRoute()');
+            }
+            return route;
+          },
           inSupportedLocales: () {
             /// The app's translations
             L10n.translations = {
@@ -52,6 +66,15 @@ class _ExampleAppState extends AppState {
 
   @override
   Widget onHome() => (controller as ExampleAppController).onHome();
+
+  @override
+  onOnNavigationNotification(notification) {
+    if (kDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: Navigation change.');
+    }
+    return notification.canHandlePop;
+  }
 
   @override
   RouterConfig<Object>? onRouterConfig() => GoRouter(

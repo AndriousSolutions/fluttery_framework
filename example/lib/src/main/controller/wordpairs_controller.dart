@@ -10,11 +10,9 @@ class WordPairsController extends StateXController {
   factory WordPairsController([StateX? state]) =>
       _this ??= WordPairsController._(state);
   WordPairsController._(StateX? state)
-      : timer = WordPairsTimer(seconds: 2),
-        model = WordPairsModel(),
+      : model = WordPairsModel(),
         super(state);
   static WordPairsController? _this;
-  final WordPairsTimer timer;
   final WordPairsModel model;
 
   /// The framework will call this method exactly once.
@@ -27,14 +25,6 @@ class WordPairsController extends StateXController {
       print('############ Event: initState in $state');
     }
   }
-
-  /// Start up the timer.
-  void initTimer() => timer.initTimer();
-
-  /// Cancel the timer
-  void cancelTimer() => timer.timer?.cancel();
-
-  Widget get wordPair => timer.wordPair;
 
   void build(int i) => model.build(i);
 

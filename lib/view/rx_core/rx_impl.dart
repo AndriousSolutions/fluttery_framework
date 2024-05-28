@@ -51,7 +51,7 @@ mixin RxStates on State {
       ]);
     } else {
       switch (T) {
-        case Rx<dynamic>:
+        case const (Rx<dynamic>):
           rx = watch((obj as Rx<dynamic>).value);
           break;
         case String:

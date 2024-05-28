@@ -42,7 +42,7 @@ class WordPairsTimer extends StateXController {
     super.initState();
 
     /// Initialize the timer.
-    initTimer();
+    _initTimer();
 
     model.addState(state);
   }
@@ -50,10 +50,11 @@ class WordPairsTimer extends StateXController {
   /// In case this State object is unmounted from the widget tree.
   @override
   void deactivate() {
-    cancelTimer();
+    // Cancel the timer
+    _cancelTimer();
   }
 
-  /// IMPORTANT dispose() runs late and cancels the *new* timer
+  /// IMPORTANT dispose() runs late and will cancel the *new* timer
   /// deactivate() is more reliable.
   // @override
   // void dispose() {
@@ -62,14 +63,9 @@ class WordPairsTimer extends StateXController {
 //  //   super.dispose();
   // }
 
-  @override
-  Future<bool> didPopRoute() {
-    cancelTimer();
-    return super.didPopRoute();
-  }
-
   /// Called when the system puts the app in the background or returns
   /// the app to the foreground.
+  // Alternatively, use the function, pausedLifecycleState()
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     //
@@ -77,15 +73,36 @@ class WordPairsTimer extends StateXController {
       /// AppLifecycleState.paused (may enter the suspending state at any time)
       /// AppLifecycleState.inactive (may be paused at any time)
       /// AppLifecycleState.suspending (Android only)
-      cancelTimer();
+      _cancelTimer();
     }
   }
 
   /// Called when app returns from the background
   @override
   void resumedLifecycleState() {
-    /// Create the Timer again.
-    initTimer();
+    // Create the Timer again.
+    _initTimer();
+  }
+
+  /// The application is running in the background.
+  @override
+  void pausedLifecycleState() {
+    // Cancel the timer
+    _cancelTimer();
+  }
+
+  /// The next route has been popped off, and back to this route.
+  @override
+  void didPopNext() {
+    /// Initialize the timer.
+    _initTimer();
+  }
+
+  /// The next route has been pushed
+  @override
+  void didPushNext() {
+    // Cancel the timer
+    _cancelTimer();
   }
 
   /// If the value of the object, obj, changes, this builder() is called again
@@ -132,7 +149,7 @@ class WordPairsTimer extends StateXController {
     } catch (ex) {
       /// Stop the timer.
       /// Something is not working. Don't have the timer repeat it over and over.
-      cancelTimer();
+      _cancelTimer();
 
       // Rethrow the error so to get processed by the App's error handler.
       rethrow;
@@ -152,22 +169,22 @@ class WordPairsTimer extends StateXController {
     return suggestions[index];
   }
 
-  bool _initTimer = false;
+  bool _timerInit = false;
 
   /// Cancel the timer
-  void cancelTimer() {
+  void _cancelTimer() {
     timer?.cancel();
-    _initTimer = false;
+    _timerInit = false;
   }
 
   /// Create a Timer to run periodically.
-  void initTimer() {
+  void _initTimer() {
     // Initialize once.
-    if (_initTimer) {
+    if (_timerInit) {
       return;
     }
 
-    _initTimer = true;
+    _timerInit = true;
 
     Duration duration;
     void Function()? callback;

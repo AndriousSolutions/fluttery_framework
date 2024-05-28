@@ -257,7 +257,6 @@ class Controller extends StateXController {
       //ignore: avoid_print
       print('############ Event: didPop in $state');
     }
-    setState(() {});
   }
 
   /// New route has been pushed, and this route is no longer visible.
@@ -267,7 +266,6 @@ class Controller extends StateXController {
       //ignore: avoid_print
       print('############ Event: didPushNext in $state');
     }
-    setState(() {});
   }
 
   /// Called when the application's dimensions change. For example,
