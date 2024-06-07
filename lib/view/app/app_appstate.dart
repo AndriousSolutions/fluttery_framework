@@ -51,7 +51,7 @@ extension AppStateExtension on AppObject {
       appState?.navigatorObservers;
 
   /// if neither [routes], or [onGenerateRoute] was passed.
-  TransitionBuilder? get builder => appState?.builder;
+  TransitionBuilder? get builder => appState?.transitBuilder;
 
   /// Returns the title for the App's View.
   String get title => appState?.title ?? '';

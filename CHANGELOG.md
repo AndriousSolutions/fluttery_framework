@@ -1,4 +1,9 @@
 
+## 4.22.0
+June 05, 2024
+- Use buildIn() to work with the built-in InheritedWidget like 'useInherited: true'
+- getter builder renamed transitBuilder
+
 ## 4.21.0
 May 27, 2024
 - Updated sdk: '>=3.0.0 <4.0.0'

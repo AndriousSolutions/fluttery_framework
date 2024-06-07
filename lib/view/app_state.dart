@@ -9,8 +9,7 @@
 
 import '/controller.dart' show AppController, StateXController;
 
-import 'package:state_extended/state_extended.dart' as s
-    show StateX, StateXInheritedWidget;
+import 'package:state_extended/state_extended.dart' as s show StateX;
 
 import '/view.dart';
 
@@ -197,7 +196,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     _onUnknownRoute = onUnknownRoute;
     _onNavigationNotification = onNavigationNotification;
     _navigatorObservers = navigatorObservers;
-    _builder = builder;
+    _transitBuilder = builder;
     _onGenerateTitle = onGenerateTitle;
     _color = color;
     _theme = theme;
@@ -452,7 +451,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             onUnknownRoute: onUnknownRoute,
             onNavigationNotification: onNavigationNotification,
             navigatorObservers: _onNavigatorObservers(),
-            builder: builder,
+            builder: transitBuilder,
 // not needed  title: ,  // Used instead in _onOnGenerateTitle()
             onGenerateTitle: onGenerateTitle,
             color: color,
@@ -483,7 +482,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             backButtonDispatcher: _backButtonDispatcher,
             routerConfig: routerConfig,
             theme: _setiOSThemeData(context),
-            builder: builder,
+            builder: transitBuilder,
 // not needed          title: , // Used instead in _onOnGenerateTitle()
             onGenerateTitle: onGenerateTitle,
             onNavigationNotification: onNavigationNotification,
@@ -522,7 +521,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             onUnknownRoute: onUnknownRoute,
             onNavigationNotification: onNavigationNotification,
             navigatorObservers: _onNavigatorObservers(),
-            builder: builder,
+            builder: transitBuilder,
 // not needed          title: , // Used instead in _onOnGenerateTitle()
             onGenerateTitle: onGenerateTitle,
             color: color,
@@ -561,7 +560,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             routerDelegate: _routerDelegate,
             routerConfig: routerConfig,
             backButtonDispatcher: _backButtonDispatcher,
-            builder: builder,
+            builder: transitBuilder,
 // not needed          title: , // Used instead in _onOnGenerateTitle()
             onGenerateTitle: onGenerateTitle,
             onNavigationNotification: onNavigationNotification,
@@ -897,8 +896,8 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   List<NavigatorObserver>? get navigatorObservers => _onNavigatorObservers();
   List<NavigatorObserver>? _navigatorObservers;
 
-  TransitionBuilder? get builder => _builder ?? onBuilder();
-  TransitionBuilder? _builder;
+  TransitionBuilder? get transitBuilder => _transitBuilder ?? onBuilder();
+  TransitionBuilder? _transitBuilder;
 
   String get title => _appTitle;
   String _appTitle = ''; // actual title
@@ -1667,85 +1666,22 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
     with NavigatorStateMethodsMixin, RxStates, StateXRouteAware {
   /// Default useInherited to false
   StateX(
-      {super.controller, super.runAsync, bool? useInherited, bool? routeAware})
-      : routeAware = routeAware ?? false,
-        super(useInherited: useInherited ?? false);
+      {super.controller, super.runAsync, super.useInherited, bool? routeAware})
+      : routeAware = routeAware ?? false;
 
   @override
   void initState() {
     super.initState();
     _appSubscribe();
-    // Supply an identifier to the InheritedWidget
-    _key = ValueKey<StateX>(this as StateX);
   }
 
   AppState? _appState;
 
-  late Key _key;
-
-  // Widget passed to the InheritedWidget.
-  Widget? _child;
-
-  /// A flag. Note if buildF() function was overridden or not.
-  @override
-  bool get buildFOverridden => _buildFOverridden;
-  bool _buildFOverridden = true;
-
-  /// If you don't use it, use the buildAndroid() or buildiOS() function.
-  /// dartdoc:
-  /// {@category StateX class}
-  @override
-  Widget buildF(BuildContext context) {
-    //
-    _buildFOverridden = false;
-    //
-    if (!buildInOverridden) {
-      if (useInherited) {
-        _child ??= builder(context);
-      } else {
-        _child = builder(context);
-      }
-    } else {
-      bool firstPass;
-      if (_child == null) {
-        firstPass = true;
-      } else {
-        firstPass = false;
-      }
-      // First case: buildInOverridden is always true
-      _child ??= buildIn(context);
-
-      if (!buildInOverridden) {
-        if (useInherited) {
-          if (firstPass) {
-            _child = builder(context);
-          }
-        } else {
-          _child = builder(context);
-        }
-      }
-    }
-    // If buildIn() function is being used, always use InheritedWidget
-    return useInherited || buildInOverridden
-        ? s.StateXInheritedWidget(
-            key: _key,
-            state: this as StateX,
-            child: _child!,
-          )
-        : _child!;
-  }
-
   /// This function is wrapped in a Builder widget.
   /// If you don't use it, use the buildAndroid() or buildiOS() function.
-  Widget builder(BuildContext context) {
-    // Although buildAndroid() might be overridden
-    _builderOverridden = false;
-    return App.useMaterial ? buildAndroid(context) : buildiOS(context);
-  }
-
-  /// A flag. Note if builder() function was overridden or not.
-  bool get builderOverridden => _builderOverridden;
-  bool _builderOverridden = true;
+  @override
+  Widget builder(BuildContext context) =>
+      App.useMaterial ? buildAndroid(context) : buildiOS(context);
 
   /// A flag.Is this State aware of changes in route or not.
   final bool routeAware;
@@ -1776,65 +1712,6 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
   void deactivate() {
     super.deactivate();
     _appUnsubscribe();
-  }
-
-  /// Called when the State's InheritedWidget is called again
-  /// This 'widget function' will be called again.
-  @override
-  Widget state(WidgetBuilder? widgetFunc) {
-    final widget = super.state(widgetFunc);
-    assert(() {
-      _debugTestBuiltInInheritedWidget(
-          'Note, this state() function call will never work properly.');
-      return true;
-    }());
-    return widget;
-  }
-
-  ///
-  ///  Set the specified widget (through its context) as a dependent of the InheritedWidget
-  ///
-  ///  Return false if not configured to use the InheritedWidget
-  @override
-  bool dependOnInheritedWidget(BuildContext? context) {
-    final depend = super.dependOnInheritedWidget(context);
-    assert(() {
-      if (!depend) {
-        _debugTestBuiltInInheritedWidget(
-            'Note, this dependOnInheritedWidget() function call will never work properly.');
-      }
-      return true;
-    }());
-    return depend;
-  }
-
-  /// In harmony with Flutter's own API there's also a notifyClients() function
-  /// Rebuild the InheritedWidget of the 'closes' InheritedStateX object if any.
-  @override
-  bool notifyClients() {
-    final notify = super.notifyClients();
-    assert(() {
-      if (!notify) {
-        _debugTestBuiltInInheritedWidget(
-            'Note, this notifyClients() function call will never work properly.');
-      }
-      return true;
-    }());
-    return notify;
-  }
-
-  // Notify the class is under utilized. InheritedWidget is not fully used.
-  void _debugTestBuiltInInheritedWidget(String? line) {
-    //
-    if (buildInOverridden && !useInherited) {
-      debugPrint('▀▀▀▀▀ StateX Warning ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀');
-      if (line != null) {
-        debugPrint(line.trim());
-      }
-      debugPrint('The class, $this, uses the buildIn() function, '
-          "but its 'useInherited' parameter is not true.");
-      debugPrint('▀' * 40);
-    }
   }
 
   /// Make a reference to the App's State object
