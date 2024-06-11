@@ -1,4 +1,13 @@
 
+## 4.23.0
+- connectivity_plus: ^5.0.0 to ^6.0.0
+  StreamSubscription<ConnectivityResult>? _connectivitySubscription to
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscriptionList
+- device_info_plus: ^9.0.0 to ^10.0.0
+- go_router: ^13.0.0 to ^14.0.0
+- package_info_plus: ^5.0.0 to ^8.0.0
+- flutter_lints: ^3.0.0 to ^4.0.0
+
 ## 4.22.0
 June 05, 2024
 - Use buildIn() to work with the built-in InheritedWidget like 'useInherited: true'

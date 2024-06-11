@@ -4,7 +4,7 @@ homepage: https://www.andrioussolutions.com
 repository: https://github.com/AndriousSolutions/fluttery_framework
 issue_tracker: https://github.com/AndriousSolutions/fluttery_framework/issues?q=is%3Aissue+is%3Aopen
 
-version: 4.22.0
+version: 4.23.0
 
 environment:
 #  sdk: '>=2.19.0 <4.0.0'
@@ -12,10 +12,10 @@ environment:
 
 dependencies:
   # https://pub.dartlang.org/packages/connectivity_plus
-  connectivity_plus: ^5.0.0
+  connectivity_plus: ^6.0.0
 
   # https://pub.dev/packages/device_info_plus
-  device_info_plus: ^9.0.0
+  device_info_plus: ^10.0.0
 
   flutter:
     sdk: flutter
@@ -31,7 +31,7 @@ dependencies:
     sdk: flutter
 
   # https://pub.dev/packages/go_router/
-  go_router: ^13.0.0
+  go_router: ^14.0.0
 
   # https://pub.dev/packages/http/
   http: ^1.0.0
@@ -41,7 +41,7 @@ dependencies:
 #        path: ../../packages/l10n_translator
 
   # https://pub.dev/packages/package_info_plus
-  package_info_plus: ^5.0.0
+  package_info_plus: ^8.0.0
 
   # https://pub.dev/packages/path_provider
   path_provider: ^2.0.0
@@ -82,7 +82,7 @@ dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml`
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
   # Supply the example app for testing.
   fluttery_framework_example:

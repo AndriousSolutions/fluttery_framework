@@ -72,8 +72,8 @@ class AppObject
   /// Dispose the App properties.
   @override
   void dispose() {
-    _connectivitySubscription?.cancel();
-    _connectivitySubscription = null;
+    _connectivitySubscriptionList?.cancel();
+    _connectivitySubscriptionList = null;
     _appState = null;
     // Restore the original error handling.
     _errorHandler?.dispose();
@@ -354,7 +354,7 @@ class AppObject
   /// Determine the connectivity.
   final _connectivity = Connectivity();
 
-  StreamSubscription<ConnectivityResult>? _connectivitySubscription;
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscriptionList;
 
   /// Returns the connection status of the device.
   String? get connectivity => _connectivityStatus;
@@ -431,11 +431,13 @@ class AppObject
   /// Internal Initialization routines.
   Future<void> initInternal() async {
     //
-    _connectivitySubscription ??=
-        _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
-      for (final listener in _listeners) {
-        listener.onConnectivityChanged(result);
-      }
+    _connectivitySubscriptionList ??=
+        _connectivity.onConnectivityChanged.listen((connects) {
+      connects.map((result) {
+        for (final listener in _listeners) {
+          listener.onConnectivityChanged(result);
+        }
+      });
     });
 
     await _initConnectivity().then((String status) {
