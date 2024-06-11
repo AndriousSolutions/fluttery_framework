@@ -444,7 +444,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           app = CupertinoApp(
             key: key,
             navigatorKey: App.navigatorKey,
-            theme: _setiOSThemeData(context),
+            theme: setiOSThemeData(context),
             routes: routes,
             initialRoute: initialRoute,
             onGenerateRoute: onGenerateRoute,
@@ -481,7 +481,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             routerDelegate: _routerDelegate,
             backButtonDispatcher: _backButtonDispatcher,
             routerConfig: routerConfig,
-            theme: _setiOSThemeData(context),
+            theme: setiOSThemeData(context),
             builder: transitBuilder,
 // not needed          title: , // Used instead in _onOnGenerateTitle()
             onGenerateTitle: onGenerateTitle,
@@ -603,7 +603,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       onUpdateShouldNotify(oldWidget);
 
   /// Assigning the Cupertino theme
-  CupertinoThemeData? _setiOSThemeData(BuildContext context) {
+  CupertinoThemeData? setiOSThemeData(BuildContext context) {
     // Retain the original theme
     App.baseiOSTheme = CupertinoTheme.of(context);
 

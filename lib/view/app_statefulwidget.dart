@@ -130,6 +130,7 @@ class _StateApp extends State<AppStatefulWidget> {
 
       /// Finalize the app's theme if need be.
       _appState?.setThemeData(context);
+      _appState?.setiOSThemeData(context);
 
       // Supply the state object to the App object.
       v.App.appState = _appState;

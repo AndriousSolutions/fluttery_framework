@@ -1,4 +1,11 @@
 
+
+## 4.23.2
+June 11, 2024
+- AppState's setiOSThemeData() function made public and now called
+  app_statefulwidget.dart's initAsync() function:
+  _appState?.setiOSThemeData(context);
+
 ## 4.23.1
 June 11, 2024
 - AppState's setThemeData() function made public and now called
