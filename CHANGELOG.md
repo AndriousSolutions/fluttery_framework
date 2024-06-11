@@ -1,5 +1,12 @@
 
+## 4.23.1
+June 11, 2024
+- AppState's setThemeData() function made public and now called
+  app_statefulwidget.dart's initAsync() function:
+  _appState?.setThemeData(context);
+
 ## 4.23.0
+June 11, 2024
 - connectivity_plus: ^5.0.0 to ^6.0.0
   StreamSubscription<ConnectivityResult>? _connectivitySubscription to
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscriptionList

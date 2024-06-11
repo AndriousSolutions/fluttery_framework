@@ -525,7 +525,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 // not needed          title: , // Used instead in _onOnGenerateTitle()
             onGenerateTitle: onGenerateTitle,
             color: color,
-            theme: _setThemeData(context),
+            theme: setThemeData(context),
             darkTheme: darkTheme,
             highContrastTheme: highContrastTheme,
             highContrastDarkTheme: highContrastDarkTheme,
@@ -565,7 +565,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             onGenerateTitle: onGenerateTitle,
             onNavigationNotification: onNavigationNotification,
             color: color,
-            theme: _setThemeData(context),
+            theme: setThemeData(context),
             darkTheme: darkTheme,
             highContrastTheme: highContrastTheme,
             highContrastDarkTheme: highContrastDarkTheme,
@@ -637,9 +637,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   }
 
   /// Assigning the Material theme
-  ThemeData? _setThemeData(BuildContext context) {
+  ThemeData? setThemeData(BuildContext context) {
     // Retain the original theme
-    App.baseTheme = Theme.of(context);
+    App.baseTheme ??= Theme.of(context);
 
     ThemeData? themeData = _theme ?? onTheme();
 

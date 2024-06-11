@@ -128,6 +128,9 @@ class _StateApp extends State<AppStatefulWidget> {
       // Create 'App State object' for this app.
       _appState = widget.createAppState();
 
+      /// Finalize the app's theme if need be.
+      _appState?.setThemeData(context);
+
       // Supply the state object to the App object.
       v.App.appState = _appState;
 
