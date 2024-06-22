@@ -2,9 +2,9 @@ name: fluttery_framework
 description: Provides all the functions and features needed for a typical production app.
 homepage: https://www.andrioussolutions.com
 repository: https://github.com/AndriousSolutions/fluttery_framework
-issue_tracker: https://github.com/AndriousSolutions/fluttery_framework/issues?q=is%3Aissue+is%3Aopen
+issue_tracker: https://github.com/AndriousSolutions/fluttery_framework/issues?q=is:issue+is:open
 
-version: 4.23.2
+version: 4.24.0
 
 environment:
 #  sdk: '>=2.19.0 <4.0.0'

@@ -5,7 +5,8 @@
 //          Created  11 May 2018
 //
 import 'dart:async' show Future;
-import 'dart:io' show Directory, File, Platform;
+import 'dart:convert';
+import 'dart:io' show Directory, File, FileMode, Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:path_provider/path_provider.dart'
@@ -69,8 +70,19 @@ class Files {
   }
 
   /// Write the file
-  static Future<File> writeFile(File file, String content) =>
-      file.writeAsString(content, flush: true);
+  static Future<File> writeFile(
+    File file,
+    String content, {
+    FileMode? mode,
+    Encoding? encoding,
+    bool? flush,
+  }) =>
+      file.writeAsString(
+        content,
+        mode: mode ?? FileMode.write,
+        encoding: encoding ?? utf8,
+        flush: flush ?? true,
+      );
 
   /// Return a boolean indicating if a file exists or not.
   /// Pass in the name of the file.

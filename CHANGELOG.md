@@ -1,4 +1,12 @@
 
+## 4.24.0
+June 22, 2024
+- inError parameter deprecated use inErrorHandler instead
+  Both onErrorHandler and inErrorHandler can be implemented
+- class, MsgBox, in dialog_box.dart includes parameters from
+  showDialog and AlertDialog
+- Function, radioButtonsBuilder, in radiobutton_widget.dart includes
+  parameters from Radio, Text, Flexible and Flex
 
 ## 4.23.2
 June 11, 2024

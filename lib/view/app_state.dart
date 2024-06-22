@@ -105,7 +105,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     bool? debugRepaintRainbowEnabled,
     bool? debugRepaintTextRainbowEnabled,
     bool? debugPrintRebuildDirtyWidgets,
-    // ignore avoid_positional_boolean_parameters
+    // ignore: avoid_positional_boolean_parameters
     void Function(Element e, bool builtOnce)? debugOnRebuildDirtyWidget,
     bool? debugPrintBuildScope,
     bool? debugPrintScheduleBuildForStacks,
@@ -1514,19 +1514,19 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   ErrorWidgetBuilder? errorScreen;
   ReportErrorHandler? errorReport;
 
-  /// Returns the App's 'Error Handler' if any.
+  @Deprecated('use inErrorHandler instead')
   final void Function(FlutterErrorDetails details)? inError;
 
-  final FlutterExceptionHandler? inErrorHandler;
+  final void Function(FlutterErrorDetails details)? inErrorHandler;
   final ErrorWidgetBuilder? inErrorScreen;
   final Future<void> Function(Object exception, StackTrace stack)?
       inErrorReport;
 
-  /// Run the provided Error Handler if any.
+  /// Override to provide an 'overall' Error Handler for your app.
   void onErrorHandler(FlutterErrorDetails details) {
-    if (inErrorHandler != null) {
-      inErrorHandler!(details);
-    }
+    // if (inErrorHandler != null) {
+    //   inErrorHandler!(details);
+    // }
   }
 
   /// The Widget to display when an app's widget fails to display.
@@ -1548,7 +1548,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     try {
       onError(details);
     } catch (e) {
-      // If the handler also errors, it's throw to be handled
+      // If the handler also errors, it's thrown to be handled
       // by the original routine.
       rethrow;
     }
@@ -1593,9 +1593,10 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
     // If there's any 'inline function' error handler.
     // It takes last precedence.
-    if (inError != null) {
+    if (inErrorHandler != null || inError != null) {
       try {
-        inError!(details);
+        inError?.call(details);
+        inErrorHandler?.call(details);
       } catch (e, stack) {
         recordException(e, stack);
       }

@@ -312,7 +312,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "4.23.2"
+    version: "4.24.0"
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter
@@ -322,10 +322,10 @@ packages:
     dependency: transitive
     description:
       name: go_router
-      sha256: abec47eb8c8c36ebf41d0a4c64dbbe7f956e39a012b3aafc530e951bdc12fe3f
+      sha256: cdae1b9c8bd7efadcef6112e81c903662ef2ce105cbd220a04bbb7c3425b5554
       url: "https://pub.dev"
     source: hosted
-    version: "14.1.4"
+    version: "14.2.0"
   http:
     dependency: "direct main"
     description:
@@ -660,10 +660,10 @@ packages:
     dependency: transitive
     description:
       name: state_extended
-      sha256: "1d11329341fd019b8a09285c1492091616fb2e5c0b22567d3bb57685b393678a"
+      sha256: ef4d5cc3efc12850c6106c9c7c8f791b5fbfd698943bdda468f2284c5f8d7bcb
       url: "https://pub.dev"
     source: hosted
-    version: "4.17.0"
+    version: "4.18.0"
   stream_channel:
     dependency: transitive
     description:

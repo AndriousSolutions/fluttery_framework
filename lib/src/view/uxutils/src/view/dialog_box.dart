@@ -447,6 +447,40 @@ class MsgBox {
     this.msg,
     this.body,
     this.actions,
+    // showDialog
+    this.barrierDismissible,
+    this.barrierColor,
+    this.barrierLabel,
+    this.useSafeArea,
+    this.useRootNavigator,
+    this.routeSettings,
+    this.anchorPoint,
+    this.traversalEdgeBehavior,
+    // AlertDialog
+    this.icon,
+    this.iconPadding,
+    this.iconColor,
+    this.titlePadding,
+    this.titleTextStyle,
+    this.content,
+    this.contentPadding,
+    this.contentTextStyle,
+    this.actionsPadding,
+    this.actionsAlignment,
+    this.actionsOverflowAlignment,
+    this.actionsOverflowDirection,
+    this.actionsOverflowButtonSpacing,
+    this.buttonPadding,
+    this.backgroundColor,
+    this.elevation,
+    this.shadowColor,
+    this.surfaceTintColor,
+    this.semanticLabel,
+    this.insetPadding,
+    this.clipBehavior,
+    this.shape,
+    this.alignment,
+    this.scrollable,
   });
 
   /// Requires a BuildContext
@@ -465,6 +499,111 @@ class MsgBox {
   /// Optional set of actions that are displayed at the bottom of the
   /// Message box.
   final List<Widget>? actions;
+
+  // showDialog
+  ///
+  final bool? barrierDismissible;
+
+  ///
+  final Color? barrierColor;
+
+  ///
+  final String? barrierLabel;
+
+  ///
+  final bool? useSafeArea;
+
+  ///
+  final bool? useRootNavigator;
+
+  ///
+  final RouteSettings? routeSettings;
+
+  ///
+  final Offset? anchorPoint;
+
+  ///
+  final TraversalEdgeBehavior? traversalEdgeBehavior;
+
+  // AlertDialog
+  /// An optional icon to display at the top of the dialog.
+  final Widget? icon;
+
+  /// Color for the [Icon] in the [icon] of this [AlertDialog].
+  final Color? iconColor;
+
+  /// Padding around the [icon].
+  final EdgeInsetsGeometry? iconPadding;
+
+  /// Padding around the title.
+  final EdgeInsetsGeometry? titlePadding;
+
+  /// Style for the text in the [title] of this [AlertDialog].
+  final TextStyle? titleTextStyle;
+
+  /// The (optional) content of the dialog is displayed in the center of the
+  /// dialog in a lighter font.
+  final Widget? content;
+
+  /// Padding around the content.
+  final EdgeInsetsGeometry? contentPadding;
+
+  /// Style for the text in the [content] of this [AlertDialog].
+  final TextStyle? contentTextStyle;
+
+  /// Padding around the set of [actions] at the bottom of the dialog.
+  final EdgeInsetsGeometry? actionsPadding;
+
+  /// Defines the horizontal layout of the [actions] according to the same
+  /// rules as for [Row.mainAxisAlignment].
+  final MainAxisAlignment? actionsAlignment;
+
+  /// The horizontal alignment of [actions] within the vertical
+  /// "overflow" layout.
+  final OverflowBarAlignment? actionsOverflowAlignment;
+
+  /// The vertical direction of [actions] if the children overflow
+  /// horizontally.
+  final VerticalDirection? actionsOverflowDirection;
+
+  /// The spacing between [actions] when the [OverflowBar] switches to a column
+  /// layout because the actions don't fit horizontally.
+  final double? actionsOverflowButtonSpacing;
+
+  /// The padding that surrounds each button in [actions].
+  final EdgeInsetsGeometry? buttonPadding;
+
+  /// {@macro flutter.material.dialog.backgroundColor}
+  final Color? backgroundColor;
+
+  /// {@macro flutter.material.dialog.elevation}
+  final double? elevation;
+
+  /// {@macro flutter.material.dialog.shadowColor}
+  final Color? shadowColor;
+
+  /// {@macro flutter.material.dialog.surfaceTintColor}
+  final Color? surfaceTintColor;
+
+  /// The semantic label of the dialog used by accessibility frameworks to
+  /// announce screen transitions when the dialog is opened and closed.
+  final String? semanticLabel;
+
+  /// {@macro flutter.material.dialog.insetPadding}
+  final EdgeInsets? insetPadding;
+
+  /// {@macro flutter.material.dialog.clipBehavior}
+  final Clip? clipBehavior;
+
+  /// {@macro flutter.material.dialog.shape}
+  final ShapeBorder? shape;
+
+  /// {@macro flutter.material.dialog.alignment}
+  final AlignmentGeometry? alignment;
+
+  /// Determines whether the [title] and [content] widgets are wrapped in a
+  /// scrollable.
+  final bool? scrollable;
 
   /// Call to display this Message box.
   Future<void> show({
@@ -498,15 +637,46 @@ class MsgBox {
 
     return showDialog<void>(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: barrierDismissible ?? false,
+      barrierColor: barrierColor,
+      barrierLabel: barrierLabel,
+      useSafeArea: useSafeArea ?? true,
+      useRootNavigator: useRootNavigator ?? true,
+      routeSettings: routeSettings,
+      anchorPoint: anchorPoint,
+      traversalEdgeBehavior: traversalEdgeBehavior,
       builder: (BuildContext context) => AlertDialog(
+        icon: icon,
+        iconPadding: iconPadding,
+        iconColor: iconColor,
         title: Text(title ?? ''),
+        titlePadding: titlePadding,
+        titleTextStyle: titleTextStyle,
         content: SingleChildScrollView(
           child: ListBody(
             children: body!,
           ),
         ),
+        contentPadding: contentPadding,
+        contentTextStyle: contentTextStyle,
         actions: actions,
+        actionsPadding: actionsPadding,
+        actionsAlignment: actionsAlignment,
+        actionsOverflowAlignment: actionsOverflowAlignment,
+        actionsOverflowDirection: actionsOverflowDirection,
+        actionsOverflowButtonSpacing: actionsOverflowButtonSpacing,
+        buttonPadding: buttonPadding,
+        backgroundColor: backgroundColor,
+        elevation: elevation,
+        shadowColor: shadowColor,
+        surfaceTintColor: surfaceTintColor,
+        semanticLabel: semanticLabel,
+        insetPadding: insetPadding ??
+            const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+        clipBehavior: clipBehavior ?? Clip.none,
+        shape: shape,
+        alignment: alignment,
+        scrollable: scrollable ?? false,
       ),
     );
   }
