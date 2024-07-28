@@ -86,7 +86,7 @@ class AppErrorHandler {
           _onError = null;
           try {
             _oldOnError!(details);
-          } catch (ex, stack) {
+          } catch (ex) {
             // Intentionally blank
           }
         }
