@@ -57,7 +57,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     RouteInformationProvider? routeInformationProvider,
     RouteInformationParser<Object>? routeInformationParser,
     RouterDelegate<Object>? routerDelegate,
-    this.useRouterConfig,
+    bool? useRouterConfig,
     RouterConfig<Object>? routerConfig,
     BackButtonDispatcher? backButtonDispatcher,
     GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey,
@@ -125,6 +125,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.inErrorScreen,
     super.inErrorReport,
     super.inError,
+    super.presentError,
     super.inInitState,
     super.inInitAsync,
     super.inHome,
@@ -187,6 +188,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     _routeInformationProvider = routeInformationProvider;
     _routeInformationParser = routeInformationParser;
     _routerDelegate = routerDelegate;
+    _useRouterConfig = useRouterConfig;
     _routerConfig = routerConfig;
     _backButtonDispatcher = backButtonDispatcher;
     _scaffoldMessengerKey = scaffoldMessengerKey;
@@ -212,6 +214,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     _localeListResolutionCallback = localeListResolutionCallback;
     _localeResolutionCallback = localeResolutionCallback;
     _supportedLocales = supportedLocales ?? [];
+
     _debugShowMaterialGrid = debugShowMaterialGrid;
     _showPerformanceOverlay = showPerformanceOverlay;
     _checkerboardRasterCacheImages = checkerboardRasterCacheImages;
@@ -252,9 +255,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// The 'App State Objects' [Key]
   Key get key => _key ??= GlobalKey(); // it!
   Key? _key;
-
-  /// Use RouterConfig or not
-  late bool? useRouterConfig;
 
   /// Allow the app to change the theme
   bool get allowChangeTheme => _allowChangeTheme;
@@ -369,44 +369,48 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       return true;
     }());
 
-    // A Route Configuration was provided
-    final _useRouter =
-        routerConfig != null && (home == null || (useRouterConfig ?? false));
+    // If supplied by a function
+    _routerConfig ??= onRouterConfig();
 
-    // Set the flag if not provided or home == null;
-    useRouterConfig ??= _useRouter;
+    // Usually RouterConfig is last in order of precedence
+    // Setting this flag makes it first.
+    // if (_widget.routerDelegate != null) {
+    // } else if (_widget.home != null || (widget.routes?.isNotEmpty ?? false) || widget.onGenerateRoute != null) {
+    // } else if (_widget.routerConfig != null) { }
+    // Set the flag only if the configuration was provided
+    _useRouterConfig = _routerConfig != null && (_useRouterConfig ?? false);
 
-    if (_useRouter) {
+    if (_useRouterConfig!) {
       // Make the GoRouter readily available without requiring a context.
-      App.goRouter = routerConfig;
+      App.goRouter = _routerConfig;
     }
 
     // If the routerConfig is to be used, the others must all be null.
-    _routeInformationProvider = _useRouter
+    _routeInformationProvider = _useRouterConfig!
         ? null
         : _routeInformationProvider ?? onRouteInformationProvider();
 
-    _routeInformationParser = _useRouter
+    _routeInformationParser = _useRouterConfig!
         ? null
         : _routeInformationParser ?? onRouteInformationParser();
 
-    _routerDelegate = _useRouter ? null : _routerDelegate ?? onRouterDelegate();
+    _routerDelegate =
+        _useRouterConfig! ? null : _routerDelegate ?? onRouterDelegate();
 
-    _backButtonDispatcher =
-        _useRouter ? null : _backButtonDispatcher ?? onBackButtonDispatcher();
+    _backButtonDispatcher = _useRouterConfig!
+        ? null
+        : _backButtonDispatcher ?? onBackButtonDispatcher();
 
     // There's possibly a preferred Locale.
-    Locale? _preferredLocale;
-
     // The app can specify its own Locale
-    if (_allowChangeLocale) {
-      _preferredLocale = App.preferredLocale;
+    if (_allowChangeLocale && App.preferredLocale != null) {
+      _locale = App.preferredLocale;
+    } else {
+      _locale = _locale ?? onLocale();
     }
 
-    _locale = _preferredLocale ?? _locale ?? onLocale();
-
     // If the locale was saved in the preferences, save the new one if any
-    if (_preferredLocale != null) {
+    if (_allowChangeLocale) {
       App.saveLocale(_locale);
     }
 
@@ -430,7 +434,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     L10n.supportedLocales = _supportedLocales;
 
     // An app builder may instead by supplied.
-    app = buildApp(context);
+    app = buildApp(context, appState: this);
 
     if (app == null) {
       //
@@ -439,38 +443,48 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
         if (cupertinoApp != null) {
           app = cupertinoApp!;
           //
-        } else if (_routerDelegate == null && !_useRouter) {
+        } else if (_routerDelegate == null && !_useRouterConfig!) {
           //
           app = CupertinoApp(
             key: key,
             navigatorKey: App.navigatorKey,
             theme: setiOSThemeData(context),
-            routes: routes,
-            initialRoute: initialRoute,
-            onGenerateRoute: onGenerateRoute,
-            onUnknownRoute: onUnknownRoute,
-            onNavigationNotification: onNavigationNotification,
+            routes: _routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
+            initialRoute: _initialRoute ?? onInitialRoute(),
+            onGenerateRoute: _onOnGenerateRoute,
+            onUnknownRoute: _onOnUnknownRoute,
+            onNavigationNotification: _onOnNavigationNotification,
             navigatorObservers: _onNavigatorObservers(),
-            builder: transitBuilder,
-// not needed  title: ,  // Used instead in _onOnGenerateTitle()
-            onGenerateTitle: onGenerateTitle,
-            color: color,
+            builder: _transitBuilder ?? onBuilder(),
+// not needed  title: ,  // Using instead onOnGenerateTitle parameter
+            onGenerateTitle: _onOnGenerateTitle,
+            color: _color ?? onColor() ?? Colors.blue,
             locale: _locale,
-            localizationsDelegates: localizationsDelegates,
-            localeListResolutionCallback: localeListResolutionCallback,
-            localeResolutionCallback: localeResolutionCallback,
+            localizationsDelegates: _onLocalizationsDelegates(),
+            localeListResolutionCallback:
+                _localeListResolutionCallback ?? onLocaleListResolutionCallback,
+            localeResolutionCallback:
+                _localeResolutionCallback ?? onLocaleResolutionCallback,
             supportedLocales: _supportedLocales,
-            showPerformanceOverlay: showPerformanceOverlay,
-            checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-            checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-            showSemanticsDebugger: showSemanticsDebugger,
-            debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-            shortcuts: shortcuts,
-            actions: actions,
-            restorationScopeId: restorationScopeId,
-            scrollBehavior: scrollBehavior,
+            showPerformanceOverlay:
+                _showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
+            checkerboardRasterCacheImages: _checkerboardRasterCacheImages ??
+                onCheckerboardRasterCacheImages() ??
+                false,
+            checkerboardOffscreenLayers: _checkerboardOffscreenLayers ??
+                onCheckerboardOffscreenLayers() ??
+                false,
+            showSemanticsDebugger:
+                _showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
+            debugShowCheckedModeBanner: _debugShowCheckedModeBanner ??
+                onDebugShowCheckedModeBanner() ??
+                false,
+            shortcuts: _shortcuts ?? onShortcuts(),
+            actions: _actions ?? onActions(),
+            restorationScopeId: _restorationScopeId ?? onRestorationScopeId(),
+            scrollBehavior: _scrollBehavior ?? onScrollBehavior(),
             // Let the parameters run before the home parameter.
-            home: home,
+            home: _home ?? onHome(),
           );
         } else {
           //
@@ -480,27 +494,37 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             routeInformationParser: _routeInformationParser,
             routerDelegate: _routerDelegate,
             backButtonDispatcher: _backButtonDispatcher,
-            routerConfig: routerConfig,
+            routerConfig: _routerConfig,
             theme: setiOSThemeData(context),
-            builder: transitBuilder,
+            builder: _transitBuilder ?? onBuilder(),
 // not needed          title: , // Used instead in _onOnGenerateTitle()
-            onGenerateTitle: onGenerateTitle,
-            onNavigationNotification: onNavigationNotification,
-            color: color,
+            onGenerateTitle: _onOnGenerateTitle,
+            onNavigationNotification: _onOnNavigationNotification,
+            color: _color ?? onColor() ?? Colors.blue,
             locale: _locale,
-            localizationsDelegates: localizationsDelegates,
-            localeListResolutionCallback: localeListResolutionCallback,
-            localeResolutionCallback: localeResolutionCallback,
+            localizationsDelegates: _onLocalizationsDelegates(),
+            localeListResolutionCallback:
+                _localeListResolutionCallback ?? onLocaleListResolutionCallback,
+            localeResolutionCallback:
+                _localeResolutionCallback ?? onLocaleResolutionCallback,
             supportedLocales: _supportedLocales,
-            showPerformanceOverlay: showPerformanceOverlay,
-            checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-            checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-            showSemanticsDebugger: showSemanticsDebugger,
-            debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-            shortcuts: shortcuts,
-            actions: actions,
-            restorationScopeId: restorationScopeId,
-            scrollBehavior: scrollBehavior,
+            showPerformanceOverlay:
+                _showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
+            checkerboardRasterCacheImages: _checkerboardRasterCacheImages ??
+                onCheckerboardRasterCacheImages() ??
+                false,
+            checkerboardOffscreenLayers: _checkerboardOffscreenLayers ??
+                onCheckerboardOffscreenLayers() ??
+                false,
+            showSemanticsDebugger:
+                _showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
+            debugShowCheckedModeBanner: _debugShowCheckedModeBanner ??
+                onDebugShowCheckedModeBanner() ??
+                false,
+            shortcuts: _shortcuts ?? onShortcuts(),
+            actions: _actions ?? onActions(),
+            restorationScopeId: _restorationScopeId ?? onRestorationScopeId(),
+            scrollBehavior: _scrollBehavior ?? onScrollBehavior(),
           );
         }
       } else {
@@ -509,46 +533,62 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           //
           app = materialApp!;
           //
-        } else if (_routerDelegate == null && !_useRouter) {
+        } else if (_routerDelegate == null && !_useRouterConfig!) {
           //
           app = MaterialApp(
             key: key,
             navigatorKey: App.navigatorKey,
             scaffoldMessengerKey: scaffoldMessengerKey,
-            routes: routes,
-            initialRoute: initialRoute,
-            onGenerateRoute: onGenerateRoute,
-            onUnknownRoute: onUnknownRoute,
-            onNavigationNotification: onNavigationNotification,
+            routes: _routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
+            initialRoute: _initialRoute ?? onInitialRoute(),
+            onGenerateRoute: _onOnGenerateRoute,
+            onUnknownRoute: _onOnUnknownRoute,
+            onNavigationNotification: _onOnNavigationNotification,
             navigatorObservers: _onNavigatorObservers(),
-            builder: transitBuilder,
+            builder: _transitBuilder ?? onBuilder(),
 // not needed          title: , // Used instead in _onOnGenerateTitle()
-            onGenerateTitle: onGenerateTitle,
-            color: color,
+            onGenerateTitle: _onOnGenerateTitle,
+            color: _color ?? onColor() ?? Colors.blue,
             theme: setThemeData(context),
-            darkTheme: darkTheme,
-            highContrastTheme: highContrastTheme,
-            highContrastDarkTheme: highContrastDarkTheme,
-            themeMode: themeMode,
-            themeAnimationDuration: themeAnimationDuration,
-            themeAnimationCurve: themeAnimationCurve,
+            darkTheme: _darkTheme ?? onDarkTheme(),
+            highContrastTheme: _highContrastTheme ?? onHighContrastTheme(),
+            highContrastDarkTheme:
+                _highContrastDarkTheme ?? onHighContrastDarkTheme(),
+            themeMode: _themeMode ?? onThemeMode() ?? ThemeMode.system,
+            themeAnimationDuration: _themeAnimationDuration ??
+                onThemeAnimationDuration() ??
+                const Duration(milliseconds: 200),
+            themeAnimationCurve: _themeAnimationCurve ??
+                onThemeAnimationCurve() ??
+                Curves.linear,
             locale: _locale,
-            localizationsDelegates: localizationsDelegates,
-            localeListResolutionCallback: localeListResolutionCallback,
-            localeResolutionCallback: localeResolutionCallback,
+            localizationsDelegates: _onLocalizationsDelegates(),
+            localeListResolutionCallback:
+                _localeListResolutionCallback ?? onLocaleListResolutionCallback,
+            localeResolutionCallback:
+                _localeResolutionCallback ?? onLocaleResolutionCallback,
             supportedLocales: _supportedLocales,
-            debugShowMaterialGrid: debugShowMaterialGrid,
-            showPerformanceOverlay: showPerformanceOverlay,
-            checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-            checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-            showSemanticsDebugger: showSemanticsDebugger,
-            debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-            shortcuts: shortcuts,
-            actions: actions,
-            restorationScopeId: restorationScopeId,
-            scrollBehavior: scrollBehavior,
+            debugShowMaterialGrid:
+                _debugShowMaterialGrid ?? onDebugShowMaterialGrid() ?? false,
+            showPerformanceOverlay:
+                _showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
+            checkerboardRasterCacheImages: _checkerboardRasterCacheImages ??
+                onCheckerboardRasterCacheImages() ??
+                false,
+            checkerboardOffscreenLayers: _checkerboardOffscreenLayers ??
+                onCheckerboardOffscreenLayers() ??
+                false,
+            showSemanticsDebugger:
+                _showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
+            debugShowCheckedModeBanner: _debugShowCheckedModeBanner ??
+                onDebugShowCheckedModeBanner() ??
+                false,
+            shortcuts: _shortcuts ?? onShortcuts(),
+            actions: _actions ?? onActions(),
+            restorationScopeId: _restorationScopeId ?? onRestorationScopeId(),
+            scrollBehavior: _scrollBehavior ?? onScrollBehavior(),
             // Let the parameters run before the home parameter.
-            home: home,
+            home: _home ?? onHome(),
           );
         } else {
           //
@@ -558,44 +598,64 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
             routeInformationProvider: _routeInformationProvider,
             routeInformationParser: _routeInformationParser,
             routerDelegate: _routerDelegate,
-            routerConfig: routerConfig,
+            routerConfig: _routerConfig,
             backButtonDispatcher: _backButtonDispatcher,
-            builder: transitBuilder,
+            builder: _transitBuilder ?? onBuilder(),
 // not needed          title: , // Used instead in _onOnGenerateTitle()
-            onGenerateTitle: onGenerateTitle,
-            onNavigationNotification: onNavigationNotification,
-            color: color,
+            onGenerateTitle: _onOnGenerateTitle,
+            onNavigationNotification: _onOnNavigationNotification,
+            color: _color ?? onColor() ?? Colors.blue,
             theme: setThemeData(context),
-            darkTheme: darkTheme,
-            highContrastTheme: highContrastTheme,
-            highContrastDarkTheme: highContrastDarkTheme,
-            themeMode: themeMode,
-            themeAnimationDuration: themeAnimationDuration,
-            themeAnimationCurve: themeAnimationCurve,
+            darkTheme: _darkTheme ?? onDarkTheme(),
+            highContrastTheme: _highContrastTheme ?? onHighContrastTheme(),
+            highContrastDarkTheme:
+                _highContrastDarkTheme ?? onHighContrastDarkTheme(),
+            themeMode: _themeMode ?? onThemeMode() ?? ThemeMode.system,
+            themeAnimationDuration: _themeAnimationDuration ??
+                onThemeAnimationDuration() ??
+                const Duration(milliseconds: 200),
+            themeAnimationCurve: _themeAnimationCurve ??
+                onThemeAnimationCurve() ??
+                Curves.linear,
             locale: _locale,
-            localizationsDelegates: localizationsDelegates,
-            localeListResolutionCallback: localeListResolutionCallback,
-            localeResolutionCallback: localeResolutionCallback,
+            localizationsDelegates: _onLocalizationsDelegates(),
+            localeListResolutionCallback:
+                _localeListResolutionCallback ?? onLocaleListResolutionCallback,
+            localeResolutionCallback:
+                _localeResolutionCallback ?? onLocaleResolutionCallback,
             supportedLocales: _supportedLocales,
-            debugShowMaterialGrid: debugShowMaterialGrid,
-            showPerformanceOverlay: showPerformanceOverlay,
-            checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-            checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-            showSemanticsDebugger: showSemanticsDebugger,
-            debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-            shortcuts: shortcuts,
-            actions: actions,
-            restorationScopeId: restorationScopeId,
-            scrollBehavior: scrollBehavior,
+            debugShowMaterialGrid:
+                _debugShowMaterialGrid ?? onDebugShowMaterialGrid() ?? false,
+            showPerformanceOverlay:
+                _showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false,
+            checkerboardRasterCacheImages: _checkerboardRasterCacheImages ??
+                onCheckerboardRasterCacheImages() ??
+                false,
+            checkerboardOffscreenLayers: _checkerboardOffscreenLayers ??
+                onCheckerboardOffscreenLayers() ??
+                false,
+            showSemanticsDebugger:
+                _showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false,
+            debugShowCheckedModeBanner: _debugShowCheckedModeBanner ??
+                onDebugShowCheckedModeBanner() ??
+                false,
+            shortcuts: _shortcuts ?? onShortcuts(),
+            actions: _actions ?? onActions(),
+            restorationScopeId: _restorationScopeId ?? onRestorationScopeId(),
+            scrollBehavior: _scrollBehavior ?? onScrollBehavior(),
           );
         }
       }
     }
+    // Set many variables now to null to reduce memory use
+//    _cleanupMemory();
     return app;
   }
 
   /// Supply the App widget if you wish.
-  Widget? buildApp(BuildContext context) => null;
+  // Supply only the AppState in future
+  // todo: 'BuildContext soon removed using AppState instead.
+  Widget? buildApp(BuildContext context, {AppState? appState}) => null;
 
   /// Determine if the dependencies should be updated.
   @override
@@ -757,6 +817,46 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       _useCupertino = false;
     }
   }
+
+  /// Unnecessary since such variables passed by reference
+  // // Set many variables now to null to reduce memory use
+  // void _cleanupMemory() {
+  //   _routes = null;
+  //   _initialRoute = null;
+  //   _onGenerateRoute = null;
+  //   _onUnknownRoute = null;
+  //   _routeInformationProvider = null;
+  //   _routeInformationParser = null;
+  //   _routerDelegate = null;
+  //   _routerConfig = null;
+  //   _backButtonDispatcher = null;
+  //   _transitBuilder = null;
+  //   _onGenerateTitle = null;
+  //   _onNavigationNotification = null;
+  //   _color = null;
+  //   _theme = null;
+  //   _iOSTheme = null;
+  //   _darkTheme = null;
+  //   _highContrastTheme = null;
+  //   _highContrastDarkTheme = null;
+  //   _themeMode = null;
+  //   _themeAnimationDuration = null;
+  //   _themeAnimationCurve = null;
+  //   _localizationsDelegates = null;
+  //   _localeListResolutionCallback = null;
+  //   _localeResolutionCallback = null;
+  //   _debugShowMaterialGrid = null;
+  //   _showPerformanceOverlay = null;
+  //   _checkerboardRasterCacheImages = null;
+  //   _checkerboardOffscreenLayers = null;
+  //   _showSemanticsDebugger = null;
+  //   _debugShowWidgetInspector = null;
+  //   _debugShowCheckedModeBanner = null;
+  //   _shortcuts = null;
+  //   _actions = null;
+  //   _restorationScopeId = null;
+  //   _scrollBehavior = null;
+  // }
 }
 
 /// The underlying State object representing the App's View in the MVC pattern.
@@ -777,6 +877,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     this.inErrorScreen,
     this.inErrorReport,
     this.inError,
+    this.presentError,
     this.inInitState,
     this.inInitAsync,
     this.inHome,
@@ -835,8 +936,9 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     // Supply a customized error handling.
     _errorHandler = AppErrorHandler(
         handler: errorHandler ?? onErrorHandler,
-        screen: errorScreen ?? onErrorScreen,
-        report: errorReport ?? onErrorReport);
+        presentError: presentError,
+        screen: errorScreen ?? onErrorScreen, // has to be assigned
+        report: errorReport ?? onErrorReport); // has to be assigned
   }
 
   /// Save the current Error Handler.
@@ -850,24 +952,33 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   CupertinoApp? cupertinoApp;
 
   /// The App's 'home screen'
+  @Deprecated('Should not be an exposed property')
   Widget? get home => _home ?? onHome();
   Widget? _home;
 
   /// All the fields found in the widgets, MaterialApp and CupertinoApp
+  @Deprecated('Should not be an exposed property')
   RouteInformationProvider? get routeInformationProvider =>
       _routeInformationProvider;
   RouteInformationProvider? _routeInformationProvider;
 
+  @Deprecated('Should not be an exposed property')
   RouteInformationParser<Object>? get routeInformationParser =>
       _routeInformationParser;
   RouteInformationParser<Object>? _routeInformationParser;
 
+  @Deprecated('Should not be an exposed property')
   RouterDelegate<Object>? get routerDelegate => _routerDelegate;
   RouterDelegate<Object>? _routerDelegate;
 
+  @Deprecated('Should not be an exposed property')
   BackButtonDispatcher? get backButtonDispatcher => _backButtonDispatcher;
   BackButtonDispatcher? _backButtonDispatcher;
 
+  /// Use RouterConfig or not
+  bool? _useRouterConfig;
+
+  @Deprecated('Should not be an exposed property')
   RouterConfig<Object>? get routerConfig => _routerConfig ?? onRouterConfig();
   RouterConfig<Object>? _routerConfig;
 
@@ -875,27 +986,28 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
       _scaffoldMessengerKey ?? onScaffoldMessengerKey();
   GlobalKey<ScaffoldMessengerState>? _scaffoldMessengerKey;
 
+  @Deprecated('Should not be an exposed property')
   Map<String, WidgetBuilder> get routes =>
       _routes ?? onRoutes() ?? const <String, WidgetBuilder>{};
   Map<String, WidgetBuilder>? _routes;
 
+  @Deprecated('Should not be an exposed property')
   String? get initialRoute => _initialRoute ?? onInitialRoute();
   String? _initialRoute;
 
+  @Deprecated('Should not be an exposed property')
   RouteFactory? get onGenerateRoute => _onOnGenerateRoute;
   RouteFactory? _onGenerateRoute;
 
+  @Deprecated('Should not be an exposed property')
   RouteFactory? get onUnknownRoute => _onOnUnknownRoute;
   RouteFactory? _onUnknownRoute;
 
-  NotificationListenerCallback<NavigationNotification>?
-      get onNavigationNotification => _onOnNavigationNotification;
-  NotificationListenerCallback<NavigationNotification>?
-      _onNavigationNotification;
-
+  // So to supply the RouteConfig
   List<NavigatorObserver>? get navigatorObservers => _onNavigatorObservers();
   List<NavigatorObserver>? _navigatorObservers;
 
+  @Deprecated('Should not be an exposed property')
   TransitionBuilder? get transitBuilder => _transitBuilder ?? onBuilder();
   TransitionBuilder? _transitBuilder;
 
@@ -903,40 +1015,62 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   String _appTitle = ''; // actual title
   late String _title;
 
+  @Deprecated('Should not be an exposed property')
   GenerateAppTitle? get onGenerateTitle => _onOnGenerateTitle;
   GenerateAppTitle? _onGenerateTitle;
+
+  @Deprecated('Should not be an exposed property')
+  NotificationListenerCallback<NavigationNotification>?
+      get onNavigationNotification => _onOnNavigationNotification;
+  NotificationListenerCallback<NavigationNotification>?
+      _onNavigationNotification;
 
   ThemeData? _theme;
   CupertinoThemeData? _iOSTheme;
 
+  @Deprecated('Should not be an exposed property')
   ThemeData? get darkTheme => _darkTheme ?? onDarkTheme();
   ThemeData? _darkTheme;
 
+  @Deprecated('Should not be an exposed property')
   ThemeData? get highContrastTheme =>
       _highContrastTheme ?? onHighContrastTheme();
   ThemeData? _highContrastTheme;
 
+  @Deprecated('Should not be an exposed property')
   ThemeData? get highContrastDarkTheme =>
       _highContrastDarkTheme ?? onHighContrastDarkTheme();
   ThemeData? _highContrastDarkTheme;
 
+  @Deprecated('Should not be an exposed property')
   ThemeMode get themeMode => _themeMode ?? onThemeMode() ?? ThemeMode.system;
   ThemeMode? _themeMode;
 
+  @Deprecated('Should not be an exposed property')
   Duration get themeAnimationDuration =>
       _themeAnimationDuration ??
       onThemeAnimationDuration() ??
       const Duration(milliseconds: 200);
   Duration? _themeAnimationDuration;
 
+  @Deprecated('Should not be an exposed property')
   Curve get themeAnimationCurve =>
       _themeAnimationCurve ?? onThemeAnimationCurve() ?? Curves.linear;
   Curve? _themeAnimationCurve;
 
+  @Deprecated('Should not be an exposed property')
   Color get color => _color ?? onColor() ?? Colors.blue;
   Color? _color;
 
-  Locale? get locale => _locale;
+  Locale? get locale =>
+      _locale ??
+      Localizations.maybeLocaleOf(context) ??
+      _resolveLocales(
+        // The full system-reported supported locales of the device.
+        WidgetsBinding.instance.platformDispatcher.locales,
+        supportedLocales,
+      );
+
   set locale(Locale? locale) {
     if (locale != null &&
         (_supportedLocales.isEmpty || _supportedLocales.contains(locale))) {
@@ -947,7 +1081,49 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   Locale? _locale;
 
-  Iterable<LocalizationsDelegate<dynamic>>? get localizationsDelegates sync* {
+  /// Determine the locale used by the Mobile phone.
+  Locale? _resolveLocales(
+    List<Locale>? preferredLocales,
+    Iterable<Locale>? supportedLocales,
+  ) {
+    //
+    final locales = supportedLocales;
+
+    final LocaleListResolutionCallback? localeResolver =
+        _localeListResolutionCallback ?? onLocaleListResolutionCallback;
+
+    // Attempt to use localeListResolutionCallback.
+    if (localeResolver != null) {
+      Locale? locale;
+      if (locales != null) {
+        locale = localeResolver(preferredLocales, locales);
+      }
+      if (locale != null) {
+        return locale;
+      }
+    }
+
+    final preferred = preferredLocales != null && preferredLocales.isNotEmpty
+        ? preferredLocales.first
+        : null;
+
+    final LocaleResolutionCallback? resolutionCallback =
+        _localeResolutionCallback ?? onLocaleResolutionCallback;
+
+    // localeListResolutionCallback failed, falling back to localeResolutionCallback.
+    if (resolutionCallback != null) {
+      Locale? locale;
+      if (locales != null) {
+        locale = resolutionCallback(preferred, locales);
+      }
+      if (locale != null) {
+        return locale;
+      }
+    }
+    return preferred;
+  }
+
+  Iterable<LocalizationsDelegate<dynamic>>? _onLocalizationsDelegates() sync* {
     Iterable<LocalizationsDelegate<dynamic>>? delegates;
     if (_localizationsDelegates != null) {
       delegates = _localizationsDelegates;
@@ -961,10 +1137,12 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   Iterable<LocalizationsDelegate<dynamic>>? _localizationsDelegates;
 
+  @Deprecated('Unnecessarily exposed function')
   LocaleListResolutionCallback? get localeListResolutionCallback =>
       _localeListResolutionCallback ?? onLocaleListResolutionCallback;
   LocaleListResolutionCallback? _localeListResolutionCallback;
 
+  @Deprecated('Unnecessarily exposed function')
   LocaleResolutionCallback? get localeResolutionCallback =>
       _localeResolutionCallback ?? onLocaleResolutionCallback;
   LocaleResolutionCallback? _localeResolutionCallback;
@@ -972,8 +1150,10 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   List<Locale> get supportedLocales => _supportedLocales;
   late List<Locale> _supportedLocales;
 
+  @Deprecated('Should not be an exposed property')
   bool get debugShowMaterialGrid =>
       _debugShowMaterialGrid ?? onDebugShowMaterialGrid() ?? false;
+  @Deprecated('Should not be a readily available capability')
   set debugShowMaterialGrid(bool? debug) {
     if (debug != null) {
       _debugShowMaterialGrid = debug;
@@ -982,8 +1162,10 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   bool? _debugShowMaterialGrid;
 
+  @Deprecated('Should not be an exposed property')
   bool get showPerformanceOverlay =>
       _showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false;
+  @Deprecated('Should not be a readily available capability')
   set showPerformanceOverlay(bool? debug) {
     if (debug != null) {
       _showPerformanceOverlay = debug;
@@ -992,10 +1174,12 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   bool? _showPerformanceOverlay;
 
+  @Deprecated('Should not be an exposed property')
   bool get checkerboardRasterCacheImages =>
       _checkerboardRasterCacheImages ??
       onCheckerboardRasterCacheImages() ??
       false;
+  @Deprecated('Should not be a readily available capability')
   set checkerboardRasterCacheImages(bool? debug) {
     if (debug != null) {
       _checkerboardRasterCacheImages = debug;
@@ -1004,8 +1188,10 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   bool? _checkerboardRasterCacheImages;
 
+  @Deprecated('Should not be an exposed property')
   bool get checkerboardOffscreenLayers =>
       _checkerboardOffscreenLayers ?? onCheckerboardOffscreenLayers() ?? false;
+  @Deprecated('Should not be a readily available capability')
   set checkerboardOffscreenLayers(bool? debug) {
     if (debug != null) {
       _checkerboardOffscreenLayers = debug;
@@ -1014,8 +1200,10 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   bool? _checkerboardOffscreenLayers;
 
+  @Deprecated('Should not be an exposed property')
   bool get showSemanticsDebugger =>
       _showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false;
+  @Deprecated('Should not be a readily available capability')
   set showSemanticsDebugger(bool? debug) {
     if (debug != null) {
       _showSemanticsDebugger = debug;
@@ -1024,8 +1212,10 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   bool? _showSemanticsDebugger;
 
+  @Deprecated('Should not be an exposed property')
   bool get debugShowWidgetInspector =>
       _debugShowWidgetInspector ?? onDebugShowWidgetInspector() ?? false;
+  @Deprecated('Should not be a readily available capability')
   set debugShowWidgetInspector(bool? debug) {
     if (debug != null) {
       _debugShowWidgetInspector = debug;
@@ -1034,8 +1224,10 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   bool? _debugShowWidgetInspector;
 
+  @Deprecated('Should not be an exposed property')
   bool get debugShowCheckedModeBanner =>
       _debugShowCheckedModeBanner ?? onDebugShowCheckedModeBanner() ?? false;
+  @Deprecated('Should not be a readily available capability')
   set debugShowCheckedModeBanner(bool? debug) {
     if (debug != null) {
       _debugShowCheckedModeBanner = debug;
@@ -1080,16 +1272,20 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   /// Show banners for deprecated widgets.
   late bool debugHighlightDeprecatedWidgets;
 
+  @Deprecated('Should not be an exposed property')
   Map<LogicalKeySet, Intent>? get shortcuts => _shortcuts ?? onShortcuts();
   Map<LogicalKeySet, Intent>? _shortcuts;
 
+  @Deprecated('Should not be an exposed property')
   Map<Type, Action<Intent>>? get actions => _actions ?? onActions();
   Map<Type, Action<Intent>>? _actions;
 
+  @Deprecated('Should not be an exposed property')
   String? get restorationScopeId =>
       _restorationScopeId ?? onRestorationScopeId();
   String? _restorationScopeId;
 
+  @Deprecated('Should not be an exposed property')
   ScrollBehavior? get scrollBehavior => _scrollBehavior ?? onScrollBehavior();
   ScrollBehavior? _scrollBehavior;
 
@@ -1101,10 +1297,6 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     }
     return init;
   }
-
-  /// Returns the App's Navigator Key.
-  @Deprecated("App's Navigator's Key is GlobalKey<NavigatorState>()")
-  GlobalKey<NavigatorState> onNavigatorKey() => App.navigatorKey;
 
   /// Returns the App's ScaffoldMessenger Key.
   GlobalKey<ScaffoldMessengerState> onScaffoldMessengerKey() =>
@@ -1179,6 +1371,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   bool unsubscribe(State state) => _statesRouteObserver.unsubscribeState(state);
 
   /// Any and all StateX objects are all 'route' observers.
+  StatesRouteObserver get statesRouteObserver => _statesRouteObserver;
   final StatesRouteObserver _statesRouteObserver;
 
   /// Should update the built-in InheritedWidget's dependencies
@@ -1226,12 +1419,14 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   String _onOnGenerateTitle(BuildContext context) {
     //
     final genTitle = _onGenerateTitle ??
-        inGenerateTitle ??
         (context) {
           // If no title parameter was passed.
           String title;
           if (_title.isEmpty) {
             title = onTitle();
+            if (title.isEmpty && inGenerateTitle != null) {
+              title = inGenerateTitle!(context);
+            }
           } else {
             title = _title.trim();
           }
@@ -1511,30 +1706,30 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   }
 
   FlutterExceptionHandler? errorHandler;
+  bool? presentError;
   ErrorWidgetBuilder? errorScreen;
   ReportErrorHandler? errorReport;
 
   @Deprecated('use inErrorHandler instead')
   final void Function(FlutterErrorDetails details)? inError;
-
   final void Function(FlutterErrorDetails details)? inErrorHandler;
+
   final ErrorWidgetBuilder? inErrorScreen;
+
   final Future<void> Function(Object exception, StackTrace stack)?
       inErrorReport;
 
   /// Override to provide an 'overall' Error Handler for your app.
-  void onErrorHandler(FlutterErrorDetails details) {
-    // if (inErrorHandler != null) {
-    //   inErrorHandler!(details);
-    // }
-  }
+  void onErrorHandler(FlutterErrorDetails details) {}
 
   /// The Widget to display when an app's widget fails to display.
+  /// Override if you like.
   Widget onErrorScreen(FlutterErrorDetails details) => inErrorScreen != null
       ? inErrorScreen!(details)
       : AppWidgetErrorDisplayed(stackTrace: App.inDebugMode).builder(details);
 
   /// If there's a error reporting routine available.
+  /// Override if you like
   Future<void> onErrorReport(Object exception, StackTrace stack) async {
     if (inErrorReport != null) {
       await inErrorReport!(exception, stack);
@@ -1575,12 +1770,18 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     // In case there's an error in this routine
     inErrorRoutine = true;
 
-    // The base Error Handler
-    super.onError(details);
+    // Call the latest SateX object's error routine
+    // Possibly the error occurred there.
+    onStateError(details);
+
+    if (AppErrorHandler.presentError) {
+      // Logs 'every' error as the error count is reset.
+      logErrorDetails(details);
+    }
 
     try {
       // Call the App's error handler.
-      App.onError(details);
+      AppErrorHandler.flutterExceptionHandler?.call(details);
     } catch (e, stack) {
       recordException(e, stack);
     }
@@ -1591,20 +1792,22 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
       _onErrorInHandler();
     }
 
-    // If there's any 'inline function' error handler.
-    // It takes last precedence.
-    if (inErrorHandler != null || inError != null) {
-      try {
-        inError?.call(details);
-        inErrorHandler?.call(details);
-      } catch (e, stack) {
-        recordException(e, stack);
+    try {
+      // If an external handler was provided
+      if (errorHandler != null) {
+        onErrorHandler(details);
       }
-      // Always test if there was an error in the error handler
-      // Include it in the error reporting as well.
-      if (hasError) {
-        _onErrorInHandler();
-      }
+      // If there's any 'inline function' error handler.
+      // It takes last precedence.
+      inError?.call(details);
+      inErrorHandler?.call(details);
+    } catch (e, stack) {
+      recordException(e, stack);
+    }
+    // Always test if there was an error in the error handler
+    // Include it in the error reporting as well.
+    if (hasError) {
+      _onErrorInHandler();
     }
     inErrorRoutine = false;
   }

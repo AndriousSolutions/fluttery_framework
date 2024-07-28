@@ -62,6 +62,19 @@ class _ExampleAppState extends AppState {
           allowChangeUI: true, // Allow the app to change its design interface
           inInitAsync: () => Future.value(true), // Merely a test.
           inInitState: () {/* Optional inInitState() function */},
+          inErrorHandler: (details) {
+            final errorString = details.exceptionAsString();
+            if (errorString ==
+                'Exception: Fake error to demonstrate error handling!') {
+              assert(() {
+                if (kDebugMode) {
+                  print('########### Fake error caught again here.');
+                }
+                return true;
+              }());
+              return;
+            }
+          },
         );
 
   @override
@@ -97,4 +110,20 @@ class _ExampleAppState extends AppState {
   /// Place a breakpoint to see how it's built
   @override
   Widget build(BuildContext context) => super.build(context);
+
+  @override
+  void onErrorHandler(FlutterErrorDetails details) {
+    // An error was handled by a State object
+    if (errorStateName.isNotEmpty) {
+      return;
+    }
+    // Handle errors other than a State object error
+  }
+
+  @override
+  // ignore: unnecessary_overrides
+  void onError(FlutterErrorDetails details) {
+    // This is the app's State object's error routine.
+    super.onError(details);
+  }
 }

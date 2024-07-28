@@ -75,21 +75,12 @@ class ExampleAppController extends AppController {
 
     switch (_appNames[_appCount]) {
       case 'Word Pairs':
-//        widget = const WordPairs(key: ValueKey<String>('Word Pairs'));
-//        widget = WordPairs(key: key);
         widget = const WordPairs();
         break;
       case 'Counter':
         widget = CounterPage(key: key);
         break;
-//      case 'Contacts':
-// //        widget = const ContactsList(key: ValueKey<String>('Contacts'));
-// //        widget = ContactsList(key: key);
-//         widget = const ContactsList();
-//        break;
       case 'Inherited':
-//        widget = const HomePage(key: ValueKey<String>('Inherited'));
-//        widget = HomePage(key: key);
         widget = const HomePage();
         break;
       default:
@@ -133,17 +124,17 @@ class ExampleAppController extends AppController {
 
   Future<void> changeLocale() async {
     //
-    final locale = App.locale;
+    final appState = rootState! as AppState;
 
-    final locales = App.supportedLocales!;
+    final locale = appState.locale!;
 
-//    final initialItem = locales.indexOf(locale!);
+    final locales = appState.supportedLocales;
 
     // record selected locale
     Locale? appLocale;
 
     final spinner = SpinnerCupertino<Locale>(
-      initValue: locale!,
+      initValue: locale,
       values: locales,
       itemBuilder: (BuildContext context, int index) => Text(
         locales[index].countryCode == null
@@ -209,7 +200,8 @@ class ExampleAppController extends AppController {
           PopupMenuItem(
             key: const Key('localeMenuItem'),
             value: 'locale',
-            child: Text('${'Locale:'.tr} ${App.locale!.toLanguageTag()}'),
+            child: Text(
+                '${'Locale:'.tr} ${App.appState!.locale!.toLanguageTag()}'),
           ),
           if (App.useMaterial)
             PopupMenuItem(

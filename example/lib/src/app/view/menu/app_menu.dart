@@ -40,7 +40,8 @@ class AppMenu extends AppPopupMenu {
           PopupMenuItem(
             key: const Key('localeMenuItem'),
             value: 'locale',
-            child: Text('${'Locale:'.tr} ${App.locale!.toLanguageTag()}'),
+            child: Text(
+                '${'Locale:'.tr} ${App.appState!.locale!.toLanguageTag()}'),
           ),
         if (App.useMaterial)
           PopupMenuItem(

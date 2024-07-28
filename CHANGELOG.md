@@ -1,4 +1,39 @@
 
+## 4.26.0
+July 26, 2024
+- Deprecate more public getter properties for further security and cohesion
+  scaffoldMessengerKey locale supportedLocales
+- inErrorHandler parameter and onErrorHandler() function in example app
+- Deprecated App.errorHandler
+- class AppErrorHandler new parameters:
+  bool? presentError,
+  ParagraphStyle? paragraphStyle,
+  TextStyle? textStyle,
+  EdgeInsets? padding,
+  double? minimumWidth,
+  Color? backgroundColor,
+- static Future<bool> delete(String fileName, {bool? recursive}) async {
+- void go(String location, {Object? extra}) {
+- test_app.dart removed deprecated getters
+
+
+## 4.25.0
+June 28, 2024
+- Fluttery becoming more popular in more enterprise-wide projects,
+  tighter cohesion is necessary for more effective functionality and for more security:
+  Therefore some 40 properties once readily accessible now have their getters deprecated:
+    home routeInformationProvider routeInformationParser routerDelegate
+    backButtonDispatcher routerConfig routes initialRoute
+    onGenerateRoute onUnknownRoute navigatorObservers builder/transitBuilder
+    onGenerateTitle onNavigationNotification darkTheme highContrastTheme
+    highContrastDarkTheme themeMode themeAnimationDuration themeAnimationCurve
+    color localeListResolutionCallback localizationsDelegates localeResolutionCallback
+    debugShowMaterialGrid showPerformanceOverlay checkerboardRasterCacheImages
+    checkerboardOffscreenLayers showSemanticsDebugger debugShowWidgetInspector
+    debugShowCheckedModeBanner debugPaintSizeEnabled debugPaintBaselinesEnabled
+    debugPaintPointersEnabled debugPaintLayerBordersEnabled debugRepaintRainbowEnabled
+    shortcuts actions restorationScopeId scrollBehavior
+
 ## 4.24.0
 June 22, 2024
 - inError parameter deprecated use inErrorHandler instead

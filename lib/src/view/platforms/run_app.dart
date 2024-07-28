@@ -16,6 +16,9 @@ import 'package:fluttery_framework/view.dart' as v show AppErrorHandler;
 
 /// Add an Error Handler right at the start.
 void runApp(m.Widget app) {
+  // Don't call WidgetsFlutterBinding.ensureInitialized()
+  // since the runApp() function itself calls it internally
+
   // Instantiate the app's error handler.
   final handler = v.AppErrorHandler();
 

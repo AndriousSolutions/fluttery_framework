@@ -35,76 +35,98 @@ void testAppView(WidgetTester tester) {
   App.navigatorKey;
 
   // ignore: unused_local_variable
-  GlobalKey<ScaffoldMessengerState>? key = App.scaffoldMessengerKey;
+  GlobalKey<ScaffoldMessengerState>? key = App.appState!.scaffoldMessengerKey;
 
-  // ignore: unused_local_variable
-  Map<String, WidgetBuilder>? routes = App.routes;
+  // @Deprecated('Unnecessarily exposed property')
+  // // ignore: unused_local_variable
+  //     Map<String, WidgetBuilder>? routes = App.routes;
 
-  // ignore: unused_local_variable
-  String? initialRoute = App.initialRoute;
+  // @Deprecated('Unnecessarily exposed property')
+  // // ignore: unused_local_variable
+  //     String? initialRoute = App.initialRoute;
 
-  // ignore: unused_local_variable
-  RouteFactory? onGenerateRoute = App.onGenerateRoute;
+  // @Deprecated('Unnecessarily exposed property')
+  // // ignore: unused_local_variable
+  //     RouteFactory? onGenerateRoute = App.onGenerateRoute;
 
-  // ignore: unused_local_variable
-  RouteFactory? onUnknownRoute = App.onUnknownRoute;
+  // @Deprecated('Unnecessarily exposed property')
+  // // ignore: unused_local_variable
+  //     RouteFactory? onUnknownRoute = App.onUnknownRoute;
 
-  // ignore: unused_local_variable
-  List<NavigatorObserver>? navigatorObservers = App.navigatorObservers;
+  // @Deprecated('Unnecessarily exposed property')
+  // // ignore: unused_local_variable
+  //     List<NavigatorObserver>? navigatorObservers = App.navigatorObservers;
 
-  // ignore: unused_local_variable
-  TransitionBuilder? builder = App.builder;
+  // @Deprecated('Unnecessarily exposed property')
+  // // ignore: unused_local_variable
+  //     TransitionBuilder? builder = App.builder;
 
-  // ignore: unused_local_variable
-  String? title = App.title;
+  // @Deprecated('Unnecessarily exposed property')
+  // // ignore: unused_local_variable
+  //     String? title = App.title;
 
-  // ignore: unused_local_variable
-  GenerateAppTitle? onGenerateTitle = App.onGenerateTitle;
+  // @Deprecated('Unnecessarily exposed property')
+  // // ignore: unused_local_variable
+  //     GenerateAppTitle? onGenerateTitle = App.onGenerateTitle;
 
   App.getMaterialColor(Colors.red);
 
-  // ignore: unused_local_variable
-  Color? color = App.color;
+  // @Deprecated('Unnecessarily exposed property')
+  // // ignore: unused_local_variable
+  //     Color? color = App.color;
 
-  // ignore: unused_local_variable
-  Iterable<LocalizationsDelegate<dynamic>>? delegates =
-      App.localizationsDelegates;
+  // @Deprecated('Unnecessarily exposed property')
+  // // ignore: unused_local_variable
+  //     Iterable<LocalizationsDelegate<dynamic>>? delegates =
+  //     App.localizationsDelegates;
 
-  // ignore: unused_local_variable
-  LocaleResolutionCallback? callback = App.localeResolutionCallback;
+  // @Deprecated('Unnecessarily exposed property')
+  // // ignore: unused_local_variable
+  //     LocaleResolutionCallback? callback = App.localeResolutionCallback;
 
-  bool? debugShowMaterialGrid = App.debugShowMaterialGrid;
-  App.debugShowMaterialGrid = debugShowMaterialGrid;
+  // @Deprecated('Unnecessarily exposed property')
+  // bool? debugShowMaterialGrid = App.debugShowMaterialGrid;
+  // App.debugShowMaterialGrid = debugShowMaterialGrid;
 
-  bool? showPerformanceOverlay = App.showPerformanceOverlay;
-  App.showPerformanceOverlay = showPerformanceOverlay;
+  // @Deprecated('Unnecessarily exposed property')
+  // bool? showPerformanceOverlay = App.showPerformanceOverlay;
+  // App.showPerformanceOverlay = showPerformanceOverlay;
 
-  bool? checkerboardRasterCacheImages = App.checkerboardRasterCacheImages;
-  App.checkerboardRasterCacheImages = checkerboardRasterCacheImages;
+  // @Deprecated('Unnecessarily exposed property')
+  // bool? checkerboardRasterCacheImages = App.checkerboardRasterCacheImages;
+  // App.checkerboardRasterCacheImages = checkerboardRasterCacheImages;
 
-  bool? checkerboardOffscreenLayers = App.checkerboardOffscreenLayers;
-  App.checkerboardOffscreenLayers = checkerboardOffscreenLayers;
+  // @Deprecated('Unnecessarily exposed property')
+  // bool? checkerboardOffscreenLayers = App.checkerboardOffscreenLayers;
+  // App.checkerboardOffscreenLayers = checkerboardOffscreenLayers;
 
-  bool? showSemanticsDebugger = App.showSemanticsDebugger;
-  App.showSemanticsDebugger = showSemanticsDebugger;
+  // @Deprecated('Unnecessarily exposed property')
+  // bool? showSemanticsDebugger = App.showSemanticsDebugger;
+  // App.showSemanticsDebugger = showSemanticsDebugger;
 
-  bool? debugShowCheckedModeBanner = App.debugShowCheckedModeBanner;
-  App.debugShowCheckedModeBanner = debugShowCheckedModeBanner;
+  // @Deprecated('Unnecessarily exposed property')
+  // bool? debugShowCheckedModeBanner = App.debugShowCheckedModeBanner;
+  // App.debugShowCheckedModeBanner = debugShowCheckedModeBanner;
 
-  bool? debugPaintSizeEnabled = App.debugPaintSizeEnabled;
-  App.debugPaintSizeEnabled = debugPaintSizeEnabled;
+  // @Deprecated('Unnecessarily exposed property')
+  // bool? debugPaintSizeEnabled = App.debugPaintSizeEnabled;
+  // App.debugPaintSizeEnabled = debugPaintSizeEnabled;
 
-  bool? debugPaintBaselinesEnabled = App.debugPaintBaselinesEnabled;
-  App.debugPaintBaselinesEnabled = debugPaintBaselinesEnabled;
+  // @Deprecated('Unnecessarily exposed property')
+  // bool? debugPaintBaselinesEnabled = App.debugPaintBaselinesEnabled;
+  // App.debugPaintBaselinesEnabled = debugPaintBaselinesEnabled;
 
-  bool? debugPaintPointersEnabled = App.debugPaintPointersEnabled;
-  App.debugPaintPointersEnabled = debugPaintPointersEnabled;
+  // @Deprecated('Unnecessarily exposed property')
+  // bool? debugPaintPointersEnabled = App.debugPaintPointersEnabled;
+  // App.debugPaintPointersEnabled = debugPaintPointersEnabled;
 
-  bool? debugPaintLayerBordersEnabled = App.debugPaintLayerBordersEnabled;
-  App.debugPaintLayerBordersEnabled = debugPaintLayerBordersEnabled;
+  // @Deprecated('Unnecessarily exposed property')
+  // bool? debugPaintLayerBordersEnabled = App.debugPaintLayerBordersEnabled;
+  // App.debugPaintLayerBordersEnabled = debugPaintLayerBordersEnabled;
 
-  bool? debugRepaintRainbowEnabled = App.debugRepaintRainbowEnabled;
-  App.debugRepaintRainbowEnabled = debugRepaintRainbowEnabled;
+  // @Deprecated('Unnecessarily exposed property')
+  // bool? debugRepaintRainbowEnabled = App.debugRepaintRainbowEnabled;
+  // App.debugRepaintRainbowEnabled = debugRepaintRainbowEnabled;
 
   App.platform;
 

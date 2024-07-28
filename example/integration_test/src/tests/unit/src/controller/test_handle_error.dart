@@ -7,6 +7,8 @@
 
 import '_unit_test_controller.dart';
 
+import '../view/_unit_test_view.dart';
+
 void testHandleError(WidgetTester tester) {
 //  test('Test HandleError Mixin', () async {
   //
@@ -32,21 +34,22 @@ void testHandleError(WidgetTester tester) {
     state.onError(details);
   }
 
-  AppErrorHandler? errorHandler = App.errorHandler;
+//  AppErrorHandler? errorHandler = App.errorHandler;
+  AppErrorHandler? errorHandler = AppErrorHandler();
 
 //  AppErrorHandler.errorDisplayWidget(details);
 
-  FlutterExceptionHandler? hnd = errorHandler?.onError;
+//  FlutterExceptionHandler? hnd = errorHandler.onError;
 
-//  Widget? widget = errorHandler?.displayError(details);
+  Widget? widget = errorHandler.displayError(details);
 
   bool mode = AppErrorHandler.inDebugMode;
 
-  // errorHandler?.reportError(error, StackTrace());
+  // errorHandler.reportError(error, StackTrace());
   //
-  // errorHandler?.isolateError(error, stack);
+  // errorHandler.isolateError(error, stack);
   //
-  // errorHandler?.runZonedError(error, StackTrace stack);
+  // errorHandler.runZonedError(error, StackTrace stack);
 
   final handler = _HandelErrorTester();
 

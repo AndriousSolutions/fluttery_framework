@@ -17,8 +17,14 @@ extension GoRouterExtension on BuildContext {
       '';
 
   /// Navigate to a location.
-  void go(String location, {Object? extra}) =>
-      App.goRouter?.go(location, extra: extra);
+  void go(String location, {Object? extra}) {
+    final router = App.goRouter;
+    if (router == null) {
+      push<void>(location, extra: extra);
+    } else {
+      router.go(location, extra: extra);
+    }
+  }
 
   /// Navigate to a named route.
   void goNamed(
@@ -35,8 +41,16 @@ extension GoRouterExtension on BuildContext {
       );
 
   /// Push a location onto the page stack.
-  Future<T?> push<T extends Object?>(String location, {Object? extra}) =>
-      App.goRouter?.push<T>(location, extra: extra) ?? Future.value();
+  Future<T?> push<T extends Object?>(String location, {Object? extra}) async {
+    T? result;
+    final router = App.goRouter;
+    if (router == null) {
+      result = await Navigator.pushNamed<T>(this, location, arguments: extra);
+    } else {
+      result = await router.push<T>(location, extra: extra);
+    }
+    return result;
+  }
 
   /// Navigate to a named route onto the page stack.
   Future<T?> pushNamed<T extends Object?>(
@@ -54,11 +68,27 @@ extension GoRouterExtension on BuildContext {
       Future.value();
 
   /// Returns `true` if there is more than 1 page on the stack.
-  bool canPop() => App.goRouter?.canPop() ?? true;
+  bool canPop() {
+    bool canPop;
+    final router = App.goRouter;
+    if (router == null) {
+      canPop = Navigator.canPop(this);
+    } else {
+      canPop = router.canPop();
+    }
+    return canPop;
+  }
 
   /// Pop the top page off the Navigator's page stack by calling
   /// [Navigator.pop].
-  void pop<T extends Object?>([T? result]) => App.goRouter?.pop<T>(result);
+  void pop<T extends Object?>([T? result]) {
+    final router = App.goRouter;
+    if (router == null) {
+      Navigator.pop<T>(this, result);
+    } else {
+      router.pop<T>(result);
+    }
+  }
 
   /// Replaces the top-most page of the page stack with the given URL location
   /// w/ optional query parameters, e.g. `/family/f2/person/p1?color=blue`.
@@ -86,8 +116,22 @@ extension GoRouterExtension on BuildContext {
 
   /// Replaces the top-most page of the page stack with the given one but treats
   /// it as the same page.
-  Future<T?> replace<T>(String location, {Object? extra}) =>
-      App.goRouter?.replace<T>(location, extra: extra) ?? Future.value();
+  Future<T?> replace<T>(String location, {Object? extra}) async
+//  => App.goRouter?.replace<T>(location, extra: extra) ?? Future.value();
+  {
+    T? result;
+    final router = App.goRouter;
+    if (router == null) {
+      result = await Navigator.pushReplacementNamed<T, T>(
+        this,
+        location,
+        arguments: extra,
+      );
+    } else {
+      result = await router.replace<T>(location, extra: extra);
+    }
+    return result;
+  }
 
   /// Replaces the top-most page with the named route and optional parameters,
   /// preserving the page key.

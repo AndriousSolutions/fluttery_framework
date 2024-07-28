@@ -92,10 +92,26 @@ class Files {
     return file.exists();
   }
 
+  /// Deletes the 'local' file
+  static Future<bool> delete(String fileName, {bool? recursive}) async {
+    bool delete = fileName.isNotEmpty;
+    if (!delete) {
+      return delete;
+    }
+    final file = await get(fileName);
+    try {
+      await file.delete(recursive: recursive ?? false);
+      delete = true;
+    } catch (e) {
+      delete = false;
+    }
+    return delete;
+  }
+
   /// Return the File object of the specified file.
   /// Pass in the name of the file.
   static Future<File> get(String fileName) async {
     final path = await localPath;
-    return File('$path/$fileName');
+    return File('$path${Platform.pathSeparator}$fileName');
   }
 }

@@ -10,17 +10,16 @@
 ![Fluttery_Framework](https://user-images.githubusercontent.com/32497443/185770676-89af0669-9040-4dc6-ad5b-412ed9fed5e5.jpg)
 Allows for faster and easier development with better maintainability. It looks like Flutter because it works like Flutter.
 There's no 're-inventing of the wheel' here.
-No more of a learning curve.
-If you know Flutter, you'll know Fluttery.  
+If you know Flutter, you'll know how to use this.  
 
 It supplies the adaptive functions and features expected of a production-ready app:
-* An extended version of the State class using Flutter's own intuitive State Management
-* A State Object Controller class for this new State class
+* An extended version of the State class offering a built-in FutureBuilder or InheritedWidget.
+* A State Object Controller class for its version of the State class
 * Built-in responsive interface capability utilizing the package, Sizer
 * Essential error handling capabilities
 * Easy implementation of both the Material & Cupertino interface for one app
+  That means one app but with both an Android and iOS interface. 
 * App-wide accessibility to system preferences
-* Built-in app notifications
 * A better menu bar
 * 27 device event-handlers 
 * A loading screen option
@@ -51,7 +50,7 @@ Free overview article on medium.com:
 As great as Flutter is, you will not create a ‘production-worthy’ app using Flutter right out of the box. 
 When building a Flutter app, it’s expected to be one codebase that runs on an Android phone, 
 an iOS phone, on Windows, on Linux, and or on the Web---and to do so seamlessly. 
-It is to display the appropriate design interface (Material or Cupertino) depending on the platform it’s running on, 
+It is to display the appropriate design interface (Material, Cupertino, etc.) depending on the platform it’s running on, 
 it is to have a responsive interface that displays its information correctly no matter the screen size of the device or platform, 
 and it is to fail gracefully if and when it encounters an error. 
 Flutter right out of the box does not have these capabilities.
@@ -72,14 +71,12 @@ if I didn’t find one I liked, I wrote my own:
    <li id="extend"><a href="https://pub.dartlang.org/packages/state_extended">StateX</a></li> 
 </ul>
 
-The Fluttery Framework uses packages, functions, and features, you will likely need in your own apps. 
+The Fluttery Framework uses packages you will likely need in your own apps. 
 It's a collection of software that's proven to be effective solutions to those capabilities required time and time again by a typical real-world app. 
-It’s an amalgamation of what's great about Flutter and what the Flutter community has contributed over the last few years.
-For example, if you know GetX and its many extensions, you’ll know Fluttery’s extensions as well. 
-Jonny Borges, the author of GetX, did a great job providing these extensions! 
-They’ve proven to be indispensable when writing a production-ready app. 
-As for GetX itself, it never became my chosen approach, but I did like his extensions, 
-and so I took them to be used in the Fluttery…accompanied by Jonny’s MIT license of course.
+It’s an amalgamation of what's great about Flutter and what the Flutter community has contributed over the last years.
+For example, GetX never became a chosen approach for me, but I did like Jonny Borges' many extensions, 
+and so I took them to be used in the Fluttery package--with Jonny’s MIT license of course.
+They’ve proven to be indispensable when writing a production-ready app.
 
 The [extensions]( https://github.com/AndriousSolutions/fluttery_framework/tree/3fa2b01917cd975350068b956013eaf2ccadda90/lib/view/extensions) alone are reason enough to use this package frankly:
 - extensions_view.dart
@@ -92,7 +89,7 @@ The [extensions]( https://github.com/AndriousSolutions/fluttery_framework/tree/3
 - string_extensions.dart
 - widget_extensions.dart
 
-As the years went by, I found packages that made my life easier and so they too were incorporated into Fluttery Framework:
+As the years went by, I found packages that made my life easier and so they too were incorporated into the Fluttery Framework:
 
 - [connectivity_plus]( https://pub.dartlang.org/packages/connectivity_plus)
 - [device_info_plus]( https://pub.dev/packages/device_info_plus)
@@ -113,7 +110,7 @@ As the years went by, I found packages that made my life easier and so they too 
 
 I was careful to choose only packages that fulfill the general requirements of a typical app. 
 I didn’t choose those too specific and only suitable for a particular problem domain. 
-This is a framework after all. It’s to serve as a ‘general framework’ for all my apps no matter how diverse each is. 
+After all, this is to serve as a ‘general framework’ for all my apps no matter how diverse each is. 
 Of course, for your specific app with its specific needs, 
 you then will add additional packages or write your own. 
 You supply the specific code; the Fluttery Framework supplies the rest.
@@ -126,4 +123,4 @@ I realized that having a controller object working with a State object would onl
 It would encourage a separation of an app’s interface from its event handling and business rules promoting a clean architecture.
 
 The Fluttery Framework is a culmination of sound Dart and Flutter packages from the Flutter community.
-Unlike other options out there, it works with Flutter not on top of it as a separate approach.
+Unlike other options out there, it works with Flutter; not on top of it as a separate approach.

@@ -46,7 +46,9 @@ class AppObject
 
   AppObject._() {
     // Initialize the Error Handler
+    // Soon deprecated
     _errorHandler = v.AppErrorHandler();
+    // v.AppErrorHandler();
 
     // Monitor the device's connectivity to the Internet.
     addConnectivityListener(this);
@@ -66,6 +68,7 @@ class AppObject
 
   /// Returns the current Error Handler.
   // Used in app_statefulwidget.dart and app_state.dart
+  @Deprecated('Should not be an exposed property')
   v.AppErrorHandler? get errorHandler => _errorHandler;
   v.AppErrorHandler? _errorHandler;
 
@@ -94,6 +97,7 @@ class AppObject
   // }
 
   /// The App State object.
+// Not yet gp  @Deprecated('Should not be an exposed property')
   v.AppState? get appState => _appState;
   set appState(v.AppState? state) {
     if (state != null && (_appState == null || hotReload)) {
@@ -105,13 +109,8 @@ class AppObject
   static v.AppState? _appState;
 
   /// App-level error handling.
-  void onError(FlutterErrorDetails details) {
-    // Call the App's error handler.
-    final handler = errorHandler?.flutterExceptionHandler;
-    if (handler != null) {
-      handler(details);
-    }
-  }
+  void onError(FlutterErrorDetails details) =>
+      v.AppErrorHandler.flutterExceptionHandler?.call(details);
 
   /// App-level error handling if async operation at start up fails
   void onAsyncError(AsyncSnapshot<bool> snapshot) {

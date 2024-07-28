@@ -19,22 +19,6 @@ class AppController extends c.StateXController implements ConnectivityListener {
   /// Optionally supply a 'State' object to be linked to this State Controller.
   AppController([super.state]);
 
-  /// Initialize any 'time-consuming' operations at the beginning.
-  /// Initialize items essential to the Mobile Applications.
-  /// Implement any asynchronous operations needed done at start up.
-  @override
-  Future<bool> initAsync() async {
-    return true;
-  }
-
-  /// Supply an 'error handler' routine if something goes wrong
-  /// in the corresponding initAsync() routine.
-  /// Returns true if the error was properly handled.
-  @override
-  bool onAsyncError(FlutterErrorDetails details) {
-    return false;
-  }
-
   /// If the device's connectivity changes.
   @override
   void onConnectivityChanged(ConnectivityResult result) {}

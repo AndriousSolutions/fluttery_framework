@@ -172,10 +172,8 @@ class _StateApp extends State<AppStatefulWidget> {
     if (disposeStatic) {
       //
       Prefs.dispose();
-
       //
       _assets.dispose();
-
       //
       widget._app.dispose();
     }
@@ -233,7 +231,7 @@ class _StateApp extends State<AppStatefulWidget> {
       // Have the framework handle the asynchronous error.
       widget._app.onAsyncError(snapshot);
 
-      _widget = v.App.errorHandler!.displayError(details);
+      _widget = v.AppErrorHandler().displayError(details);
       //
     } else if (snapshot.connectionState == ConnectionState.done &&
         snapshot.hasData &&
@@ -272,6 +270,7 @@ class _StateApp extends State<AppStatefulWidget> {
 
   // Determine if this app has been called by another _StateApp.
   void _isAppInApp() {
+    //
     final state = context.findRootAncestorStateOfType<_StateApp>();
     // A flag indicating if this app is called by another app
     _appInApp = state != null && state != this;

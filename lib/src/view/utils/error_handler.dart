@@ -46,7 +46,13 @@ class AppErrorHandler {
     FlutterExceptionHandler? handler,
     ErrorWidgetBuilder? screen,
     ReportErrorHandler? report,
+    bool? presentError,
     bool? allowNewErrorHandlers,
+    i.ParagraphStyle? paragraphStyle,
+    i.TextStyle? textStyle,
+    EdgeInsets? padding,
+    double? minimumWidth,
+    Color? backgroundColor,
   }) {
     //
     _this ??= AppErrorHandler._();
@@ -56,7 +62,13 @@ class AppErrorHandler {
       handler: handler,
       screen: screen,
       report: report,
+      presentError: presentError,
       allowNewErrorHandlers: allowNewErrorHandlers,
+      paragraphStyle: paragraphStyle,
+      textStyle: textStyle,
+      padding: padding,
+      minimumWidth: minimumWidth,
+      backgroundColor: backgroundColor,
     );
 
     return _this!;
@@ -74,8 +86,8 @@ class AppErrorHandler {
           _onError = null;
           try {
             _oldOnError!(details);
-          } catch (ex) {
-            // intentionally left empty.
+          } catch (ex, stack) {
+            // Intentionally blank
           }
         }
         return;
@@ -133,11 +145,12 @@ class AppErrorHandler {
   static bool ranApp = false;
 
   /// Return the current 'Flutter Exception Handler.'
-  FlutterExceptionHandler? get flutterExceptionHandler =>
+  static FlutterExceptionHandler? get flutterExceptionHandler =>
       _flutterExceptionHandler;
   static FlutterExceptionHandler? _flutterExceptionHandler;
 
   /// Return either the current and previous Error Handler.
+  @Deprecated('Should not be an exposed property')
   FlutterExceptionHandler? get onError => _onError ?? _oldOnError;
   static FlutterExceptionHandler? _onError;
 
@@ -147,6 +160,7 @@ class AppErrorHandler {
     ErrorWidgetBuilder? screen,
     ReportErrorHandler? report,
     bool? allowNewErrorHandlers,
+    bool? presentError,
     i.ParagraphStyle? paragraphStyle,
     i.TextStyle? textStyle,
     EdgeInsets? padding,
@@ -154,6 +168,8 @@ class AppErrorHandler {
     Color? backgroundColor,
   }) {
     // Any subsequent assignments are not permitted.
+    _presentError ??= presentError;
+
     _paragraphStyle ??= paragraphStyle;
 
     _textStyle ??= textStyle;
@@ -174,7 +190,6 @@ class AppErrorHandler {
     var reset = false;
 
     if (handler != null) {
-      // The default is to dump the error to the console. You can do more.
       _onError = handler;
       reset = true;
     }
@@ -207,6 +222,16 @@ class AppErrorHandler {
     // Something was set;
     return reset;
   }
+
+  /// Present error to user or not
+  static bool get presentError => _presentError ?? true;
+  static set presentError(bool? present) {
+    if (present != null) {
+      _presentError = present;
+    }
+  }
+
+  static bool? _presentError;
 
   /// The general appearance of the 'Error Widget' displayed when there's an error.
   static i.ParagraphStyle? _paragraphStyle;
