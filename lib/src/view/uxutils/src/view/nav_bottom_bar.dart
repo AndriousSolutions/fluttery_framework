@@ -1,8 +1,8 @@
 //
-/// This BottomNavigationBar wrapper is no advantage.
-/// BottomNavigationBar is a StatefulWidget!
-/// Merely assign to a variable and then you're free to update its items.
-/// This is three years old. You didn't know then.
+// /// This BottomNavigationBar wrapper is no advantage.
+// /// BottomNavigationBar is a StatefulWidget!
+// /// Merely assign to a variable and then you're free to update its items.
+// /// This is three years old. You didn't know then.
 // /// Copyright 2020 Andrious Solutions Ltd. All rights reserved.
 // /// Use of this source code is governed by a 2-clause BSD License.
 // /// The main directory contains that LICENSE file.

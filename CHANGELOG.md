@@ -1,4 +1,12 @@
 
+## 4.26.1
+August 06, 2024
+- state_extended.dart change, void didUpdateWidget(covariant T oldWidget) {
+  requires correction in example app:
+  void didUpdateWidget(RandomDog oldWidget) {
+  void didUpdateWidget(CounterPage oldWidget) {
+  void didUpdateWidget(WordPairs oldWidget) {
+
 ## 4.26.0
 July 26, 2024
 - Deprecate more public getter properties for further security and cohesion

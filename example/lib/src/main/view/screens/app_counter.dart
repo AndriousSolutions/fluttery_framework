@@ -301,7 +301,7 @@ class _CounterPageState extends StateX<CounterPage> {
   /// Override this method to respond when the [StatefulWidget] is recreated.
   @override
   // ignore: unnecessary_overrides
-  void didUpdateWidget(StatefulWidget oldWidget) {
+  void didUpdateWidget(CounterPage oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (inDebugMode) {

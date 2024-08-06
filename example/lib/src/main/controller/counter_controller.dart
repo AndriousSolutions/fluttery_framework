@@ -152,7 +152,7 @@ class CounterController extends AppController {
 
   /// Override this method to respond when the [StatefulWidget] is recreated.
   @override
-  void didUpdateWidget(StatefulWidget oldWidget) {
+  void didUpdateWidget(CounterPage oldWidget) {
     if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: didUpdateWidget in $state');

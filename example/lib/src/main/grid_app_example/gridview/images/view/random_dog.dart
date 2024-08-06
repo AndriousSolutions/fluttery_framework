@@ -116,7 +116,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   /// Override this method to respond when the [StatefulWidget] is recreated.
   @override
   // ignore: unnecessary_overrides
-  void didUpdateWidget(StatefulWidget oldWidget) {
+  void didUpdateWidget(RandomDog oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     /// The framework always calls build() after calling [didUpdateWidget], which

@@ -73,7 +73,7 @@ class _WordPairsState extends StateX<WordPairs> {
   /// Override this method to respond when the [widget] changes (e.g., to start
   /// implicit animations).
   @override
-  void didUpdateWidget(StatefulWidget oldWidget) {
+  void didUpdateWidget(WordPairs oldWidget) {
     super.didUpdateWidget(oldWidget);
   }
 
