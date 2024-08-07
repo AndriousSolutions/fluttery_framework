@@ -1,4 +1,9 @@
 
+## 4.27.0
+August 07, 2024
+- textButtonOption<bool>() in dialog_box.dart
+- 'Recreated' example app
+
 ## 4.26.1
 August 06, 2024
 - state_extended.dart change, void didUpdateWidget(covariant T oldWidget) {

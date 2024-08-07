@@ -83,32 +83,69 @@ Future<bool> showBox({
           scrollable: scrollable ?? false,
           actions: <Widget>[
             if (button02 != null)
-              TextButton(
-                key: const Key('button02'),
-                onPressed: () {
-                  if (press02 != null) {
-                    press02();
-                  }
-                  if (button02.onPressed != null) {
-                    button02.onPressed!();
-                  }
-                  Navigator.pop(context, button02.result ?? false);
-                },
-                child: Text(button02.text ?? 'Cancel'),
+              textButtonOption<bool>(
+//                key: const Key('button02'),
+//                context: context,
+                option: button02,
+                onPressed: press02,
+                text: 'Cancel',
+                result: false,
               ),
-            TextButton(
-              key: const Key('button01'),
-              onPressed: () {
-                if (press01 != null) {
-                  press01();
-                }
-                if (button01!.onPressed != null) {
-                  button01.onPressed!();
-                }
-                Navigator.pop(context, button01.result ?? true);
-              },
-              child: Text(button01!.text ?? 'OK'),
+            // if (button02 != null)
+            //   TextButton(
+            //     key: const Key('button02'),
+            //     onPressed: () {
+            //       if (press02 != null) {
+            //         press02();
+            //       }
+            //       if (button02.onPressed != null) {
+            //         button02.onPressed!();
+            //       }
+            //       Navigator.pop(context, button02.result ?? false);
+            //     },
+            //     onLongPress: button02.onLongPress,
+            //     onHover: button02.onHover,
+            //     onFocusChange: button02.onFocusChange,
+            //     style: button02.style,
+            //     focusNode: button02.focusNode,
+            //     autofocus: button02.autofocus ?? false,
+            //     clipBehavior: button02.clipBehavior,
+            //     statesController: button02.statesController,
+            //     isSemanticButton: button02.isSemanticButton ?? true,
+            //     iconAlignment: button02.iconAlignment,
+            //     child: button02.child ?? Text(button02.text ?? 'Cancel'),
+            //   ),
+            textButtonOption<bool>(
+              // key: const Key('button01'),
+//              context: context,
+              option: button01,
+              onPressed: press01,
+              text: 'OK',
+              result: true,
             ),
+            // TextButton(
+            //   key: const Key('button01'),
+            //   onPressed: () {
+            //     if (press01 != null) {
+            //       press01();
+            //     }
+            //     if (button01!.onPressed != null) {
+            //       button01.onPressed!();
+            //     }
+            //     Navigator.pop(context, button01.result ?? true);
+            //   },
+            //   onLongPress: button01?.onLongPress,
+            //   onHover: button01?.onHover,
+            //   onFocusChange: button01?.onFocusChange,
+            //   style: button01?.style,
+            //   focusNode: button01?.focusNode,
+            //   autofocus: button01?.autofocus ?? false,
+            //   clipBehavior: button01?.clipBehavior,
+            //   statesController: button01?.statesController,
+            //   isSemanticButton: button01?.isSemanticButton ?? true,
+            //   iconAlignment: button01?.iconAlignment ?? IconAlignment.start,
+            //   child: button01?.child ?? Text(button01!.text ?? 'OK'),
+            // ),
           ]),
     );
   } else {
@@ -161,6 +198,43 @@ Future<bool> showBox({
   }
   return result ?? false;
 }
+
+/// Supply a TextButton from the Option object
+Widget textButtonOption<T>({
+//  required BuildContext context,
+  required T result,
+  Option? option,
+  String? text,
+  VoidCallback? onPressed,
+}) =>
+    TextButton(
+      key: option?.key,
+      onPressed: () {
+        if (onPressed != null) {
+          onPressed();
+        }
+        if (option?.onPressed != null) {
+          option!.onPressed!();
+        }
+        var optionResult = option?.result;
+        // Must be the specified Type
+        if (optionResult != null && optionResult is! T) {
+          optionResult = null;
+        }
+        Navigator.pop<T>(App.context!, optionResult ?? result);
+      },
+      onLongPress: option?.onLongPress,
+      onHover: option?.onHover,
+      onFocusChange: option?.onFocusChange,
+      style: option?.style,
+      focusNode: option?.focusNode,
+      autofocus: option?.autofocus ?? false,
+      clipBehavior: option?.clipBehavior,
+      statesController: option?.statesController,
+      isSemanticButton: option?.isSemanticButton ?? true,
+      iconAlignment: option?.iconAlignment ?? IconAlignment.start,
+      child: option?.child ?? Text(option?.text ?? text ?? ''),
+    );
 
 /// Return a value T
 Future<T?> showDialogBox<T>(
@@ -342,20 +416,46 @@ mixin DialogOptions {
     Option option01, option02;
 
     if (button01 != null || press01 != null) {
+      final child = button01?.child;
       option01 = Option(
-          key: const Key('button01'),
-          text: button01?.text ?? 'Cancel',
-          onPressed: press01 ?? button01!.onPressed,
-          result: true);
+        key: const Key('button01'),
+        text: button01?.text ?? (child == null ? 'Cancel' : null),
+        onPressed: press01 ?? button01!.onPressed,
+        result: true,
+        onLongPress: button01?.onLongPress,
+        onHover: button01?.onHover,
+        onFocusChange: button01?.onFocusChange,
+        style: button01?.style,
+        focusNode: button01?.focusNode,
+        autofocus: button01?.autofocus,
+        clipBehavior: button01?.clipBehavior,
+        statesController: button01?.statesController,
+        isSemanticButton: button01?.isSemanticButton,
+        iconAlignment: button01?.iconAlignment,
+        child: child,
+      );
     } else {
       option01 = CancelOption(key: const Key('button01'));
     }
     if (button02 != null || press02 != null) {
+      final child = button02?.child;
       option02 = Option(
-          key: const Key('button02'),
-          text: button02?.text ?? 'OK',
-          onPressed: press02 ?? button02!.onPressed,
-          result: false);
+        key: const Key('button02'),
+        text: button02?.text ?? (child == null ? 'OK' : null),
+        onPressed: press02 ?? button02!.onPressed,
+        result: false,
+        onLongPress: button02?.onLongPress,
+        onHover: button02?.onHover,
+        onFocusChange: button02?.onFocusChange,
+        style: button02?.style,
+        focusNode: button02?.focusNode,
+        autofocus: button02?.autofocus,
+        clipBehavior: button02?.clipBehavior,
+        statesController: button02?.statesController,
+        isSemanticButton: button02?.isSemanticButton,
+        iconAlignment: button02?.iconAlignment,
+        child: child,
+      );
     } else {
       if (option01 is! OKOption) {
         option02 = OKOption(key: const Key('button02'));
@@ -364,52 +464,120 @@ mixin DialogOptions {
       }
     }
     if (switchButtons != null && switchButtons!) {
-      opList.add(_simpleOption(option02));
-      opList.add(_simpleOption(option01));
+      // opList.add(simpleOption(option02));
+      // opList.add(simpleOption(option01));
+      opList.add(textButtonOption<bool>(
+        option: option02,
+        result: option02.result,
+      ));
+      opList.add(textButtonOption<bool>(
+        option: option01,
+        result: option01.result,
+      ));
     } else {
-      opList.add(_simpleOption(option01));
-      opList.add(_simpleOption(option02));
+      // opList.add(simpleOption(option01));
+      // opList.add(simpleOption(option02));
+      opList.add(textButtonOption<bool>(
+        option: option01,
+        result: option01.result,
+      ));
+      opList.add(textButtonOption<bool>(
+        option: option02,
+        result: option02.result,
+      ));
     }
     return opList;
   }
-
-  Widget _simpleOption(Option option) => SimpleDialogOption(
-        key: option.key,
-        onPressed: () {
-          if (option.onPressed != null) {
-            option.onPressed!();
-          }
-          Navigator.pop(App.context!, option.result);
-        },
-        child: Text(option.text!),
-      );
 }
 
-/// The Button Option Class
-class Option {
-  /// Supply the button's text, callback and dynamic result value.
-  Option({this.key, this.text, this.onPressed, this.result})
-      : assert(result != null, 'Must provide a option result!');
+/// Simply onPressed() and Text.
+Widget simpleOption(Option option) => SimpleDialogOption(
+      key: option.key,
+      onPressed: () {
+        if (option.onPressed != null) {
+          option.onPressed!();
+        }
+        Navigator.pop(App.context!, option.result);
+      },
+      child: Text(option.text!),
+    );
 
-  /// Key used for testing
-  final Key? key;
+/// The Button Option Class
+class Option extends ButtonStyleButton {
+  /// Supply the button's text, callback and dynamic result value.
+  const Option({
+    super.key,
+    this.text,
+    this.result,
+    VoidCallback? onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
+    bool? autofocus,
+    Clip? clipBehavior,
+    WidgetStatesController? statesController,
+    bool? isSemanticButton,
+    Widget? child,
+    IconAlignment? iconAlignment,
+  })  : assert(result != null, 'Must provide a option result!'),
+        super(
+          onPressed: onPressed,
+          onLongPress: onLongPress,
+          onHover: onHover,
+          onFocusChange: onFocusChange,
+          style: style,
+          focusNode: focusNode,
+          autofocus: autofocus ?? false,
+          clipBehavior: clipBehavior,
+          statesController: statesController,
+          isSemanticButton: isSemanticButton,
+          child: child,
+          iconAlignment: iconAlignment ?? IconAlignment.start,
+        );
+
+  // /// Key used for testing
+  // final Key? key;
 
   /// The optional Button Text label.
   final String? text;
 
-  /// The optional callback function
-  final VoidCallback? onPressed;
+  // /// The optional callback function
+  // final VoidCallback? onPressed;
 
   /// The result of any type that's assigned when the button is pressed.
   final dynamic result;
+
+  @override
+  ButtonStyle defaultStyleOf(BuildContext context) => TextButton.styleFrom();
+
+  /// Returns the [TextButtonThemeData.style] of the closest
+  /// [TextButtonTheme] ancestor.
+  @override
+  ButtonStyle? themeStyleOf(BuildContext context) =>
+      TextButtonTheme.of(context).style;
 }
 
 /// The 'OK' Button Option
 class OKOption extends Option {
   /// Supply the optionally Callback when pressed.
   /// Assigns a boolean True to the result property.
-  OKOption({Key? key, VoidCallback? onPressed})
-      : super(
+  OKOption({
+    Key? key,
+    VoidCallback? onPressed,
+    super.onLongPress,
+    super.onHover,
+    super.onFocusChange,
+    super.style,
+    super.focusNode,
+    super.autofocus,
+    super.clipBehavior,
+    super.statesController,
+    super.isSemanticButton,
+    super.child,
+    super.iconAlignment,
+  }) : super(
           key: key,
           text: 'OK',
           onPressed: () {
@@ -425,8 +593,21 @@ class OKOption extends Option {
 class CancelOption extends Option {
   /// Supply the optionally Callback when pressed.
   /// Assigns a boolean False to the result property.
-  CancelOption({Key? key, VoidCallback? onPressed})
-      : super(
+  CancelOption({
+    Key? key,
+    VoidCallback? onPressed,
+    super.onLongPress,
+    super.onHover,
+    super.onFocusChange,
+    super.style,
+    super.focusNode,
+    super.autofocus,
+    super.clipBehavior,
+    super.statesController,
+    super.isSemanticButton,
+    super.child,
+    super.iconAlignment,
+  }) : super(
           key: key,
           text: 'Cancel',
           onPressed: () {
