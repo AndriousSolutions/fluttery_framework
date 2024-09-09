@@ -54,10 +54,13 @@ jobs:
 
       # Upload to codecov
       # Repository: https://github.com/codecov/codecov-action
-      - uses: codecov/codecov-action@v3
-        with:
-          token: ${{secrets.CODECOV_TOKEN}}
-          file: ./coverage/lcov.info
+      #- uses: codecov/codecov-action@v2
+      #  with:
+      #    token: ${{secrets.CODECOV_TOKEN}}
+      #    file: ./coverage/lcov.info
+      - uses: codecov/codecov-action@v4.2.0
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       # Get current datetime in ISO format
       - id: date
