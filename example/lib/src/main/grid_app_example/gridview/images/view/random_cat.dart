@@ -12,7 +12,7 @@ import '/src/view.dart';
 ///
 class RandomCat extends StatefulWidget {
   ///
-  const RandomCat({Key? key}) : super(key: key);
+  const RandomCat({super.key});
   @override
   State<StatefulWidget> createState() => _RandomCatState();
 }

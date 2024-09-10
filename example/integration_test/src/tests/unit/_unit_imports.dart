@@ -1,4 +1,4 @@
-/// Supply the dependencies for the example app
+// Supply the dependencies for the example app
 export 'package:fluttery_framework_example/src/controller.dart';
 
 export 'package:fluttery_framework_example/src/model.dart' hide StateSetter;

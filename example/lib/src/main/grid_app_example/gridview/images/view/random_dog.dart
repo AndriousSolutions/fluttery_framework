@@ -14,7 +14,7 @@ import '/src/view.dart';
 ///
 class RandomDog extends StatefulWidget {
   ///
-  const RandomDog({Key? key}) : super(key: key);
+  const RandomDog({super.key});
   @override
   State<StatefulWidget> createState() => _RandomDogState();
 }

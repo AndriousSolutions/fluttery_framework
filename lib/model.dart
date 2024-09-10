@@ -12,14 +12,26 @@ export 'package:flutter/material.dart' hide runApp;
 // Cupertino
 export 'package:flutter/cupertino.dart' hide RefreshCallback, runApp;
 
+// Assets
+export 'model/assets.dart';
+
 // file utils
-export '/src/model/fileutils/files.dart';
+export 'model/files.dart';
 
 // Install file
-export '/src/model/fileutils/installfile.dart';
+export 'model/installfile.dart';
 
 // Hash codes
-export '/src/model/utils/hash.dart';
+export 'model/hash.dart';
+
+// // file utils
+// export '/src/model/fileutils/files.dart';
+//
+// // Install file
+// export '/src/model/fileutils/installfile.dart';
+//
+// // Hash codes
+// export '/src/model/utils/hash.dart';
 
 // Preferences
 export 'package:prefs/prefs.dart' show Prefs;

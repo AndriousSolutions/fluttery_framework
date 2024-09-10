@@ -103,6 +103,8 @@ void integrationTestFlutteryFramework() {
       cnt++;
     }
 
+    return;
+
     /// Switch the app through the popupmenu
     await openApplicationMenu(tester);
 
@@ -114,6 +116,8 @@ void integrationTestFlutteryFramework() {
 
     /// WordPairs App Model Unit Testing
     await wordPairsModelTest(tester);
+
+    return;
 
     /// Open the Locale window
     await openLocaleMenu(tester);

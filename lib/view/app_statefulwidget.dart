@@ -9,7 +9,9 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
-import '/controller.dart' show Assets;
+import '/controller.dart' show AppErrorHandler, Assets;
+
+import '/model.dart';
 
 import '/view.dart' as v; //   show App, AppState, ReportErrorHandler;
 
@@ -38,24 +40,29 @@ abstract class AppStatefulWidget extends StatefulWidget {
   /// the loading screen or the App's error handling.
   AppStatefulWidget({
     Key? key,
-    this.loadingScreen,
-    this.circularProgressIndicator = true,
+    this.splashScreen,
+    this.inSplashScreen,
+    this.circularProgressIndicator,
     @Deprecated("The 'error' parameter is deprecated.")
     bool? allowNewHandlers = true,
   })  : _app = v.AppObject(),
         super(key: key ?? GlobalKey<_StateApp>()) {
     // Right at the start! Initialise the binding.
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    // defer displaying anything while starting up
-    if (circularProgressIndicator == null || !circularProgressIndicator!) {
+    final indicator = circularProgressIndicator ?? true;
+    if (!indicator) {
+      // defer displaying anything while starting up
       widgetsBinding.deferFirstFrame();
     }
   }
   //
   final v.AppObject _app;
 
-  /// A simple screen displayed then starting up.
-  final Widget? loadingScreen;
+  /// The app's Splash Screen if any (called in _futureBuilder() below)
+  final Widget? splashScreen;
+
+  /// The app's SplashScreen (called in _futureBuilder() below)
+  final Widget Function()? inSplashScreen;
 
   /// Whether CircularProgressIndicator is displayed or not
   final bool? circularProgressIndicator;
@@ -66,6 +73,10 @@ abstract class AppStatefulWidget extends StatefulWidget {
   /// Creates the App's State object.
   @override
   State createState() => _StateApp();
+
+  /// Supply a 'splash screen' (called in _futureBuilder() below)
+  Widget? onSplashScreen(BuildContext context) =>
+      inSplashScreen != null ? inSplashScreen!() : null;
 }
 
 /// This State object sets up the App to run.
@@ -197,19 +208,23 @@ class _StateApp extends State<AppStatefulWidget> {
   Widget _futureBuilder(AsyncSnapshot<bool> snapshot) {
     //
     Widget _widget;
+    Widget? splashScreen;
 
     if (snapshot.hasData &&
         snapshot.data! &&
         (v.App.isInit != null && v.App.isInit!)) {
       // Is the CircularProgressIndicator displayed
       final circularProgressIndicator =
-          widget.circularProgressIndicator ?? false;
+          widget.circularProgressIndicator ?? true;
 
       if (!circularProgressIndicator) {
         WidgetsFlutterBinding.ensureInitialized().allowFirstFrame();
       }
       // Supply a GlobalKey so the 'App' State object is not disposed of if moved in Widget tree.
       _widget = _AppStatefulWidget(key: _appGlobalKey, appState: _appState!);
+
+      // Clear memory of the Splash Screen if any
+      splashScreen = null;
       //
     } else if (snapshot.hasError) {
       //
@@ -231,7 +246,10 @@ class _StateApp extends State<AppStatefulWidget> {
       // Have the framework handle the asynchronous error.
       widget._app.onAsyncError(snapshot);
 
-      _widget = v.AppErrorHandler().displayError(details);
+      _widget = AppErrorHandler().displayError(details);
+
+      // Clear memory of the Splash Screen if any
+      splashScreen = null;
       //
     } else if (snapshot.connectionState == ConnectionState.done &&
         snapshot.hasData &&
@@ -246,12 +264,24 @@ class _StateApp extends State<AppStatefulWidget> {
       FlutterError.reportError(details);
 
       _widget = ErrorWidget.builder(details);
+
+      // Clear memory of the Splash Screen if any
+      splashScreen = null;
     } else {
       //
-      if (widget.loadingScreen != null) {
-        //
-        _widget = widget.loadingScreen!;
-      } else {
+      // In case the Splash Screen errors for some unknown reason.
+      try {
+        final widget = this.widget;
+        if (widget.circularProgressIndicator ?? true) {
+          // Only create once!
+          splashScreen ??=
+              widget.splashScreen ?? widget.onSplashScreen(context);
+        }
+      } catch (e) {
+        splashScreen = null;
+      }
+
+      if (splashScreen == null) {
         //
         if (UniversalPlatform.isAndroid || UniversalPlatform.isWeb) {
           //
@@ -260,6 +290,9 @@ class _StateApp extends State<AppStatefulWidget> {
           //
           _widget = const Center(child: CupertinoActivityIndicator());
         }
+      } else {
+        // A Splash Screen is displayed for a time
+        _widget = splashScreen;
       }
     }
     // Reset if there was a 'hot reload'.

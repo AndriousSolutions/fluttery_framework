@@ -16,7 +16,10 @@ Future<void> openLocaleMenu(WidgetTester tester) async {
   final locale = find.byKey(const Key('localeMenuItem'));
   expect(locale, findsOneWidget, reason: _location);
   await tester.tap(locale);
-  await tester.pumpAndSettle();
+  await tester.pump();
+
+  /// Wait for the popup
+  await tester.pumpAndSettle(const Duration(milliseconds: 800));
 
   /// Select a language
   await selectLanguage(tester);

@@ -47,6 +47,13 @@ class WordPairsTimer extends StateXController {
     model.addState(state);
   }
 
+  /// In case the Widget is return to the Widget tree
+  @override
+  void activate() {
+    // Create the Timer again.
+    _initTimer();
+  }
+
   /// In case this State object is unmounted from the widget tree.
   @override
   void deactivate() {
@@ -55,7 +62,7 @@ class WordPairsTimer extends StateXController {
   }
 
   /// IMPORTANT dispose() runs late and will cancel the *new* timer
-  /// deactivate() is more reliable.
+  /// Always use deactivate(). It is more reliable.
   // @override
   // void dispose() {
 //  //   _appStateObject = null;
@@ -79,14 +86,14 @@ class WordPairsTimer extends StateXController {
 
   /// Called when app returns from the background
   @override
-  void resumedLifecycleState() {
+  void resumedAppLifecycleState() {
     // Create the Timer again.
     _initTimer();
   }
 
   /// The application is running in the background.
   @override
-  void pausedLifecycleState() {
+  void pausedAppLifecycleState() {
     // Cancel the timer
     _cancelTimer();
   }
@@ -216,7 +223,7 @@ class WordPairsTimer extends StateXController {
 /// Alternate approach to spontaneous rebuilds using the framework's InheritedWidget.
 /// This class is assigned to the getter, wordPair.
 class _WordPair extends StatelessWidget {
-  const _WordPair(this.con, {Key? key}) : super(key: key);
+  const _WordPair(this.con, {super.key});
   final WordPairsTimer con;
   @override
   Widget build(BuildContext context) {

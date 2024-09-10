@@ -3,6 +3,8 @@
 
 export '../../_unit_imports.dart';
 
+export 'package:more_extensions/more_extensions.dart';
+
 export 'extensions/test_extensions.dart';
 export 'extensions/test_context_extensions.dart';
 export 'extensions/test_double_extensions.dart';

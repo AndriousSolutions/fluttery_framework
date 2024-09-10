@@ -10,7 +10,7 @@ import '/src/controller.dart';
 
 ///
 class CounterPage extends StatefulWidget {
-  const CounterPage({Key? key}) : super(key: key);
+  const CounterPage({super.key});
   @override
   State createState() => _CounterPageState();
 }
@@ -22,6 +22,7 @@ class _CounterPageState extends StateX<CounterPage> {
           controller: CounterController(),
           useInherited: CounterController().useInherited,
           routeAware: true,
+          showBinding: true,
         ) {
     con = controller as CounterController;
   }
@@ -71,7 +72,7 @@ class _CounterPageState extends StateX<CounterPage> {
             SizedBox(height: 10.h),
             Text('You have pushed the button this many times:'.tr,
                 style: const TextStyle(fontSize: 15)),
-            state((_) {
+            stateSet((_) {
               return Text(con.data, style: style);
             }),
 //            Text('$rxCounter', style: style),
@@ -86,7 +87,7 @@ class _CounterPageState extends StateX<CounterPage> {
                       value: con.useInherited,
                       onChanged: (v) {
                         con.useInherited = v;
-                        App.setState(() {});
+                        App.setState(() {}); //StatefulWidget has UniqueKey()
                       },
                     ),
                   ],
@@ -170,7 +171,7 @@ class _CounterPageState extends StateX<CounterPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 2.h, bottom: 2.h),
-                    child: state(
+                    child: stateSet(
                       (context) => Text(
                         con.data,
                         style: Theme.of(context).textTheme.headlineMedium,
@@ -265,10 +266,6 @@ class _CounterPageState extends StateX<CounterPage> {
   // ignore: unnecessary_overrides
   void deactivate() {
     super.deactivate();
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: deactivate in $this');
-    }
   }
 
   /// Called when this object is reinserted into the tree after having been
@@ -277,11 +274,6 @@ class _CounterPageState extends StateX<CounterPage> {
   // ignore: unnecessary_overrides
   void activate() {
     super.activate();
-
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: activate in $this');
-    }
   }
 
   /// The framework calls this method when this [StateX] object will never
@@ -291,11 +283,6 @@ class _CounterPageState extends StateX<CounterPage> {
   // ignore: unnecessary_overrides
   void dispose() {
     super.dispose();
-
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: dispose in $this');
-    }
   }
 
   /// Override this method to respond when the [StatefulWidget] is recreated.
@@ -303,11 +290,6 @@ class _CounterPageState extends StateX<CounterPage> {
   // ignore: unnecessary_overrides
   void didUpdateWidget(CounterPage oldWidget) {
     super.didUpdateWidget(oldWidget);
-
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didUpdateWidget in $this');
-    }
   }
 
   /// Called when immediately after [initState].
@@ -316,11 +298,6 @@ class _CounterPageState extends StateX<CounterPage> {
   // ignore: unnecessary_overrides
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeDependencies in $this');
-    }
   }
 
   /// Called whenever the application is reassembled during debugging, for
@@ -329,61 +306,36 @@ class _CounterPageState extends StateX<CounterPage> {
   // ignore: unnecessary_overrides
   void reassemble() {
     super.reassemble();
-
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: reassemble in $this');
-    }
   }
 
   /// Called when the host tells the application to push a new
   /// [RouteInformation] and a restoration state onto the router.
   @override
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPushRouteInformation in $this');
-    }
     return super.didPushRouteInformation(routeInformation);
   }
 
   /// Called when this State is *first* added to as a Route observer?!
   @override
   void didPush() {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPush in $this');
-    }
     super.didPush();
   }
 
   /// New route has been pushed, and this State object's route is no longer current.
   @override
   void didPushNext() {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPushNext in $this');
-    }
     super.didPushNext();
   }
 
   /// Called when this State is popped off a route.
   @override
   void didPop() {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPop in $this');
-    }
     super.didPop();
   }
 
   /// The top route has been popped off, and this route shows up.
   @override
   void didPopNext() {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPopNext in $this');
-    }
     super.didPopNext();
   }
 
@@ -392,54 +344,29 @@ class _CounterPageState extends StateX<CounterPage> {
   @override
   void didChangeMetrics() {
     super.didChangeMetrics();
-
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeMetrics in $this');
-    }
   }
 
   /// Called when the platform's text scale factor changes.
   @override
   void didChangeTextScaleFactor() {
     super.didChangeTextScaleFactor();
-
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeTextScaleFactor in $this');
-    }
   }
 
   /// Brightness changed.
   @override
   void didChangePlatformBrightness() {
     super.didChangePlatformBrightness();
-
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangePlatformBrightness in $this');
-    }
   }
 
   /// Called when the system tells the app that the user's locale has changed.
   @override
   void didChangeLocales(List<Locale>? locales) {
     super.didChangeLocales(locales);
-
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeLocales in $this');
-    }
   }
 
   /// Called when the system puts the app in the background or returns the app to the foreground.
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeAppLifecycleState in $this');
-    }
-
     super.didChangeAppLifecycleState(state);
 
     /// Passing these possible values:
@@ -450,64 +377,40 @@ class _CounterPageState extends StateX<CounterPage> {
     /// AppLifecycleState.paused (may enter the suspending state at any time)
   }
 
+  /// Either be in the progress of attaching when the  engine is first initializing
+  /// or after the view being destroyed due to a Navigator pop.
+  @override
+  void detachedAppLifecycleState() {}
+
   /// The application is visible and responding to user input.
   @override
-  void resumedLifecycleState() {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: resumedLifecycleState in $this');
-    }
-  }
+  void resumedAppLifecycleState() {}
 
   /// The application is in an inactive state and is not receiving user input.
   @override
-  void inactiveLifecycleState() {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: inactiveLifecycleState in $this');
-    }
-  }
+  void inactiveAppLifecycleState() {}
 
   /// All views of an application are hidden, either because the application is
   /// about to be paused (on iOS and Android), or because it has been minimized
   /// or placed on a desktop that is no longer visible (on non-web desktop), or
   /// is running in a window or tab that is no longer visible (on the web).
   @override
-  void hiddenLifecycleState() {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: hiddenLifecycleState in $this');
-    }
-  }
+  void hiddenAppLifecycleState() {}
 
   /// The application is not currently visible to the user, not responding to
   /// user input, and running in the background.
   @override
-  void pausedLifecycleState() {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: pausedLifecycleState in $this');
-    }
-  }
+  void pausedAppLifecycleState() {}
 
   /// Called when the system is running low on memory.
   @override
   void didHaveMemoryPressure() {
     super.didHaveMemoryPressure();
-
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didHaveMemoryPressure in $this');
-    }
   }
 
   /// Called when a request is received from the system to exit the application.
   @override
   Future<AppExitResponse> didRequestAppExit() async {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didRequestAppExit in $this');
-    }
     super.didRequestAppExit();
     return AppExitResponse.exit;
   }
@@ -516,10 +419,5 @@ class _CounterPageState extends StateX<CounterPage> {
   @override
   void didChangeAccessibilityFeatures() {
     super.didChangeAccessibilityFeatures();
-
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeAccessibilityFeatures in $this');
-    }
   }
 }

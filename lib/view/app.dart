@@ -23,7 +23,7 @@ import '/model.dart';
 
 import '/view.dart' as v;
 
-import '/controller.dart' show DeviceInfo;
+import '/controller.dart' show AppErrorHandler, DeviceInfo;
 
 /// Supply a 'high level' reference to the 'App object.'
 // ignore: non_constant_identifier_names
@@ -47,7 +47,7 @@ class AppObject
   AppObject._() {
     // Initialize the Error Handler
     // Soon deprecated
-    _errorHandler = v.AppErrorHandler();
+    _errorHandler = AppErrorHandler();
     // v.AppErrorHandler();
 
     // Monitor the device's connectivity to the Internet.
@@ -69,8 +69,8 @@ class AppObject
   /// Returns the current Error Handler.
   // Used in app_statefulwidget.dart and app_state.dart
   @Deprecated('Should not be an exposed property')
-  v.AppErrorHandler? get errorHandler => _errorHandler;
-  v.AppErrorHandler? _errorHandler;
+  AppErrorHandler? get errorHandler => _errorHandler;
+  AppErrorHandler? _errorHandler;
 
   /// Dispose the App properties.
   @override
@@ -82,19 +82,6 @@ class AppObject
     _errorHandler?.dispose();
     _errorHandler = null;
   }
-
-  // /// Assign the class with the AppState object.
-  // bool setAppState(v.AppState? state) {
-  //   // Don't continue if an app called an app.
-  //   final set = state != null && (_appState == null || hotReload);
-  //   if (set) {
-  //     //
-  //     _appState = state;
-  //     // Assign the 'app' object to the app's view
-  //     state.app = this;
-  //   }
-  //   return set;
-  // }
 
   /// The App State object.
 // Not yet gp  @Deprecated('Should not be an exposed property')
@@ -110,7 +97,7 @@ class AppObject
 
   /// App-level error handling.
   void onError(FlutterErrorDetails details) =>
-      v.AppErrorHandler.flutterExceptionHandler?.call(details);
+      AppErrorHandler.flutterExceptionHandler?.call(details);
 
   /// App-level error handling if async operation at start up fails
   void onAsyncError(AsyncSnapshot<bool> snapshot) {
@@ -128,17 +115,12 @@ class AppObject
   @override
   Future<void> getDeviceInfo() async {
     await super.getDeviceInfo();
-//    _packageInfo = await PackageInfo.fromPlatform();
     // There's 'no device' while testing and so don't collect device info.
     if (!inFlutterTest) {
       // Collect Device Information
       await DeviceInfo.initAsync();
     }
   }
-
-  // /// Passed to the CupertinoApp or MaterialApp
-  // @Deprecated('Prone to misuse. Can not be used more than once.')
-  // final widgetsAppKey = GlobalKey(debugLabel: 'mvc_app');
 
   /// Determine if the App initialized successfully.
   // ignore: unnecessary_getters_setters
@@ -190,15 +172,6 @@ class AppObject
   }
 
   ui.FlutterView? _window;
-
-  /// Return the navigator key used by the App's View.
-  final navigatorKey = GlobalKey<NavigatorState>();
-
-  /// Use this to navigate throughout the your app
-  NavigatorState get navigator => router;
-
-  /// Merely another name for it.
-  NavigatorState get router => navigatorKey.currentState!;
 
   /// Reference a possible GoRouter
   v.GoRouter? get goRouter => _goRouter;
@@ -500,14 +473,6 @@ mixin _AppThemeDataMixin {
 
   ThemeData? _themeData;
 
-  /// Retain the original Android theme
-  ThemeData? get baseTheme => _baseTheme;
-  set baseTheme(ThemeData? theme) {
-    if (_baseTheme == null && theme != null) {
-      _baseTheme = theme;
-    }
-  }
-
   // Stores the original theme of the app;
   ThemeData? _baseTheme;
 
@@ -539,17 +504,6 @@ mixin _AppThemeDataMixin {
   }
 
   CupertinoThemeData? _iOSThemeData;
-
-  /// Retain the original iOS theme
-  CupertinoThemeData? get baseiOSTheme => _baseiOSTheme;
-  set baseiOSTheme(CupertinoThemeData? theme) {
-    if (_baseiOSTheme != null && theme != null) {
-      _baseiOSTheme = theme;
-    }
-  }
-
-  // Stores the original theme of the app;
-  CupertinoThemeData? _baseiOSTheme;
 
   /// Set the app's general color theme supplying a [Color] value.
   Color? setThemeData({
@@ -593,32 +547,6 @@ mixin _AppThemeDataMixin {
     }
     return color;
   }
-
-  /// No longer used
-  // MaterialColor? _materialColor(Color? color) {
-  //   //
-  //   if (color == null) {
-  //     return null;
-  //   }
-  //   final strengths = <double>[.05];
-  //   final swatch = <int, Color>{};
-  //   final int r = color.red, g = color.green, b = color.blue;
-  //   for (int i = 1; i < 10; i++) {
-  //     strengths.add(double.parse((0.1 * i).toStringAsFixed(2)));
-  //   }
-  //   int cnt = 0;
-  //   for (final strength in strengths) {
-  //     final double ds = 0.5 - strength;
-  //     cnt = cnt + 1;
-  //     swatch[(strength * 1000).round()] = Color.fromRGBO(
-  //       r + ((ds < 0 ? r : (255 - r)) * ds).round(),
-  //       g + ((ds < 0 ? g : (255 - g)) * ds).round(),
-  //       b + ((ds < 0 ? b : (255 - b)) * ds).round(),
-  //       0.1 * cnt,
-  //     );
-  //   }
-  //   return MaterialColor(color.value, swatch);
-  // }
 
   ///
   MaterialColor? getMaterialColor(Color? color) {

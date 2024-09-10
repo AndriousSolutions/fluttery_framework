@@ -12,7 +12,7 @@ import '/src/view.dart';
 ///
 class RandomFox extends StatefulWidget {
   ///
-  const RandomFox({Key? key}) : super(key: key);
+  const RandomFox({super.key});
   @override
   State<StatefulWidget> createState() => _RandomFoxState();
 }

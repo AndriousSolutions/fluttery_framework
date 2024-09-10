@@ -12,7 +12,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/material.dart' as m show Widget, runApp;
 
-import 'package:fluttery_framework/view.dart' as v show AppErrorHandler;
+import '/controller.dart' as c show AppErrorHandler;
 
 /// Add an Error Handler right at the start.
 void runApp(m.Widget app) {
@@ -20,7 +20,7 @@ void runApp(m.Widget app) {
   // since the runApp() function itself calls it internally
 
   // Instantiate the app's error handler.
-  final handler = v.AppErrorHandler();
+  final handler = c.AppErrorHandler();
 
   // Isolate is not available on the Web
   if (!kIsWeb) {

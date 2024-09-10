@@ -36,24 +36,29 @@ final _stateHashCodes = <int, State>{};
 /// {@category StateX class}
 mixin RxStates on State {
   ///
-  Rx<T> watch<T>(T? obj) {
+  Rx<dynamic> watch<T>(T? obj) {
     Rx<T> rx;
     //
     if (obj == null) {
-      throw FlutterError.fromParts(<DiagnosticsNode>[
-        ErrorSummary(
-            "You can't 'watch' null to change! Null has been passed the a State object's watch() function."),
-        ErrorDescription(
-            "The watch() function is found only in the Fluttery Framework's State objects and cannot accept a null parameter value."),
-        ErrorHint(
-          'Typically ensure the object can never be null by testing for null before calling watch().',
-        ),
-      ]);
+      assert(() {
+        throw FlutterError.fromParts(<DiagnosticsNode>[
+          ErrorSummary(
+              "You can't 'watch' null to change! Null has been passed the a State object's watch() function."),
+          ErrorDescription(
+              "The watch() function is found only in the Fluttery Framework's State objects and cannot accept a null parameter value."),
+          ErrorHint(
+            'Typically ensure the object can never be null by testing for null before calling watch().',
+          ),
+        ]);
+      }());
+      // todo: This is inefficient!
+      final object = Object();
+      return Rxn(object, object.hashCode, hashCode);
     } else {
       switch (T) {
-        case const (Rx<dynamic>):
-          rx = watch((obj as Rx<dynamic>).value);
-          break;
+        // case const (Rx<dynamic>):
+        //   rx = watch((obj as Rx<dynamic>).value);
+        //   break;
         case String:
           rx = Rx<String>(obj as String, obj.hashCode, hashCode) as Rx<T>;
           break;
@@ -171,4 +176,10 @@ class Rx<T> {
 
   /// Returns the current [value]
   T get value => _value;
+}
+
+/// An 'empty' Reactive object
+class Rxn extends Rx<dynamic> {
+  ///
+  Rxn(super.value, super.hashCode, super.stateCode);
 }

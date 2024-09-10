@@ -1,11 +1,11 @@
-/// An absolute path is preferred but this source code is copied by other app.
+// An absolute path is preferred but this source code is copied by other app.
 import '/src/view.dart';
 
 /// An absolute path is preferred but this source code is copied by other app.
 import '/src/controller.dart';
 
 class WordPairs extends StatefulWidget {
-  const WordPairs({Key? key}) : super(key: key);
+  const WordPairs({super.key});
 
   @override
   State createState() => _WordPairsState();
@@ -101,21 +101,6 @@ class _WordPairsState extends StateX<WordPairs> {
   @override
   Future<bool> didPopRoute() async {
     return super.didPopRoute();
-  }
-
-  // Merely for demonstration purposes. Erase if not using.
-  /// Called when the host tells the app to push a new route onto the
-  /// navigator.
-  ///
-  /// Observers are expected to return true if they were able to
-  /// handle the notification. Observers are notified in registration
-  /// order until one returns true.
-  ///
-  /// This method exposes the `pushRoute` notification from
-  // ignore: comment_references
-  @override
-  Future<bool> didPushRoute(String route) async {
-    return super.didPushRoute(route);
   }
 
   // Merely for demonstration purposes. Erase if not using.

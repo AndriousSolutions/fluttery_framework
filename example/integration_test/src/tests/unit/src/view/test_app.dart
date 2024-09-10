@@ -32,8 +32,6 @@ void testAppView(WidgetTester tester) {
 
   App.mainWindow;
 
-  App.navigatorKey;
-
   // ignore: unused_local_variable
   GlobalKey<ScaffoldMessengerState>? key = App.appState!.scaffoldMessengerKey;
 

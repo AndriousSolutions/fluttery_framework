@@ -69,8 +69,6 @@ class ExampleAppController extends AppController {
       _appCount = 0;
     }
 
-    final Key key = UniqueKey();
-
     Widget? widget;
 
     switch (_appNames[_appCount]) {
@@ -78,7 +76,9 @@ class ExampleAppController extends AppController {
         widget = const WordPairs();
         break;
       case 'Counter':
-        widget = CounterPage(key: key);
+        widget = CounterPage(
+          key: UniqueKey(), //  UniqueKey() for built-in InheritedWidget
+        );
         break;
       case 'Inherited':
         widget = const HomePage();
@@ -148,6 +148,7 @@ class ExampleAppController extends AppController {
     );
 
     await DialogBox(
+      context: appState.lastContext!,
       title: 'Current Language'.tr,
       body: [spinner],
       press01: () {},
@@ -243,9 +244,18 @@ class ExampleAppController extends AppController {
   @override
   Future<bool> initAsync() async {
     final init = await super.initAsync();
+
+    //
+    state?.add(MaterialController());
+
+    if (inDebugMode) {
+      //ignore: avoid_print
+      print('############ Event: initAsync() in $this');
+    }
+
     //
     if (ExampleAppController().allowErrors) {
-      throw Exception('error thrown in template_controller in $state');
+      throw Exception('error thrown in template_controller() in $this');
     }
     return init;
   }
@@ -256,7 +266,7 @@ class ExampleAppController extends AppController {
   void deactivate() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: deactivate in $state');
+      print('############ Event: deactivate() in $this');
     }
   }
 
@@ -266,7 +276,7 @@ class ExampleAppController extends AppController {
   void activate() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: activate in $state');
+      print('############ Event: activate() in $this');
     }
   }
 
@@ -289,51 +299,38 @@ class ExampleAppController extends AppController {
   /// The application is not currently visible to the user, not responding to
   /// user input, and running in the background.
   @override
-  void pausedLifecycleState() {
+  void pausedAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: pausedLifecycleState in $state');
+      print('############ Event: pausedLifecycleState() in $this');
     }
   }
 
   /// Called when app returns from the background
   @override
-  void resumedLifecycleState() {
+  void resumedAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: resumedLifecycleState in $state');
-    }
-  }
-
-  /// If a State object is unexpectedly re-created
-  /// You have to 'update' the properties of the new StateX object using the
-  /// old StateX object because it's going to be disposed of.
-  @override
-  void updateNewStateX(oldState) {
-    /// When a State object destroyed and a new one is re-created!
-    /// This new StateX object may need to be updated with the old State object
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: updateNewStateX in $state');
+      print('############ Event: resumedLifecycleState() in $this');
     }
   }
 
   /// The application is in an inactive state and is not receiving user input.
   @override
-  void inactiveLifecycleState() {
+  void inactiveAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: inactiveLifecycleState in $state');
+      print('############ Event: inactiveLifecycleState() in $this');
     }
   }
 
   /// Either be in the progress of attaching when the engine is first initializing
   /// or after the view being destroyed due to a Navigator pop.
   @override
-  void detachedLifecycleState() {
+  void detachedAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: detachedLifecycleState in $state');
+      print('############ Event: detachedLifecycleState() in $this');
     }
   }
 
@@ -342,7 +339,7 @@ class ExampleAppController extends AppController {
   void didUpdateWidget(StatefulWidget oldWidget) {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didUpdateWidget in $state');
+      print('############ Event: didUpdateWidget() in $this');
     }
   }
 
@@ -353,7 +350,7 @@ class ExampleAppController extends AppController {
   void didChangeDependencies() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didChangeDependencies in $state');
+      print('############ Event: didChangeDependencies() in $this');
     }
   }
 
@@ -363,7 +360,7 @@ class ExampleAppController extends AppController {
   void reassemble() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: reassemble in $state');
+      print('############ Event: reassemble() in $this');
     }
   }
 
@@ -374,20 +371,9 @@ class ExampleAppController extends AppController {
   Future<bool> didPopRoute() async {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didPopRoute in $state');
+      print('############ Event: didPopRoute() in $this');
     }
     return super.didPopRoute();
-  }
-
-  /// Called when the host tells the app to push a new route onto the
-  /// navigator.
-  @override
-  Future<bool> didPushRoute(String route) async {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPushRoute in $state');
-    }
-    return super.didPushRoute(route);
   }
 
   /// Called when the host tells the application to push a new
@@ -396,7 +382,7 @@ class ExampleAppController extends AppController {
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didPushRouteInformation in $state');
+      print('############ Event: didPushRouteInformation() in $this');
     }
     return super.didPushRouteInformation(routeInformation);
   }
@@ -407,7 +393,7 @@ class ExampleAppController extends AppController {
   void didChangeMetrics() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didChangeMetrics in $state');
+      print('############ Event: didChangeMetrics() in $this');
     }
   }
 
@@ -416,7 +402,7 @@ class ExampleAppController extends AppController {
   void didChangeTextScaleFactor() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didChangeTextScaleFactor in $state');
+      print('############ Event: didChangeTextScaleFactor() in $this');
     }
   }
 
@@ -425,7 +411,7 @@ class ExampleAppController extends AppController {
   void didChangePlatformBrightness() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didChangePlatformBrightness in $state');
+      print('############ Event: didChangePlatformBrightness() in $this');
     }
   }
 
@@ -434,7 +420,7 @@ class ExampleAppController extends AppController {
   void didChangeLocales(List<Locale>? locales) {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didChangeLocale in $state');
+      print('############ Event: didChangeLocale() in $this');
     }
   }
 
@@ -448,7 +434,7 @@ class ExampleAppController extends AppController {
     if (inDebugMode) {
       //ignore: avoid_print
       print(
-          '############ Event: didChangeAppLifecycleState in ${this.state} for $this');
+          '############ Event: didChangeAppLifecycleState() in ${this.state} for $this');
     }
   }
 
@@ -457,7 +443,7 @@ class ExampleAppController extends AppController {
   void didHaveMemoryPressure() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didHaveMemoryPressure in $state');
+      print('############ Event: didHaveMemoryPressure() in $this');
     }
   }
 
@@ -466,7 +452,7 @@ class ExampleAppController extends AppController {
   void didChangeAccessibilityFeatures() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didChangeAccessibilityFeatures in $state');
+      print('############ Event: didChangeAccessibilityFeatures() in $this');
     }
   }
 }

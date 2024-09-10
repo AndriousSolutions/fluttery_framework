@@ -15,8 +15,9 @@ class AppDrawer extends v.AppDrawer {
         subtitle: const Text('Show Box'),
         onTap: () async {
           await showBox(
-            content: const Text('This is the showBox()'),
             context: App.context!,
+            useMaterial: App.useMaterial,
+            content: const Text('This is the showBox()'),
           );
         },
       ),
@@ -24,6 +25,7 @@ class AppDrawer extends v.AppDrawer {
         key: const Key('Dialog Box'),
         subtitle: const Text('Dialog Window'),
         onTap: () => dialogBox(
+          App.context!,
           title: 'This is a dialog box.',
         ),
       ),

@@ -38,6 +38,19 @@ dependencies:
 
   flutter_material_color_picker: ^1.0.0
 
+  # Extensions
+  more_extensions:
+    git:
+      url: https://github.com/AndriousSolutions/more_extensions.git
+  #    path: ../../more_extensions/
+
+  # https://pub.dev/packages/ui_widgets_utils
+  ui_widgets_utils: ^1.0.0
+#    path: ../../ui_widgets_utils/
+#    git:
+#      url: https://github.com/AndriousSolutions/ui_widgets_utils.git
+
+
 dev_dependencies:
 
   flutter_test:

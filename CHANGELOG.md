@@ -1,9 +1,19 @@
 
+## 5.0.0
+September 09, 2024
+- app.dart
+- app_appstate.dart
+- app_navigation.dart
+- app_state.dart
+- app_statefulwidget.dart
+- rx_impl.dart
+
 ## 4.27.0
 August 07, 2024
 - textButtonOption<bool>() in dialog_box.dart
 - 'Recreated' example app
-
+- super(useInherited: useInherited ?? true) {
+- 
 ## 4.26.1
 August 06, 2024
 - state_extended.dart change, void didUpdateWidget(covariant T oldWidget) {

@@ -15,6 +15,5 @@
 //     if (dart.library.html) 'package:fluttery_framework/src/view/platforms/run_webapp.dart'
 //     if (dart.library.io) 'package:fluttery_framework/src/view/platforms/run_app.dart'
 //     show runApp;
-export 'package:fluttery_framework/src/view/platforms/run_app.dart'
-    if (dart.library.html) 'package:fluttery_framework/src/view/platforms/run_webapp.dart'
-    show runApp;
+export '/controller/platforms/run_app.dart'
+    if (dart.library.html) '/controller/platforms/run_webapp.dart' show runApp;

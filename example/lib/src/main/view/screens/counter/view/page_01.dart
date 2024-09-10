@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-/// An absolute path is preferred but this source code is copied by other app.
+// An absolute path is preferred but this source code is copied by other app.
 import '/src/controller.dart';
 
 import '/src/view.dart';
@@ -20,7 +20,7 @@ class Page1 extends StatefulWidget {
 class Page1State extends StateX<Page1> {
   /// Supply a controller to this State object
   /// so to call its setState() function below.
-  Page1State() : super(controller: Controller()) {
+  Page1State() : super(controller: Controller(), showBinding: true) {
     // Add some additional controllers;
     addList([AnotherController(), YetAnotherController()]);
   }

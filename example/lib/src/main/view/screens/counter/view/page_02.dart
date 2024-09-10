@@ -21,7 +21,7 @@ class Page2 extends StatefulWidget {
 /// It a separate data source, and so the count is never reset to zero.
 class Page2State extends StateX<Page2> {
   ///
-  Page2State() : super(controller: Controller()) {
+  Page2State() : super(controller: Controller(), showBinding: true) {
     /// Cast to type, Controller
     con = controller as Controller;
   }

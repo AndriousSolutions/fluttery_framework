@@ -7,9 +7,15 @@
 
 // Replace 'dart:io' for Web applications
 
-import '/controller.dart' show AppController, StateXController;
+import '/controller.dart'
+    show
+        AppController,
+        AppErrorHandler,
+        AppWidgetErrorDisplayed,
+        ReportErrorHandler;
 
-import 'package:state_extended/state_extended.dart' as s show StateX;
+import 'package:state_extended/state_extended.dart' as s
+    show RouteObserverStates, StateX;
 
 import '/view.dart';
 
@@ -67,6 +73,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     Route<dynamic>? Function(RouteSettings settings)? onUnknownRoute,
     bool Function(NavigationNotification notification)?
         onNavigationNotification,
+    GlobalKey<NavigatorState>? navigatorKey,
     List<NavigatorObserver>? navigatorObservers,
     TransitionBuilder? builder,
     String? title,
@@ -124,7 +131,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.inErrorHandler,
     super.inErrorScreen,
     super.inErrorReport,
-    super.inError,
     super.presentError,
     super.inInitState,
     super.inInitAsync,
@@ -197,6 +203,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     _onGenerateRoute = onGenerateRoute;
     _onUnknownRoute = onUnknownRoute;
     _onNavigationNotification = onNavigationNotification;
+    _navigatorKey = navigatorKey;
     _navigatorObservers = navigatorObservers;
     _transitBuilder = builder;
     _onGenerateTitle = onGenerateTitle;
@@ -253,7 +260,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   }
 
   /// The 'App State Objects' [Key]
-  Key get key => _key ??= GlobalKey(); // it!
+  Key get key => _key ??= GlobalObjectKey(this);
   Key? _key;
 
   /// Allow the app to change the theme
@@ -336,9 +343,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   Widget build(BuildContext context) =>
       Sizer(builder: (context, orientation, deviceType) => buildF(context));
 
-  /// Override to impose your own WidgetsApp (like CupertinoApp or MaterialApp)
+  // Called by buildF()
   @override
-  Widget buildIn(BuildContext context) {
+  Widget builder(BuildContext context) {
     //
     Widget? app;
 
@@ -366,17 +373,18 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           this.debugEnhanceBuildTimelineArguments;
       debug.debugHighlightDeprecatedWidgets =
           this.debugHighlightDeprecatedWidgets;
+
+      // If running in a tester. Don't open the Widget tree inspector.
+      if (WidgetsBinding.instance is WidgetsFlutterBinding) {
+        WidgetsBinding.instance.debugShowWidgetInspectorOverrideNotifier.value =
+            _debugShowWidgetInspector ?? false;
+      }
       return true;
     }());
 
     // If supplied by a function
     _routerConfig ??= onRouterConfig();
 
-    // Usually RouterConfig is last in order of precedence
-    // Setting this flag makes it first.
-    // if (_widget.routerDelegate != null) {
-    // } else if (_widget.home != null || (widget.routes?.isNotEmpty ?? false) || widget.onGenerateRoute != null) {
-    // } else if (_widget.routerConfig != null) { }
     // Set the flag only if the configuration was provided
     _useRouterConfig = _routerConfig != null && (_useRouterConfig ?? false);
 
@@ -434,7 +442,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     L10n.supportedLocales = _supportedLocales;
 
     // An app builder may instead by supplied.
-    app = buildApp(context, appState: this);
+    app = buildApp(this);
 
     if (app == null) {
       //
@@ -447,7 +455,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           //
           app = CupertinoApp(
             key: key,
-            navigatorKey: App.navigatorKey,
+            navigatorKey: navigatorKey,
             theme: setiOSThemeData(context),
             routes: _routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
             initialRoute: _initialRoute ?? onInitialRoute(),
@@ -537,8 +545,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           //
           app = MaterialApp(
             key: key,
-            navigatorKey: App.navigatorKey,
-            scaffoldMessengerKey: scaffoldMessengerKey,
+            navigatorKey: navigatorKey,
+            scaffoldMessengerKey: _scaffoldMessengerKey ??=
+                onScaffoldMessengerKey(), // update getter
             routes: _routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
             initialRoute: _initialRoute ?? onInitialRoute(),
             onGenerateRoute: _onOnGenerateRoute,
@@ -594,7 +603,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
           //
           app = MaterialApp.router(
             key: key,
-            scaffoldMessengerKey: scaffoldMessengerKey,
+            scaffoldMessengerKey: _scaffoldMessengerKey ??=
+                onScaffoldMessengerKey(), // update getter
             routeInformationProvider: _routeInformationProvider,
             routeInformationParser: _routeInformationParser,
             routerDelegate: _routerDelegate,
@@ -647,15 +657,11 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
         }
       }
     }
-    // Set many variables now to null to reduce memory use
-//    _cleanupMemory();
     return app;
   }
 
   /// Supply the App widget if you wish.
-  // Supply only the AppState in future
-  // todo: 'BuildContext soon removed using AppState instead.
-  Widget? buildApp(BuildContext context, {AppState? appState}) => null;
+  Widget? buildApp(AppState? appState) => null;
 
   /// Determine if the dependencies should be updated.
   @override
@@ -664,9 +670,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   /// Assigning the Cupertino theme
   CupertinoThemeData? setiOSThemeData(BuildContext context) {
-    // Retain the original theme
-    App.baseiOSTheme = CupertinoTheme.of(context);
-
+    //
     CupertinoThemeData? cupertinoThemeData = _iOSTheme ?? oniOSTheme();
 
     if (_allowChangeTheme) {
@@ -683,13 +687,12 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
       if (themeData == null) {
         // The original theme
-        App.iOSThemeData ??= App.baseiOSTheme;
-        cupertinoThemeData = App.iOSThemeData;
+        App.iOSThemeData ??= CupertinoTheme.of(context).resolveFrom(context);
       } else {
         // Assign the provided theme
         App.iOSThemeData = themeData;
-        cupertinoThemeData = App.iOSThemeData;
       }
+      cupertinoThemeData = App.iOSThemeData;
     } else {
       App.iOSThemeData = cupertinoThemeData;
     }
@@ -698,9 +701,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   /// Assigning the Material theme
   ThemeData? setThemeData(BuildContext context) {
-    // Retain the original theme
-    App.baseTheme ??= Theme.of(context);
-
+    //
     ThemeData? themeData = _theme ?? onTheme();
 
     if (_allowChangeTheme) {
@@ -711,19 +712,19 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       }
     }
 
+    // If not explicitly provided by the user
     if (themeData == null) {
       // possibly Cupertino can provide
       final cupertinoThemeData = _iOSTheme ?? oniOSTheme() ?? App.iOSThemeData;
 
       if (cupertinoThemeData == null) {
         // The original theme
-        App.themeData ??= App.baseTheme;
-        themeData = App.themeData;
+        App.themeData ??= ThemeData.fallback(useMaterial3: false);
       } else {
         // Cupertino values
         App.themeData = cupertinoThemeData;
-        themeData = App.themeData;
       }
+      themeData = App.themeData;
     } else {
       App.themeData = themeData;
     }
@@ -817,46 +818,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
       _useCupertino = false;
     }
   }
-
-  /// Unnecessary since such variables passed by reference
-  // // Set many variables now to null to reduce memory use
-  // void _cleanupMemory() {
-  //   _routes = null;
-  //   _initialRoute = null;
-  //   _onGenerateRoute = null;
-  //   _onUnknownRoute = null;
-  //   _routeInformationProvider = null;
-  //   _routeInformationParser = null;
-  //   _routerDelegate = null;
-  //   _routerConfig = null;
-  //   _backButtonDispatcher = null;
-  //   _transitBuilder = null;
-  //   _onGenerateTitle = null;
-  //   _onNavigationNotification = null;
-  //   _color = null;
-  //   _theme = null;
-  //   _iOSTheme = null;
-  //   _darkTheme = null;
-  //   _highContrastTheme = null;
-  //   _highContrastDarkTheme = null;
-  //   _themeMode = null;
-  //   _themeAnimationDuration = null;
-  //   _themeAnimationCurve = null;
-  //   _localizationsDelegates = null;
-  //   _localeListResolutionCallback = null;
-  //   _localeResolutionCallback = null;
-  //   _debugShowMaterialGrid = null;
-  //   _showPerformanceOverlay = null;
-  //   _checkerboardRasterCacheImages = null;
-  //   _checkerboardOffscreenLayers = null;
-  //   _showSemanticsDebugger = null;
-  //   _debugShowWidgetInspector = null;
-  //   _debugShowCheckedModeBanner = null;
-  //   _shortcuts = null;
-  //   _actions = null;
-  //   _restorationScopeId = null;
-  //   _scrollBehavior = null;
-  // }
 }
 
 /// The underlying State object representing the App's View in the MVC pattern.
@@ -867,6 +828,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     AppController? controller,
     super.controllers,
     super.object,
+    super.showBinding,
     this.materialApp,
     this.cupertinoApp,
     Locale? locale,
@@ -876,7 +838,6 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     this.inErrorHandler,
     this.inErrorScreen,
     this.inErrorReport,
-    this.inError,
     this.presentError,
     this.inInitState,
     this.inInitAsync,
@@ -919,14 +880,8 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     this.inRestorationScopeId,
     this.inScrollBehavior,
     this.inAsyncError,
-  })  : currentErrorFunc = FlutterError.onError,
-        _statesRouteObserver = StatesRouteObserver(),
-        super(controller: controller) {
-    // If a tester is running. Don't switch out its error handler.
-    if (WidgetsBinding.instance is WidgetsFlutterBinding) {
-      // Place a breakpoint at onError() function below to debug error.
-      FlutterError.onError = _handleError;
-    }
+//  })  : _statesRouteObserver = StatesRouteObserver(),
+  }) : super(controller: controller) {
     // Listen to the device's connectivity.
     App.addConnectivityListener(controller);
 
@@ -942,7 +897,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   }
 
   /// Save the current Error Handler.
-  final FlutterExceptionHandler? currentErrorFunc;
+  // final FlutterExceptionHandler? currentErrorFunc;
 
   // The App's error handler.
   AppErrorHandler? _errorHandler;
@@ -952,114 +907,56 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   CupertinoApp? cupertinoApp;
 
   /// The App's 'home screen'
-  @Deprecated('Should not be an exposed property')
-  Widget? get home => _home ?? onHome();
   Widget? _home;
 
   /// All the fields found in the widgets, MaterialApp and CupertinoApp
-  @Deprecated('Should not be an exposed property')
-  RouteInformationProvider? get routeInformationProvider =>
-      _routeInformationProvider;
   RouteInformationProvider? _routeInformationProvider;
 
-  @Deprecated('Should not be an exposed property')
-  RouteInformationParser<Object>? get routeInformationParser =>
-      _routeInformationParser;
   RouteInformationParser<Object>? _routeInformationParser;
 
-  @Deprecated('Should not be an exposed property')
-  RouterDelegate<Object>? get routerDelegate => _routerDelegate;
   RouterDelegate<Object>? _routerDelegate;
 
-  @Deprecated('Should not be an exposed property')
-  BackButtonDispatcher? get backButtonDispatcher => _backButtonDispatcher;
   BackButtonDispatcher? _backButtonDispatcher;
 
   /// Use RouterConfig or not
   bool? _useRouterConfig;
 
-  @Deprecated('Should not be an exposed property')
-  RouterConfig<Object>? get routerConfig => _routerConfig ?? onRouterConfig();
   RouterConfig<Object>? _routerConfig;
-
   GlobalKey<ScaffoldMessengerState>? get scaffoldMessengerKey =>
-      _scaffoldMessengerKey ?? onScaffoldMessengerKey();
+      _scaffoldMessengerKey;
   GlobalKey<ScaffoldMessengerState>? _scaffoldMessengerKey;
-
-  @Deprecated('Should not be an exposed property')
-  Map<String, WidgetBuilder> get routes =>
-      _routes ?? onRoutes() ?? const <String, WidgetBuilder>{};
   Map<String, WidgetBuilder>? _routes;
-
-  @Deprecated('Should not be an exposed property')
-  String? get initialRoute => _initialRoute ?? onInitialRoute();
   String? _initialRoute;
-
-  @Deprecated('Should not be an exposed property')
-  RouteFactory? get onGenerateRoute => _onOnGenerateRoute;
   RouteFactory? _onGenerateRoute;
-
-  @Deprecated('Should not be an exposed property')
-  RouteFactory? get onUnknownRoute => _onOnUnknownRoute;
   RouteFactory? _onUnknownRoute;
 
-  // So to supply the RouteConfig
-  List<NavigatorObserver>? get navigatorObservers => _onNavigatorObservers();
-  List<NavigatorObserver>? _navigatorObservers;
+  /// Use this to navigate throughout the your app
+  NavigatorState get navigator => navigatorKey!.currentState!;
 
-  @Deprecated('Should not be an exposed property')
-  TransitionBuilder? get transitBuilder => _transitBuilder ?? onBuilder();
+  /// The Navigator State Key
+  GlobalKey<NavigatorState>? get navigatorKey =>
+      _navigatorKey ??= GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState>? _navigatorKey;
+
+  List<NavigatorObserver>? _navigatorObservers;
   TransitionBuilder? _transitBuilder;
 
   String get title => _appTitle;
   String _appTitle = ''; // actual title
   late String _title;
 
-  @Deprecated('Should not be an exposed property')
-  GenerateAppTitle? get onGenerateTitle => _onOnGenerateTitle;
   GenerateAppTitle? _onGenerateTitle;
-
-  @Deprecated('Should not be an exposed property')
-  NotificationListenerCallback<NavigationNotification>?
-      get onNavigationNotification => _onOnNavigationNotification;
   NotificationListenerCallback<NavigationNotification>?
       _onNavigationNotification;
-
   ThemeData? _theme;
   CupertinoThemeData? _iOSTheme;
-
-  @Deprecated('Should not be an exposed property')
-  ThemeData? get darkTheme => _darkTheme ?? onDarkTheme();
   ThemeData? _darkTheme;
-
-  @Deprecated('Should not be an exposed property')
-  ThemeData? get highContrastTheme =>
-      _highContrastTheme ?? onHighContrastTheme();
   ThemeData? _highContrastTheme;
-
-  @Deprecated('Should not be an exposed property')
-  ThemeData? get highContrastDarkTheme =>
-      _highContrastDarkTheme ?? onHighContrastDarkTheme();
   ThemeData? _highContrastDarkTheme;
-
-  @Deprecated('Should not be an exposed property')
-  ThemeMode get themeMode => _themeMode ?? onThemeMode() ?? ThemeMode.system;
   ThemeMode? _themeMode;
-
-  @Deprecated('Should not be an exposed property')
-  Duration get themeAnimationDuration =>
-      _themeAnimationDuration ??
-      onThemeAnimationDuration() ??
-      const Duration(milliseconds: 200);
   Duration? _themeAnimationDuration;
-
-  @Deprecated('Should not be an exposed property')
-  Curve get themeAnimationCurve =>
-      _themeAnimationCurve ?? onThemeAnimationCurve() ?? Curves.linear;
   Curve? _themeAnimationCurve;
 
-  @Deprecated('Should not be an exposed property')
-  Color get color => _color ?? onColor() ?? Colors.blue;
   Color? _color;
 
   Locale? get locale =>
@@ -1137,102 +1034,24 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   Iterable<LocalizationsDelegate<dynamic>>? _localizationsDelegates;
 
-  @Deprecated('Unnecessarily exposed function')
-  LocaleListResolutionCallback? get localeListResolutionCallback =>
-      _localeListResolutionCallback ?? onLocaleListResolutionCallback;
   LocaleListResolutionCallback? _localeListResolutionCallback;
 
-  @Deprecated('Unnecessarily exposed function')
-  LocaleResolutionCallback? get localeResolutionCallback =>
-      _localeResolutionCallback ?? onLocaleResolutionCallback;
   LocaleResolutionCallback? _localeResolutionCallback;
 
   List<Locale> get supportedLocales => _supportedLocales;
   late List<Locale> _supportedLocales;
 
-  @Deprecated('Should not be an exposed property')
-  bool get debugShowMaterialGrid =>
-      _debugShowMaterialGrid ?? onDebugShowMaterialGrid() ?? false;
-  @Deprecated('Should not be a readily available capability')
-  set debugShowMaterialGrid(bool? debug) {
-    if (debug != null) {
-      _debugShowMaterialGrid = debug;
-    }
-  }
-
   bool? _debugShowMaterialGrid;
-
-  @Deprecated('Should not be an exposed property')
-  bool get showPerformanceOverlay =>
-      _showPerformanceOverlay ?? onShowPerformanceOverlay() ?? false;
-  @Deprecated('Should not be a readily available capability')
-  set showPerformanceOverlay(bool? debug) {
-    if (debug != null) {
-      _showPerformanceOverlay = debug;
-    }
-  }
 
   bool? _showPerformanceOverlay;
 
-  @Deprecated('Should not be an exposed property')
-  bool get checkerboardRasterCacheImages =>
-      _checkerboardRasterCacheImages ??
-      onCheckerboardRasterCacheImages() ??
-      false;
-  @Deprecated('Should not be a readily available capability')
-  set checkerboardRasterCacheImages(bool? debug) {
-    if (debug != null) {
-      _checkerboardRasterCacheImages = debug;
-    }
-  }
-
   bool? _checkerboardRasterCacheImages;
-
-  @Deprecated('Should not be an exposed property')
-  bool get checkerboardOffscreenLayers =>
-      _checkerboardOffscreenLayers ?? onCheckerboardOffscreenLayers() ?? false;
-  @Deprecated('Should not be a readily available capability')
-  set checkerboardOffscreenLayers(bool? debug) {
-    if (debug != null) {
-      _checkerboardOffscreenLayers = debug;
-    }
-  }
 
   bool? _checkerboardOffscreenLayers;
 
-  @Deprecated('Should not be an exposed property')
-  bool get showSemanticsDebugger =>
-      _showSemanticsDebugger ?? onShowSemanticsDebugger() ?? false;
-  @Deprecated('Should not be a readily available capability')
-  set showSemanticsDebugger(bool? debug) {
-    if (debug != null) {
-      _showSemanticsDebugger = debug;
-    }
-  }
-
   bool? _showSemanticsDebugger;
 
-  @Deprecated('Should not be an exposed property')
-  bool get debugShowWidgetInspector =>
-      _debugShowWidgetInspector ?? onDebugShowWidgetInspector() ?? false;
-  @Deprecated('Should not be a readily available capability')
-  set debugShowWidgetInspector(bool? debug) {
-    if (debug != null) {
-      _debugShowWidgetInspector = debug;
-    }
-  }
-
   bool? _debugShowWidgetInspector;
-
-  @Deprecated('Should not be an exposed property')
-  bool get debugShowCheckedModeBanner =>
-      _debugShowCheckedModeBanner ?? onDebugShowCheckedModeBanner() ?? false;
-  @Deprecated('Should not be a readily available capability')
-  set debugShowCheckedModeBanner(bool? debug) {
-    if (debug != null) {
-      _debugShowCheckedModeBanner = debug;
-    }
-  }
 
   bool? _debugShowCheckedModeBanner;
 
@@ -1272,21 +1091,9 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   /// Show banners for deprecated widgets.
   late bool debugHighlightDeprecatedWidgets;
 
-  @Deprecated('Should not be an exposed property')
-  Map<LogicalKeySet, Intent>? get shortcuts => _shortcuts ?? onShortcuts();
   Map<LogicalKeySet, Intent>? _shortcuts;
-
-  @Deprecated('Should not be an exposed property')
-  Map<Type, Action<Intent>>? get actions => _actions ?? onActions();
   Map<Type, Action<Intent>>? _actions;
-
-  @Deprecated('Should not be an exposed property')
-  String? get restorationScopeId =>
-      _restorationScopeId ?? onRestorationScopeId();
   String? _restorationScopeId;
-
-  @Deprecated('Should not be an exposed property')
-  ScrollBehavior? get scrollBehavior => _scrollBehavior ?? onScrollBehavior();
   ScrollBehavior? _scrollBehavior;
 
   /// Used to complete asynchronous operations
@@ -1351,7 +1158,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   /// when a route is changed in the Navigator.
   List<NavigatorObserver> _onNavigatorObservers() {
     // Supply the StateX objects if any to observe the route changes
-    final observers = <NavigatorObserver>[_statesRouteObserver];
+    final observers = <NavigatorObserver>[s.RouteObserverStates()];
     // Observers from parameter?
     if (_navigatorObservers != null) {
       observers.addAll(_navigatorObservers!);
@@ -1364,15 +1171,15 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     return observers;
   }
 
-  /// State object becomes a route observer.
-  bool subscribe(State state) => _statesRouteObserver.subscribeState(state);
-
-  /// No longer a route observer
-  bool unsubscribe(State state) => _statesRouteObserver.unsubscribeState(state);
-
-  /// Any and all StateX objects are all 'route' observers.
-  StatesRouteObserver get statesRouteObserver => _statesRouteObserver;
-  final StatesRouteObserver _statesRouteObserver;
+  // /// State object becomes a route observer.
+  // bool subscribe(State state) => _statesRouteObserver.subscribeState(state);
+  //
+  // /// No longer a route observer
+  // bool unsubscribe(State state) => _statesRouteObserver.unsubscribeState(state);
+  //
+  // /// Any and all StateX objects are all 'route' observers.
+  // StatesRouteObserver get statesRouteObserver => _statesRouteObserver;
+  // final StatesRouteObserver _statesRouteObserver;
 
   /// Should update the built-in InheritedWidget's dependencies
   bool onUpdateShouldNotify(covariant InheritedWidget oldWidget) {
@@ -1697,11 +1504,8 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   @override
   void dispose() {
-    //
     _errorHandler?.dispose();
     _errorHandler = null;
-    // Return the original error routine.
-    FlutterError.onError = currentErrorFunc;
     super.dispose();
   }
 
@@ -1710,8 +1514,6 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   ErrorWidgetBuilder? errorScreen;
   ReportErrorHandler? errorReport;
 
-  @Deprecated('use inErrorHandler instead')
-  final void Function(FlutterErrorDetails details)? inError;
   final void Function(FlutterErrorDetails details)? inErrorHandler;
 
   final ErrorWidgetBuilder? inErrorScreen;
@@ -1736,21 +1538,6 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     }
   }
 
-  // Handle any errors in this State object.
-  void _handleError(FlutterErrorDetails details) {
-    // Set the original error routine. Allows the handler to throw errors.
-    FlutterError.onError = currentErrorFunc;
-    try {
-      onError(details);
-    } catch (e) {
-      // If the handler also errors, it's thrown to be handled
-      // by the original routine.
-      rethrow;
-    }
-    // If handled, return to this State object's error handler.
-    FlutterError.onError = _handleError;
-  }
-
   /// A flag indicating we're running in the error routine.
   ///
   /// Set to avoid infinite loop if in errors in the error routine.
@@ -1759,8 +1546,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   /// Supply an 'error handler' routine to fire when an error occurs.
   // details.exception, details.stack
   /// Override if you like to customize error handling.
-  // Allow a complete override. gp
-  //  @mustCallSuper
+  //  @mustCallSuper // Allow a complete override. gp
   @override
   void onError(FlutterErrorDetails details) {
     // Don't call this routine within itself.
@@ -1799,7 +1585,6 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
       }
       // If there's any 'inline function' error handler.
       // It takes last precedence.
-      inError?.call(details);
       inErrorHandler?.call(details);
     } catch (e, stack) {
       recordException(e, stack);
@@ -1838,28 +1623,6 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   }
 }
 
-/// A State object the runs its built-in FutureBuilder with every setState()
-///
-/// dartdoc:
-/// {@category StateX class}
-@Deprecated("Use StateX class with 'runAsync: true' instead")
-abstract class StateF<T extends StatefulWidget> extends StateX<T> {
-  ///
-  StateF({StateXController? controller})
-      : super(controller: controller, runAsync: true);
-}
-
-/// A State object that uses the built-in InheritedWidget
-///
-/// dartdoc:
-/// {@category StateX class}
-@Deprecated("Use StateX class with 'useInherited: true' instead")
-abstract class StateIn<T extends StatefulWidget> extends StateX<T> {
-  ///
-  StateIn({StateXController? controller})
-      : super(controller: controller, useInherited: true);
-}
-
 /// The extension of the State class.
 ///
 /// dartdoc:
@@ -1867,28 +1630,21 @@ abstract class StateIn<T extends StatefulWidget> extends StateX<T> {
 /// {@category StateX class}
 /// {@category Testing}
 class StateX<T extends StatefulWidget> extends s.StateX<T>
-    with NavigatorStateMethodsMixin, RxStates, StateXRouteAware {
+    with NavigatorStateMethodsMixin, RxStates {
   /// Default useInherited to false
-  StateX(
-      {super.controller, super.runAsync, super.useInherited, bool? routeAware})
-      : routeAware = routeAware ?? false;
-
-  @override
-  void initState() {
-    super.initState();
-    _appSubscribe();
-  }
-
-  AppState? _appState;
+  StateX({
+    super.controller,
+    super.runAsync,
+    super.useInherited,
+    @Deprecated('Always route-aware now.') bool? routeAware,
+    super.showBinding,
+  });
 
   /// This function is wrapped in a Builder widget.
   /// If you don't use it, use the buildAndroid() or buildiOS() function.
   @override
   Widget builder(BuildContext context) =>
       App.useMaterial ? buildAndroid(context) : buildiOS(context);
-
-  /// A flag.Is this State aware of changes in route or not.
-  final bool routeAware;
 
   /// This is an optional function allowing you to make the distinction.
   /// Build the Android interface.
@@ -1900,65 +1656,28 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
   /// By convention, this involves Cupertino Interface
   /// Defaults to the Material interface design if called yet not implemented
   Widget buildiOS(BuildContext context) => buildAndroid(context);
-
-  /// Use this to navigate throughout the your app
-  static NavigatorState get router => App.router;
-
-  @override
-  @mustCallSuper
-  void activate() {
-    super.activate();
-    _appSubscribe();
-  }
-
-  @override
-  @mustCallSuper
-  void deactivate() {
-    super.deactivate();
-    _appUnsubscribe();
-  }
-
-  /// Make a reference to the App's State object
-  bool _appSubscribe() {
-    // Subscribe to a Navigator observer
-    if (routeAware) {
-      _appState ??= App.appState;
-    }
-    // Subscribe this to be informed about changes to route.
-    _appState?.subscribe(this);
-    return _appState != null;
-  }
-
-  /// Drop a reference to the App's State object
-  bool _appUnsubscribe() {
-    final unsubscribe = _appState != null;
-    if (unsubscribe) {
-      //// No longer informed about changes to its route.
-      _appState?.unsubscribe(this);
-      _appState = null;
-    }
-    return unsubscribe;
-  }
 }
 
 /// Supply the Global Navigator and all its methods.
 mixin NavigatorStateMethodsMixin {
   /// Whether the navigator can be popped.
-  bool canPop() => App.router.canPop();
+  bool canPop() => App.appState?.navigator.canPop() ?? false;
 
   /// Complete the lifecycle for a route that has been popped off the navigator.
-  void finalizeRoute(Route<dynamic> route) => App.router.finalizeRoute(route);
+  void finalizeRoute(Route<dynamic> route) =>
+      App.appState!.navigator.finalizeRoute(route);
 
   /// Consults the current route's [Route.popDisposition] method, and acts
   /// accordingly, potentially popping the route as a result; returns whether
   /// the pop request should be considered handled.
   @optionalTypeArgs
   Future<bool> maybePop<T extends Object?>([T? result]) =>
-      App.router.maybePop<T>(result);
+      App.appState!.navigator.maybePop<T>(result);
 
   /// Pop the top-most route off the navigator.
   @optionalTypeArgs
-  void pop<T extends Object?>([T? result]) => App.router.pop<T>(result);
+  void pop<T extends Object?>([T? result]) =>
+      App.appState!.navigator.pop<T>(result);
 
   /// Pop the current route off the navigator and push a named route in its
   /// place.
@@ -1967,23 +1686,24 @@ mixin NavigatorStateMethodsMixin {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      App.router.popAndPushNamed<T, TO>(routeName,
+      App.appState!.navigator.popAndPushNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Calls [pop] repeatedly until the predicate returns true.
-  void popUntil(RoutePredicate predicate) => App.router.popUntil(predicate);
+  void popUntil(RoutePredicate predicate) =>
+      App.appState!.navigator.popUntil(predicate);
 
   /// Push the given route onto the navigator.
   @optionalTypeArgs
   Future<T?> push<T extends Object?>(Route<T> route) =>
-      App.router.push<T>(route);
+      App.appState!.navigator.push<T>(route);
 
   /// Push the given route onto the navigator, and then remove all the previous
   /// routes until the `predicate` returns true.
   @optionalTypeArgs
   Future<T?> pushAndRemoveUntil<T extends Object?>(
           Route<T> newRoute, RoutePredicate predicate) =>
-      App.router.pushAndRemoveUntil<T>(newRoute, predicate);
+      App.appState!.navigator.pushAndRemoveUntil<T>(newRoute, predicate);
 
   /// Push a named route onto the navigator.
   @optionalTypeArgs
@@ -1991,14 +1711,15 @@ mixin NavigatorStateMethodsMixin {
     String routeName, {
     Object? arguments,
   }) =>
-      App.router.pushNamed(routeName, arguments: arguments);
+      App.appState!.navigator.pushNamed(routeName, arguments: arguments);
 
   /// Push the route with the given name onto the navigator, and then remove all
   /// the previous routes until the `predicate` returns true.
   @optionalTypeArgs
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
           String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
-      App.router.pushNamedAndRemoveUntil<T>(newRouteName, predicate,
+      App.appState!.navigator.pushNamedAndRemoveUntil<T>(
+          newRouteName, predicate,
           arguments: arguments);
 
   /// Replace the current route of the navigator by pushing the given route and
@@ -2008,7 +1729,7 @@ mixin NavigatorStateMethodsMixin {
   Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
           Route<T> newRoute,
           {TO? result}) =>
-      App.router.pushReplacement<T, TO>(newRoute, result: result);
+      App.appState!.navigator.pushReplacement<T, TO>(newRoute, result: result);
 
   /// Replace the current route of the navigator by pushing the route named
   /// [routeName] and then disposing the previous route once the new route has
@@ -2018,30 +1739,32 @@ mixin NavigatorStateMethodsMixin {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      App.router.pushReplacementNamed<T, TO>(routeName,
+      App.appState!.navigator.pushReplacementNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Immediately remove `route` from the navigator, and [Route.dispose] it.
-  void removeRoute(Route<dynamic> route) => App.router.removeRoute(route);
+  void removeRoute(Route<dynamic> route) =>
+      App.appState!.navigator.removeRoute(route);
 
   /// Immediately remove a route from the navigator, and [Route.dispose] it. The
   /// route to be removed is the one below the given `anchorRoute`.
   void removeRouteBelow(Route<dynamic> anchorRoute) =>
-      App.router.removeRouteBelow(anchorRoute);
+      App.appState!.navigator.removeRouteBelow(anchorRoute);
 
   /// Replaces a route on the navigator that most tightly encloses the given
   /// context with a new route.
   @optionalTypeArgs
   void replace<T extends Object?>(
           {required Route<dynamic> oldRoute, required Route<T> newRoute}) =>
-      App.router.replace<T>(oldRoute: oldRoute, newRoute: newRoute);
+      App.appState!.navigator
+          .replace<T>(oldRoute: oldRoute, newRoute: newRoute);
 
   /// Replaces a route on the navigator with a new route. The route to be
   /// replaced is the one below the given `anchorRoute`.
   @optionalTypeArgs
   void replaceRouteBelow<T extends Object?>(
           {required Route<dynamic> anchorRoute, required Route<T> newRoute}) =>
-      App.router
+      App.appState!.navigator
           .replaceRouteBelow<T>(anchorRoute: anchorRoute, newRoute: newRoute);
 
   /// Pop the current route off the navigator and push a named route in its
@@ -2051,7 +1774,7 @@ mixin NavigatorStateMethodsMixin {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      App.router.restorablePopAndPushNamed<T, TO>(routeName,
+      App.appState!.navigator.restorablePopAndPushNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Push a new route onto the navigator.
@@ -2059,7 +1782,8 @@ mixin NavigatorStateMethodsMixin {
   String restorablePush<T extends Object?>(
           RestorableRouteBuilder<T> routeBuilder,
           {Object? arguments}) =>
-      App.router.restorablePush<T>(routeBuilder, arguments: arguments);
+      App.appState!.navigator
+          .restorablePush<T>(routeBuilder, arguments: arguments);
 
   /// Push a new route onto the navigator, and then remove all the previous
   /// routes until the `predicate` returns true.
@@ -2067,7 +1791,8 @@ mixin NavigatorStateMethodsMixin {
   String restorablePushAndRemoveUntil<T extends Object?>(
           RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate,
           {Object? arguments}) =>
-      App.router.restorablePushAndRemoveUntil<T>(newRouteBuilder, predicate,
+      App.appState!.navigator.restorablePushAndRemoveUntil<T>(
+          newRouteBuilder, predicate,
           arguments: arguments);
 
   /// Push a named route onto the navigator.
@@ -2076,7 +1801,8 @@ mixin NavigatorStateMethodsMixin {
     String routeName, {
     Object? arguments,
   }) =>
-      App.router.restorablePushNamed(routeName, arguments: arguments);
+      App.appState!.navigator
+          .restorablePushNamed(routeName, arguments: arguments);
 
   /// Push the route with the given name onto the navigator that most tightly
   /// encloses the given context, and then remove all the previous routes until
@@ -2084,7 +1810,8 @@ mixin NavigatorStateMethodsMixin {
   @optionalTypeArgs
   String restorablePushNamedAndRemoveUntil<T extends Object?>(
           String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
-      App.router.restorablePushNamedAndRemoveUntil<T>(newRouteName, predicate,
+      App.appState!.navigator.restorablePushNamedAndRemoveUntil<T>(
+          newRouteName, predicate,
           arguments: arguments);
 
   /// Replace the current route of the navigator by pushing a new route and
@@ -2095,7 +1822,7 @@ mixin NavigatorStateMethodsMixin {
           RestorableRouteBuilder<T> routeBuilder,
           {TO? result,
           Object? arguments}) =>
-      App.router.restorablePushReplacement<T, TO>(routeBuilder,
+      App.appState!.navigator.restorablePushReplacement<T, TO>(routeBuilder,
           result: result, arguments: arguments);
 
   /// Replace the current route of the navigator that most tightly encloses the
@@ -2106,7 +1833,7 @@ mixin NavigatorStateMethodsMixin {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      App.router.restorablePushReplacementNamed<T, TO>(routeName,
+      App.appState!.navigator.restorablePushReplacementNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Replaces a route on the navigator that most tightly encloses the given
@@ -2116,7 +1843,7 @@ mixin NavigatorStateMethodsMixin {
           {required Route<dynamic> oldRoute,
           required RestorableRouteBuilder<T> newRouteBuilder,
           Object? arguments}) =>
-      App.router.restorableReplace<T>(
+      App.appState!.navigator.restorableReplace<T>(
           oldRoute: oldRoute,
           newRouteBuilder: newRouteBuilder,
           arguments: arguments);
@@ -2128,7 +1855,7 @@ mixin NavigatorStateMethodsMixin {
           {required Route<dynamic> anchorRoute,
           required RestorableRouteBuilder<T> newRouteBuilder,
           Object? arguments}) =>
-      App.router.restorableReplaceRouteBelow<T>(
+      App.appState!.navigator.restorableReplaceRouteBelow<T>(
           anchorRoute: anchorRoute,
           newRouteBuilder: newRouteBuilder,
           arguments: arguments);

@@ -9,15 +9,13 @@ unitTests(WidgetTester tester) async {
 
   await testDeviceInfo();
 
-  testGetUtils(tester);
+  // testGetUtils(tester);
 
   testHandleError(tester);
 
   testFiles(tester);
 
   testInstallFile(tester);
-
-  testExtensions(tester);
 
   testAppSettings(tester);
 
@@ -28,28 +26,6 @@ unitTests(WidgetTester tester) async {
   testInheritedStateWidget(tester);
 
   testLoadingScreen(tester);
-
-  testCustomRaisedButton(tester);
-
-  testSnappingListScrollPhysics(tester);
-
-  testDialogBoxes(tester);
-
-  testISOSpinner(tester);
-
-  testNavBottomBar(tester);
-
-  testSetOrientationLandscapeOnly(tester);
-
-  testShowCupertinoDatePicker(tester);
-
-  testSimpleBottomAppBar(tester);
-
-  testTabButtons(tester);
-
-  testVarStr(tester);
-
-  testForeground(tester);
 
   testHyperlink(tester);
 

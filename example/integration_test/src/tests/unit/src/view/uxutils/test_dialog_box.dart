@@ -18,8 +18,9 @@ Future<void> testShowBox(WidgetTester tester) async {
   final result = await showBox(
     context: App.context!,
     text: 'This is a test.',
-    button01: Option(text: 'Stay', result: true),
-    button02: Option(text: 'New', result: false),
+    button01: const Option(text: 'Stay', result: true),
+    button02: const Option(text: 'New', result: false),
+    useMaterial: App.useMaterial,
   );
 }
 
@@ -27,6 +28,7 @@ void testDialogBox(WidgetTester tester) {
   //
 //  test('Test DialogBox', () async {});
   dialogBox(
+    App.context!,
     title: 'This is a test.',
     button01: OKOption(),
     button02: CancelOption(),

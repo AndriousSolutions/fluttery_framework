@@ -1,4 +1,6 @@
 //
+import 'package:fluttery_framework/view/utils/radiobutton_widget.dart';
+
 import '/src/view.dart';
 
 ///
@@ -44,6 +46,14 @@ class MaterialController extends RadioButtonsController<bool> {
 
   //
   @override
+  Future<bool> initAsync() async {
+    App.themeData =
+        ThemeData.fallback(useMaterial3: Prefs.getBool('material3', false));
+    return true;
+  }
+
+  //
+  @override
   void initState() {
     super.initState();
 
@@ -55,7 +65,9 @@ class MaterialController extends RadioButtonsController<bool> {
       // Record the 'Material3' version
       theme03Data ??= App.themeData;
 
-      if (!initValue) {
+      theme02Data ??= ThemeData.fallback(useMaterial3: false);
+
+      if (initValue) {
         // Set Material3 setting to false
         initValue = true;
         Prefs.setBool('material3', true);
@@ -64,17 +76,19 @@ class MaterialController extends RadioButtonsController<bool> {
       // Record the 'Material2' version
       theme02Data ??= App.themeData;
 
+      theme03Data ??= ThemeData.fallback(useMaterial3: true);
+
       if (initValue) {
         // Set Material3 setting to false
         initValue = false;
         Prefs.setBool('material3', false);
       }
     }
-
+    // The radio buttons group value
     groupValue = initValue;
   }
 
-  late bool initValue;
+  bool initValue = false;
 
   static ThemeData? theme03Data; // Material3
   static ThemeData? theme02Data; // Material2

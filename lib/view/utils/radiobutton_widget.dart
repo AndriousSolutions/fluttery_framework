@@ -2,15 +2,19 @@
 import 'dart:ui' as ui show TextHeightBehavior;
 
 ///
-import 'package:fluttery_framework/controller.dart';
+import '/controller.dart';
 
 ///
-import 'package:fluttery_framework/view.dart';
+import '/view.dart';
 
 ///
 abstract class RadioButtons<T> extends StatefulWidget {
   ///
-  const RadioButtons({super.key, required this.controller, this.inChanged});
+  const RadioButtons({
+    super.key,
+    required this.controller,
+    this.inChanged,
+  });
 
   /// The controller that
   final RadioButtonsController<T> controller;
@@ -18,13 +22,6 @@ abstract class RadioButtons<T> extends StatefulWidget {
   /// Optional method called when radio button is changed
   final void Function(T v)? inChanged;
 
-  //   Example:
-  //   Widget radioButtons(BuildContext context) => Row(
-  //         children: radioButtonsBuilder(
-  //           ['Java', 'Kotlin'],
-  //           controller,
-  //         ),
-  //       );
   /// Compose the radio widgets in this function.
   Widget radioButtons(BuildContext context);
 

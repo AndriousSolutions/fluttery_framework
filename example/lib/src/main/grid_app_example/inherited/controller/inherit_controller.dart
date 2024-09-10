@@ -1,9 +1,9 @@
 // Copyright 2022 Andrious Solutions Ltd. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-///
-///  The 'Animal' Controller to call the appropriate InheritedWidget.
-///
+//
+//  The 'Animal' Controller to call the appropriate InheritedWidget.
+//
 
 import '/src/controller.dart';
 
@@ -13,8 +13,8 @@ class InheritController extends StateXController {
   /// The InheritedWidget is the first State object it registered with.
   @override
   bool dependOnInheritedWidget(BuildContext? context) =>
-      startState!.dependOnInheritedWidget(context);
+      firstState!.dependOnInheritedWidget(context);
 
   /// Rebuild the InheritedWidget to also rebuild its dependencies.
-  void newAnimals() => startState!.notifyClients();
+  void newAnimals() => firstState!.notifyClients();
 }

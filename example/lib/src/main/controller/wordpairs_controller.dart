@@ -22,7 +22,7 @@ class WordPairsController extends StateXController {
     model.addState(state);
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: initState in $state');
+      print('############ Event: initState in $this');
     }
   }
 
@@ -85,7 +85,7 @@ class WordPairsController extends StateXController {
   /// The application is not currently visible to the user, not responding to
   /// user input, and running in the background.
   @override
-  void pausedLifecycleState() {
+  void pausedAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: pausedLifecycleState in $state');
@@ -94,29 +94,16 @@ class WordPairsController extends StateXController {
 
   /// Called when app returns from the background
   @override
-  void resumedLifecycleState() {
+  void resumedAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: resumedLifecycleState in $state');
     }
   }
 
-  /// If a State object is unexpectedly re-created
-  /// You have to 'update' the properties of the new StateX object using the
-  /// old StateX object because it's going to be disposed of.
-  @override
-  void updateNewStateX(oldState) {
-    /// When a State object destroyed and a new one is re-created!
-    /// This new StateX object may need to be updated with the old State object
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: updateNewStateX in $state');
-    }
-  }
-
   /// The application is in an inactive state and is not receiving user input.
   @override
-  void inactiveLifecycleState() {
+  void inactiveAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: inactiveLifecycleState in $state');
@@ -126,7 +113,7 @@ class WordPairsController extends StateXController {
   /// Either be in the progress of attaching when the engine is first initializing
   /// or after the view being destroyed due to a Navigator pop.
   @override
-  void detachedLifecycleState() {
+  void detachedAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: detachedLifecycleState in $state');

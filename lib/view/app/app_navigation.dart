@@ -106,7 +106,8 @@ extension AppNavigationExtension on AppObject {
   @optionalTypeArgs
   void replaceRouteBelow<T extends Object?>(
           {required Route<dynamic> anchorRoute, required Route<T> newRoute}) =>
-      router.replaceRouteBelow<T>(anchorRoute: anchorRoute, newRoute: newRoute);
+      appState!
+          .replaceRouteBelow<T>(anchorRoute: anchorRoute, newRoute: newRoute);
 
   /// Pop the current route off the navigator and push a named route in its
   /// place.
