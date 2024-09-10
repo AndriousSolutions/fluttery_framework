@@ -17,8 +17,6 @@ void testAppView(WidgetTester tester) {
 
   App.inFlutterTest;
 
-  App.errorHandler;
-
   App.isInit = App.isInit;
 
   App.hotReload = App.hotReload;

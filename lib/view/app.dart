@@ -48,7 +48,6 @@ class AppObject
     // Initialize the Error Handler
     // Soon deprecated
     _errorHandler = AppErrorHandler();
-    // v.AppErrorHandler();
 
     // Monitor the device's connectivity to the Internet.
     addConnectivityListener(this);
@@ -66,10 +65,7 @@ class AppObject
       _inFlutterTest ??= Platform.environment.containsKey('FLUTTER_TEST');
   bool? _inFlutterTest;
 
-  /// Returns the current Error Handler.
-  // Used in app_statefulwidget.dart and app_state.dart
-  @Deprecated('Should not be an exposed property')
-  AppErrorHandler? get errorHandler => _errorHandler;
+  // Current Error Handler.
   AppErrorHandler? _errorHandler;
 
   /// Dispose the App properties.
@@ -472,9 +468,6 @@ mixin _AppThemeDataMixin {
   }
 
   ThemeData? _themeData;
-
-  // Stores the original theme of the app;
-  ThemeData? _baseTheme;
 
   /// The app's current Cupertino theme.
   CupertinoThemeData? get iOSThemeData => _iOSThemeData;

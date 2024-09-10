@@ -5,11 +5,7 @@
 //          Created  24 Dec 2018
 //
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:flutter/material.dart';
-
-import '/controller.dart' show AppErrorHandler, Assets;
+import '/controller.dart' show AppErrorHandler;
 
 import '/model.dart';
 
@@ -18,8 +14,6 @@ import '/view.dart' as v; //   show App, AppState, ReportErrorHandler;
 /// Export the classes needed to use this file.
 export 'package:connectivity_plus/connectivity_plus.dart'
     show Connectivity, ConnectivityResult;
-
-import 'package:prefs/prefs.dart' show Prefs;
 
 import 'package:universal_platform/universal_platform.dart';
 

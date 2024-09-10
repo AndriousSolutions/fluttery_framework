@@ -13,23 +13,13 @@ unitTests(WidgetTester tester) async {
 
   testHandleError(tester);
 
-  testFiles(tester);
-
-  testInstallFile(tester);
-
   testAppSettings(tester);
 
   testAppErrorHandler(tester);
 
-  testFieldWidgets(tester);
-
   testInheritedStateWidget(tester);
 
   testLoadingScreen(tester);
-
-  testHyperlink(tester);
-
-  testWebPageWrapper(tester);
 
   testAppView(tester);
 

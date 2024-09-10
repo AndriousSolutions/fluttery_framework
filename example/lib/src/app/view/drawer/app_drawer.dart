@@ -1,7 +1,7 @@
 //
 import 'package:fluttery_framework/view.dart' as v;
 
-import 'package:fluttery_framework/view.dart' hide AppDrawer;
+import '/src/view.dart';
 
 class AppDrawer extends v.AppDrawer {
   factory AppDrawer({Key? key}) => _this ??= AppDrawer._(key);

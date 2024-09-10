@@ -12,41 +12,6 @@ void integrationTestFlutteryFramework() {
   setUp(() async {
     /// Allows for SharedPreferences to be ready for testing.
     SharedPreferences.setMockInitialValues({});
-
-    // /// MethodChannels don't work in testing. No native platform accessible
-    // /// getApplicationDocumentsDirectory() is given "."
-    // TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
-    //     .setMockMethodCallHandler(
-    //         const MethodChannel('plugins.flutter.io/path_provider'),
-    //         (MethodCall methodCall) async {
-    //   return ".";
-    // });
-
-    /// Never worked.
-    // ///
-    // TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
-    //     .setMockMethodCallHandler(
-    //         const MethodChannel(
-    //             'dev.fluttercommunity.plus/connectivity_status'),
-    //         (MethodCall methodCall) async {
-    //   return Future.value(
-    //       StreamController<ConnectivityResult>().stream.listen((value) {}));
-    //   // return Stream<ConnectivityResult>.fromFutures([
-    //   //   Future.value(ConnectivityResult.none),
-    //   //   Future.value(ConnectivityResult.wifi),
-    //   //   Future.value(ConnectivityResult.mobile)
-    //   // ]).asyncMap((data) async {
-    //   //   await Future.delayed(const Duration(seconds: 10));
-    //   //   return data;
-    //   // });
-    // });
-
-    // TestDefaultBinaryMessengerBinding.instance?.defaultBinaryMessenger
-    //     .setMockMethodCallHandler(
-    //         const MethodChannel('dev.fluttercommunity.plus/connectivity'),
-    //         (MethodCall methodCall) async {
-    //   return Future.value(ConnectivityResult.none);
-    // });
   });
 
   /// Runs after EACH test or group
@@ -103,6 +68,11 @@ void integrationTestFlutteryFramework() {
       cnt++;
     }
 
+    /// Unit testing
+    await unitTests(tester);
+
+    reportTestErrors();
+
     return;
 
     /// Switch the app through the popupmenu
@@ -121,10 +91,5 @@ void integrationTestFlutteryFramework() {
 
     /// Open the Locale window
     await openLocaleMenu(tester);
-
-    /// Unit testing
-    await unitTests(tester);
-
-    reportTestErrors();
   });
 }

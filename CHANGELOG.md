@@ -1,5 +1,5 @@
 
-## 5.0.0
+## 5.0.0+2
 September 09, 2024
 - app.dart
 - app_appstate.dart
@@ -7,6 +7,8 @@ September 09, 2024
 - app_state.dart
 - app_statefulwidget.dart
 - rx_impl.dart
+- Corrected Dart Analysis warnings
+- Include more unit tests
 
 ## 4.27.0
 August 07, 2024
