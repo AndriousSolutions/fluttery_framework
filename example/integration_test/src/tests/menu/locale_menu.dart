@@ -51,8 +51,8 @@ Future<void> selectLanguage(WidgetTester tester) async {
   await tester.pump();
 
   // Find the appropriate button even if translated.
-  var button = find.widgetWithText(SimpleDialogOption, 'OK');
-//  button = find.byKey(const Key('button02')); // another option
+  // final button = find.widgetWithText(SimpleDialogOption, 'OK');
+  final button = find.byKey(const Key('button02')); // another option
 
   if (button.evaluate().isNotEmpty) {
     expect(button, findsOneWidget, reason: _location);

@@ -80,9 +80,7 @@ class AppPopupMenu extends PopupMenuWidget<String> {
     super.inClipBehavior,
   }) : super(
           shape: shape ??
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           position: position ?? PopupMenuPosition.under,
         );
 }

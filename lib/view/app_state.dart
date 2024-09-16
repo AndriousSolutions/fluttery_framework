@@ -1630,7 +1630,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 /// {@category StateX class}
 /// {@category Testing}
 class StateX<T extends StatefulWidget> extends s.StateX<T>
-    with NavigatorStateMethodsMixin, RxStates {
+    with NavigatorStateMethodsMixin {
   /// Default useInherited to false
   StateX({
     super.controller,

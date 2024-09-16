@@ -37,8 +37,6 @@ abstract class AppStatefulWidget extends StatefulWidget {
     this.splashScreen,
     this.inSplashScreen,
     this.circularProgressIndicator,
-    @Deprecated("The 'error' parameter is deprecated.")
-    bool? allowNewHandlers = true,
   })  : _app = v.AppObject(),
         super(key: key ?? GlobalKey<_StateApp>()) {
     // Right at the start! Initialise the binding.

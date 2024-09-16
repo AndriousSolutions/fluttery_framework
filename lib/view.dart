@@ -59,9 +59,6 @@ export '/view/app_menu.dart';
 export '/view/app/app_appstate.dart';
 export '/view/app/app_navigation.dart';
 
-/// Reactive
-export '/view/rx_core/_view_rx.dart';
-
 /// Web
 export 'package:url_launcher/link.dart';
 export 'package:url_launcher/url_launcher.dart';

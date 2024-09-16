@@ -68,6 +68,9 @@ void integrationTestFlutteryFramework() {
       cnt++;
     }
 
+    /// Open the Locale window
+    await openLocaleMenu(tester);
+
     /// Unit testing
     await unitTests(tester);
 
@@ -88,8 +91,5 @@ void integrationTestFlutteryFramework() {
     await wordPairsModelTest(tester);
 
     return;
-
-    /// Open the Locale window
-    await openLocaleMenu(tester);
   });
 }

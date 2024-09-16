@@ -21,7 +21,7 @@ unitTests(WidgetTester tester) async {
 
   testLoadingScreen(tester);
 
-  testAppView(tester);
+  testAppObject(tester);
 
   testAppMenu(tester);
 

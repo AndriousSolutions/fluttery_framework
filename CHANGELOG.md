@@ -1,4 +1,9 @@
 
+## 5.0.1+1
+September 12, 2024
+- Removed reactive code: view/rx_core/
+- Test class AppMenu
+
 ## 5.0.0+2
 September 09, 2024
 - app.dart
