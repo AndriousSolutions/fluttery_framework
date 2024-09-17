@@ -48,9 +48,9 @@ class AppSettings {
   }
 
   /// A simple URL link Widget.
-  static _LinkTextSpan linkTextSpan(
+  static LinkTextSpan linkTextSpan(
       {TextStyle? style, String? url, String? text}) {
-    return _LinkTextSpan(
+    return LinkTextSpan(
         style: style, url: url ?? 'http://www.google.com', text: text);
   }
 
@@ -94,7 +94,7 @@ class _TapText extends StatelessWidget {
 }
 
 class _OptionsItem extends StatelessWidget {
-  const _OptionsItem({Key? key, this.child}) : super(key: key);
+  const _OptionsItem({this.child});
 
   final Widget? child;
 
@@ -124,11 +124,10 @@ class _OptionsItem extends StatelessWidget {
 
 class _FlatButton extends StatelessWidget {
   const _FlatButton({
-    Key? key,
     this.onPressed,
     this.child,
     this.style,
-  }) : super(key: key);
+  });
 
   final VoidCallback? onPressed;
   final Widget? child;
@@ -149,7 +148,8 @@ class _FlatButton extends StatelessWidget {
   }
 }
 
-class _LinkTextSpan extends TextSpan {
+///
+class LinkTextSpan extends TextSpan {
   // Beware!
   //
   // This class is only safe because the TapGestureRecognizer is not
@@ -162,10 +162,9 @@ class _LinkTextSpan extends TextSpan {
   // Since TextSpan itself is @immutable, this means that you would have to
   // manage the recognizer from outside the TextSpan, e.g. in the State of a
   // stateful widget that then hands the recognizer to the TextSpan.
-
-  _LinkTextSpan({TextStyle? style, required String url, String? text})
+  ///
+  LinkTextSpan({super.style, required String url, String? text})
       : super(
-            style: style,
             text: text ?? url,
             recognizer: TapGestureRecognizer()
               ..onTap = () {

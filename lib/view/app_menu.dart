@@ -390,20 +390,19 @@ class _PopupMenuWidgetState<T> extends State<PopupMenuWidget<T>> {
   @override
   Widget build(BuildContext context) {
     //
-    final _widget = widget;
+    final widget = this.widget;
 
-    final con = _widget._con;
+    final con = widget._con;
 
     // Could be changed in the function, onItemBuilder
     var enabled =
-        con.onEnabled() ?? _widget.enabled ?? _widget.onEnabled() ?? true;
+        con.onEnabled() ?? widget.enabled ?? widget.onEnabled() ?? true;
 
-    var icon = con.onIcon() ?? _widget.icon ?? _widget.onIcon();
+    var icon = con.onIcon() ?? widget.icon ?? widget.onIcon();
 
-    var child = con.onChild() ?? _widget.child ?? _widget.onChild();
+    var child = con.onChild() ?? widget.child ?? widget.onChild();
 
-    final iconSize =
-        con.onIconSize() ?? _widget.iconSize ?? _widget.onIconSize();
+    final iconSize = con.onIconSize() ?? widget.iconSize ?? widget.onIconSize();
 
     // One or the other, but not both.
     if (child != null && icon != null) {
@@ -457,67 +456,66 @@ class _PopupMenuWidgetState<T> extends State<PopupMenuWidget<T>> {
       key: popupKey,
       itemBuilder: onItemBuilder,
       initialValue: con.onInitialValue() ??
-          _widget.initialValue ??
-          _widget.onInitialValue(),
+          widget.initialValue ??
+          widget.onInitialValue(),
       onOpened: () {
         // The controller's function is always called.
         con.onOpened();
 
-        _widget.onOpened();
+        widget.onOpened();
 
-        if (_widget.inOpened != null) {
-          _widget.inOpened!();
+        if (widget.inOpened != null) {
+          widget.inOpened!();
         }
       },
       onSelected: (T value) {
         // The controller's function is always called.
         con.onSelected(value);
 
-        _widget.onSelected(value);
+        widget.onSelected(value);
 
-        if (_widget.inSelected != null) {
-          _widget.inSelected!(value);
+        if (widget.inSelected != null) {
+          widget.inSelected!(value);
         }
       },
       onCanceled: () {
         // The controller's function is always called.
         con.onCanceled();
 
-        _widget.onCanceled();
+        widget.onCanceled();
 
-        if (_widget.inCanceled != null) {
-          _widget.inCanceled!();
+        if (widget.inCanceled != null) {
+          widget.inCanceled!();
         }
       },
-      tooltip: con.onTooltip() ?? _widget.tooltip ?? _widget.onTooltip(),
-      elevation:
-          con.onElevation() ?? _widget.elevation ?? _widget.onElevation(),
+      tooltip: con.onTooltip() ?? widget.tooltip ?? widget.onTooltip(),
+      elevation: con.onElevation() ?? widget.elevation ?? widget.onElevation(),
       padding: con.onPadding() ??
-          _widget.padding ??
-          _widget.onPadding() ??
+          widget.padding ??
+          widget.onPadding() ??
           const EdgeInsets.all(8),
       splashRadius: con.onSplashRadius() ??
-          _widget.splashRadius ??
-          _widget.onSplashRadius(),
+          widget.splashRadius ??
+          widget.onSplashRadius(),
       icon: icon,
       iconSize: iconSize,
       offset:
-          con.onOffset() ?? _widget.offset ?? _widget.onOffset() ?? Offset.zero,
+          con.onOffset() ?? widget.offset ?? widget.onOffset() ?? Offset.zero,
       enabled: enabled,
-      shape: con.onShape() ?? _widget.shape ?? _widget.onShape(),
-      color: con.onColor() ?? _widget.color ?? _widget.onColor(),
+      shape: con.onShape() ?? widget.shape ?? widget.onShape(),
+      color: con.onColor() ?? widget.color ?? widget.onColor(),
       enableFeedback: con.onEnableFeedback() ??
-          _widget.enableFeedback ??
-          _widget.onEnableFeedback(),
+          widget.enableFeedback ??
+          widget.onEnableFeedback(),
       constraints:
-          con.onConstraints() ?? _widget.constraints ?? _widget.onConstraints(),
+          con.onConstraints() ?? widget.constraints ?? widget.onConstraints(),
       position: con.onPosition() ??
-          _widget.position ??
-          _widget.onPosition() ??
+          widget.position ??
+          widget.onPosition() ??
           PopupMenuPosition.over,
       clipBehavior: con.onClipBehavior() ??
-          _widget.clipBehavior ??
-          _widget.onClipBehavior() ??
+          widget.clipBehavior ??
+          widget.onClipBehavior() ??
           Clip.none,
       child: child,
     );

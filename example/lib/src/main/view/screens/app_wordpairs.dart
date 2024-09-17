@@ -165,7 +165,7 @@ class _WordPairsState extends StateX<WordPairs> {
 /// The Android-style of interface
 class _RandomWordsAndroid extends StatelessWidget {
   //
-  const _RandomWordsAndroid({Key? key, required this.state}) : super(key: key);
+  const _RandomWordsAndroid({required this.state});
   final _WordPairsState state;
 
   @override
@@ -231,7 +231,7 @@ class _RandomWordsAndroid extends StatelessWidget {
 /// The iOS-style of interface
 class _RandomWordsiOS extends StatelessWidget {
   //
-  const _RandomWordsiOS({Key? key, required this.state}) : super(key: key);
+  const _RandomWordsiOS({required this.state});
   final _WordPairsState state;
   @override
   Widget build(BuildContext context) {

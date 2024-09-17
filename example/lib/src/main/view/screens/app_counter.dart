@@ -1,4 +1,4 @@
-//
+library;
 
 /// An absolute path is preferred but this source code is copied by other app.
 
@@ -21,7 +21,6 @@ class _CounterPageState extends StateX<CounterPage> {
       : super(
           controller: CounterController(),
           useInherited: CounterController().useInherited,
-          routeAware: true,
           showBinding: true,
         ) {
     con = controller as CounterController;

@@ -1,3 +1,5 @@
+library;
+
 ///
 /// All the UI involved in the home screen.
 ///

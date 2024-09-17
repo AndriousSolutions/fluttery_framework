@@ -1,3 +1,4 @@
+library;
 // Copyright 2022 Andrious Solutions Ltd. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -117,9 +118,11 @@ class ImageAPIController extends StateXController {
       }
 
       switch (dataItem.runtimeType) {
+        // ignore: type_literal_in_constant_pattern
         case List:
           dataItem.forEach(data.add);
           break;
+        // ignore: type_literal_in_constant_pattern
         case String:
           data.add(dataItem);
           break;

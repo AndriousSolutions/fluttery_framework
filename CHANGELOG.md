@@ -1,9 +1,12 @@
 
-## 5.0.1+2
+## 5.0.1+3
 September 12, 2024
 - Removed reactive code: view/rx_core/
 - Test class AppMenu
 - if (!App.inFlutterTest) in test_app.dart
+- Uncomment include: package:flutter_lints/flutter.yaml
+- Addressed 'Dangling library doc comment'
+- Addressed Dart Analyst 
 
 ## 5.0.0+2
 September 09, 2024

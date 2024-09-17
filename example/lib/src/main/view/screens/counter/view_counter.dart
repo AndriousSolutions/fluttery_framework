@@ -1,3 +1,5 @@
+library;
+
 /// The export file for the directory, view.
 
 export 'view/build_page.dart';

@@ -1,3 +1,5 @@
+library;
+
 /// Import the interface
 import '/src/view.dart';
 

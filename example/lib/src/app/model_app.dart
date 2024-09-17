@@ -1,4 +1,5 @@
-//
+library;
+
 /// The Language Translations files
 export 'model/translations/translations_chinese.dart';
 export 'model/translations/translations_french.dart';

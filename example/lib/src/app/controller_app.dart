@@ -1,4 +1,5 @@
-//
+library;
+
 /// The Theme Controller at the application level
 
 export 'controller/example_controller.dart';

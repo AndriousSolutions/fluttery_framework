@@ -1,4 +1,5 @@
 // Copyright 2022 Andrious Solutions Ltd. All rights reserved.
+library;
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 ///
@@ -192,26 +193,6 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     return super.didPopRoute();
   }
 
-  /// Called when the host tells the app to push a new route onto the
-  /// navigator.
-  ///
-  /// Observers are expected to return true if they were able to
-  /// handle the notification. Observers are notified in registration
-  /// order until one returns true.
-  ///
-  /// This method exposes the `pushRoute` notification from
-  // ignore: comment_references
-  /// [SystemChannels.navigation].
-  @override
-  // ignore: unnecessary_overrides
-  Future<bool> didPushRoute(String route) async {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPushRoute in $this');
-    }
-    return super.didPushRoute(route);
-  }
-
   /// Called when the host tells the application to push a new
   /// [RouteInformation] and a restoration state onto the router.
   ///
@@ -222,9 +203,6 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   /// This method exposes the `popRoute` notification from
   // ignore: comment_references
   /// [SystemChannels.navigation].
-  ///
-  /// The default implementation is to call the [didPushRoute] directly with the
-  /// [RouteInformation.uri].
   @override
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
     if (inDebugMode) {
@@ -368,7 +346,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
 
   /// The application is visible and responding to user input.
   @override
-  void resumedLifecycleState() {
+  void resumedAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: resumedLifecycleState in $this');
@@ -390,7 +368,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   ///
   /// Apps in this state should assume that they may be [pausedLifecycleState] at any time.
   @override
-  void inactiveLifecycleState() {
+  void inactiveAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: inactiveLifecycleState in $this');
@@ -402,7 +380,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   /// or placed on a desktop that is no longer visible (on non-web desktop), or
   /// is running in a window or tab that is no longer visible (on the web).
   @override
-  void hiddenLifecycleState() {
+  void hiddenAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: hiddenLifecycleState in $this');
@@ -412,7 +390,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   /// The application is not currently visible to the user, not responding to
   /// user input, and running in the background.
   @override
-  void pausedLifecycleState() {
+  void pausedAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
       print('############ Event: pausedLifecycleState in $this');

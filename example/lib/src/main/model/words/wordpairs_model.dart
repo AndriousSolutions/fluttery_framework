@@ -8,7 +8,7 @@ import 'package:english_words/english_words.dart';
 /// Representing the data source (the model) of this App's design pattern.
 class WordPairsModel extends StateXController {
   factory WordPairsModel([StateX? state]) => _this ??= WordPairsModel._(state);
-  WordPairsModel._(StateX? state) : super(state) {
+  WordPairsModel._(StateX? super.state) {
     words = _EnglishWords();
     _counter = 0;
     onPressed();

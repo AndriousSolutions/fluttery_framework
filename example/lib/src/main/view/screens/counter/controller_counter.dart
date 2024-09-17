@@ -1,3 +1,5 @@
+library;
+
 /// The export file for the directory, home.
 export 'controller/another_controller.dart';
 

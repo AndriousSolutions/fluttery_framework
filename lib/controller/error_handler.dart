@@ -113,10 +113,10 @@ class AppErrorHandler {
                 );
       }
 
-      final _handler = _onError ?? _oldOnError;
+      final handler = _onError ?? _oldOnError;
 
-      if (_handler != null) {
-        _handler(details);
+      if (handler != null) {
+        handler(details);
         _inHandler = false;
       }
     };
@@ -506,8 +506,8 @@ class _ErrorRenderObjectWidget extends LeafRenderObjectWidget {
       properties.add(StringProperty('message', _errorMessage(message, error),
           quoted: false));
     } else {
-      final FlutterError _flutterError = error as FlutterError;
-      properties.add(_flutterError.toDiagnosticsNode(
+      final FlutterError flutterError = error as FlutterError;
+      properties.add(flutterError.toDiagnosticsNode(
           style: DiagnosticsTreeStyle.whitespace));
     }
   }
@@ -516,19 +516,19 @@ class _ErrorRenderObjectWidget extends LeafRenderObjectWidget {
 /// Compose an error message to be displayed.
 /// An empty string if no message was provided.
 String _errorMessage(String? message, Object? error) {
-  String _message;
+  String message0;
 
   if (message == null || message.isEmpty) {
     //
     if (error == null) {
-      _message = '';
+      message0 = '';
     } else {
-      _message = error.toString();
+      message0 = error.toString();
     }
   } else {
-    _message = message;
+    message0 = message;
   }
-  return _message;
+  return message0;
 }
 
 class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
@@ -769,12 +769,12 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     final paragraph = builder.build();
 
     //
-    var _width = size.width;
-    if (_width > _padding.left + _minimumWidth + _padding.right) {
-      _width -= _padding.left + _padding.right;
+    var width = size.width;
+    if (width > _padding.left + _minimumWidth + _padding.right) {
+      width -= _padding.left + _padding.right;
     }
 
-    paragraph.layout(i.ParagraphConstraints(width: _width));
+    paragraph.layout(i.ParagraphConstraints(width: width));
 
     context.canvas.drawParagraph(
         paragraph, offset + Offset(_padding.left, _padding.top + top));

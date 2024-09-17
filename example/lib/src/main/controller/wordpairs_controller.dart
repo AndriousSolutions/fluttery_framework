@@ -9,9 +9,7 @@ import '/src/view.dart';
 class WordPairsController extends StateXController {
   factory WordPairsController([StateX? state]) =>
       _this ??= WordPairsController._(state);
-  WordPairsController._(StateX? state)
-      : model = WordPairsModel(),
-        super(state);
+  WordPairsController._(StateX? super.state) : model = WordPairsModel();
   static WordPairsController? _this;
   final WordPairsModel model;
 
@@ -160,17 +158,6 @@ class WordPairsController extends StateXController {
       print('############ Event: didPopRoute in $state');
     }
     return super.didPopRoute();
-  }
-
-  /// Called when the host tells the app to push a new route onto the
-  /// navigator.
-  @override
-  Future<bool> didPushRoute(String route) async {
-    if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPushRoute in $state');
-    }
-    return super.didPushRoute(route);
   }
 
   /// Called when the host tells the application to push a new

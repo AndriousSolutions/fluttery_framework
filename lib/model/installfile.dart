@@ -16,7 +16,7 @@ import 'files.dart' show Files;
 /// Introduces a 'install file' unique to the app.
 class InstallFile {
   /// The name of the 'install file.'
-  static const String FILE_NAME = '.install';
+  static const String fileName = '.install';
 
   /// The unique Id contained in the 'install file.'
   static String? sID;
@@ -32,7 +32,7 @@ class InstallFile {
       return sID;
     }
 
-    final installFile = await Files.get(FILE_NAME);
+    final installFile = await Files.get(fileName);
 
     try {
       // ignore: avoid_slow_async_io
@@ -55,7 +55,7 @@ class InstallFile {
   /// Pass in a File object of the install file.
   static Future<String> readInstallationFile(File installFile) async {
     //
-    final file = await Files.get(FILE_NAME);
+    final file = await Files.get(fileName);
     final content = await Files.readFile(file);
     return content;
   }

@@ -23,7 +23,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 /// {@category Device Information}
 class DeviceInfo {
   static bool _init = false;
-  static late Map<String, String> _deviceParameters = {};
+  static Map<String, String> _deviceParameters = {};
 
   static String? _deviceId;
 

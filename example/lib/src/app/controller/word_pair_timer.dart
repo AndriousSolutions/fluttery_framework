@@ -222,8 +222,9 @@ class WordPairsTimer extends StateXController {
 
 /// Alternate approach to spontaneous rebuilds using the framework's InheritedWidget.
 /// This class is assigned to the getter, wordPair.
+// ignore: unused_element
 class _WordPair extends StatelessWidget {
-  const _WordPair(this.con, {super.key});
+  const _WordPair(this.con);
   final WordPairsTimer con;
   @override
   Widget build(BuildContext context) {

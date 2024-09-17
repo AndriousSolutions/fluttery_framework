@@ -131,9 +131,12 @@ class _StateApp extends State<AppStatefulWidget> {
       // Create 'App State object' for this app.
       _appState = widget.createAppState();
 
-      /// Finalize the app's theme if need be.
-      _appState?.setThemeData(context);
-      _appState?.setiOSThemeData(context);
+      if (mounted) {
+        // Otherwise trips 'across async gaps' warning.
+        /// Finalize the app's theme if need be.
+        _appState?.setThemeData(context);
+        _appState?.setiOSThemeData(context);
+      }
 
       // Supply the state object to the App object.
       v.App.appState = _appState;
@@ -199,7 +202,7 @@ class _StateApp extends State<AppStatefulWidget> {
   /// completed before the app proceeds.
   Widget _futureBuilder(AsyncSnapshot<bool> snapshot) {
     //
-    Widget _widget;
+    Widget widget0;
     Widget? splashScreen;
 
     if (snapshot.hasData &&
@@ -213,7 +216,7 @@ class _StateApp extends State<AppStatefulWidget> {
         WidgetsFlutterBinding.ensureInitialized().allowFirstFrame();
       }
       // Supply a GlobalKey so the 'App' State object is not disposed of if moved in Widget tree.
-      _widget = _AppStatefulWidget(key: _appGlobalKey, appState: _appState!);
+      widget0 = _AppStatefulWidget(key: _appGlobalKey, appState: _appState!);
 
       // Clear memory of the Splash Screen if any
       splashScreen = null;
@@ -238,7 +241,7 @@ class _StateApp extends State<AppStatefulWidget> {
       // Have the framework handle the asynchronous error.
       widget._app.onAsyncError(snapshot);
 
-      _widget = AppErrorHandler().displayError(details);
+      widget0 = AppErrorHandler().displayError(details);
 
       // Clear memory of the Splash Screen if any
       splashScreen = null;
@@ -255,7 +258,7 @@ class _StateApp extends State<AppStatefulWidget> {
 
       FlutterError.reportError(details);
 
-      _widget = ErrorWidget.builder(details);
+      widget0 = ErrorWidget.builder(details);
 
       // Clear memory of the Splash Screen if any
       splashScreen = null;
@@ -277,20 +280,20 @@ class _StateApp extends State<AppStatefulWidget> {
         //
         if (UniversalPlatform.isAndroid || UniversalPlatform.isWeb) {
           //
-          _widget = const Center(child: CircularProgressIndicator());
+          widget0 = const Center(child: CircularProgressIndicator());
         } else {
           //
-          _widget = const Center(child: CupertinoActivityIndicator());
+          widget0 = const Center(child: CupertinoActivityIndicator());
         }
       } else {
         // A Splash Screen is displayed for a time
-        _widget = splashScreen;
+        widget0 = splashScreen;
       }
     }
     // Reset if there was a 'hot reload'.
     v.App.hotReload = false;
 
-    return _widget;
+    return widget0;
   }
 
   // Determine if this app has been called by another _StateApp.

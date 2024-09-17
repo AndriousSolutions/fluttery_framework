@@ -1,3 +1,5 @@
+library;
+
 ///
 import 'dart:ui' as ui show TextHeightBehavior;
 

@@ -745,16 +745,16 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// Rebuild the 'latest/current' State object and the 'root/first' State object
   /// This is to address the possibility an App has called another App.
   void refresh() {
-    _AppState? _state;
+    _AppState? state;
     if (_AppState._appInApp) {
-      _state = lastContext?.findAncestorStateOfType<_AppState>();
+      state = lastContext?.findAncestorStateOfType<_AppState>();
     }
-    if (_state == null) {
+    if (state == null) {
       lastState?.setState(() {});
       // Refresh the 'root' State object.
       super.setState(() {});
     } else {
-      _state.setState(() {});
+      state.setState(() {});
     }
   }
 
@@ -997,7 +997,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     //
     final locales = supportedLocales;
 
-    final LocaleListResolutionCallback? localeResolver =
+    final LocaleListResolutionCallback localeResolver =
         _localeListResolutionCallback ?? onLocaleListResolutionCallback;
 
     // Attempt to use localeListResolutionCallback.
@@ -1015,7 +1015,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
         ? preferredLocales.first
         : null;
 
-    final LocaleResolutionCallback? resolutionCallback =
+    final LocaleResolutionCallback resolutionCallback =
         _localeResolutionCallback ?? onLocaleResolutionCallback;
 
     // localeListResolutionCallback failed, falling back to localeResolutionCallback.
