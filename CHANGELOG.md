@@ -1,8 +1,9 @@
 
-## 5.0.1+1
+## 5.0.1+2
 September 12, 2024
 - Removed reactive code: view/rx_core/
 - Test class AppMenu
+- if (!App.inFlutterTest) in test_app.dart
 
 ## 5.0.0+2
 September 09, 2024

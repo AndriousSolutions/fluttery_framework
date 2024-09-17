@@ -125,6 +125,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     Map<Type, Action<Intent>>? actions,
     String? restorationScopeId,
     ScrollBehavior? scrollBehavior,
+    this.maxMobileWidth,
+    this.maxTabletWidth,
     super.errorHandler,
     super.errorScreen,
     super.errorReport,
@@ -338,10 +340,19 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.dispose();
   }
 
+  /// The breakpoint used to determine whether the device is a mobile device or a tablet.
+  final double? maxMobileWidth;
+
+  /// The breakpoint used to determine whether the device is a tablet or a desktop.
+  final double? maxTabletWidth;
+
   /// Override build to avoid the built-in Future Builder.
   @override
-  Widget build(BuildContext context) =>
-      Sizer(builder: (context, orientation, deviceType) => buildF(context));
+  Widget build(BuildContext context) => ResponsiveSizer(
+        builder: (context, orientation, deviceType) => buildF(context),
+        maxMobileWidth: maxMobileWidth ?? 599,
+        maxTabletWidth: maxTabletWidth,
+      );
 
   // Called by buildF()
   @override

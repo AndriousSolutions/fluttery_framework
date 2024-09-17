@@ -15,9 +15,9 @@ void testAppObject(WidgetTester tester) {
 
   App.inWidgetsFlutterBinding;
 
-  App.inFlutterTest;
-
-  App.getDeviceInfo();
+  if (!App.inFlutterTest) {
+    App.getDeviceInfo();
+  }
 
   App.isInit = App.isInit;
 
