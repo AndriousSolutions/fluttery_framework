@@ -1001,11 +1001,10 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
         _localeListResolutionCallback ?? onLocaleListResolutionCallback;
 
     // Attempt to use localeListResolutionCallback.
-    if (localeResolver != null) {
-      Locale? locale;
-      if (locales != null) {
-        locale = localeResolver(preferredLocales, locales);
-      }
+    Locale? locale;
+
+    if (locales != null) {
+      locale = localeResolver(preferredLocales, locales);
       if (locale != null) {
         return locale;
       }
@@ -1019,11 +1018,8 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
         _localeResolutionCallback ?? onLocaleResolutionCallback;
 
     // localeListResolutionCallback failed, falling back to localeResolutionCallback.
-    if (resolutionCallback != null) {
-      Locale? locale;
-      if (locales != null) {
-        locale = resolutionCallback(preferred, locales);
-      }
+    if (locales != null) {
+      locale = resolutionCallback(preferred, locales);
       if (locale != null) {
         return locale;
       }

@@ -20,10 +20,10 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
+  cupertino_icons: ^1.0.8
 
   # https://pub.dev/packages/dbutils
-  dbutils: ^6.0.0
+  dbutils: ^6.1.0
 
   # Generates English word pairs
   # https://pub.dev/packages/english_words
@@ -34,10 +34,10 @@ dependencies:
     path: ../
 
   # https://pub.dev/packages/http
-  http: ^1.0.0
+  http: ^1.2.2
 
   # https://pub.dev/packages/flutter_material_color_picker/
-  flutter_material_color_picker: ^1.0.0
+  flutter_material_color_picker: ^1.2.0
 
   # Extensions
   more_extensions:
@@ -46,7 +46,7 @@ dependencies:
   #    path: ../../more_extensions/
 
   # https://pub.dev/packages/ui_widgets_utils
-  ui_widgets_utils: ^1.0.0
+  ui_widgets_utils: ^1.2.0
 #    path: ../../ui_widgets_utils/
 #    git:
 #      url: https://github.com/AndriousSolutions/ui_widgets_utils.git
@@ -58,17 +58,14 @@ dev_dependencies:
     sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  # encourage good coding practices.
+  flutter_lints: ^4.0.0
 
   integration_test:
     sdk: flutter
 
   # https://pub.dev/packages/path_provider
-  path_provider: ^2.0.0
+  path_provider: ^2.1.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

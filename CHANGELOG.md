@@ -1,5 +1,5 @@
 
-## 5.0.1+4
+## 5.0.1+5
 September 12, 2024
 - Removed reactive code: view/rx_core/
 - Test class AppMenu
@@ -9,6 +9,7 @@ September 12, 2024
 - Addressed Dart Analyst 
 - export 'model/files.dart' if (dart.library.html) in model.dart
   export 'model/installfile.dart' if (dart.library.html)
+- Tighten dependencies: dart pub upgrade --tighten
 
 ## 5.0.0+2
 September 09, 2024
