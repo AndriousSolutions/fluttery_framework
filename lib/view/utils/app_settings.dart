@@ -14,7 +14,6 @@ import 'package:flutter/material.dart'
         DefaultTextStyle,
         EdgeInsetsDirectional,
         IconTheme,
-        Key,
         MediaQuery,
         MergeSemantics,
         StatelessWidget,

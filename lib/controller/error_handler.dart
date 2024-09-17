@@ -8,14 +8,37 @@
 //
 //
 import 'dart:ui' as i
-    show
-//        Paragraph,
-        ParagraphBuilder,
-        ParagraphConstraints,
-        ParagraphStyle,
-        TextStyle;
+    show ParagraphBuilder, ParagraphConstraints, ParagraphStyle, TextStyle;
 
-import '/view.dart';
+import '/view.dart'
+    show
+        App,
+        BuildContext,
+        Color,
+        Colors,
+        CustomPainter,
+        DiagnosticPropertiesBuilder,
+        DiagnosticsNode,
+        DiagnosticsTreeStyle,
+        EdgeInsets,
+        ErrorSummary,
+        ErrorWidget,
+        ErrorWidgetBuilder,
+        FlutterError,
+        FlutterErrorDetails,
+        FlutterExceptionHandler,
+        FontWeight,
+        Icons,
+        InformationCollector,
+        LeafRenderObjectWidget,
+        Offset,
+        Paint,
+        PaintingContext,
+        PaintingStyle,
+        Rect,
+        TextBaseline,
+        TextDirection,
+        Widget;
 
 import 'package:flutter/rendering.dart'
     show

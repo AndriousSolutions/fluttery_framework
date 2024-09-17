@@ -32,14 +32,5 @@ export 'controller/handle_error.dart' show HandleError;
 /// Error Handling
 export 'controller/error_handler.dart';
 
-// // Assets
-// export '/src/controller/assets/assets.dart';
-//
-// // Get Utils
-// export '/src/controller/get_utils/get_utils.dart';
-//
-// // Error Handler
-// export '/src/controller/util/handle_error.dart' show HandleError;
-
 // Preferences
 export 'package:prefs/prefs.dart' show Prefs, SharedPreferences;
