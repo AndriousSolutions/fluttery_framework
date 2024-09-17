@@ -16,22 +16,13 @@ export 'package:flutter/cupertino.dart' hide RefreshCallback, runApp;
 export 'model/assets.dart';
 
 // file utils
-export 'model/files.dart';
+export 'model/files.dart' if (dart.library.html) 'model/assets.dart';
 
 // Install file
-export 'model/installfile.dart';
+export 'model/installfile.dart' if (dart.library.html) 'model/assets.dart';
 
 // Hash codes
 export 'model/hash.dart';
-
-// // file utils
-// export '/src/model/fileutils/files.dart';
-//
-// // Install file
-// export '/src/model/fileutils/installfile.dart';
-//
-// // Hash codes
-// export '/src/model/utils/hash.dart';
 
 // Preferences
 export 'package:prefs/prefs.dart' show Prefs;
