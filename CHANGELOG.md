@@ -1,4 +1,11 @@
 
+## 5.1.0
+September 20, 2024
+- Screen Width and Height without BuildContext
+- bool get appInApp in app_state.dart
+- Print() changed to debugPrint()
+- Rewrite of radiobutton_widget.dart
+
 ## 5.0.1+6
 September 12, 2024
 - Removed reactive code: view/rx_core/

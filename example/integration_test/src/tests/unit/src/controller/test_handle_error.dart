@@ -53,9 +53,11 @@ void testHandleError(WidgetTester tester) {
   //
   // errorHandler.runZonedError(error, StackTrace stack);
 
-  final handler = _HandelErrorTester();
+  final handler = HandelErrorTester();
 
   handler.getError(error);
+
+  handler.getError(Exception('Test'));
 
   handler.errorMsg;
 
@@ -67,4 +69,8 @@ void testHandleError(WidgetTester tester) {
 //  });
 }
 
-class _HandelErrorTester with HandleError {}
+class HandelErrorTester with HandleError {
+  factory HandelErrorTester() => _this ??= HandelErrorTester._();
+  HandelErrorTester._();
+  static HandelErrorTester? _this;
+}

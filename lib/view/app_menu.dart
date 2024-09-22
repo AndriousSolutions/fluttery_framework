@@ -209,7 +209,9 @@ class PopupMenuWidget<T> extends StatefulWidget
   final Clip? clipBehavior;
 
   /// BuildContext property
-  BuildContext? get context => _con._popupWidgetState?.context;
+  BuildContext? get context => _con?._popupWidgetState?.mounted ?? false
+      ? _con._popupWidgetState?.context
+      : null;
 
   /// Refresh the popup menu
   @override
@@ -608,8 +610,12 @@ mixin PopupMenuControllerMixin<T> implements PopupMenuFunctionsMixin<T> {
   _PopupMenuWidgetState<T>? _popupWidgetState;
 
   @override
-  // ignore: INVALID_USE_OF_PROTECTED_MEMBER
-  void setMenu() => _popupWidgetState?.setState(() {});
+  void setMenu() {
+    if (_popupWidgetState?.mounted ?? false) {
+      // ignore: INVALID_USE_OF_PROTECTED_MEMBER
+      _popupWidgetState?.setState(() {});
+    }
+  }
 
   @override
   void showButtonMenu() => _popupWidgetState?.popupMenuState?.showButtonMenu();

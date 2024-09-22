@@ -96,9 +96,20 @@ class _StateApp extends State<AppStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     _assets.init(context);
+    final future = initAsync();
+    future.catchError(
+      (Object e) {
+        _appState?.catchAsyncError(e);
+        // Always false. snapshot.data == false
+        // snapshot.hasError likely true so ErrorWidget.builder() displayed
+        return false;
+      },
+      // It's got to be handled, and so it's always true to call catchError()
+      test: (_) => true,
+    );
     return FutureBuilder<bool>(
       key: UniqueKey(), // UniqueKey() for hot reload
-      future: initAsync(),
+      future: future,
       initialData: false,
       builder: (_, snapshot) => _futureBuilder(snapshot),
     );
@@ -131,8 +142,11 @@ class _StateApp extends State<AppStatefulWidget> {
       // Create 'App State object' for this app.
       _appState = widget.createAppState();
 
+      // Called within another app
+      _appState?.appInApp = _appInApp;
+
+      // Otherwise trips 'across async gaps' warning.
       if (mounted) {
-        // Otherwise trips 'across async gaps' warning.
         /// Finalize the app's theme if need be.
         _appState?.setThemeData(context);
         _appState?.setiOSThemeData(context);
@@ -145,10 +159,10 @@ class _StateApp extends State<AppStatefulWidget> {
       _appState?.parentState = this;
 
       // Don't collect package and device information while testing.
-      if (!v.App.inFlutterTest) {
-        //
-        await v.App.getDeviceInfo();
-      }
+//      if (!v.App.inFlutterTest) {
+      //
+      await v.App.getDeviceInfo();
+//      }
 
       // Perform any asynchronous operations.
       init = await _appState!.initAsync();
@@ -166,9 +180,7 @@ class _StateApp extends State<AppStatefulWidget> {
   static bool disposeStatic = true;
 
   // This App is within another App
-  // ignore: unused_element
-  static bool get appInApp => _appInApp;
-  static bool _appInApp = false;
+  bool _appInApp = false;
 
   /// Clean up resources before the app is finally terminated.
   @override
@@ -232,11 +244,9 @@ class _StateApp extends State<AppStatefulWidget> {
         context: ErrorDescription('While getting ready in FutureBuilder Async'),
       );
 
-      if (_appState != null) {
-        // May have its own error handler for Asynchronous operations.
-        // So to possibly 'clear up' before falling out.
-        _appState!.onAsyncError(details);
-      }
+      // May have its own error handler for Asynchronous operations.
+      // So to possibly 'clean up' before falling out.
+      _appState?.onAsyncError(details);
 
       // Have the framework handle the asynchronous error.
       widget._app.onAsyncError(snapshot);

@@ -9,17 +9,23 @@ library;
 
 import '_unit_test_view.dart';
 
-void testAppObject(WidgetTester tester) {
-  //
-//  test('Test App class', () async {
+Future<void> testAppObject(WidgetTester tester) async {
   //
   final app = AppObject();
 
   App.inWidgetsFlutterBinding;
 
-  if (!App.inFlutterTest) {
-    App.getDeviceInfo();
+  try {
+    await DeviceInfo.initAsync();
+  } catch (e) {
+    HandelErrorTester().getError(e);
   }
+
+  await App.initInternal();
+
+  App.themeData = const CupertinoThemeData();
+
+  App.themeData = Color(App.themeData!.primaryColor.value);
 
   App.isInit = App.isInit;
 
@@ -67,8 +73,6 @@ void testAppObject(WidgetTester tester) {
 
   App.dependOnInheritedWidget(App.context);
 
-  // App.buildInherited();
-
   App.notifyClients();
 
   App.snackBar(content: const Text('hello.'));
@@ -108,7 +112,8 @@ void testAppObject(WidgetTester tester) {
   App.removeConnectivityListener(ConnectivityListenerTester());
 
   App.installNum;
-//  });
+
+  App.dispose();
 }
 
 class ConnectivityListenerTester with ConnectivityListener {

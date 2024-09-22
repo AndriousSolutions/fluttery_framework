@@ -26,5 +26,7 @@ Future<void> testAssets() async {
   final bool boolData =
       await assets.getBoolData('key', (value) => Future.value(true));
 
+  final assetImage = assets.getImage('test');
+
   final String? path = Assets.setPath('key');
 }

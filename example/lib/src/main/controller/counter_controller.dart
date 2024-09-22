@@ -29,7 +29,7 @@ class CounterController extends AppController {
     super.initState();
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: initState in $this');
+      debugPrint('############ Event: initState in $this');
     }
   }
 
@@ -53,10 +53,12 @@ class CounterController extends AppController {
   /// Called to complete any asynchronous operations.
   @override
   Future<bool> initAsync() async {
+    //
     final init = await super.initAsync();
+
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: initAsync in $this');
+      debugPrint('############ Event: initAsync in $this');
     }
     return init;
   }
@@ -67,7 +69,7 @@ class CounterController extends AppController {
   void deactivate() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: deactivate in $this');
+      debugPrint('############ Event: deactivate in $this');
     }
   }
 
@@ -77,7 +79,7 @@ class CounterController extends AppController {
   void activate() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: activate in $this');
+      debugPrint('############ Event: activate in $this');
     }
   }
 
@@ -89,7 +91,7 @@ class CounterController extends AppController {
   void dispose() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ now disposed.');
+      debugPrint('############ now disposed.');
     }
     super.dispose();
   }
@@ -100,7 +102,7 @@ class CounterController extends AppController {
   void pausedAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: pausedLifecycleState in $this');
+      debugPrint('############ Event: pausedLifecycleState in $this');
     }
   }
 
@@ -109,7 +111,7 @@ class CounterController extends AppController {
   void resumedAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: resumedLifecycleState in $this');
+      debugPrint('############ Event: resumedLifecycleState in $this');
     }
   }
 
@@ -118,7 +120,7 @@ class CounterController extends AppController {
   void inactiveAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: inactiveLifecycleState in $this');
+      debugPrint('############ Event: inactiveLifecycleState in $this');
     }
   }
 
@@ -128,7 +130,7 @@ class CounterController extends AppController {
   void detachedAppLifecycleState() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: detachedLifecycleState in $this');
+      debugPrint('############ Event: detachedLifecycleState in $this');
     }
   }
 
@@ -137,7 +139,7 @@ class CounterController extends AppController {
   void didUpdateWidget(CounterPage oldWidget) {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didUpdateWidget in $this');
+      debugPrint('############ Event: didUpdateWidget in $this');
     }
   }
 
@@ -148,7 +150,7 @@ class CounterController extends AppController {
   void didChangeDependencies() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didChangeDependencies in $this');
+      debugPrint('############ Event: didChangeDependencies in $this');
     }
   }
 
@@ -158,7 +160,7 @@ class CounterController extends AppController {
   void reassemble() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: reassemble in $this');
+      debugPrint('############ Event: reassemble in $this');
     }
   }
 
@@ -169,7 +171,7 @@ class CounterController extends AppController {
   Future<bool> didPopRoute() async {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didPopRoute in $this');
+      debugPrint('############ Event: didPopRoute in $this');
     }
     return super.didPopRoute();
   }
@@ -180,7 +182,7 @@ class CounterController extends AppController {
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didPushRouteInformation in $this');
+      debugPrint('############ Event: didPushRouteInformation in $this');
     }
     return super.didPushRouteInformation(routeInformation);
   }
@@ -190,7 +192,7 @@ class CounterController extends AppController {
   void didPopNext() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didPopNext in $this');
+      debugPrint('############ Event: didPopNext in $this');
     }
   }
 
@@ -199,7 +201,7 @@ class CounterController extends AppController {
   void didPush() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didPush in $this');
+      debugPrint('############ Event: didPush in $this');
     }
   }
 
@@ -207,8 +209,7 @@ class CounterController extends AppController {
   @override
   void didPop() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPop in $this');
+      debugPrint('############ Event: didPop in $this');
     }
   }
 
@@ -216,8 +217,7 @@ class CounterController extends AppController {
   @override
   void didPushNext() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPushNext in $this');
+      debugPrint('############ Event: didPushNext in $this');
     }
   }
 
@@ -226,8 +226,7 @@ class CounterController extends AppController {
   @override
   void didChangeMetrics() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeMetrics in $this');
+      debugPrint('############ Event: didChangeMetrics in $this');
     }
   }
 
@@ -235,8 +234,7 @@ class CounterController extends AppController {
   @override
   void didChangeTextScaleFactor() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeTextScaleFactor in $this');
+      debugPrint('############ Event: didChangeTextScaleFactor in $this');
     }
   }
 
@@ -244,8 +242,7 @@ class CounterController extends AppController {
   @override
   void didChangePlatformBrightness() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangePlatformBrightness in $this');
+      debugPrint('############ Event: didChangePlatformBrightness in $this');
     }
   }
 
@@ -254,7 +251,7 @@ class CounterController extends AppController {
   void didChangeLocales(List<Locale>? locales) {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didChangeLocale in $this');
+      debugPrint('############ Event: didChangeLocale in $this');
     }
   }
 
@@ -276,8 +273,7 @@ class CounterController extends AppController {
   @override
   void didHaveMemoryPressure() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didHaveMemoryPressure in $this');
+      debugPrint('############ Event: didHaveMemoryPressure in $this');
     }
   }
 
@@ -285,8 +281,7 @@ class CounterController extends AppController {
   @override
   void didChangeAccessibilityFeatures() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeAccessibilityFeatures in $this');
+      debugPrint('############ Event: didChangeAccessibilityFeatures in $this');
     }
   }
 }

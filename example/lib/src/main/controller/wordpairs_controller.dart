@@ -20,7 +20,7 @@ class WordPairsController extends StateXController {
     model.addState(state);
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: initState in $this');
+      debugPrint('############ Event: initState in $this');
     }
   }
 
@@ -41,8 +41,8 @@ class WordPairsController extends StateXController {
   Future<bool> initAsync() async {
     final init = await super.initAsync();
     //
-    if (ExampleAppController().allowErrors) {
-      throw AssertionError('error thrown in Page1State.initAsync()');
+    if (inDebugMode) {
+      debugPrint('############ Event: initAsync in $this');
     }
     return init;
   }
@@ -53,7 +53,7 @@ class WordPairsController extends StateXController {
   void deactivate() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: deactivate in $state');
+      debugPrint('############ Event: deactivate in $this');
     }
   }
 
@@ -62,8 +62,7 @@ class WordPairsController extends StateXController {
   @override
   void activate() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: activate in $state');
+      debugPrint('############ Event: activate in $this');
     }
   }
 
@@ -74,8 +73,7 @@ class WordPairsController extends StateXController {
   @override
   void dispose() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ now disposed.');
+      debugPrint('############ now disposed.');
     }
     super.dispose();
   }
@@ -85,8 +83,7 @@ class WordPairsController extends StateXController {
   @override
   void pausedAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: pausedLifecycleState in $state');
+      debugPrint('############ Event: pausedLifecycleState in $this');
     }
   }
 
@@ -94,8 +91,7 @@ class WordPairsController extends StateXController {
   @override
   void resumedAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: resumedLifecycleState in $state');
+      debugPrint('############ Event: resumedLifecycleState in $this');
     }
   }
 
@@ -103,8 +99,7 @@ class WordPairsController extends StateXController {
   @override
   void inactiveAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: inactiveLifecycleState in $state');
+      debugPrint('############ Event: inactiveLifecycleState in $this');
     }
   }
 
@@ -113,8 +108,7 @@ class WordPairsController extends StateXController {
   @override
   void detachedAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: detachedLifecycleState in $state');
+      debugPrint('############ Event: detachedLifecycleState in $this');
     }
   }
 
@@ -122,8 +116,7 @@ class WordPairsController extends StateXController {
   @override
   void didUpdateWidget(StatefulWidget oldWidget) {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didUpdateWidget in $state');
+      debugPrint('############ Event: didUpdateWidget in $this');
     }
   }
 
@@ -134,7 +127,7 @@ class WordPairsController extends StateXController {
   void didChangeDependencies() {
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: didChangeDependencies in $state');
+      debugPrint('############ Event: didChangeDependencies in $this');
     }
   }
 
@@ -143,8 +136,7 @@ class WordPairsController extends StateXController {
   @override
   void reassemble() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: reassemble in $state');
+      debugPrint('############ Event: reassemble in $this');
     }
   }
 
@@ -154,8 +146,7 @@ class WordPairsController extends StateXController {
   @override
   Future<bool> didPopRoute() async {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPopRoute in $state');
+      debugPrint('############ Event: didPopRoute in $this');
     }
     return super.didPopRoute();
   }
@@ -165,8 +156,7 @@ class WordPairsController extends StateXController {
   @override
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPushRouteInformation in $state');
+      debugPrint('############ Event: didPushRouteInformation in $this');
     }
     return super.didPushRouteInformation(routeInformation);
   }
@@ -176,8 +166,7 @@ class WordPairsController extends StateXController {
   @override
   void didChangeMetrics() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeMetrics in $state');
+      debugPrint('############ Event: didChangeMetrics in $this');
     }
   }
 
@@ -185,8 +174,7 @@ class WordPairsController extends StateXController {
   @override
   void didChangeTextScaleFactor() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeTextScaleFactor in $state');
+      debugPrint('############ Event: didChangeTextScaleFactor in $this');
     }
   }
 
@@ -194,8 +182,7 @@ class WordPairsController extends StateXController {
   @override
   void didChangePlatformBrightness() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangePlatformBrightness in $state');
+      debugPrint('############ Event: didChangePlatformBrightness in $this');
     }
   }
 
@@ -203,8 +190,7 @@ class WordPairsController extends StateXController {
   @override
   void didChangeLocales(List<Locale>? locales) {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeLocale in $state');
+      debugPrint('############ Event: didChangeLocale in $this');
     }
   }
 
@@ -226,8 +212,7 @@ class WordPairsController extends StateXController {
   @override
   void didHaveMemoryPressure() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didHaveMemoryPressure in $state');
+      debugPrint('############ Event: didHaveMemoryPressure in $this');
     }
   }
 
@@ -235,8 +220,7 @@ class WordPairsController extends StateXController {
   @override
   void didChangeAccessibilityFeatures() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeAccessibilityFeatures in $state');
+      debugPrint('############ Event: didChangeAccessibilityFeatures in $this');
     }
   }
 }

@@ -136,6 +136,8 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.presentError,
     super.inInitState,
     super.inInitAsync,
+    super.inCatchAsyncError,
+    super.inAsyncError,
     super.inHome,
     super.inRouteInformationProvider,
     super.inRouteInformationParser,
@@ -173,7 +175,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.inActions,
     super.inRestorationScopeId,
     super.inScrollBehavior,
-    super.inAsyncError,
   }) : super(controller: controller ?? AppController()) {
     //
     _key = key;
@@ -289,6 +290,12 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   bool get useCupertino => _useCupertino;
   late bool _useCupertino;
 
+  /// This App is within another App
+  bool get appInApp => _appInApp ?? false;
+  // Assigned only once
+  set appInApp(bool inApp) => _appInApp ??= inApp;
+  bool? _appInApp;
+
   /// Reference the 'parent' State object
   State? get parentState => _parentState;
   State? _parentState;
@@ -335,7 +342,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   @override
   @mustCallSuper
   void dispose() {
-    //
     _app = null;
     super.dispose();
   }
@@ -852,6 +858,8 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     this.presentError,
     this.inInitState,
     this.inInitAsync,
+    this.inCatchAsyncError,
+    this.inAsyncError,
     this.inHome,
     this.inRouteInformationProvider,
     this.inRouteInformationParser,
@@ -890,7 +898,6 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     this.inActions,
     this.inRestorationScopeId,
     this.inScrollBehavior,
-    this.inAsyncError,
 //  })  : _statesRouteObserver = StatesRouteObserver(),
   }) : super(controller: controller) {
     // Listen to the device's connectivity.
@@ -942,7 +949,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   RouteFactory? _onUnknownRoute;
 
   /// Use this to navigate throughout the your app
-  NavigatorState get navigator => navigatorKey!.currentState!;
+  NavigatorState? get navigator => navigatorKey!.currentState;
 
   /// The Navigator State Key
   GlobalKey<NavigatorState>? get navigatorKey =>
@@ -972,7 +979,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   Locale? get locale =>
       _locale ??
-      Localizations.maybeLocaleOf(context) ??
+      (mounted ? Localizations.maybeLocaleOf(context) : null) ??
       _resolveLocales(
         // The full system-reported supported locales of the device.
         WidgetsBinding.instance.platformDispatcher.locales,
@@ -1104,47 +1111,53 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   ScrollBehavior? _scrollBehavior;
 
   /// Used to complete asynchronous operations
-  Future<bool> onInitAsync() async {
-    var init = true;
-    if (inInitAsync != null) {
-      init = await inInitAsync!();
-    }
-    return init;
-  }
+  Future<bool> onInitAsync() async => await inInitAsync?.call() ?? false;
+
+  /// Catch it if the initAsync() throws an error
+  /// The FutureBuilder will fail, but you can examine the error
+  void onCatchAsyncError(Object error) => inCatchAsyncError?.call(error);
+
+  /// Catch it if the initAsync() throws an error
+  /// The FutureBuilder will fail, but you can examine the error
+  @override
+  void catchAsyncError(Object error) => onCatchAsyncError(error);
+
+  /// initAsync() has failed and a 'error' widget instead will be displayed.
+  /// This takes in the snapshot.error details.
+  @override
+  void onAsyncError(FlutterErrorDetails details) => inAsyncError?.call(details);
 
   /// Returns the App's ScaffoldMessenger Key.
   GlobalKey<ScaffoldMessengerState> onScaffoldMessengerKey() =>
       _scaffoldMessengerKey ??= GlobalKey<ScaffoldMessengerState>();
 
   /// Returns the home screen if any.
-  Widget? onHome() => inHome != null ? inHome!() : null;
+  Widget? onHome() => inHome?.call();
 
   /// Returns the Route Provider if any.
   RouteInformationProvider? onRouteInformationProvider() =>
-      inRouteInformationProvider != null ? inRouteInformationProvider!() : null;
+      inRouteInformationProvider?.call();
 
   /// Returns the Route Parser if any.
   RouteInformationParser<Object>? onRouteInformationParser() =>
-      inRouteInformationParser != null ? inRouteInformationParser!() : null;
+      inRouteInformationParser?.call();
 
   /// Returns the Route Delegate if any.
-  RouterDelegate<Object>? onRouterDelegate() =>
-      inRouterDelegate != null ? inRouterDelegate!() : null;
+  RouterDelegate<Object>? onRouterDelegate() => inRouterDelegate?.call();
 
   /// Returns the Route Config if any.
-  RouterConfig<Object>? onRouterConfig() =>
-      inRouterConfig != null ? inRouterConfig!() : null;
+  RouterConfig<Object>? onRouterConfig() => inRouterConfig?.call();
 
   /// Returns the 'Back Button' routine if any.
   BackButtonDispatcher? onBackButtonDispatcher() =>
-      inBackButtonDispatcher != null ? inBackButtonDispatcher!() : null;
+      inBackButtonDispatcher?.call();
 
   /// Returns a Map of Routes if any.
   Map<String, WidgetBuilder>? onRoutes() =>
-      inRoutes != null ? inRoutes!() : const <String, WidgetBuilder>{};
+      inRoutes?.call() ?? const <String, WidgetBuilder>{};
 
   /// Returns the initial Route if any.
-  String? onInitialRoute() => inInitialRoute != null ? inInitialRoute!() : null;
+  String? onInitialRoute() => inInitialRoute?.call();
 
   /// Returns the 'Generate Routes' routine if any.
   Route<dynamic>? onOnGenerateRoute(RouteSettings settings) => null;
@@ -1178,16 +1191,6 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     return observers;
   }
 
-  // /// State object becomes a route observer.
-  // bool subscribe(State state) => _statesRouteObserver.subscribeState(state);
-  //
-  // /// No longer a route observer
-  // bool unsubscribe(State state) => _statesRouteObserver.unsubscribeState(state);
-  //
-  // /// Any and all StateX objects are all 'route' observers.
-  // StatesRouteObserver get statesRouteObserver => _statesRouteObserver;
-  // final StatesRouteObserver _statesRouteObserver;
-
   /// Should update the built-in InheritedWidget's dependencies
   bool onUpdateShouldNotify(covariant InheritedWidget oldWidget) {
     bool should;
@@ -1200,11 +1203,10 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   }
 
   /// Returns the 'Transition Builder' if any.
-  TransitionBuilder? onBuilder() =>
-      inTransBuilder != null ? inTransBuilder!() : null;
+  TransitionBuilder? onBuilder() => inTransBuilder?.call();
 
   /// Returns the App's title if any.
-  String onTitle() => inTitle != null ? inTitle!() : '';
+  String onTitle() => inTitle?.call() ?? '';
 
   Route<dynamic>? _onOnGenerateRoute(RouteSettings settings) {
     Route<dynamic>? route;
@@ -1251,126 +1253,98 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   }
 
   /// Returns the App's [ThemeData] if any.
-  ThemeData? onTheme() => inTheme != null ? inTheme!() : null;
+  ThemeData? onTheme() => inTheme?.call();
 
   /// Returns the App's [CupertinoThemeData] if any.
-  CupertinoThemeData? oniOSTheme() => iniOSTheme != null ? iniOSTheme!() : null;
+  CupertinoThemeData? oniOSTheme() => iniOSTheme?.call();
 
   /// Returns the App's 'Dark Theme' [ThemeData] if any.
-  ThemeData? onDarkTheme() => inDarkTheme != null ? inDarkTheme!() : null;
+  ThemeData? onDarkTheme() => inDarkTheme?.call();
 
   /// Returns the App's 'High Contrast Theme' [ThemeData] if any.
-  ThemeData? onHighContrastTheme() =>
-      inHighContrastTheme != null ? inHighContrastTheme!() : null;
+  ThemeData? onHighContrastTheme() => inHighContrastTheme?.call();
 
   /// Returns the App's 'High Contrast Dark Theme' [ThemeData] if any.
-  ThemeData? onHighContrastDarkTheme() =>
-      inHighContrastDarkTheme != null ? inHighContrastDarkTheme!() : null;
+  ThemeData? onHighContrastDarkTheme() => inHighContrastDarkTheme?.call();
 
   /// Returns the App's [ThemeMode] if any.
-  ThemeMode? onThemeMode() =>
-      inThemeMode != null ? inThemeMode!() : ThemeMode.system;
+  ThemeMode? onThemeMode() => inThemeMode?.call() ?? ThemeMode.system;
 
   /// Returns the App's [ThemeMode] if any.
-  Duration? onThemeAnimationDuration() => inThemeAnimationDuration != null
-      ? inThemeAnimationDuration!()
-      : const Duration(milliseconds: 200);
+  Duration? onThemeAnimationDuration() =>
+      inThemeAnimationDuration?.call() ?? const Duration(milliseconds: 200);
 
   /// Returns the App's [ThemeMode] if any.
   Curve? onThemeAnimationCurve() =>
-      inThemeAnimationCurve != null ? inThemeAnimationCurve!() : Curves.linear;
+      inThemeAnimationCurve?.call() ?? Curves.linear;
 
   /// Returns the App's [Color] if any.
-  Color? onColor() => inColor != null ? inColor!() : null;
+  Color? onColor() => inColor?.call();
 
   /// Returns current [Locale] if any.
-  Locale? onLocale() => inLocale != null ? inLocale!() : null;
+  Locale? onLocale() => inLocale?.call();
 
   /// Returns the 'Localization Delegates' if any.
-  Iterable<LocalizationsDelegate<dynamic>>? onLocalizationsDelegates() {
-    if (inLocalizationsDelegates != null) {
-      return inLocalizationsDelegates!();
-    }
-    return null;
-  }
+  Iterable<LocalizationsDelegate<dynamic>>? onLocalizationsDelegates() =>
+      inLocalizationsDelegates?.call();
 
   /// Returns 'Locale Resolutions' routine if any.
   Locale? onLocaleListResolutionCallback(
           List<Locale>? locales, Iterable<Locale> supportedLocales) =>
-      inLocaleListResolutionCallback == null
-          ? null
-          : inLocaleListResolutionCallback!(locales, supportedLocales);
+      inLocaleListResolutionCallback?.call(locales, supportedLocales);
 
   /// Returns 'Local Resolution' routine if any.
   /// Turn to the I10n class to provide the locale.
   Locale? onLocaleResolutionCallback(
           Locale? locale, Iterable<Locale> supportedLocales) =>
-      inLocaleResolutionCallback == null
-          ? null
-          : inLocaleResolutionCallback!(
-              locale, supportedLocales); // ?? L10n.localeResolutionCallback;
+      inLocaleResolutionCallback?.call(
+          locale, supportedLocales); // ?? L10n.localeResolutionCallback;
 
   /// Returns the Locale Iteration if any.
-  List<Locale>? onSupportedLocales() =>
-      inSupportedLocales != null ? inSupportedLocales!() : null;
+  List<Locale>? onSupportedLocales() => inSupportedLocales?.call();
 
   /// Returns 'Show Material Grid' boolean indicator if any.
-  bool? onDebugShowMaterialGrid() =>
-      // ignore: avoid_bool_literals_in_conditional_expressions
-      inDebugShowMaterialGrid != null ? inDebugShowMaterialGrid!() : false;
+  bool? onDebugShowMaterialGrid() => inDebugShowMaterialGrid?.call();
 
   /// Returns 'Show Performance Overlay' boolean indicator if any.
-  bool? onShowPerformanceOverlay() =>
-      // ignore: avoid_bool_literals_in_conditional_expressions
-      inShowPerformanceOverlay != null ? inShowPerformanceOverlay!() : false;
+  bool? onShowPerformanceOverlay() => inShowPerformanceOverlay?.call() ?? false;
 
   /// Returns 'Raster Cache Checkerboard' boolean indicator if any.
   bool? onCheckerboardRasterCacheImages() =>
-      // ignore: avoid_bool_literals_in_conditional_expressions
-      inCheckerboardRasterCacheImages != null
-          ? inCheckerboardRasterCacheImages!()
-          : false;
+      inCheckerboardRasterCacheImages?.call() ?? false;
 
   /// Returns 'Off Screen Layers Checkerboard' boolean indicator if any.
-  // ignore: avoid_bool_literals_in_conditional_expressions
-  bool? onCheckerboardOffscreenLayers() => inCheckerboardOffscreenLayers != null
-      ? inCheckerboardOffscreenLayers!()
-      : false;
+  bool? onCheckerboardOffscreenLayers() =>
+      inCheckerboardOffscreenLayers?.call() ?? false;
 
   /// Returns 'Show Semantics' boolean indicator if any.
-  bool? onShowSemanticsDebugger() =>
-      // ignore: avoid_bool_literals_in_conditional_expressions
-      inShowSemanticsDebugger != null ? inShowSemanticsDebugger!() : false;
+  bool? onShowSemanticsDebugger() => inShowSemanticsDebugger?.call() ?? false;
 
   /// Returns 'Show Debug Banner' boolean indicator if any.
-  // ignore: avoid_bool_literals_in_conditional_expressions
   bool? onDebugShowWidgetInspector() =>
-      inDebugShowWidgetInspector != null ? inDebugShowWidgetInspector!() : true;
+      inDebugShowWidgetInspector?.call() ?? true;
 
   /// Returns 'Show Debug Banner' boolean indicator if any.
-  // ignore: avoid_bool_literals_in_conditional_expressions
-  bool? onDebugShowCheckedModeBanner() => inDebugShowCheckedModeBanner != null
-      ? inDebugShowCheckedModeBanner!()
-      : true;
+  bool? onDebugShowCheckedModeBanner() =>
+      inDebugShowCheckedModeBanner?.call() ?? true;
 
   /// Returns Map of 'LogicalKeySets' if any.
-  Map<LogicalKeySet, Intent>? onShortcuts() =>
-      inShortcuts != null ? inShortcuts!() : null;
+  Map<LogicalKeySet, Intent>? onShortcuts() => inShortcuts?.call();
 
   /// Returns Map of 'Intent Actions' if any.
-  Map<Type, Action<Intent>>? onActions() =>
-      inActions != null ? inActions!() : null;
+  Map<Type, Action<Intent>>? onActions() => inActions?.call();
 
   /// Returns the 'Restore Scope Id' routine if any.
-  String? onRestorationScopeId() =>
-      inRestorationScopeId != null ? inRestorationScopeId!() : null;
+  String? onRestorationScopeId() => inRestorationScopeId?.call();
 
   /// Returns the App's [ScrollBehavior] if any.
-  ScrollBehavior? onScrollBehavior() =>
-      inScrollBehavior != null ? inScrollBehavior!() : null;
+  ScrollBehavior? onScrollBehavior() => inScrollBehavior?.call();
 
   /// Perform asynchronous operations
   final Future<bool> Function()? inInitAsync;
+
+  /// Catch initAsync() error
+  final void Function(Object error)? inCatchAsyncError;
 
   /// Perform synchronous initialization
   final void Function()? inInitState;
@@ -1491,7 +1465,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   final ScrollBehavior? Function()? inScrollBehavior;
 
   /// Returns the App's 'Async Error Handler' if any.
-  final bool? Function(FlutterErrorDetails details)? inAsyncError;
+  final void Function(Object error)? inAsyncError;
 
   @override
   @mustCallSuper
@@ -1533,9 +1507,9 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   /// The Widget to display when an app's widget fails to display.
   /// Override if you like.
-  Widget onErrorScreen(FlutterErrorDetails details) => inErrorScreen != null
-      ? inErrorScreen!(details)
-      : AppWidgetErrorDisplayed(stackTrace: App.inDebugMode).builder(details);
+  Widget onErrorScreen(FlutterErrorDetails details) =>
+      inErrorScreen?.call(details) ??
+      AppWidgetErrorDisplayed(stackTrace: App.inDebugMode).builder(details);
 
   /// If there's a error reporting routine available.
   /// Override if you like
@@ -1574,7 +1548,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
     try {
       // Call the App's error handler.
-      AppErrorHandler.flutterExceptionHandler?.call(details);
+      AppErrorHandler.flutteryExceptionHandler?.call(details);
     } catch (e, stack) {
       recordException(e, stack);
     }
@@ -1668,23 +1642,23 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
 /// Supply the Global Navigator and all its methods.
 mixin NavigatorStateMethodsMixin {
   /// Whether the navigator can be popped.
-  bool canPop() => App.appState?.navigator.canPop() ?? false;
+  bool canPop() => App.appState?.navigator?.canPop() ?? false;
 
   /// Complete the lifecycle for a route that has been popped off the navigator.
   void finalizeRoute(Route<dynamic> route) =>
-      App.appState!.navigator.finalizeRoute(route);
+      App.appState!.navigator?.finalizeRoute(route);
 
   /// Consults the current route's [Route.popDisposition] method, and acts
   /// accordingly, potentially popping the route as a result; returns whether
   /// the pop request should be considered handled.
   @optionalTypeArgs
   Future<bool> maybePop<T extends Object?>([T? result]) =>
-      App.appState!.navigator.maybePop<T>(result);
+      App.appState!.navigator!.maybePop<T>(result);
 
   /// Pop the top-most route off the navigator.
   @optionalTypeArgs
   void pop<T extends Object?>([T? result]) =>
-      App.appState!.navigator.pop<T>(result);
+      App.appState!.navigator?.pop<T>(result);
 
   /// Pop the current route off the navigator and push a named route in its
   /// place.
@@ -1693,24 +1667,24 @@ mixin NavigatorStateMethodsMixin {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      App.appState!.navigator.popAndPushNamed<T, TO>(routeName,
+      App.appState!.navigator!.popAndPushNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Calls [pop] repeatedly until the predicate returns true.
   void popUntil(RoutePredicate predicate) =>
-      App.appState!.navigator.popUntil(predicate);
+      App.appState!.navigator?.popUntil(predicate);
 
   /// Push the given route onto the navigator.
   @optionalTypeArgs
   Future<T?> push<T extends Object?>(Route<T> route) =>
-      App.appState!.navigator.push<T>(route);
+      App.appState!.navigator!.push<T>(route);
 
   /// Push the given route onto the navigator, and then remove all the previous
   /// routes until the `predicate` returns true.
   @optionalTypeArgs
   Future<T?> pushAndRemoveUntil<T extends Object?>(
           Route<T> newRoute, RoutePredicate predicate) =>
-      App.appState!.navigator.pushAndRemoveUntil<T>(newRoute, predicate);
+      App.appState!.navigator!.pushAndRemoveUntil<T>(newRoute, predicate);
 
   /// Push a named route onto the navigator.
   @optionalTypeArgs
@@ -1718,14 +1692,14 @@ mixin NavigatorStateMethodsMixin {
     String routeName, {
     Object? arguments,
   }) =>
-      App.appState!.navigator.pushNamed(routeName, arguments: arguments);
+      App.appState!.navigator!.pushNamed(routeName, arguments: arguments);
 
   /// Push the route with the given name onto the navigator, and then remove all
   /// the previous routes until the `predicate` returns true.
   @optionalTypeArgs
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
           String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
-      App.appState!.navigator.pushNamedAndRemoveUntil<T>(
+      App.appState!.navigator!.pushNamedAndRemoveUntil<T>(
           newRouteName, predicate,
           arguments: arguments);
 
@@ -1736,7 +1710,7 @@ mixin NavigatorStateMethodsMixin {
   Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
           Route<T> newRoute,
           {TO? result}) =>
-      App.appState!.navigator.pushReplacement<T, TO>(newRoute, result: result);
+      App.appState!.navigator!.pushReplacement<T, TO>(newRoute, result: result);
 
   /// Replace the current route of the navigator by pushing the route named
   /// [routeName] and then disposing the previous route once the new route has
@@ -1746,24 +1720,24 @@ mixin NavigatorStateMethodsMixin {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      App.appState!.navigator.pushReplacementNamed<T, TO>(routeName,
+      App.appState!.navigator!.pushReplacementNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Immediately remove `route` from the navigator, and [Route.dispose] it.
   void removeRoute(Route<dynamic> route) =>
-      App.appState!.navigator.removeRoute(route);
+      App.appState!.navigator?.removeRoute(route);
 
   /// Immediately remove a route from the navigator, and [Route.dispose] it. The
   /// route to be removed is the one below the given `anchorRoute`.
   void removeRouteBelow(Route<dynamic> anchorRoute) =>
-      App.appState!.navigator.removeRouteBelow(anchorRoute);
+      App.appState!.navigator?.removeRouteBelow(anchorRoute);
 
   /// Replaces a route on the navigator that most tightly encloses the given
   /// context with a new route.
   @optionalTypeArgs
   void replace<T extends Object?>(
           {required Route<dynamic> oldRoute, required Route<T> newRoute}) =>
-      App.appState!.navigator
+      App.appState!.navigator!
           .replace<T>(oldRoute: oldRoute, newRoute: newRoute);
 
   /// Replaces a route on the navigator with a new route. The route to be
@@ -1771,7 +1745,7 @@ mixin NavigatorStateMethodsMixin {
   @optionalTypeArgs
   void replaceRouteBelow<T extends Object?>(
           {required Route<dynamic> anchorRoute, required Route<T> newRoute}) =>
-      App.appState!.navigator
+      App.appState!.navigator!
           .replaceRouteBelow<T>(anchorRoute: anchorRoute, newRoute: newRoute);
 
   /// Pop the current route off the navigator and push a named route in its
@@ -1781,7 +1755,7 @@ mixin NavigatorStateMethodsMixin {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      App.appState!.navigator.restorablePopAndPushNamed<T, TO>(routeName,
+      App.appState!.navigator!.restorablePopAndPushNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Push a new route onto the navigator.
@@ -1789,7 +1763,7 @@ mixin NavigatorStateMethodsMixin {
   String restorablePush<T extends Object?>(
           RestorableRouteBuilder<T> routeBuilder,
           {Object? arguments}) =>
-      App.appState!.navigator
+      App.appState!.navigator!
           .restorablePush<T>(routeBuilder, arguments: arguments);
 
   /// Push a new route onto the navigator, and then remove all the previous
@@ -1798,7 +1772,7 @@ mixin NavigatorStateMethodsMixin {
   String restorablePushAndRemoveUntil<T extends Object?>(
           RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate,
           {Object? arguments}) =>
-      App.appState!.navigator.restorablePushAndRemoveUntil<T>(
+      App.appState!.navigator!.restorablePushAndRemoveUntil<T>(
           newRouteBuilder, predicate,
           arguments: arguments);
 
@@ -1808,7 +1782,7 @@ mixin NavigatorStateMethodsMixin {
     String routeName, {
     Object? arguments,
   }) =>
-      App.appState!.navigator
+      App.appState!.navigator!
           .restorablePushNamed(routeName, arguments: arguments);
 
   /// Push the route with the given name onto the navigator that most tightly
@@ -1817,7 +1791,7 @@ mixin NavigatorStateMethodsMixin {
   @optionalTypeArgs
   String restorablePushNamedAndRemoveUntil<T extends Object?>(
           String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
-      App.appState!.navigator.restorablePushNamedAndRemoveUntil<T>(
+      App.appState!.navigator!.restorablePushNamedAndRemoveUntil<T>(
           newRouteName, predicate,
           arguments: arguments);
 
@@ -1829,7 +1803,7 @@ mixin NavigatorStateMethodsMixin {
           RestorableRouteBuilder<T> routeBuilder,
           {TO? result,
           Object? arguments}) =>
-      App.appState!.navigator.restorablePushReplacement<T, TO>(routeBuilder,
+      App.appState!.navigator!.restorablePushReplacement<T, TO>(routeBuilder,
           result: result, arguments: arguments);
 
   /// Replace the current route of the navigator that most tightly encloses the
@@ -1840,7 +1814,7 @@ mixin NavigatorStateMethodsMixin {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      App.appState!.navigator.restorablePushReplacementNamed<T, TO>(routeName,
+      App.appState!.navigator!.restorablePushReplacementNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Replaces a route on the navigator that most tightly encloses the given
@@ -1850,7 +1824,7 @@ mixin NavigatorStateMethodsMixin {
           {required Route<dynamic> oldRoute,
           required RestorableRouteBuilder<T> newRouteBuilder,
           Object? arguments}) =>
-      App.appState!.navigator.restorableReplace<T>(
+      App.appState!.navigator!.restorableReplace<T>(
           oldRoute: oldRoute,
           newRouteBuilder: newRouteBuilder,
           arguments: arguments);
@@ -1862,7 +1836,7 @@ mixin NavigatorStateMethodsMixin {
           {required Route<dynamic> anchorRoute,
           required RestorableRouteBuilder<T> newRouteBuilder,
           Object? arguments}) =>
-      App.appState!.navigator.restorableReplaceRouteBelow<T>(
+      App.appState!.navigator!.restorableReplaceRouteBelow<T>(
           anchorRoute: anchorRoute,
           newRouteBuilder: newRouteBuilder,
           arguments: arguments);

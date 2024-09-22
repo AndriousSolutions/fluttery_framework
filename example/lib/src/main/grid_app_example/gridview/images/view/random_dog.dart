@@ -49,7 +49,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     /// [didUpdateWidget], and then unsubscribe from the object in [dispose].
     if (inDebugMode) {
       //ignore: avoid_print
-      print('############ Event: initState in $this');
+      debugPrint('############ Event: initState in $this');
     }
   }
 
@@ -66,8 +66,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     /// this object and other elements in the tree (e.g. if you have provided an
     /// ancestor with a pointer to a descendant's [RenderObject]).
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: deactivate in $this');
+      debugPrint('############ Event: deactivate in $this');
     }
   }
 
@@ -91,8 +90,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     /// is inserted into the tree. Instead, the framework calls [initState] in
     /// that situation.
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: activate in $this');
+      debugPrint('############ Event: activate in $this');
     }
   }
 
@@ -109,8 +107,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     /// Subclasses should override this method to release any resources retained
     /// by this object (e.g., stop any active animations).
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: dispose in $this');
+      debugPrint('############ Event: dispose in $this');
     }
   }
 
@@ -123,8 +120,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     /// The framework always calls build() after calling [didUpdateWidget], which
     /// means any calls to [setState] in [didUpdateWidget] are redundant.
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didUpdateWidget in $this');
+      debugPrint('############ Event: didUpdateWidget in $this');
     }
   }
 
@@ -143,8 +139,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     /// build() functions are also called but not before this method again.
     /// Subclasses rarely use this method, but its an option if needed.
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeDependencies in $this');
+      debugPrint('############ Event: didChangeDependencies in $this');
     }
   }
 
@@ -162,8 +157,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     /// state, for example, image loading from asset bundles (since the asset
     /// bundle may have changed).
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: reassemble in $this');
+      debugPrint('############ Event: reassemble in $this');
     }
   }
 
@@ -187,8 +181,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   Future<bool> didPopRoute() async {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPopRoute in $this');
+      debugPrint('############ Event: didPopRoute in $this');
     }
     return super.didPopRoute();
   }
@@ -206,8 +199,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPushRouteInformation in $this');
+      debugPrint('############ Event: didPushRouteInformation in $this');
     }
     return super.didPushRouteInformation(routeInformation);
   }
@@ -216,8 +208,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void didPush() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPush in $this');
+      debugPrint('############ Event: didPush in $this');
     }
     super.didPush();
   }
@@ -226,8 +217,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void didPushNext() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPushNext in $this');
+      debugPrint('############ Event: didPushNext in $this');
     }
     super.didPushNext();
   }
@@ -236,8 +226,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void didPop() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPop in $this');
+      debugPrint('############ Event: didPop in $this');
     }
     super.didPop();
   }
@@ -246,8 +235,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void didPopNext() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPopNext in $this');
+      debugPrint('############ Event: didPopNext in $this');
     }
     super.didPopNext();
   }
@@ -272,8 +260,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     ///     setState(() { _lastSize = ui.window.physicalSize; });
     ///   }
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeMetrics in $this');
+      debugPrint('############ Event: didChangeMetrics in $this');
     }
   }
 
@@ -295,8 +282,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     ///     setState(() { _lastTextScaleFactor = ui.window.textScaleFactor; });
     ///   }
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeTextScaleFactor in $this');
+      debugPrint('############ Event: didChangeTextScaleFactor in $this');
     }
   }
 
@@ -305,8 +291,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   void didChangePlatformBrightness() {
     super.didChangePlatformBrightness();
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangePlatformBrightness in $this');
+      debugPrint('############ Event: didChangePlatformBrightness in $this');
     }
   }
 
@@ -321,8 +306,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     ///
     /// This method exposes notifications from [Window.onLocaleChanged].
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeLocales in $this');
+      debugPrint('############ Event: didChangeLocales in $this');
     }
   }
 
@@ -330,8 +314,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeAppLifecycleState in $this');
+      debugPrint('############ Event: didChangeAppLifecycleState in $this');
     }
 
     super.didChangeAppLifecycleState(state);
@@ -348,8 +331,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void resumedAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: resumedLifecycleState in $this');
+      debugPrint('############ Event: resumedLifecycleState in $this');
     }
   }
 
@@ -370,8 +352,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void inactiveAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: inactiveLifecycleState in $this');
+      debugPrint('############ Event: inactiveLifecycleState in $this');
     }
   }
 
@@ -382,8 +363,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void hiddenAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: hiddenLifecycleState in $this');
+      debugPrint('############ Event: hiddenLifecycleState in $this');
     }
   }
 
@@ -392,8 +372,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void pausedAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: pausedLifecycleState in $this');
+      debugPrint('############ Event: pausedLifecycleState in $this');
     }
   }
 
@@ -407,8 +386,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     /// This method exposes the `memoryPressure` notification from
     /// [SystemChannels.system].
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didHaveMemoryPressure in $this');
+      debugPrint('############ Event: didHaveMemoryPressure in $this');
     }
   }
 
@@ -420,8 +398,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   Future<AppExitResponse> didRequestAppExit() async {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didRequestAppExit in $this');
+      debugPrint('############ Event: didRequestAppExit in $this');
     }
     super.didRequestAppExit();
     return AppExitResponse.exit;
@@ -435,8 +412,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     /// Called when the system changes the set of currently active accessibility
     /// features.
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeAccessibilityFeatures in $this');
+      debugPrint('############ Event: didChangeAccessibilityFeatures in $this');
     }
   }
 }

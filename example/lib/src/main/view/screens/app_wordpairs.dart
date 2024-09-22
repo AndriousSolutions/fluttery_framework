@@ -18,14 +18,6 @@ class _WordPairsState extends StateX<WordPairs> {
   }
   late WordPairsController con;
 
-  @override
-  void initState() {
-    super.initState();
-    appCon = ExampleAppController();
-  }
-
-  late ExampleAppController appCon;
-
   /// Depending on the platform, run an 'Android' or 'iOS' style of Widget.
   @override
   Widget buildAndroid(BuildContext context) => _RandomWordsAndroid(state: this);

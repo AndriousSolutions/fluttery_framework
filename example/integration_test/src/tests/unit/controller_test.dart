@@ -4,16 +4,14 @@ import '../../_test_imports.dart';
 String _location = '========================== controller_test.dart';
 
 Future<void> testTemplateController(WidgetTester tester) async {
-  //ignore: avoid_print
-  // print('====================== Unit Testing Controller ');
+  // debugPrint('====================== Unit Testing Controller ');
 
   final con = ExampleAppController();
 
   final app = con.application;
 
   expect(app, isInstanceOf<String>(), reason: _location);
-  //ignore: avoid_print
-  // print('con.application: $app $_location');
+  // debugPrint('con.application: $app $_location');
 
   con.changeApp('Counter');
 

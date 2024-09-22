@@ -1,15 +1,15 @@
-import '_unit_imports.dart';
+import 'src/model/_unit_test_model.dart';
 
 //
 unitTests(WidgetTester tester) async {
 //
   await testAssets();
 
+  await testHash(tester);
+
   await testAppController();
 
   await testDeviceInfo();
-
-  // testGetUtils(tester);
 
   testHandleError(tester);
 
@@ -21,8 +21,6 @@ unitTests(WidgetTester tester) async {
 
   testLoadingScreen(tester);
 
-  testAppObject(tester);
-
   testAppMenu(tester);
 
   testAppRouterDelegate(tester);
@@ -30,4 +28,6 @@ unitTests(WidgetTester tester) async {
   testAppState(tester);
 
   testAppStatefulWidget(tester);
+
+  await testAppObject(tester);
 }

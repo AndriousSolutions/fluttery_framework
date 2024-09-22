@@ -113,9 +113,8 @@ class Assets {
   /// Retrieve an AssetImage by its Key value.
   /// Supply a parser function to process the operation.
   /// (See. Flutter's [AssetBundle.loadStructuredData]
-  AssetImage getImage(String key, {AssetBundle? bundle, String? package}) {
-    return AssetImage(key, bundle: bundle, package: package);
-  }
+  AssetImage getImage(String key, {AssetBundle? bundle, String? package}) =>
+      AssetImage(key, bundle: bundle, package: package);
 
   /// Determine the appropriate path for the asset.
   static String? setPath(String key) {

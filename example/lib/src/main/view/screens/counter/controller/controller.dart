@@ -75,8 +75,7 @@ class Controller extends StateXController {
   void initState() {
     super.initState();
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: initState in $this');
+      debugPrint('############ Event: initState in $this');
     }
   }
 
@@ -85,8 +84,7 @@ class Controller extends StateXController {
   @override
   void deactivate() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: deactivate in $this');
+      debugPrint('############ Event: deactivate in $this');
     }
   }
 
@@ -95,8 +93,7 @@ class Controller extends StateXController {
   @override
   void activate() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: activate in $this');
+      debugPrint('############ Event: activate in $this');
     }
   }
 
@@ -107,8 +104,7 @@ class Controller extends StateXController {
   @override
   void dispose() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ now disposed in $this');
+      debugPrint('############ now disposed in $this');
     }
     super.dispose();
   }
@@ -118,8 +114,7 @@ class Controller extends StateXController {
   @override
   void pausedAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: pausedLifecycleState in $this');
+      debugPrint('############ Event: pausedLifecycleState in $this');
     }
   }
 
@@ -127,8 +122,7 @@ class Controller extends StateXController {
   @override
   void resumedAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: resumedLifecycleState in $this');
+      debugPrint('############ Event: resumedLifecycleState in $this');
     }
   }
 
@@ -136,8 +130,7 @@ class Controller extends StateXController {
   @override
   void inactiveAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: inactiveLifecycleState in $this');
+      debugPrint('############ Event: inactiveLifecycleState in $this');
     }
   }
 
@@ -146,8 +139,7 @@ class Controller extends StateXController {
   @override
   void detachedAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: detachedLifecycleState in $this');
+      debugPrint('############ Event: detachedLifecycleState in $this');
     }
   }
 
@@ -155,8 +147,7 @@ class Controller extends StateXController {
   @override
   void didUpdateWidget(StatefulWidget oldWidget) {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didUpdateWidget in $this');
+      debugPrint('############ Event: didUpdateWidget in $this');
     }
   }
 
@@ -166,8 +157,7 @@ class Controller extends StateXController {
   @override
   void didChangeDependencies() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeDependencies in $this');
+      debugPrint('############ Event: didChangeDependencies in $this');
     }
   }
 
@@ -176,8 +166,7 @@ class Controller extends StateXController {
   @override
   void reassemble() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: reassemble in $this');
+      debugPrint('############ Event: reassemble in $this');
     }
   }
 
@@ -187,8 +176,7 @@ class Controller extends StateXController {
   @override
   Future<bool> didPopRoute() async {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPopRoute in $this');
+      debugPrint('############ Event: didPopRoute in $this');
     }
     return super.didPopRoute();
   }
@@ -198,8 +186,7 @@ class Controller extends StateXController {
   @override
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPushRouteInformation in $this');
+      debugPrint('############ Event: didPushRouteInformation in $this');
     }
     return super.didPushRouteInformation(routeInformation);
   }
@@ -208,8 +195,7 @@ class Controller extends StateXController {
   @override
   void didPopNext() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPopNext in $this');
+      debugPrint('############ Event: didPopNext in $this');
     }
     setState(() {});
   }
@@ -218,8 +204,7 @@ class Controller extends StateXController {
   @override
   void didPush() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPush in $this');
+      debugPrint('############ Event: didPush in $this');
     }
     setState(() {});
   }
@@ -228,8 +213,7 @@ class Controller extends StateXController {
   @override
   void didPop() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPop in $this');
+      debugPrint('############ Event: didPop in $this');
     }
   }
 
@@ -237,8 +221,7 @@ class Controller extends StateXController {
   @override
   void didPushNext() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPushNext in $this');
+      debugPrint('############ Event: didPushNext in $this');
     }
   }
 
@@ -247,8 +230,7 @@ class Controller extends StateXController {
   @override
   void didChangeMetrics() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeMetrics in $this');
+      debugPrint('############ Event: didChangeMetrics in $this');
     }
   }
 
@@ -256,8 +238,7 @@ class Controller extends StateXController {
   @override
   void didChangeTextScaleFactor() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeTextScaleFactor in $this');
+      debugPrint('############ Event: didChangeTextScaleFactor in $this');
     }
   }
 
@@ -265,8 +246,7 @@ class Controller extends StateXController {
   @override
   void didChangePlatformBrightness() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangePlatformBrightness in $this');
+      debugPrint('############ Event: didChangePlatformBrightness in $this');
     }
   }
 
@@ -274,8 +254,7 @@ class Controller extends StateXController {
   @override
   void didChangeLocales(List<Locale>? locales) {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeLocale in $this');
+      debugPrint('############ Event: didChangeLocale in $this');
     }
   }
 
@@ -287,8 +266,8 @@ class Controller extends StateXController {
     /// AppLifecycleState.detach
     /// AppLifecycleState.resume
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeAppLifecycleState($state) in $this');
+      debugPrint(
+          '############ Event: didChangeAppLifecycleState($state) in $this');
     }
   }
 
@@ -296,18 +275,15 @@ class Controller extends StateXController {
   @override
   void didHaveMemoryPressure() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didHaveMemoryPressure in $this');
+      debugPrint('############ Event: didHaveMemoryPressure in $this');
     }
   }
 
   /// Called when the system changes the set of active accessibility features.
   @override
   void didChangeAccessibilityFeatures() {
-    // inDebugger is deprecated but still tested here. Use inDebugMode instead.
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeAccessibilityFeatures in $this');
+      debugPrint('############ Event: didChangeAccessibilityFeatures in $this');
     }
   }
 }

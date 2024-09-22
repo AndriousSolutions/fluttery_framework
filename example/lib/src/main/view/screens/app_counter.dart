@@ -35,10 +35,7 @@ class _CounterPageState extends StateX<CounterPage> {
     super.initState();
     // What happens when this command is uncommented?
 //    throw Exception('Throws an error to demonstrate error handling!');
-    appCon = ExampleAppController();
   }
-
-  late ExampleAppController appCon;
 
   TextStyle? style;
 

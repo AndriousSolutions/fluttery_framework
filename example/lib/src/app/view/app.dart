@@ -22,20 +22,18 @@ class _ExampleAppState extends AppState {
           controller: ExampleAppController(),
           inTitle: () => 'Demo App',
           debugShowCheckedModeBanner: false,
-          switchUI: Prefs.getBool('switchUI'),
-          useRouterConfig: false,
+          switchUI: ExampleAppController().switchUI,
+          useRouterConfig: ExampleAppController().useRouterConfig,
           onNavigationNotification: (notification) {
             if (kDebugMode) {
-              //ignore: avoid_print
-              print('############ Event: onNavigationNotification()');
+              debugPrint('############ Event: onNavigationNotification()');
             }
             return notification.canHandlePop;
           },
           onUnknownRoute: (settings) {
             Route<dynamic>? route;
             if (kDebugMode) {
-              //ignore: avoid_print
-              print('############ Event: onUnknownRoute()');
+              debugPrint('############ Event: onUnknownRoute()');
             }
             return route;
           },
@@ -68,7 +66,7 @@ class _ExampleAppState extends AppState {
                 'Exception: Fake error to demonstrate error handling!') {
               assert(() {
                 if (kDebugMode) {
-                  print('########### Fake error caught again here.');
+                  debugPrint('########### Fake error caught again here.');
                 }
                 return true;
               }());
@@ -83,8 +81,7 @@ class _ExampleAppState extends AppState {
   @override
   onOnNavigationNotification(notification) {
     if (kDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: Navigation change.');
+      debugPrint('############ Event: Navigation change.');
     }
     return notification.canHandlePop;
   }
@@ -113,11 +110,11 @@ class _ExampleAppState extends AppState {
 
   @override
   void onErrorHandler(FlutterErrorDetails details) {
+    super.onErrorHandler(details);
     // An error was handled by a State object
     if (errorStateName.isNotEmpty) {
       return;
     }
-    // Handle errors other than a State object error
   }
 
   @override

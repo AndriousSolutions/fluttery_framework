@@ -93,7 +93,7 @@ class AppObject
 
   /// App-level error handling.
   void onError(FlutterErrorDetails details) =>
-      AppErrorHandler.flutterExceptionHandler?.call(details);
+      AppErrorHandler.flutteryExceptionHandler?.call(details);
 
   /// App-level error handling if async operation at start up fails
   void onAsyncError(AsyncSnapshot<bool> snapshot) {
@@ -239,7 +239,11 @@ class AppObject
     DismissDirection? dismissDirection,
     Clip? clipBehavior,
   }) {
-    final state = ScaffoldMessenger.maybeOf(context!);
+    ScaffoldMessengerState? state;
+    final context = this.context;
+    if (context != null) {
+      state = ScaffoldMessenger.maybeOf(context);
+    }
     state?.showSnackBar(
       SnackBar(
         key: key,
@@ -273,27 +277,63 @@ class AppObject
   // static BuildContext? get context => _appState?.lastContext;
 
   /// The Scaffold object for this App's View.
-  ScaffoldState? get scaffold => Scaffold.maybeOf(context!);
+  ScaffoldState? get scaffold =>
+      context == null ? null : Scaffold.maybeOf(context!);
 
   /// The Physical width of the screen
   double get screenPhysicalWidth {
-    final media = MediaQuery.of(context!);
-    return media.size.width * media.devicePixelRatio;
+    double physicalWidth;
+    final context = this.context;
+    if (context == null) {
+      physicalWidth = mainWindow.physicalSize.width;
+    } else {
+      final media = MediaQuery.of(context);
+      physicalWidth = media.size.width * media.devicePixelRatio;
+    }
+    return physicalWidth;
   }
 
   /// The 'logical' width of the screen
-  double get screenWidth => MediaQuery.of(context!).size.width;
+  double get screenWidth {
+    double logicalWidth;
+    final context = this.context;
+    if (context == null) {
+      final size = mainWindow.physicalSize / mainWindow.devicePixelRatio;
+      logicalWidth = size.width;
+    } else {
+      logicalWidth = MediaQuery.of(context).size.width;
+    }
+    return logicalWidth;
+  }
 
   /// The Physical height of the screen
-  double get screenPhysicalHeight => MediaQuery.of(context!).size.height;
+  double get screenPhysicalHeight {
+    double physicalHeight;
+    final context = this.context;
+    if (context == null) {
+      physicalHeight = mainWindow.physicalSize.height;
+    } else {
+      final media = MediaQuery.of(context);
+      physicalHeight = media.size.height * media.devicePixelRatio;
+    }
+    return physicalHeight;
+  }
 
   /// The 'Logical' height of the screen
   double get screenHeight {
-    final media = MediaQuery.of(context!);
-    return media.size.height -
-        media.padding.top -
-        kToolbarHeight -
-        kBottomNavigationBarHeight;
+    double logicalHeight;
+    final context = this.context;
+    if (context == null) {
+      final size = mainWindow.physicalSize / mainWindow.devicePixelRatio;
+      logicalHeight = size.height;
+    } else {
+      final media = MediaQuery.of(context);
+      logicalHeight = media.size.height -
+          media.padding.top -
+          kToolbarHeight -
+          kBottomNavigationBarHeight;
+    }
+    return logicalHeight;
   }
 
   /// Current Screen Size

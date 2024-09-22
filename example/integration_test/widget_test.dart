@@ -36,6 +36,7 @@ void integrationTestFlutteryFramework() {
     int cnt = 1;
 
     while (cnt <= 3) {
+      //
       switch (con.application) {
         case 'Counter':
 
@@ -55,11 +56,6 @@ void integrationTestFlutteryFramework() {
           await dialogTests(tester);
 
           break;
-        case 'Contacts':
-
-          /// Contacts app
-//          await contactsTest(tester);
-          break;
       }
 
       /// Switch the app through the popupmenu
@@ -68,8 +64,31 @@ void integrationTestFlutteryFramework() {
       cnt++;
     }
 
+    /// Open About menu
+    await openAboutMenu(tester);
+
     /// Open the Locale window
     await openLocaleMenu(tester);
+
+    if (App.useCupertino) {
+      /// Switch the Interface to Material
+      await openInterfaceMenu(tester);
+    }
+
+    /// Open Material menu
+    await openMaterialVersionMenu(tester);
+
+    /// Change app to use the router
+    con.useRouterConfig = true;
+
+    /// Switch the Interface
+    await openInterfaceMenu(tester);
+
+    /// Throw an error in the initAsync() function
+    con.throwError = true;
+
+    /// Switch the Interface
+    await openInterfaceMenu(tester);
 
     /// Unit testing
     await unitTests(tester);
@@ -77,15 +96,6 @@ void integrationTestFlutteryFramework() {
     reportTestErrors();
 
     return;
-
-    /// Switch the app through the popupmenu
-    await openApplicationMenu(tester);
-
-    /// Open About menu
-    await openAboutMenu(tester);
-
-    /// Switch the Interface
-    await openInterfaceMenu(tester);
 
     /// WordPairs App Model Unit Testing
     await wordPairsModelTest(tester);

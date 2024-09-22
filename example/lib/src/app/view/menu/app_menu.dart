@@ -45,9 +45,9 @@ class AppMenu extends AppPopupMenu {
           ),
         if (App.useMaterial)
           PopupMenuItem(
-            key: const Key('materialMenuItem'),
             value: 'material',
-            child: MaterialVersion(
+            child: MaterialVersionRadioButtons(
+              key: const Key('materialButtons'),
               controller: MaterialController(),
             ),
           ),

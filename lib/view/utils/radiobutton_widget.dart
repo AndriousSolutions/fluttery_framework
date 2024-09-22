@@ -1,4 +1,10 @@
-library;
+library fluttery_framework;
+// Copyright 2024 Andrious Solutions Ltd. All rights reserved.
+// Use of this source code is governed by a 2-clause BSD License.
+// The main directory contains that LICENSE file.
+//
+//          Created  19 September 2024
+//
 
 ///
 import 'dart:ui' as ui show TextHeightBehavior;
@@ -47,9 +53,9 @@ class _RadioButtonsState<T> extends StateX<RadioButtons<T>> {
 }
 
 /// Returns the 'Radio' widgets
-List<Widget> radioButtonsBuilder(
+List<Widget> radioButtonsBuilder<T>(
   // Radio
-  List<String> items,
+  dynamic items,
   RadioButtonsController<dynamic> controller, {
   double? space,
   MouseCursor? mouseCursor,
@@ -65,6 +71,7 @@ List<Widget> radioButtonsBuilder(
   FocusNode? focusNode,
   bool? autofocus,
   bool? useCupertinoCheckmarkStyle,
+  bool? textFirst,
   // Text
   TextStyle? style,
   StrutStyle? strutStyle,
@@ -92,60 +99,63 @@ List<Widget> radioButtonsBuilder(
   Clip? clipBehavior,
 }) {
   //
-  Widget Function(String i) buildRadioButton;
+  Radio<T> buildRadioButton(T value) => Radio<T>.adaptive(
+        value: value,
+        groupValue: controller.groupValue,
+        onChanged: controller.disabled ? null : controller.onChanged,
+        mouseCursor: mouseCursor,
+        toggleable: toggleable ?? false,
+        activeColor: activeColor,
+        fillColor: fillColor,
+        focusColor: focusColor,
+        hoverColor: hoverColor,
+        overlayColor: overlayColor,
+        splashRadius: splashRadius,
+        materialTapTargetSize: materialTapTargetSize,
+        visualDensity: visualDensity,
+        focusNode: focusNode,
+        autofocus: autofocus ?? false,
+        useCupertinoCheckmarkStyle: useCupertinoCheckmarkStyle ?? false,
+      );
 
-  if (useCupertinoCheckmarkStyle == null) {
-    //
-    buildRadioButton = (String i) => Radio<String>(
-          value: i,
-          groupValue: controller.groupValue,
-          onChanged: controller.disabled ? null : controller.onChanged,
-          mouseCursor: mouseCursor,
-          toggleable: toggleable ?? false,
-          activeColor: activeColor,
-          fillColor: fillColor,
-          focusColor: focusColor,
-          hoverColor: hoverColor,
-          overlayColor: overlayColor,
-          splashRadius: splashRadius,
-          materialTapTargetSize: materialTapTargetSize,
-          visualDensity: visualDensity,
-          focusNode: focusNode,
-          autofocus: autofocus ?? false,
-        );
-  } else {
-    //
-    buildRadioButton = (String i) => Radio<String>.adaptive(
-          value: i,
-          groupValue: controller.groupValue,
-          onChanged: controller.disabled ? null : controller.onChanged,
-          mouseCursor: mouseCursor,
-          toggleable: toggleable ?? false,
-          activeColor: activeColor,
-          fillColor: fillColor,
-          focusColor: focusColor,
-          hoverColor: hoverColor,
-          overlayColor: overlayColor,
-          splashRadius: splashRadius,
-          materialTapTargetSize: materialTapTargetSize,
-          visualDensity: visualDensity,
-          focusNode: focusNode,
-          autofocus: autofocus ?? false,
-          useCupertinoCheckmarkStyle: useCupertinoCheckmarkStyle,
-        );
-  }
+  space ??= 0;
+
   final List<Widget> radioButtons = [];
 
-  final radioItems = items
-      .map((String i) => <Widget>[
+  assert(() {
+    if (controller.type != T) {
+      debugPrint(
+          '############ controller.type == T fails in radiobutton_widget.dart');
+    }
+    return true;
+  }());
+
+  if (controller.type == T) {
+    //
+    if (items is List<String>) {
+      //
+      assert(() {
+        if (items.runtimeType != T) {
+          debugPrint(
+              '############ items.runtimeType == T fails in radiobutton_widget.dart');
+        }
+        return true;
+      }());
+
+      if (items.runtimeType == T) {
+        //
+        for (final value in items) {
+          //
+          var radioItems = [
             Flexible(
-              child: buildRadioButton(i),
+              child: buildRadioButton(value as T),
             ),
+            if (space > 0) SizedBox(width: space),
             Flexible(
               flex: flex ?? 1,
               fit: fit ?? FlexFit.loose,
               child: Text(
-                i,
+                value,
                 style: style,
                 strutStyle: strutStyle,
                 textAlign: textAlign,
@@ -161,37 +171,90 @@ List<Widget> radioButtonsBuilder(
                 selectionColor: selectionColor,
               ),
             ),
-          ])
-      .toList();
-  //
-  space ??= 0;
+          ];
 
-  for (final widget in radioItems) {
-    //
-    if (direction == null) {
-      //
-      radioButtons.add(widget[0]);
+          if (textFirst ?? false) {
+            radioItems = radioItems.reversed.toList(growable: false);
+          }
 
-      if (space > 0) {
-        radioButtons.add(SizedBox(width: space));
+          radioButtons.add(
+            Flex(
+                direction: direction ?? Axis.horizontal,
+                mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
+                mainAxisSize: mainAxisSize ?? MainAxisSize.max,
+                crossAxisAlignment:
+                    crossAxisAlignment ?? CrossAxisAlignment.center,
+                textDirection: textDirection,
+                verticalDirection: verticalDirection ?? VerticalDirection.down,
+                textBaseline: textBaseline,
+                clipBehavior: clipBehavior ?? Clip.none,
+                children: radioItems),
+          );
+        }
       }
-      radioButtons.add(widget[1]);
-    } else {
+    } else if (items is Map<String, T>) {
       //
-      radioButtons.add(
-        Flex(
-          direction: direction,
-          mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
-          mainAxisSize: mainAxisSize ?? MainAxisSize.max,
-          crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
-          textDirection: textDirection,
-          verticalDirection: verticalDirection ?? VerticalDirection.down,
-          textBaseline: textBaseline,
-          clipBehavior: clipBehavior ?? Clip.none,
-          children: widget,
-        ),
-      );
+      items.forEach((String key, T value) {
+        //
+        var radioItems = [
+          Flexible(
+            child: buildRadioButton(value),
+          ),
+          if (space! > 0) SizedBox(width: space),
+          Flexible(
+            flex: flex ?? 1,
+            fit: fit ?? FlexFit.loose,
+            child: Text(
+              key,
+              style: style,
+              strutStyle: strutStyle,
+              textAlign: textAlign,
+              textDirection: textDirection,
+              locale: locale,
+              softWrap: softWrap,
+              overflow: overflow,
+              textScaler: textScaler,
+              maxLines: maxLines,
+              semanticsLabel: semanticsLabel,
+              textWidthBasis: textWidthBasis,
+              textHeightBehavior: textHeightBehavior,
+              selectionColor: selectionColor,
+            ),
+          ),
+        ];
+
+        if (textFirst ?? false) {
+          radioItems = radioItems.reversed.toList(growable: false);
+        }
+
+        radioButtons.add(
+          Flex(
+            direction: direction ?? Axis.horizontal,
+            mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
+            mainAxisSize: mainAxisSize ?? MainAxisSize.max,
+            crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
+            textDirection: textDirection,
+            verticalDirection: verticalDirection ?? VerticalDirection.down,
+            textBaseline: textBaseline,
+            clipBehavior: clipBehavior ?? Clip.none,
+            children: radioItems,
+          ),
+        );
+      });
     }
+  }
+
+  // Nothing to show.
+  if (radioButtons.isEmpty) {
+    //
+    assert(() {
+      if (radioButtons.isEmpty) {
+        debugPrint(
+            '############ items should be a List or a Map in radiobutton_widget.dart');
+      }
+      return true;
+    }());
+    radioButtons.add(const SizedBox.shrink());
   }
   return radioButtons;
 }
@@ -206,6 +269,9 @@ class RadioButtonsController<T> extends StateXController {
 
   /// The radio button initial selected
   final T? initialValue;
+
+  /// Explicitly return the 'type'
+  Type get type => T;
 
   /// If the radio buttons are disabled or not
   bool disabled = false;

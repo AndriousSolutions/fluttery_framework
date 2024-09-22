@@ -144,7 +144,7 @@ class AppErrorHandler {
       }
     };
     // Record the 'current' error handler.
-    _flutterExceptionHandler = FlutterError.onError;
+    _flutteryExceptionHandler = FlutterError.onError;
   }
   static AppErrorHandler? _this;
 
@@ -168,9 +168,9 @@ class AppErrorHandler {
   static bool ranApp = false;
 
   /// Return the current 'Flutter Exception Handler.'
-  static FlutterExceptionHandler? get flutterExceptionHandler =>
-      _flutterExceptionHandler;
-  static FlutterExceptionHandler? _flutterExceptionHandler;
+  static FlutterExceptionHandler? get flutteryExceptionHandler =>
+      _flutteryExceptionHandler;
+  static FlutterExceptionHandler? _flutteryExceptionHandler;
 
   /// Return either the current and previous Error Handler.
   @Deprecated('Should not be an exposed property')

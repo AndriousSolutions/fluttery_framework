@@ -9,11 +9,14 @@ import '/src/view.dart';
 ///
 class ExampleAppController extends AppController {
   factory ExampleAppController() => _this ??= ExampleAppController._();
-  ExampleAppController._() : super();
+  ExampleAppController._();
   static ExampleAppController? _this;
 
+  /// Use the Router Configuration or not
+  bool useRouterConfig = false;
+
   /// Store the boolean allowing for errors or not.
-  bool allowErrors = false;
+  bool throwError = false;
 
   /// Error right at the start
   bool errorAtStartup = false;
@@ -24,7 +27,8 @@ class ExampleAppController extends AppController {
   /// Switch to the other User Interface.
   void changeUI() {
     //
-    Navigator.popUntil(App.context!, ModalRoute.withName('/'));
+//    Navigator.popUntil(App.context!, ModalRoute.withName('/'));
+    App.popUntil(ModalRoute.withName('/'));
 
     // This has to be called first.
     App.changeUI(App.useMaterial ? 'Cupertino' : 'Material');
@@ -46,6 +50,9 @@ class ExampleAppController extends AppController {
     Prefs.setBool('switchUI', switchUI);
   }
 
+  /// Allow to switch Interface
+  bool get switchUI => Prefs.getBool('switchUI');
+
   /// Indicate if the Counter app is to run.
   bool get counterApp => _appNames[_appCount] == 'Counter';
 
@@ -63,11 +70,11 @@ class ExampleAppController extends AppController {
     //
     _appCount = Prefs.getInt('appRun');
 
-    // Possibly running in a test and can't run the Contacts app
-    // There's no sqlite in the test environment
-    if (App.inFlutterTest && _appCount == 2) {
-      _appCount = 0;
-    }
+    // // Possibly running in a test and can't run the Contacts app
+    // // There's no sqlite in the test environment
+    // if (App.inFlutterTest && _appCount == 2) {
+    //   _appCount = 0;
+    // }
 
     Widget? widget;
 
@@ -244,18 +251,17 @@ class ExampleAppController extends AppController {
   @override
   Future<bool> initAsync() async {
     final init = await super.initAsync();
+    //
+    if (throwError) {
+      throwError = false;
+      throw AssertionError('Error thrown in initAsync()');
+    }
 
     //
     state?.add(MaterialController());
 
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: initAsync() in $this');
-    }
-
-    //
-    if (ExampleAppController().allowErrors) {
-      throw Exception('error thrown in template_controller() in $this');
+      debugPrint('############ Event: initAsync() in $this');
     }
     return init;
   }
@@ -265,8 +271,7 @@ class ExampleAppController extends AppController {
   @override
   void deactivate() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: deactivate() in $this');
+      debugPrint('############ Event: deactivate() in $this');
     }
   }
 
@@ -275,8 +280,7 @@ class ExampleAppController extends AppController {
   @override
   void activate() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: activate() in $this');
+      debugPrint('############ Event: activate() in $this');
     }
   }
 
@@ -290,8 +294,7 @@ class ExampleAppController extends AppController {
     _this = null;
 
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ now disposed.');
+      debugPrint('############ now disposed.');
     }
     super.dispose();
   }
@@ -301,8 +304,7 @@ class ExampleAppController extends AppController {
   @override
   void pausedAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: pausedLifecycleState() in $this');
+      debugPrint('############ Event: pausedLifecycleState() in $this');
     }
   }
 
@@ -310,8 +312,7 @@ class ExampleAppController extends AppController {
   @override
   void resumedAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: resumedLifecycleState() in $this');
+      debugPrint('############ Event: resumedLifecycleState() in $this');
     }
   }
 
@@ -319,8 +320,7 @@ class ExampleAppController extends AppController {
   @override
   void inactiveAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: inactiveLifecycleState() in $this');
+      debugPrint('############ Event: inactiveLifecycleState() in $this');
     }
   }
 
@@ -329,8 +329,7 @@ class ExampleAppController extends AppController {
   @override
   void detachedAppLifecycleState() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: detachedLifecycleState() in $this');
+      debugPrint('############ Event: detachedLifecycleState() in $this');
     }
   }
 
@@ -338,8 +337,7 @@ class ExampleAppController extends AppController {
   @override
   void didUpdateWidget(StatefulWidget oldWidget) {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didUpdateWidget() in $this');
+      debugPrint('############ Event: didUpdateWidget() in $this');
     }
   }
 
@@ -349,8 +347,7 @@ class ExampleAppController extends AppController {
   @override
   void didChangeDependencies() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeDependencies() in $this');
+      debugPrint('############ Event: didChangeDependencies() in $this');
     }
   }
 
@@ -359,8 +356,7 @@ class ExampleAppController extends AppController {
   @override
   void reassemble() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: reassemble() in $this');
+      debugPrint('############ Event: reassemble() in $this');
     }
   }
 
@@ -370,8 +366,7 @@ class ExampleAppController extends AppController {
   @override
   Future<bool> didPopRoute() async {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPopRoute() in $this');
+      debugPrint('############ Event: didPopRoute() in $this');
     }
     return super.didPopRoute();
   }
@@ -381,8 +376,7 @@ class ExampleAppController extends AppController {
   @override
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didPushRouteInformation() in $this');
+      debugPrint('############ Event: didPushRouteInformation() in $this');
     }
     return super.didPushRouteInformation(routeInformation);
   }
@@ -392,8 +386,7 @@ class ExampleAppController extends AppController {
   @override
   void didChangeMetrics() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeMetrics() in $this');
+      debugPrint('############ Event: didChangeMetrics() in $this');
     }
   }
 
@@ -401,8 +394,7 @@ class ExampleAppController extends AppController {
   @override
   void didChangeTextScaleFactor() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeTextScaleFactor() in $this');
+      debugPrint('############ Event: didChangeTextScaleFactor() in $this');
     }
   }
 
@@ -410,8 +402,7 @@ class ExampleAppController extends AppController {
   @override
   void didChangePlatformBrightness() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangePlatformBrightness() in $this');
+      debugPrint('############ Event: didChangePlatformBrightness() in $this');
     }
   }
 
@@ -419,8 +410,7 @@ class ExampleAppController extends AppController {
   @override
   void didChangeLocales(List<Locale>? locales) {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeLocale() in $this');
+      debugPrint('############ Event: didChangeLocale() in $this');
     }
   }
 
@@ -432,8 +422,7 @@ class ExampleAppController extends AppController {
     /// AppLifecycleState.detach
     /// AppLifecycleState.resume
     if (inDebugMode) {
-      //ignore: avoid_print
-      print(
+      debugPrint(
           '############ Event: didChangeAppLifecycleState() in ${this.state} for $this');
     }
   }
@@ -442,8 +431,7 @@ class ExampleAppController extends AppController {
   @override
   void didHaveMemoryPressure() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didHaveMemoryPressure() in $this');
+      debugPrint('############ Event: didHaveMemoryPressure() in $this');
     }
   }
 
@@ -451,8 +439,8 @@ class ExampleAppController extends AppController {
   @override
   void didChangeAccessibilityFeatures() {
     if (inDebugMode) {
-      //ignore: avoid_print
-      print('############ Event: didChangeAccessibilityFeatures() in $this');
+      debugPrint(
+          '############ Event: didChangeAccessibilityFeatures() in $this');
     }
   }
 }
