@@ -45,8 +45,7 @@ class AppObject
       _this ??= AppObject._();
 
   AppObject._() {
-    // Initialize the Error Handler
-    // Soon deprecated
+    // Supply the Error Handler
     _errorHandler = AppErrorHandler();
 
     // Monitor the device's connectivity to the Internet.
@@ -73,9 +72,7 @@ class AppObject
   void dispose() {
     _connectivitySubscriptionList?.cancel();
     _connectivitySubscriptionList = null;
-    _appState = null;
-    // Restore the original error handling.
-    _errorHandler?.dispose();
+    _appState = null; // Remove local reference
     _errorHandler = null;
   }
 
@@ -93,7 +90,7 @@ class AppObject
 
   /// App-level error handling.
   void onError(FlutterErrorDetails details) =>
-      AppErrorHandler.flutteryExceptionHandler?.call(details);
+      _errorHandler?.flutteryExceptionHandler?.call(details);
 
   /// App-level error handling if async operation at start up fails
   void onAsyncError(AsyncSnapshot<bool> snapshot) {

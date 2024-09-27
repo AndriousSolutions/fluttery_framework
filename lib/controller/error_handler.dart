@@ -105,8 +105,8 @@ class AppErrorHandler {
       // Prevent an infinite loop and fall back to the original handler.
       if (_inHandler) {
         // An error in the Error Handler
-        if (_onError != null && _oldOnError != null) {
-          _onError = null;
+        if (_errorHandler != null && _oldOnError != null) {
+          _errorHandler = null;
           try {
             _oldOnError!(details);
           } catch (ex) {
@@ -136,7 +136,7 @@ class AppErrorHandler {
                 );
       }
 
-      final handler = _onError ?? _oldOnError;
+      final handler = _errorHandler ?? _oldOnError;
 
       if (handler != null) {
         handler(details);
@@ -145,6 +145,7 @@ class AppErrorHandler {
     };
     // Record the 'current' error handler.
     _flutteryExceptionHandler = FlutterError.onError;
+    _flutteryErrorWidgetBuilder = ErrorWidget.builder;
   }
   static AppErrorHandler? _this;
 
@@ -153,29 +154,65 @@ class AppErrorHandler {
   static bool _givenErrorHandler = false;
 
   // FlutterExceptionHandler get oldOnError => _oldOnError;
-  static FlutterExceptionHandler? _oldOnError;
+  FlutterExceptionHandler? _oldOnError;
   //
   // ErrorWidgetBuilder get oldBuilder => _oldBuilder;
   static ErrorWidgetBuilder? _oldBuilder;
 
   static ReportErrorHandler? _errorReport;
 
-  static bool _inHandler = false;
+  bool _inHandler = false;
 
   /// Flag indicating the App has already executed.
   @Deprecated('A mutable static property is discouraged.')
   // Not certain why this is here in the first place.
   static bool ranApp = false;
 
-  /// Return the current 'Flutter Exception Handler.'
-  static FlutterExceptionHandler? get flutteryExceptionHandler =>
+  /// Return the App's Error Handler'
+  FlutterExceptionHandler? get flutteryExceptionHandler =>
       _flutteryExceptionHandler;
-  static FlutterExceptionHandler? _flutteryExceptionHandler;
+  FlutterExceptionHandler? _flutteryExceptionHandler;
 
-  /// Return either the current and previous Error Handler.
-  @Deprecated('Should not be an exposed property')
-  FlutterExceptionHandler? get onError => _onError ?? _oldOnError;
-  static FlutterExceptionHandler? _onError;
+  /// the App's ErrorWidget.builder;
+  ErrorWidgetBuilder? _flutteryErrorWidgetBuilder;
+
+  /// The current Error Handler.
+  static FlutterExceptionHandler? _errorHandler;
+
+  /// Return the Error Handling
+  void activate() {
+    if (_flutteryExceptionHandler != null) {
+      FlutterError.onError = _flutteryExceptionHandler;
+    }
+    if (_flutteryErrorWidgetBuilder != null) {
+      ErrorWidget.builder = _flutteryErrorWidgetBuilder!;
+    }
+  }
+
+  /// Restore the error routines.
+  void deactivate() {
+    if (_oldBuilder != null) {
+      ErrorWidget.builder = _oldBuilder!;
+    }
+    if (_oldOnError != null) {
+      FlutterError.onError = _oldOnError;
+    }
+  }
+
+  /// Return the original handlers.
+  void dispose() {
+    // Ensure error routines are reset, but then set to null
+    deactivate();
+    // App's FlutterError.onError
+    _flutteryExceptionHandler = null;
+    // the App's ErrorWidget.builder;
+    _flutteryErrorWidgetBuilder = null;
+    // Keep it if testing however
+    if (App.inWidgetsFlutterBinding) {
+      _oldBuilder = null;
+    }
+    _oldOnError = null;
+  }
 
   /// Set a handler and the report
   static bool set({
@@ -213,7 +250,7 @@ class AppErrorHandler {
     var reset = false;
 
     if (handler != null) {
-      _onError = handler;
+      _errorHandler = handler;
       reset = true;
     }
 
@@ -225,13 +262,16 @@ class AppErrorHandler {
     if (screen != null) {
       // Record the current 'Error Widget'
       _oldBuilder ??= ErrorWidget.builder;
-      // Change the widget presented when another widget fails to build.
-      ErrorWidget.builder = screen;
+      // if not already assigned
+      if (ErrorWidget.builder != screen) {
+        ErrorWidget.builder = screen;
+      }
       reset = true;
     }
 
-    // Set only once
+    // Flag when something was assigned
     if (!_givenErrorHandler && reset) {
+      // Set only once
       _givenErrorHandler = true;
     }
 
@@ -274,18 +314,6 @@ class AppErrorHandler {
       widget = errorDisplayWidget(details);
     }
     return widget;
-  }
-
-  /// Return the original handlers.
-  void dispose() {
-    // Restore the error widget routine.
-    if (_oldBuilder != null) {
-      ErrorWidget.builder = _oldBuilder!;
-    }
-    // Return the original error routine.
-    if (_oldOnError != null) {
-      FlutterError.onError = _oldOnError;
-    }
   }
 
   /// Determines if running in an IDE or in production.

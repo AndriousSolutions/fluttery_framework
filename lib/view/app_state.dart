@@ -354,7 +354,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
   /// Override build to avoid the built-in Future Builder.
   @override
-  Widget build(BuildContext context) => ResponsiveSizer(
+  Widget build(BuildContext context) => Sizer(
         builder: (context, orientation, deviceType) => buildF(context),
         maxMobileWidth: maxMobileWidth ?? 599,
         maxTabletWidth: maxTabletWidth,
@@ -845,7 +845,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     AppController? controller,
     super.controllers,
     super.object,
-    super.showBinding,
+    super.printEvents,
     this.materialApp,
     this.cupertinoApp,
     Locale? locale,
@@ -913,9 +913,6 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
         screen: errorScreen ?? onErrorScreen, // has to be assigned
         report: errorReport ?? onErrorReport); // has to be assigned
   }
-
-  /// Save the current Error Handler.
-  // final FlutterExceptionHandler? currentErrorFunc;
 
   // The App's error handler.
   AppErrorHandler? _errorHandler;
@@ -1115,12 +1112,35 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
   /// Catch it if the initAsync() throws an error
   /// The FutureBuilder will fail, but you can examine the error
-  void onCatchAsyncError(Object error) => inCatchAsyncError?.call(error);
+  void onCatchAsyncError(Object error) {}
 
   /// Catch it if the initAsync() throws an error
   /// The FutureBuilder will fail, but you can examine the error
   @override
-  void catchAsyncError(Object error) => onCatchAsyncError(error);
+  void catchAsyncError(Object error) {
+    try {
+      onCatchAsyncError(error);
+    } catch (e) {
+      final details = FlutterErrorDetails(
+        exception: e,
+        stack: e is Error ? e.stackTrace : null,
+        library: 'app_state.dart',
+        context: ErrorDescription('Exception in onCatchAsyncError()'),
+      );
+      logErrorDetails(details);
+    }
+    try {
+      inCatchAsyncError?.call(error);
+    } catch (e) {
+      final details = FlutterErrorDetails(
+        exception: e,
+        stack: e is Error ? e.stackTrace : null,
+        library: 'app_state.dart',
+        context: ErrorDescription('Exception in inCatchAsyncError()'),
+      );
+      logErrorDetails(details);
+    }
+  }
 
   /// initAsync() has failed and a 'error' widget instead will be displayed.
   /// This takes in the snapshot.error details.
@@ -1484,6 +1504,18 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   static bool _appInApp = false;
 
   @override
+  void activate() {
+    _errorHandler?.activate();
+    super.activate(); // IMPORTANT to call last
+  }
+
+  @override
+  void deactivate() {
+    _errorHandler?.deactivate();
+    super.deactivate(); // IMPORTANT to call last
+  }
+
+  @override
   void dispose() {
     _errorHandler?.dispose();
     _errorHandler = null;
@@ -1548,7 +1580,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
     try {
       // Call the App's error handler.
-      AppErrorHandler.flutteryExceptionHandler?.call(details);
+      _errorHandler?.flutteryExceptionHandler?.call(details);
     } catch (e, stack) {
       recordException(e, stack);
     }
@@ -1618,7 +1650,7 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
     super.runAsync,
     super.useInherited,
     @Deprecated('Always route-aware now.') bool? routeAware,
-    super.showBinding,
+    super.printEvents,
   });
 
   /// This function is wrapped in a Builder widget.

@@ -113,7 +113,8 @@ Future<void> testAppObject(WidgetTester tester) async {
 
   App.installNum;
 
-  App.dispose();
+  // ignore: INVALID_USE_OF_PROTECTED_MEMBER
+  app.appState?.detachedAppLifecycleState();
 }
 
 class ConnectivityListenerTester with ConnectivityListener {

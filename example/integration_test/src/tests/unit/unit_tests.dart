@@ -25,7 +25,7 @@ unitTests(WidgetTester tester) async {
 
   testAppRouterDelegate(tester);
 
-  testAppState(tester);
+  await testAppState(tester);
 
   testAppStatefulWidget(tester);
 

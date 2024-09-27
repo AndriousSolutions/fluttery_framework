@@ -1,8 +1,7 @@
 import '_unit_test_view.dart';
 
-void testAppState(WidgetTester tester) {
+Future<void> testAppState(WidgetTester tester) async {
   //
-//  test('Test AppState', () async {
   // Find its StatefulWidget first then the 'type' of State object.
 //  final appState = tester.firstState<AppState>(find.byType(FlutteryExampleApp));
 
@@ -15,6 +14,10 @@ void testAppState(WidgetTester tester) {
   use = appState.useMaterial;
 
   use = appState.useMaterial;
+
+  await appState.didPopRoute();
+
+  appState.activate();
 
   appState.onHome();
 
@@ -41,5 +44,4 @@ void testAppState(WidgetTester tester) {
   appState.app;
 
   appState.onError(FlutterErrorDetails(exception: AssertionError('Error')));
-//  });
 }

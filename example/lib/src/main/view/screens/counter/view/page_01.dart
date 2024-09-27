@@ -20,7 +20,7 @@ class Page1 extends StatefulWidget {
 class Page1State extends StateX<Page1> {
   /// Supply a controller to this State object
   /// so to call its setState() function below.
-  Page1State() : super(controller: Controller(), showBinding: true) {
+  Page1State() : super(controller: Controller(), printEvents: true) {
     // Add some additional controllers;
     addList([AnotherController(), YetAnotherController()]);
   }
@@ -74,6 +74,12 @@ class Page1State extends StateX<Page1> {
     // Since, I'm confident such a controller will be retrieved
     // I can shortened the process like this.
     anotherController = controllerById(id) as AnotherController;
+  }
+
+  @override
+  // ignore: unnecessary_overrides
+  void dispose() {
+    super.dispose();
   }
 
   /// Ignore class, BuildPage

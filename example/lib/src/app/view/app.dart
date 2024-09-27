@@ -104,9 +104,21 @@ class _ExampleAppState extends AppState {
         ],
       );
 
-  /// Place a breakpoint to see how it's built
+  /// Place a breakpoint here and see how it works
   @override
   Widget build(BuildContext context) => super.build(context);
+
+  /// Place a breakpoint in here and see how it works
+  @override
+  Widget builder(BuildContext context) {
+    // Throw an error right here at the beginning to test recovery code.
+    final appCon = controller as ExampleAppController;
+    if (appCon.errorInBuilder) {
+      appCon.errorInBuilder = false;
+      throw Exception('Error in builder!');
+    }
+    return super.builder(context);
+  }
 
   @override
   void onErrorHandler(FlutterErrorDetails details) {
@@ -122,5 +134,19 @@ class _ExampleAppState extends AppState {
   void onError(FlutterErrorDetails details) {
     // This is the app's State object's error routine.
     super.onError(details);
+  }
+
+  @override
+  // ignore: unnecessary_overrides
+  void deactivate() {
+    // Place a breakpoint to see how this works
+    super.deactivate();
+  }
+
+  @override
+  // ignore: unnecessary_overrides
+  void dispose() {
+    // Place a breakpoint to see how this works
+    super.dispose();
   }
 }

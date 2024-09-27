@@ -38,7 +38,7 @@ abstract class AppStatefulWidget extends StatefulWidget {
     this.inSplashScreen,
     this.circularProgressIndicator,
   })  : _app = v.AppObject(),
-        super(key: key ?? GlobalKey<_StateApp>()) {
+        super(key: key ?? GlobalKey<_AppStatefulWidgetState>()) {
     // Right at the start! Initialise the binding.
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     final indicator = circularProgressIndicator ?? true;
@@ -64,7 +64,7 @@ abstract class AppStatefulWidget extends StatefulWidget {
 
   /// Creates the App's State object.
   @override
-  State createState() => _StateApp();
+  State createState() => _AppStatefulWidgetState();
 
   /// Supply a 'splash screen' (called in _futureBuilder() below)
   Widget? onSplashScreen(BuildContext context) =>
@@ -72,9 +72,9 @@ abstract class AppStatefulWidget extends StatefulWidget {
 }
 
 /// This State object sets up the App to run.
-class _StateApp extends State<AppStatefulWidget> {
+class _AppStatefulWidgetState extends State<AppStatefulWidget> {
   //
-  _StateApp() {
+  _AppStatefulWidgetState() {
     // Best to determine if binding with the Flutter engine or not here and now.
     // May be in a test environment instead and that can be determined here.
     v.App.inWidgetsFlutterBinding;
@@ -182,6 +182,18 @@ class _StateApp extends State<AppStatefulWidget> {
   // This App is within another App
   bool _appInApp = false;
 
+  @override
+  void activate() {
+    super.activate();
+    _appState?.activate();
+  }
+
+  @override
+  void deactivate() {
+    _appState?.deactivate();
+    super.deactivate();
+  }
+
   /// Clean up resources before the app is finally terminated.
   @override
   @mustCallSuper
@@ -195,6 +207,8 @@ class _StateApp extends State<AppStatefulWidget> {
       //
       widget._app.dispose();
     }
+    //
+    _appState?.dispose();
     // Remove the reference to the app's view
     _appState = null;
     //
@@ -309,7 +323,8 @@ class _StateApp extends State<AppStatefulWidget> {
   // Determine if this app has been called by another _StateApp.
   void _isAppInApp() {
     //
-    final state = context.findRootAncestorStateOfType<_StateApp>();
+    final state =
+        context.findRootAncestorStateOfType<_AppStatefulWidgetState>();
     // A flag indicating if this app is called by another app
     _appInApp = state != null && state != this;
     // Not called by another app

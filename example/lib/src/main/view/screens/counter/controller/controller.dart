@@ -104,7 +104,7 @@ class Controller extends StateXController {
   @override
   void dispose() {
     if (inDebugMode) {
-      debugPrint('############ now disposed in $this');
+      debugPrint('############ Event: dispose() in $this');
     }
     super.dispose();
   }

@@ -21,7 +21,7 @@ class _CounterPageState extends StateX<CounterPage> {
       : super(
           controller: CounterController(),
           useInherited: CounterController().useInherited,
-          showBinding: true,
+          printEvents: true,
         ) {
     con = controller as CounterController;
   }

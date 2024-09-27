@@ -73,7 +73,7 @@ class WordPairsController extends StateXController {
   @override
   void dispose() {
     if (inDebugMode) {
-      debugPrint('############ now disposed.');
+      debugPrint('############ Event: dispose() in $this');
     }
     super.dispose();
   }

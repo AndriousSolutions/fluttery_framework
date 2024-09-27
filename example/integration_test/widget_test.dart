@@ -6,28 +6,20 @@ import 'package:integration_test/integration_test.dart'
 void main() => integrationTestFlutteryFramework();
 
 void integrationTestFlutteryFramework() {
-  //
+  // Allow for Integration testing
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  setUp(() async {
-    /// Allows for SharedPreferences to be ready for testing.
-    SharedPreferences.setMockInitialValues({});
-  });
-
-  /// Runs after EACH test or group
-  tearDown(() {});
-
-  /// Define a test. The TestWidgets function also provides a WidgetTester
-  /// to work with. The WidgetTester allows you to build and interact
-  /// with widgets in the test environment.
+  // Define a test. The TestWidgets function also provides a WidgetTester
+  // to work with. The WidgetTester allows you to build and interact
+  // with widgets in the test environment.
   testWidgets('testing example app', (WidgetTester tester) async {
     //
 
-    /// Flutter won’t automatically rebuild your widget in the test environment.
-    /// Use pump() or pumpAndSettle() to ask Flutter to rebuild the widget.
+    // Flutter won’t automatically rebuild your widget in the test environment.
+    // Use pump() or pumpAndSettle() to ask Flutter to rebuild the widget.
     await tester.pumpWidget(FlutteryExampleApp());
 
-    /// pumpAndSettle() waits for all animations to complete.
+    // pumpAndSettle() waits for all animations to complete.
     await tester.pumpAndSettle();
 
     final con = ExampleAppController();
@@ -40,66 +32,58 @@ void integrationTestFlutteryFramework() {
       switch (con.application) {
         case 'Counter':
 
-          /// Counter app testing
+          // Counter app testing
           await counterTest(tester);
 
-          /// Testing its Bottom bar
+          // Testing its Bottom bar
           await bottomBarTests(tester);
 
           break;
         case 'Word Pairs':
 
-          /// Random Word Pairs app
+          // Random Word Pairs app
           await wordsTest(tester);
 
-          /// Test dialog windows
+          // Test dialog windows
           await dialogTests(tester);
 
           break;
       }
 
-      /// Switch the app through the popupmenu
+      // Switch the app through the popupmenu
       await openApplicationMenu(tester);
 
       cnt++;
     }
 
-    /// Open About menu
+    // Open About menu
     await openAboutMenu(tester);
 
-    /// Open the Locale window
+    // Open the Locale window
     await openLocaleMenu(tester);
 
     if (App.useCupertino) {
-      /// Switch the Interface to Material
+      // Switch the Interface to Material
       await openInterfaceMenu(tester);
     }
 
-    /// Open Material menu
+    // Open Material menu
     await openMaterialVersionMenu(tester);
 
-    /// Change app to use the router
+    // Change app to use the router
     con.useRouterConfig = true;
 
-    /// Switch the Interface
+    // Switch the Interface
     await openInterfaceMenu(tester);
 
-    /// Throw an error in the initAsync() function
-    con.throwError = true;
-
-    /// Switch the Interface
-    await openInterfaceMenu(tester);
-
-    /// Unit testing
+    // Unit testing
     await unitTests(tester);
 
     reportTestErrors();
 
-    return;
-
-    /// WordPairs App Model Unit Testing
-    await wordPairsModelTest(tester);
-
-    return;
+    // // WordPairs App Model Unit Testing
+    // await wordPairsModelTest(tester);
+    //
+    // return;
   });
 }

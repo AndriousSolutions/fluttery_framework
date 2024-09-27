@@ -15,8 +15,11 @@ class ExampleAppController extends AppController {
   /// Use the Router Configuration or not
   bool useRouterConfig = false;
 
+  /// Error in builder()
+  bool errorInBuilder = false;
+
   /// Store the boolean allowing for errors or not.
-  bool throwError = false;
+  bool initAsyncError = false;
 
   /// Error right at the start
   bool errorAtStartup = false;
@@ -252,8 +255,8 @@ class ExampleAppController extends AppController {
   Future<bool> initAsync() async {
     final init = await super.initAsync();
     //
-    if (throwError) {
-      throwError = false;
+    if (initAsyncError) {
+      initAsyncError = false;
       throw AssertionError('Error thrown in initAsync()');
     }
 
@@ -290,11 +293,8 @@ class ExampleAppController extends AppController {
   /// PERFORM ANY TIME-CRITICAL OPERATION IN deactivate() INSTEAD!
   @override
   void dispose() {
-    // Clear itself? Would that be advisable?
-    _this = null;
-
     if (inDebugMode) {
-      debugPrint('############ now disposed.');
+      debugPrint('############ Event: dispose() in $this');
     }
     super.dispose();
   }
