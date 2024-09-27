@@ -209,7 +209,7 @@ class PopupMenuWidget<T> extends StatefulWidget
   final Clip? clipBehavior;
 
   /// BuildContext property
-  BuildContext? get context => _con?._popupWidgetState?.mounted ?? false
+  BuildContext? get context => _con._popupWidgetState?.mounted ?? false
       ? _con._popupWidgetState?.context
       : null;
 
