@@ -1,10 +1,11 @@
 
-## 5.2.0
+## 5.2.0+2
 September 26, 2024
 - Restore Error handler with deactivate() in error_handler.dart
 - throw Exception('Error in builder!'); in testing
 - onCatchAsyncError() wrapped in try..catch in app_state.dart
 - inCatchAsyncError() wrapped in try..catch
+- Integration Tests Only
 
 ## 5.1.0
 September 20, 2024

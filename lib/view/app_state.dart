@@ -1649,7 +1649,6 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
     super.controller,
     super.runAsync,
     super.useInherited,
-    @Deprecated('Always route-aware now.') bool? routeAware,
     super.printEvents,
   });
 
