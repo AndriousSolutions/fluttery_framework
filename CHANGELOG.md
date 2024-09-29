@@ -1,5 +1,5 @@
 
-## 5.2.0+3
+## 5.2.0+4
 September 26, 2024
 - Restore Error handler with deactivate() in error_handler.dart
 - throw Exception('Error in builder!'); in testing
@@ -7,7 +7,8 @@ September 26, 2024
 - inCatchAsyncError() wrapped in try..catch
 - Integration Tests Only
 - Builder Error Test Only
-
+- Async Error Test
+- 
 ## 5.1.0
 September 20, 2024
 - Screen Width and Height without BuildContext

@@ -47,10 +47,10 @@ void testFlutteryFramework() {
   // group('Fluttery Framework Integration Tests', _testIntegrationGroup);
 
   //
-  group('Builder Error Tests', _builderErrorTest);
+  // group('Builder Error Tests', _builderErrorTest);
 
   // //
-  // group('Async Error Tests', asyncErrorTest);
+  group('Async Error Tests', asyncErrorTest);
 }
 
 void _builderErrorTest() {
