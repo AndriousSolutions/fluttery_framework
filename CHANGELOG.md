@@ -1,4 +1,8 @@
 
+## 5.3.0
+September 29, 2024
+- handler.reset() in app_statefulwidget.dart
+
 ## 5.2.0+4
 September 26, 2024
 - Restore Error handler with deactivate() in error_handler.dart
@@ -8,7 +12,7 @@ September 26, 2024
 - Integration Tests Only
 - Builder Error Test Only
 - Async Error Test
-- 
+
 ## 5.1.0
 September 20, 2024
 - Screen Width and Height without BuildContext

@@ -190,14 +190,7 @@ class AppErrorHandler {
   }
 
   /// Restore the error routines.
-  void deactivate() {
-    if (_oldBuilder != null) {
-      ErrorWidget.builder = _oldBuilder!;
-    }
-    if (_oldOnError != null) {
-      FlutterError.onError = _oldOnError;
-    }
-  }
+  void deactivate() => reset();
 
   /// Return the original handlers.
   void dispose() {
@@ -284,6 +277,17 @@ class AppErrorHandler {
 
     // Something was set;
     return reset;
+  }
+
+  /// Reset the Error Handler and such.
+  bool reset() {
+    if (_oldBuilder != null) {
+      ErrorWidget.builder = _oldBuilder!;
+    }
+    if (_oldOnError != null) {
+      FlutterError.onError = _oldOnError;
+    }
+    return _oldBuilder != null && _oldOnError != null;
   }
 
   /// Present error to user or not

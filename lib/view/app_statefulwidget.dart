@@ -265,10 +265,19 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // Have the framework handle the asynchronous error.
       widget._app.onAsyncError(snapshot);
 
-      widget0 = AppErrorHandler().displayError(details);
+      final handler = AppErrorHandler();
+
+      // Display an error screen
+      widget0 = handler.displayError(details);
 
       // Clear memory of the Splash Screen if any
       splashScreen = null;
+
+      // If in testing and such
+      if (WidgetsBinding.instance is! WidgetsFlutterBinding) {
+        // Reset the error handler and display screen
+        handler.reset();
+      }
       //
     } else if (snapshot.connectionState == ConnectionState.done &&
         snapshot.hasData &&
