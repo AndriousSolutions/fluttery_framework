@@ -44,10 +44,10 @@ void testFlutteryFramework() {
   });
 
   // //
-  group('Integration Tests', _testIntegrationGroup);
+  // group('Integration Tests', _testIntegrationGroup);
 
   //
-  // group('Builder Error Tests', _builderErrorTest);
+  group('Builder Error Tests', _builderErrorTest);
 
   // //
   // group('Async Error Tests', asyncErrorTest);
