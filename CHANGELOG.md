@@ -1,7 +1,8 @@
 
-## 5.3.0
+## 5.3.0+1
 September 29, 2024
 - handler.reset() in app_statefulwidget.dart
+- Testing the test files
 
 ## 5.2.0+4
 September 26, 2024
