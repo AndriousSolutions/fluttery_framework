@@ -48,10 +48,15 @@ class AppObject
     // Supply the Error Handler
     _errorHandler = AppErrorHandler();
 
+    _connectivity = Connectivity();
+
     // Monitor the device's connectivity to the Internet.
     addConnectivityListener(this);
   }
   static AppObject? _this;
+
+  /// Determine the connectivity.
+  late Connectivity _connectivity;
 
   /// Indicating app is running in the Flutter engine and not in
   /// the `flutter_test` framework with TestWidgetsFlutterBinding for example
@@ -357,9 +362,6 @@ class AppObject
   String? get filesDir => _appDirPath;
   String? _appDirPath;
 
-  /// Determine the connectivity.
-  final _connectivity = Connectivity();
-
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscriptionList;
 
   /// Returns the connection status of the device.
@@ -437,6 +439,11 @@ class AppObject
   /// Internal Initialization routines.
   Future<void> initInternal() async {
     //
+    if (inFlutterTest) {
+      // Such functionality is not available during testing
+      return;
+    }
+
     _connectivitySubscriptionList ??=
         _connectivity.onConnectivityChanged.listen((connects) {
       connects.map((result) {

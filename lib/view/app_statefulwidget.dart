@@ -131,10 +131,8 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       /// Initialize System Preferences
       await Prefs.init();
 
-      if (!v.App.inFlutterTest) {
-        /// Collect installation & connectivity information
-        await v.App.initInternal();
-      }
+      /// Collect installation & connectivity information
+      await v.App.initInternal();
 
       /// Set theme using App's menu system if any theme was saved.
       v.App.setThemeData();

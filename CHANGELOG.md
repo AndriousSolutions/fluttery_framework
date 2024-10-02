@@ -1,8 +1,9 @@
 
-## 5.3.1
+## 5.3.1+1
 October 01, 2024
 - getDeviceInfo() not called during testing
 - onErrorHandler() and inErrorHandler() are called in turn in app_state.dart
+- if (inFlutterTest) { for initInternal() in app.dart
 
 ## 5.3.0+1
 September 29, 2024
