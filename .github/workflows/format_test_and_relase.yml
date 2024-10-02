@@ -24,7 +24,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # Repository: https://github.com/actions/checkout
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Use the standard Java Action to setup Java
       # we want the latest Java 12
@@ -58,7 +58,7 @@ jobs:
       #  with:
       #    token: ${{secrets.CODECOV_TOKEN}}
       #    file: ./coverage/lcov.info
-      - uses: codecov/codecov-action@v4.2.0
+      - uses: codecov/codecov-action@v4
         with:
           verbose: true 
         env:
