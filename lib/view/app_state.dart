@@ -1145,7 +1145,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   /// initAsync() has failed and a 'error' widget instead will be displayed.
   /// This takes in the snapshot.error details.
   @override
-  void onAsyncError(FlutterErrorDetails details) => inAsyncError?.call(details);
+  void onAsyncError(FlutterErrorDetails details) {}
 
   /// Returns the App's ScaffoldMessenger Key.
   GlobalKey<ScaffoldMessengerState> onScaffoldMessengerKey() =>
@@ -1592,10 +1592,9 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     }
 
     try {
-      // If an external handler was provided
-      if (errorHandler != null) {
-        onErrorHandler(details);
-      }
+      // Any 'on' Error handler
+      onErrorHandler(details);
+
       // If there's any 'inline function' error handler.
       // It takes last precedence.
       inErrorHandler?.call(details);
@@ -1607,6 +1606,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     if (hasError) {
       _onErrorInHandler();
     }
+
     inErrorRoutine = false;
   }
 

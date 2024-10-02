@@ -1,7 +1,5 @@
 library;
 
-import 'package:integration_test/integration_test.dart';
-
 /// Copyright 2022 Andrious Solutions Ltd. All rights reserved.
 /// Use of this source code is governed by a 2-clause BSD License.
 /// The main directory contains that LICENSE file.
@@ -33,6 +31,10 @@ void testFlutteryFramework() {
 
   // Runs before EACH test or group
   setUp(() {
+    // Ensure TestWidgetsFlutterBinding is explicitly initialized
+    final TestWidgetsFlutterBinding binding =
+        TestWidgetsFlutterBinding.ensureInitialized();
+
     // // (TODO: Tip # 4) Consider configuring your default screen size here.
     // // You can reset it to something else within a test
     // binding.window.physicalSizeTestValue = _deskTopSize;
@@ -43,14 +45,14 @@ void testFlutteryFramework() {
     // Code that clears caches can go here
   });
 
-  // //
-  // group('Integration Tests', _testIntegrationGroup);
+  //
+  group('Integration Tests', _testIntegrationGroup);
 
   //
   group('Builder Error Tests', _builderErrorTest);
 
-  // //
-  // group('Async Error Tests', asyncErrorTest);
+  //
+  group('Async Error Tests', asyncErrorTest);
 }
 
 void _builderErrorTest() {

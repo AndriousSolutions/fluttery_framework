@@ -121,12 +121,9 @@ class _ExampleAppState extends AppState {
   }
 
   @override
+  // ignore: unnecessary_overrides
   void onErrorHandler(FlutterErrorDetails details) {
     super.onErrorHandler(details);
-    // An error was handled by a State object
-    if (errorStateName.isNotEmpty) {
-      return;
-    }
   }
 
   @override

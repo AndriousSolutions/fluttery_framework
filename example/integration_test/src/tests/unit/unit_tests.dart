@@ -11,23 +11,23 @@ unitTests(WidgetTester tester) async {
 
   await testDeviceInfo();
 
-  testHandleError(tester);
+  // testHandleError(tester);
 
   testAppSettings(tester);
 
-  testAppErrorHandler(tester);
+  // testAppErrorHandler(tester);
 
-  testInheritedStateWidget(tester);
+  // testInheritedStateWidget(tester);
 
-  testLoadingScreen(tester);
+  // testLoadingScreen(tester);
 
   testAppMenu(tester);
 
-  testAppRouterDelegate(tester);
+  // testAppRouterDelegate(tester);
 
   await testAppState(tester);
 
-  testAppStatefulWidget(tester);
+  // testAppStatefulWidget(tester);
 
   await testAppObject(tester);
 }

@@ -158,11 +158,8 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // Record this State object.
       _appState?.parentState = this;
 
-      // Don't collect package and device information while testing.
-//      if (!v.App.inFlutterTest) {
-      //
+      // Collect package and device information while testing.
       await v.App.getDeviceInfo();
-//      }
 
       // Perform any asynchronous operations.
       init = await _appState!.initAsync();
@@ -262,6 +259,9 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // So to possibly 'clean up' before falling out.
       _appState?.onAsyncError(details);
 
+      // The 'inline' version of the initAsync() error handler takes last precedence.
+      _appState?.inAsyncError?.call(details);
+
       // Have the framework handle the asynchronous error.
       widget._app.onAsyncError(snapshot);
 
@@ -273,12 +273,11 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // Clear memory of the Splash Screen if any
       splashScreen = null;
 
-      // If in testing and such
+      // If in testing, return to its Error handler
       if (WidgetsBinding.instance is! WidgetsFlutterBinding) {
         // Reset the error handler and display screen
         handler.reset();
       }
-      //
     } else if (snapshot.connectionState == ConnectionState.done &&
         snapshot.hasData &&
         !snapshot.data!) {

@@ -107,9 +107,10 @@ class AppObject
   /// Collect the device's information.
   @override
   Future<void> getDeviceInfo() async {
-    await super.getDeviceInfo();
     // There's 'no device' while testing and so don't collect device info.
     if (!inFlutterTest) {
+      // Assign _packageInfo
+      await super.getDeviceInfo();
       // Collect Device Information
       await DeviceInfo.initAsync();
     }

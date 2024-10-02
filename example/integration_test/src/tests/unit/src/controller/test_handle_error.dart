@@ -14,7 +14,7 @@ import '../view/_unit_test_view.dart';
 void testHandleError(WidgetTester tester) {
 //  test('Test HandleError Mixin', () async {
   //
-  final error = AssertionError('Error Test');
+  final error = Exception('Error Test');
 
   StateXController con = ExampleAppController();
 

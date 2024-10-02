@@ -257,7 +257,7 @@ class ExampleAppController extends AppController {
     //
     if (initAsyncError) {
       initAsyncError = false;
-      throw AssertionError('Error thrown in initAsync()');
+      throw Exception('Error in initAsync()!');
     }
 
     //
