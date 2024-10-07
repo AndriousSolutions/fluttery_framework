@@ -149,11 +149,12 @@ class _ExampleAppState extends AppState {
     }());
 
     // Retrieve the last Flutter Error that has occurred.
-    var lastErrorDetails = lastFlutterErrorDetails!;
+    var lastErrorDetails = lastFlutterErrorDetails;
 
     // You see? appState is this object!
     assert(() {
-      if (details.exception == lastErrorDetails.exception &&
+      if (lastErrorDetails != null &&
+          details.exception == lastErrorDetails.exception &&
           lastFlutterErrorMessage ==
               'Exception: Fake error to demonstrate error handling!') {
         debugPrint(

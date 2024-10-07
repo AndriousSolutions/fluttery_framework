@@ -1,10 +1,11 @@
 
-## 5.3.2
+## 5.3.2+1
 October 06, 2024
 - Removed 'default' Error Handler mistakenly left in Production.
 - Removed 'default' Error Widget Builder mistakenly left in Production.
 - A default Error Screen, defaultErrorWidgetBuilder, available during development
 - Getters, errorHandler, oldOnError and oldBuilder, offered now in error_handler.dart
+- Null error correction in example app
 
 ## 5.3.1+1
 October 01, 2024
