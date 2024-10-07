@@ -59,7 +59,7 @@ class _ExampleAppState extends AppState {
           allowChangeTheme: true, // Allow the App's theme to change
           allowChangeLocale: true, // Allow the app to change locale
           allowChangeUI: true, // Allow the app to change its design interface
-          inInitAsync: () => Future.value(true), // Merely a test.
+          inInitAsync: () => Future.value(true), // Demonstration purposes
           inInitState: () {/* Optional inInitState() function */},
           inErrorHandler: (details) {
             //

@@ -1111,7 +1111,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
   ScrollBehavior? _scrollBehavior;
 
   /// Used to complete asynchronous operations
-  Future<bool> onInitAsync() async => await inInitAsync?.call() ?? false;
+  Future<bool> onInitAsync() async => await inInitAsync?.call() ?? true;
 
   /// Catch it if the initAsync() throws an error
   /// The FutureBuilder will fail, but you can examine the error

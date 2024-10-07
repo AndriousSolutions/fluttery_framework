@@ -1,4 +1,8 @@
 
+## 5.3.3
+October 07, 2024
+- Correct onInitAsync() in app_state.dart and default to returning true
+
 ## 5.3.2+1
 October 06, 2024
 - Removed 'default' Error Handler mistakenly left in Production.
