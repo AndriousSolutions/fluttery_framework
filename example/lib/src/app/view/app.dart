@@ -24,6 +24,7 @@ class _ExampleAppState extends AppState {
           debugShowCheckedModeBanner: false,
           switchUI: ExampleAppController().switchUI,
           useRouterConfig: ExampleAppController().useRouterConfig,
+          errorScreen: defaultErrorWidgetBuilder,
           onNavigationNotification: (notification) {
             if (kDebugMode) {
               debugPrint('############ Event: onNavigationNotification()');
@@ -61,16 +62,28 @@ class _ExampleAppState extends AppState {
           inInitAsync: () => Future.value(true), // Merely a test.
           inInitState: () {/* Optional inInitState() function */},
           inErrorHandler: (details) {
-            final errorString = details.exceptionAsString();
-            if (errorString ==
-                'Exception: Fake error to demonstrate error handling!') {
-              assert(() {
-                if (kDebugMode) {
-                  debugPrint('########### Fake error caught again here.');
-                }
-                return true;
-              }());
-              return;
+            //
+            final appState = App.appState!;
+            // You see? appState is this object!
+            assert(() {
+              if (appState is _ExampleAppState) {
+                debugPrint(
+                    '=========== inErrorHandler: appState is _ExampleAppState');
+              }
+              return true;
+            }());
+
+            // Retrieve the last Flutter Error that has occurred.
+            var lastErrorDetails = appState.lastFlutterErrorDetails;
+
+            // Retrieve the last Flutter Error that has occurred.
+            // Note, this function retrieves and then 'clears' the last error from storage.
+            lastErrorDetails = appState.lastFlutterError();
+
+            // This, of course, will be the same. It's this very error that's caught here.
+            if (details == lastErrorDetails) {
+              debugPrint(
+                  '=========== inErrorHandler: details == lastErrorDetails');
             }
           },
         );
@@ -123,7 +136,31 @@ class _ExampleAppState extends AppState {
   @override
   // ignore: unnecessary_overrides
   void onErrorHandler(FlutterErrorDetails details) {
-    super.onErrorHandler(details);
+    //
+    final appState = App.appState!;
+    // You see? appState is this object!
+    assert(() {
+      // ignore: unnecessary_type_check
+      if (this is _ExampleAppState && appState is _ExampleAppState) {
+        debugPrint(
+            '=========== onErrorHandler: this is _ExampleAppState && appState is _ExampleAppState');
+      }
+      return true;
+    }());
+
+    // Retrieve the last Flutter Error that has occurred.
+    var lastErrorDetails = lastFlutterErrorDetails!;
+
+    // You see? appState is this object!
+    assert(() {
+      if (details.exception == lastErrorDetails.exception &&
+          lastFlutterErrorMessage ==
+              'Exception: Fake error to demonstrate error handling!') {
+        debugPrint(
+            '=========== onErrorHandler(): details.exception == lastErrorDetails.exception');
+      }
+      return true;
+    }());
   }
 
   @override

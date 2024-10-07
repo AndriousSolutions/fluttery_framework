@@ -11,6 +11,9 @@ Future<void> counterTest(WidgetTester tester) async {
   expect(find.text(count), findsOneWidget, reason: _location);
   expect(find.text('1'), findsNothing, reason: _location);
 
+  // Assume the AppState object is utilized in this app.
+  final appState = CounterController().rootState!;
+
   // 9 counts
   for (int cnt = 1; cnt <= 9; cnt++) {
     // Tap the '+' icon and trigger a frame.
@@ -18,7 +21,9 @@ Future<void> counterTest(WidgetTester tester) async {
     await tester.pump();
   }
 
-  count = (int.parse(count) + 9).toString();
+  var counter = int.parse(count);
+
+  count = (counter + 9).toString();
 
   // Verify that our counter has incremented.
   expect(find.text('0'), findsNothing, reason: _location);

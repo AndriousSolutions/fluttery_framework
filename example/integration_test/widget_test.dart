@@ -62,6 +62,9 @@ void integrationTestFlutteryFramework() {
     // Open the Locale window
     await openLocaleMenu(tester);
 
+    // Switch the Interface to Material
+    await openInterfaceMenu(tester);
+
     if (App.useCupertino) {
       // Switch the Interface to Material
       await openInterfaceMenu(tester);

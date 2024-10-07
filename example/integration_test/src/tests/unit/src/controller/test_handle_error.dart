@@ -12,7 +12,6 @@ import '_unit_test_controller.dart';
 import '../view/_unit_test_view.dart';
 
 void testHandleError(WidgetTester tester) {
-//  test('Test HandleError Mixin', () async {
   //
   final error = Exception('Error Test');
 
@@ -36,10 +35,13 @@ void testHandleError(WidgetTester tester) {
     state.onError(details);
   }
 
-//  AppErrorHandler? errorHandler = App.errorHandler;
   AppErrorHandler? errorHandler = AppErrorHandler();
 
-//  AppErrorHandler.errorDisplayWidget(details);
+  AppErrorHandler.inDebugMode;
+
+  AppErrorHandler.presentError = true;
+
+  AppErrorHandler.errorDisplayWidget(details);
 
 //  FlutterExceptionHandler? hnd = errorHandler.onError;
 
@@ -47,11 +49,13 @@ void testHandleError(WidgetTester tester) {
 
   bool mode = AppErrorHandler.inDebugMode;
 
-  // errorHandler.reportError(error, StackTrace());
-  //
-  // errorHandler.isolateError(error, stack);
-  //
-  // errorHandler.runZonedError(error, StackTrace stack);
+  errorHandler.reportError(error, StackTrace.empty);
+
+  errorHandler.isolateError(error, StackTrace.empty);
+
+  errorHandler.runZonedError(error, StackTrace.empty);
+
+  errorHandler.activate();
 
   final handler = HandelErrorTester();
 
@@ -66,7 +70,6 @@ void testHandleError(WidgetTester tester) {
   handler.hasError;
 
   handler.getError();
-//  });
 }
 
 class HandelErrorTester with HandleError {

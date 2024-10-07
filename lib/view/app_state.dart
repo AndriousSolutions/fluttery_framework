@@ -41,6 +41,8 @@ import 'package:flutter/widgets.dart' as debug
         debugEnhanceBuildTimelineArguments,
         debugHighlightDeprecatedWidgets;
 
+import 'dart:ui' as i show ParagraphStyle, TextStyle;
+
 ///
 /// The View for the app. The 'look and feel' for the whole app.
 ///
@@ -908,10 +910,11 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
     // Supply a customized error handling.
     _errorHandler = AppErrorHandler(
-        handler: errorHandler ?? onErrorHandler,
-        presentError: presentError,
-        screen: errorScreen ?? onErrorScreen, // has to be assigned
-        report: errorReport ?? onErrorReport); // has to be assigned
+      handler: errorHandler,
+      screen: errorScreen,
+      report: errorReport ?? onErrorReport, // has to be assigned
+      presentError: presentError,
+    );
   }
 
   // The App's error handler.
@@ -1535,13 +1538,17 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
       inErrorReport;
 
   /// Override to provide an 'overall' Error Handler for your app.
-  void onErrorHandler(FlutterErrorDetails details) {}
+  void onErrorHandler(FlutterErrorDetails details) {
+    _errorHandlerOverridden = false;
+  }
+
+  // Flag indicating function was overridden and not directly called
+  bool _errorHandlerOverridden = true;
 
   /// The Widget to display when an app's widget fails to display.
   /// Override if you like.
-  Widget onErrorScreen(FlutterErrorDetails details) =>
-      inErrorScreen?.call(details) ??
-      AppWidgetErrorDisplayed(stackTrace: App.inDebugMode).builder(details);
+  Widget? onErrorScreen(FlutterErrorDetails details) =>
+      inErrorScreen?.call(details);
 
   /// If there's a error reporting routine available.
   /// Override if you like
@@ -1571,33 +1578,49 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 
     // Call the latest SateX object's error routine
     // Possibly the error occurred there.
-    onStateError(details);
+    // onStateError(details);
 
-    if (AppErrorHandler.presentError) {
-      // Logs 'every' error as the error count is reset.
-      logErrorDetails(details);
-    }
+    // if (AppErrorHandler.presentError) {
+    //   // Logs 'every' error as the error count is reset.
+    //   logErrorDetails(details);
+    // }
+
+    // try {
+    //   // Call the App's error handler.
+    //   _errorHandler?.flutteryExceptionHandler?.call(details);
+    // } catch (e, stack) {
+    //   recordException(e, stack);
+    // }
+    //
+    // // Always test if there was an error in the error handler
+    // // Include it in the error reporting as well.
+    // if (hasError) {
+    //   _onErrorInHandler();
+    // }
 
     try {
-      // Call the App's error handler.
-      _errorHandler?.flutteryExceptionHandler?.call(details);
-    } catch (e, stack) {
-      recordException(e, stack);
-    }
+      // If handler not explicitly passed as a parameter
+      var callOriginal = _errorHandler?.errorHandler == null;
 
-    // Always test if there was an error in the error handler
-    // Include it in the error reporting as well.
-    if (hasError) {
-      _onErrorInHandler();
-    }
+      if (!callOriginal) {
+        _errorHandler?.errorHandler?.call(details);
+      }
 
-    try {
       // Any 'on' Error handler
       onErrorHandler(details);
 
-      // If there's any 'inline function' error handler.
-      // It takes last precedence.
-      inErrorHandler?.call(details);
+      // It would appear it was not overwritten
+      callOriginal = callOriginal && !_errorHandlerOverridden;
+
+      // No 'in-line' version
+      callOriginal = callOriginal && inErrorHandler == null;
+
+      if (callOriginal) {
+        _errorHandler?.oldOnError?.call(details);
+      } else {
+        // 'inline function' error handler, takes last precedence.
+        inErrorHandler?.call(details);
+      }
     } catch (e, stack) {
       recordException(e, stack);
     }
@@ -1605,6 +1628,12 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     // Include it in the error reporting as well.
     if (hasError) {
       _onErrorInHandler();
+    }
+
+    // If in testing, after the supplied handler, call its Error handler
+    if (_errorHandler?.errorHandler != null &&
+        WidgetsBinding.instance is! WidgetsFlutterBinding) {
+      _errorHandler?.oldOnError?.call(details);
     }
 
     inErrorRoutine = false;
@@ -1635,6 +1664,27 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
     }
   }
 }
+
+/// Supply a customized Error Widget.
+Widget defaultErrorWidgetBuilder(
+  FlutterErrorDetails details, {
+  i.ParagraphStyle? paragraphStyle,
+  i.TextStyle? textStyle,
+  EdgeInsets? padding,
+  double? minimumWidth,
+  Color? backgroundColor,
+  CustomPainter? customPainter,
+  bool? stackTrace,
+}) =>
+    AppWidgetErrorDisplayed(
+      paragraphStyle: paragraphStyle,
+      textStyle: textStyle,
+      padding: padding,
+      minimumWidth: minimumWidth,
+      backgroundColor: backgroundColor,
+      customPainter: customPainter,
+      stackTrace: stackTrace ?? App.inDebugMode,
+    ).builder(details);
 
 /// The extension of the State class.
 ///

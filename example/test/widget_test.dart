@@ -55,6 +55,13 @@ void testFlutteryFramework() {
   group('Async Error Tests', asyncErrorTest);
 }
 
+/// Calls a number of testWidgets() functions one after the other
+void _testIntegrationGroup() {
+  // Run the Example app and perform some tests
+  integrationTestFlutteryFramework();
+}
+
+/// Test for an Error occurring in the builder() function itself!
 void _builderErrorTest() {
   ///
   testWidgets('Error in Builder', (WidgetTester tester) async {
@@ -69,6 +76,7 @@ void _builderErrorTest() {
   });
 }
 
+/// Test for an Error occurring at startup in the initAsync() function itself!
 void asyncErrorTest() {
   ///
   testWidgets('Error in initAsync()', (WidgetTester tester) async {
@@ -81,10 +89,4 @@ void asyncErrorTest() {
     // pumpAndSettle() waits for all animations to complete.
     await tester.pumpAndSettle();
   });
-}
-
-/// Calls a number of testWidgets() functions one after the other
-void _testIntegrationGroup() {
-  // Run the Example app and perform some tests
-  integrationTestFlutteryFramework();
 }

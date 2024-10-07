@@ -1,4 +1,11 @@
 
+## 5.3.2
+October 06, 2024
+- Removed 'default' Error Handler mistakenly left in Production.
+- Removed 'default' Error Widget Builder mistakenly left in Production.
+- A default Error Screen, defaultErrorWidgetBuilder, available during development
+- Getters, errorHandler, oldOnError and oldBuilder, offered now in error_handler.dart
+
 ## 5.3.1+1
 October 01, 2024
 - getDeviceInfo() not called during testing

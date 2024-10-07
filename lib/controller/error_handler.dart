@@ -153,10 +153,12 @@ class AppErrorHandler {
   static bool allowNewErrorHandlers = true;
   static bool _givenErrorHandler = false;
 
-  // FlutterExceptionHandler get oldOnError => _oldOnError;
+  /// The original Error Handler at start up.
+  FlutterExceptionHandler? get oldOnError => _oldOnError;
   FlutterExceptionHandler? _oldOnError;
-  //
-  // ErrorWidgetBuilder get oldBuilder => _oldBuilder;
+
+  /// The original Displayed Error Widget at start up.
+  ErrorWidgetBuilder? get oldBuilder => _oldBuilder;
   static ErrorWidgetBuilder? _oldBuilder;
 
   static ReportErrorHandler? _errorReport;
@@ -176,7 +178,8 @@ class AppErrorHandler {
   /// the App's ErrorWidget.builder;
   ErrorWidgetBuilder? _flutteryErrorWidgetBuilder;
 
-  /// The current Error Handler.
+  /// The current Error Handler. Used in app_state.dart
+  FlutterExceptionHandler? get errorHandler => _errorHandler;
   static FlutterExceptionHandler? _errorHandler;
 
   /// Return the Error Handling

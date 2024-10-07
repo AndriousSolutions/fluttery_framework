@@ -270,12 +270,6 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
 
       // Clear memory of the Splash Screen if any
       splashScreen = null;
-
-      // If in testing, return to its Error handler
-      if (WidgetsBinding.instance is! WidgetsFlutterBinding) {
-        // Reset the error handler and display screen
-        handler.reset();
-      }
     } else if (snapshot.connectionState == ConnectionState.done &&
         snapshot.hasData &&
         !snapshot.data!) {
@@ -286,6 +280,7 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
         context: ErrorDescription('Please, notify admin.'),
       );
 
+      // Calls FlutterError.onError() with the given details
       FlutterError.reportError(details);
 
       widget0 = ErrorWidget.builder(details);

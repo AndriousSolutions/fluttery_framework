@@ -115,6 +115,14 @@ Future<void> testAppObject(WidgetTester tester) async {
 
   // ignore: INVALID_USE_OF_PROTECTED_MEMBER
   app.appState?.detachedAppLifecycleState();
+
+  ///==================== extension AppNavigationExtension
+
+  App.canPop();
+
+  // App.maybePop<bool>();
+  //
+  // App.pop<bool>();
 }
 
 class ConnectivityListenerTester with ConnectivityListener {

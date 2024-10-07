@@ -118,11 +118,8 @@ class _CounterPageState extends StateX<CounterPage> {
       floatingActionButton: FloatingActionButton(
         key: const Key('IncrementButton'),
         onPressed: () {
-          // Don't interrupt any testing.
-          if (App.inWidgetsFlutterBinding) {
-            // Deliberately throw an error to demonstrate error handling.
-            throw Exception('Fake error to demonstrate error handling!');
-          }
+          // Deliberately throw an error to demonstrate error handling.
+          throw Exception('Fake error to demonstrate error handling!');
           setState(con.onPressed);
         },
         child: const Icon(Icons.add),
@@ -238,8 +235,14 @@ class _CounterPageState extends StateX<CounterPage> {
 
   @override
   void onError(FlutterErrorDetails details) {
+    super.onError(details);
     final stack = details.stack;
     if (stack != null && stack.toString().contains('handleTap')) {
+      // Notify the app this error was anticipated and handled.
+      rootState?.lastFlutterError(details);
+      // Always more than one way to 'skin a cat.'
+      App.appState?.lastFlutterError(details);
+
       setState(con.onPressed);
 //      rxCounter.value++;
     }
