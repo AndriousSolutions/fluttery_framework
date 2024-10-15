@@ -1,4 +1,13 @@
 
+## 5.4.0
+October 14, 2024
+- AppState class now has the notifyClientsInBuild parameter. Defaults to true.
+  This then notifies any dependencies when calling for a rebuild
+- The runInitAsync() function in every StateX object
+  now allows their initAsync() functions to be conditionally called with every rebuild.
+- Translations for 'Material Ver.'
+- Updated the README.md
+
 ## 5.3.3
 October 07, 2024
 - Correct onInitAsync() in app_state.dart and default to returning true

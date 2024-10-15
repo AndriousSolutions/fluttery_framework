@@ -8,6 +8,7 @@ Map<String, String> ruRU = {
   'Interface:': 'Интерфейс',
   'Application:': 'Применение:',
   'Locale:': 'Регион',
+  'Material Ver.': 'Материал Вер.',
   'Colour Theme': 'Цветовая тема',
   'About': 'О',
   'Cancel': 'Отмена',

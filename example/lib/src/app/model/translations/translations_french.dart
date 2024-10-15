@@ -8,6 +8,7 @@ Map<String, String> frFR = {
   'Interface:': 'Interface:',
   'Application:': 'Application:',
   'Locale:': 'Lieu',
+  'Material Ver.': 'Matériau Ver.',
   'Colour Theme': 'Thème de couleur',
   'About': 'Sur',
   'Cancel': 'Annuler',
@@ -41,4 +42,5 @@ Map<String, String> frFR = {
   'New Cats': 'Nouveaux chats',
   'New Foxes': 'Nouveaux renards',
   'New Birds': 'Nouveaux oiseaux',
+  'Material Ver.': '',
 };

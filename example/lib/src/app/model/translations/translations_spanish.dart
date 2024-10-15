@@ -7,6 +7,7 @@ Map<String, String> esAR = {
   'Add': 'Agregar',
   'Interface:': 'Interfaz',
   'Application:': 'Solicitud:',
+  'Material Ver.': 'Versión del material.',
   'Locale:': 'Lugar',
   'Colour Theme': 'Tema de color',
   'About': 'Acerca de',

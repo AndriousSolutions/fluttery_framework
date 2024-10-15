@@ -7,6 +7,7 @@ Map<String, String> zhCN = {
   'Interface:': '界面',
   'Application:': '应用',
   'Locale:': '语言环境',
+  'Material Ver.': '材质版本',
   'Colour Theme': '颜色主题',
   'About': '关于',
   'Cancel': '取消',

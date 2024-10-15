@@ -8,6 +8,7 @@ Map<String, String> deDE = {
   'Interface:': 'Schnittstelle',
   'Application:': 'Anwendung:',
   'Locale:': 'Gebietsschema',
+  'Material Ver.': 'Materialver.',
   'Colour Theme': 'Farbthema',
   'About': 'Etwa',
   'Cancel': 'Abbrechen',

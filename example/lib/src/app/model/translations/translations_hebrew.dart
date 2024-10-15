@@ -8,6 +8,7 @@ Map<String, String> heIL = {
   'Interface:': 'מִמְשָׁק',
   'Application:': 'יישום:',
   'Locale:': 'מקום',
+  'Material Ver.': 'חומר Ver.',
   'Colour Theme': 'נושא צבע',
   'About': 'על אודות',
   'Cancel': 'לְבַטֵל',

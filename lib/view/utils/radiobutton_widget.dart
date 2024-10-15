@@ -15,6 +15,33 @@ import '/controller.dart';
 ///
 import '/view.dart';
 
+///  Example:
+///
+// class MaterialVersionRadioButtons extends RadioButtons<bool> {
+//
+//   const MaterialVersionRadioButtons({
+//     super.key,
+//     required super.controller,
+//     super.inChanged,
+//   });
+//
+//   @override
+//   Widget radioButtons(BuildContext context) {
+//     final radios = radioButtonsBuilder<bool>(
+//       {'3': true, '2': false},
+//       MaterialController(),
+//       mainAxisSize: MainAxisSize.min,
+//     );
+//     List<Widget> widgets = [Text('Material Ver.'.tr)];
+//     widgets.addAll(radios);
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//       mainAxisSize: MainAxisSize.min,
+//       children: widgets,
+//     );
+//   }
+// }
+///
 ///
 abstract class RadioButtons<T> extends StatefulWidget {
   ///

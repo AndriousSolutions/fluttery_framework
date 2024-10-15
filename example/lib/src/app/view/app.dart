@@ -173,6 +173,18 @@ class _ExampleAppState extends AppState {
 
   @override
   // ignore: unnecessary_overrides
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
+    return super.updateShouldNotify(oldWidget);
+  }
+
+  @override
+  // ignore: unnecessary_overrides
+  bool dependOnInheritedWidget(BuildContext? context) {
+    return super.dependOnInheritedWidget(context);
+  }
+
+  @override
+  // ignore: unnecessary_overrides
   void deactivate() {
     // Place a breakpoint to see how this works
     super.deactivate();
