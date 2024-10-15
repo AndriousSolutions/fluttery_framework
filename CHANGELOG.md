@@ -1,5 +1,5 @@
 
-## 5.4.0
+## 5.4.0+1
 October 14, 2024
 - AppState class now has the notifyClientsInBuild parameter. Defaults to true.
   This then notifies any dependencies when calling for a rebuild
@@ -7,6 +7,7 @@ October 14, 2024
   now allows their initAsync() functions to be conditionally called with every rebuild.
 - Translations for 'Material Ver.'
 - Updated the README.md
+- Updated device_info_plus 10.1.2 to 11.0.0
 
 ## 5.3.3
 October 07, 2024
