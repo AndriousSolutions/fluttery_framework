@@ -1,4 +1,10 @@
 
+## 5.4.1
+December 04, 2024
+- Optional type argument, T, was not specified.
+  .pushNamed<T>(routeName, arguments: arguments);
+  .restorablePushNamed<T>(routeName, arguments: arguments);
+
 ## 5.4.0+1
 October 14, 2024
 - AppState class now has the notifyClientsInBuild parameter. Defaults to true.
@@ -15,8 +21,8 @@ October 07, 2024
 
 ## 5.3.2+1
 October 06, 2024
-- Removed 'default' Error Handler mistakenly left in Production.
-- Removed 'default' Error Widget Builder mistakenly left in Production.
+- *FIX* Removed 'default' Error Handler mistakenly left in Production.
+- *FIX* Removed 'default' Error Widget Builder mistakenly left in Production.
 - A default Error Screen, defaultErrorWidgetBuilder, available during development
 - Getters, errorHandler, oldOnError and oldBuilder, offered now in error_handler.dart
 - Null error correction in example app

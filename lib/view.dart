@@ -25,7 +25,20 @@ export 'package:flutter/foundation.dart'; // show kDebugMode, kIsWeb, mustCallSu
 
 /// StateX
 export 'package:state_extended/state_extended.dart'
-    show AppStateX, SetState, StateXonErrorMixin;
+    show
+        AppStateX,
+        AsyncOps,
+        FutureBuilderStateMixin,
+        InheritedWidgetStateMixin,
+        ImplNotifyListenersChangeNotifierMixin,
+        ListenableWidgetBuilder,
+        MaybeBuildWidgetType,
+        RecordExceptionMixin,
+        RootState,
+        SetState,
+        StateXonErrorMixin,
+        SetStateMixin,
+        StateListener;
 
 /// App
 export '/view/app.dart';

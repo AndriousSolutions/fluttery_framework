@@ -1775,7 +1775,7 @@ mixin NavigatorStateMethodsMixin {
     String routeName, {
     Object? arguments,
   }) =>
-      App.appState!.navigator!.pushNamed(routeName, arguments: arguments);
+      App.appState!.navigator!.pushNamed<T>(routeName, arguments: arguments);
 
   /// Push the route with the given name onto the navigator, and then remove all
   /// the previous routes until the `predicate` returns true.
@@ -1866,7 +1866,7 @@ mixin NavigatorStateMethodsMixin {
     Object? arguments,
   }) =>
       App.appState!.navigator!
-          .restorablePushNamed(routeName, arguments: arguments);
+          .restorablePushNamed<T>(routeName, arguments: arguments);
 
   /// Push the route with the given name onto the navigator that most tightly
   /// encloses the given context, and then remove all the previous routes until
