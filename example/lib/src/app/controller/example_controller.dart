@@ -134,7 +134,7 @@ class ExampleAppController extends AppController {
 
   Future<void> changeLocale() async {
     //
-    final appState = rootState! as AppState;
+    final appState = rootState! as AppStateX;
 
     final locale = appState.locale!;
 

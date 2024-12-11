@@ -11,13 +11,17 @@ import 'package:state_extended/state_extended.dart' as c;
 import '/view.dart';
 
 ///
+@Deprecated('Use AppStateXController instead.')
+class AppController extends AppStateXController{}
+
+///
 /// A Controller for the 'app level'.
 ///
 /// dartdoc:
 /// {@category State Object Controller}
-class AppController extends c.StateXController implements ConnectivityListener {
+class AppStateXController extends c.StateXController implements ConnectivityListener {
   /// Optionally supply a 'State' object to be linked to this State Controller.
-  AppController([super.state]);
+  AppStateXController([super.state]);
 
   /// If the device's connectivity changes.
   @override

@@ -15,6 +15,9 @@ import '/view.dart' as v; //   show App, AppState, ReportErrorHandler;
 export 'package:connectivity_plus/connectivity_plus.dart'
     show Connectivity, ConnectivityResult;
 
+/// Responsive UI
+import 'package:sizer/sizer.dart' show Sizer;
+
 import 'package:universal_platform/universal_platform.dart';
 
 /// Error Screen Builder if an error occurs.
@@ -41,7 +44,7 @@ abstract class AppStatefulWidget extends StatefulWidget {
         super(key: key ?? GlobalKey<_AppStatefulWidgetState>()) {
     // Right at the start! Initialise the binding.
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    final indicator = circularProgressIndicator ?? true;
+    final indicator = onCircularProgressIndicator() ?? true;
     if (!indicator) {
       // defer displaying anything while starting up
       widgetsBinding.deferFirstFrame();
@@ -60,15 +63,24 @@ abstract class AppStatefulWidget extends StatefulWidget {
   final bool? circularProgressIndicator;
 
   /// Create the app-level State object.
-  v.AppState createAppState();
+  v.AppStateX createAppState();
 
   /// Creates the App's State object.
   @override
   State createState() => _AppStatefulWidgetState();
 
+  /// The breakpoint used to determine whether the device is a mobile device or a tablet.
+  double? onMaxMobileWidth() => null;
+
+  /// The breakpoint used to determine whether the device is a tablet or a desktop.
+  double? onMaxTabletWidth() => null;
+
   /// Supply a 'splash screen' (called in _futureBuilder() below)
   Widget? onSplashScreen(BuildContext context) =>
       inSplashScreen != null ? inSplashScreen!() : null;
+
+  /// Display a Circular Process Indicator at start up or not
+  bool? onCircularProgressIndicator() => circularProgressIndicator;
 }
 
 /// This State object sets up the App to run.
@@ -79,13 +91,13 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
     // May be in a test environment instead and that can be determined here.
     v.App.inWidgetsFlutterBinding;
   }
-  v.AppState? _appState;
+  v.AppStateX? _appState;
 
   @override
   void initState() {
     super.initState();
     _isAppInApp();
-    _appGlobalKey = GlobalKey<v.AppState>();
+    _appGlobalKey = GlobalKey<v.AppStateX>();
     _assets = Assets();
   }
 
@@ -107,6 +119,17 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // It's got to be handled, and so it's always true to call catchError()
       test: (_) => true,
     );
+    return Sizer(
+      builder: (_, __, ___) => FutureBuilder<bool>(
+        key: UniqueKey(), // UniqueKey() for hot reload
+        future: future,
+        initialData: false,
+        builder: (_, snapshot) => _futureBuilder(snapshot),
+      ),
+      maxMobileWidth: widget.onMaxMobileWidth() ?? 599,
+      maxTabletWidth: widget.onMaxTabletWidth(),
+    );
+
     return FutureBuilder<bool>(
       key: UniqueKey(), // UniqueKey() for hot reload
       future: future,
@@ -215,7 +238,7 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
   @override
   void setState(VoidCallback fn) {
     v.App.hotReload = true;
-    _appGlobalKey = GlobalKey<v.AppState>();
+    _appGlobalKey = GlobalKey<v.AppStateX>();
     super.setState(() {});
   }
 
@@ -223,7 +246,7 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
   /// completed before the app proceeds.
   Widget _futureBuilder(AsyncSnapshot<bool> snapshot) {
     //
-    Widget widget0;
+    Widget appWidget;
     Widget? splashScreen;
 
     if (snapshot.hasData &&
@@ -231,13 +254,13 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
         (v.App.isInit != null && v.App.isInit!)) {
       // Is the CircularProgressIndicator displayed
       final circularProgressIndicator =
-          widget.circularProgressIndicator ?? true;
+          widget.onCircularProgressIndicator() ?? true;
 
       if (!circularProgressIndicator) {
         WidgetsFlutterBinding.ensureInitialized().allowFirstFrame();
       }
       // Supply a GlobalKey so the 'App' State object is not disposed of if moved in Widget tree.
-      widget0 = _AppStatefulWidget(key: _appGlobalKey, appState: _appState!);
+      appWidget = _AppStatefulWidget(key: _appGlobalKey, appState: _appState!);
 
       // Clear memory of the Splash Screen if any
       splashScreen = null;
@@ -266,7 +289,7 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       final handler = AppErrorHandler();
 
       // Display an error screen
-      widget0 = handler.displayError(details);
+      appWidget = handler.displayError(details);
 
       // Clear memory of the Splash Screen if any
       splashScreen = null;
@@ -283,7 +306,7 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // Calls FlutterError.onError() with the given details
       FlutterError.reportError(details);
 
-      widget0 = ErrorWidget.builder(details);
+      appWidget = ErrorWidget.builder(details);
 
       // Clear memory of the Splash Screen if any
       splashScreen = null;
@@ -292,7 +315,7 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // In case the Splash Screen errors for some unknown reason.
       try {
         final widget = this.widget;
-        if (widget.circularProgressIndicator ?? true) {
+        if (widget.onCircularProgressIndicator() ?? true) {
           // Only create once!
           splashScreen ??=
               widget.splashScreen ?? widget.onSplashScreen(context);
@@ -305,20 +328,20 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
         //
         if (UniversalPlatform.isAndroid || UniversalPlatform.isWeb) {
           //
-          widget0 = const Center(child: CircularProgressIndicator());
+          appWidget = const Center(child: CircularProgressIndicator());
         } else {
           //
-          widget0 = const Center(child: CupertinoActivityIndicator());
+          appWidget = const Center(child: CupertinoActivityIndicator());
         }
       } else {
         // A Splash Screen is displayed for a time
-        widget0 = splashScreen;
+        appWidget = splashScreen;
       }
     }
     // Reset if there was a 'hot reload'.
     v.App.hotReload = false;
 
-    return widget0;
+    return appWidget;
   }
 
   // Determine if this app has been called by another _StateApp.
@@ -345,10 +368,10 @@ class _AppStatefulWidget extends StatefulWidget {
   });
 
   /// The framework's 'App' State object.
-  final v.AppState appState;
+  final v.AppStateX appState;
 
   /// Programmatically creates the App's State object.
   @override
   //ignore: no_logic_in_create_state
-  v.AppState createState() => appState;
+  v.AppStateX createState() => appState;
 }

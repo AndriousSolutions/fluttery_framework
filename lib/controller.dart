@@ -18,10 +18,10 @@ export 'package:state_extended/state_extended.dart'
     show StateXController, SetStateMixin, StateListener, RootState, AsyncOps;
 
 // App's View
-export '/view/app.dart' show App, AppDrawer;
+export '/view/app_object.dart' show App, AppDrawer;
 
 //App's Controller
-export 'controller/app.dart' show AppController;
+export 'controller/app_statex_controller.dart' show AppController, AppStateXController;
 
 // Device Info
 export 'controller/device_info.dart' show DeviceInfo;

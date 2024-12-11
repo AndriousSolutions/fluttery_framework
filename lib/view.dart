@@ -23,10 +23,12 @@ export 'package:universal_platform/universal_platform.dart';
 /// Flutter Framework's Foundation
 export 'package:flutter/foundation.dart'; // show kDebugMode, kIsWeb, mustCallSuper, protected;
 
+/// App State Object
+export '/view/app_statex.dart';
+
 /// StateX
 export 'package:state_extended/state_extended.dart'
     show
-        AppStateX,
         AsyncOps,
         FutureBuilderStateMixin,
         InheritedWidgetStateMixin,
@@ -41,13 +43,10 @@ export 'package:state_extended/state_extended.dart'
         StateListener;
 
 /// App
-export '/view/app.dart';
+export '/view/app_object.dart';
 
 /// App StatefulWidget
 export '/view/app_statefulwidget.dart' hide ErrorWidgetBuilder;
-
-/// App State Object
-export '/view/app_state.dart';
 
 /// Settings
 export '/view/utils/app_settings.dart';

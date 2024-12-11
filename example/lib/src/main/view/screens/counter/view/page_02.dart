@@ -40,7 +40,7 @@ class Page2State extends StateX<Page2> {
     /// Even the app's 'first' State object has a reference to itself
     final firstState = controller?.rootState;
 
-    assert(firstState is AppState, "Should be the 'root' state object.");
+    assert(firstState is AppStateX, "Should be the 'root' state object.");
 
     /// The latest BuildContext in the app.
     /// This is so important, there's a number of ways to get it.
@@ -82,7 +82,7 @@ class Page2State extends StateX<Page2> {
     final rootState = appCon?.state;
 
     // All three share the same State object.
-    assert(rootState is AppState, "Should be the 'root' state object.");
+    assert(rootState is AppStateX, "Should be the 'root' state object.");
   }
 
   /// Define the 'child' Widget that will be passed to the InheritedWidget above.

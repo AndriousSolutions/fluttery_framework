@@ -1,4 +1,13 @@
-
+## 5.4.2
+December 11, 2024
+- *BUGFIX* Moved Sizer() from app_statex.dart to app_statefulwidget.dart
+- app.dart renamed app_object.dart
+- app_state.dart renamed app_statex.dart
+- app.dart renamed app_statex_controller.dart
+- *Deprecated* AppState() and AppController() class are deprecated.
+- class AppState renamed class AppStateX
+- class AppController renamed AppStateXController
+  
 ## 5.4.1
 December 04, 2024
 - Optional type argument, T, was not specified.
@@ -21,8 +30,8 @@ October 07, 2024
 
 ## 5.3.2+1
 October 06, 2024
-- *FIX* Removed 'default' Error Handler mistakenly left in Production.
-- *FIX* Removed 'default' Error Widget Builder mistakenly left in Production.
+- *BUGFIX* Removed 'default' Error Handler mistakenly left in Production.
+- *BUGFIX* Removed 'default' Error Widget Builder mistakenly left in Production.
 - A default Error Screen, defaultErrorWidgetBuilder, available during development
 - Getters, errorHandler, oldOnError and oldBuilder, offered now in error_handler.dart
 - Null error correction in example app

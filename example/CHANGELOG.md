@@ -1,4 +1,9 @@
 
+## 1.3.0
+December 11, 2024
+- class AppState renamed class AppStateX
+  class AppController renamed AppStateXController
+- 
 ## 1.2.0
 - *Deprecated* StateIn() and StateF() class are deprecated to keep it simple.
   Use the StateX parameters, *runAsync* and *useInherited*, instead.'

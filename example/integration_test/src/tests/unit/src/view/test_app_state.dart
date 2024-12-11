@@ -5,7 +5,7 @@ Future<void> testAppState(WidgetTester tester) async {
   // Find its StatefulWidget first then the 'type' of State object.
 //  final appState = tester.firstState<AppState>(find.byType(FlutteryExampleApp));
 
-  final appState = ExampleAppController().state as AppState;
+  final appState = ExampleAppController().state as AppStateX;
 
   bool? use = appState.useCupertino;
 

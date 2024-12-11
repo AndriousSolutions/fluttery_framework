@@ -83,15 +83,15 @@ class AppObject
 
   /// The App State object.
 // Not yet gp  @Deprecated('Should not be an exposed property')
-  v.AppState? get appState => _appState;
-  set appState(v.AppState? state) {
+  v.AppStateX? get appState => _appState;
+  set appState(v.AppStateX? state) {
     if (state != null && (_appState == null || hotReload)) {
       _appState = state;
       state.app = this;
     }
   }
 
-  static v.AppState? _appState;
+  static v.AppStateX? _appState;
 
   /// App-level error handling.
   void onError(FlutterErrorDetails details) =>

@@ -19,7 +19,7 @@ void testHandleError(WidgetTester tester) {
 
   var state = con.state;
 
-  if (state != null && state is AppState) {
+  if (state != null && state is AppStateX) {
     //
     state.onError(FlutterErrorDetails(exception: error));
   }

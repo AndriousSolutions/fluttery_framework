@@ -5,19 +5,29 @@
 //          Created  27 Oct 2020
 //
 
-// Replace 'dart:io' for Web applications
+import 'dart:ui' as i show ParagraphStyle, TextStyle;
 
 import '/controller.dart'
     show
-        AppController,
         AppErrorHandler,
+        AppStateXController,
         AppWidgetErrorDisplayed,
         ReportErrorHandler;
 
-import 'package:state_extended/state_extended.dart' as s
-    show RouteObserverStates, StateX;
+import 'package:flutter/cupertino.dart'
+    show CupertinoApp, CupertinoTheme, CupertinoThemeData;
 
-import '/view.dart';
+import 'package:flutter/foundation.dart' show FlutterExceptionHandler;
+
+/// Translations
+import 'package:l10n_translator/l10n.dart';
+
+import 'package:state_extended/state_extended.dart' as s
+    show AppStateX, RouteObserverStates, StateX;
+
+import '/view.dart' as v;
+
+import 'package:flutter/material.dart';
 
 /// Highlights UI while debugging.
 import 'package:flutter/rendering.dart' as debug
@@ -41,7 +51,8 @@ import 'package:flutter/widgets.dart' as debug
         debugEnhanceBuildTimelineArguments,
         debugHighlightDeprecatedWidgets;
 
-import 'dart:ui' as i show ParagraphStyle, TextStyle;
+/// Replace 'dart:io' for Web applications
+import 'package:universal_platform/universal_platform.dart';
 
 ///
 /// The View for the app. The 'look and feel' for the whole app.
@@ -51,13 +62,13 @@ import 'dart:ui' as i show ParagraphStyle, TextStyle;
 /// {@category Get started}
 /// {@category StateX class}
 /// {@category Error handling}
-class AppState<T extends StatefulWidget> extends _AppState<T>
+class AppStateX<T extends StatefulWidget> extends _AppState<T>
     with NavigatorStateMethodsMixin {
   /// Provide a huge array of options and features to the 'App State object.'
-  AppState({
+  AppStateX({
     Key? key,
     Widget? home,
-    AppController? controller,
+    AppStateXController? controller,
     super.controllers,
     super.object,
     super.notifyClientsInBuild,
@@ -128,8 +139,6 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     Map<Type, Action<Intent>>? actions,
     String? restorationScopeId,
     ScrollBehavior? scrollBehavior,
-    this.maxMobileWidth,
-    this.maxTabletWidth,
     super.errorHandler,
     super.errorScreen,
     super.errorReport,
@@ -178,7 +187,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.inActions,
     super.inRestorationScopeId,
     super.inScrollBehavior,
-  }) : super(controller: controller ?? AppController()) {
+  }) : super(controller: controller ?? AppStateXController()) {
     //
     _key = key;
     _home = home;
@@ -307,18 +316,28 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   set parentState(State? state) => _parentState ??= state;
 
   /// Reference to the 'app' object.
-  AppObject? get app => _app;
+  v.AppObject? get app => _app;
 
   /// Set the 'app' object but only once!
-  set app(AppObject? app) => _app ??= app;
+  set app(v.AppObject? app) => _app ??= app;
 
   /// The app's representation
-  AppObject? _app;
+  v.AppObject? _app;
 
   /// You need to be able access the widget.
   // if parentState is null then AppStatefulWidget was likely not used.
   @override
   T get widget => (parentState?.widget ?? super.widget) as T;
+
+  /// The breakpoint used to determine whether the device is a mobile device or a tablet.
+  double get maxMobileWidth => parentState == null
+      ? 599
+      : (parentState!.widget as v.AppStatefulWidget).onMaxMobileWidth() ?? 599;
+
+  /// The breakpoint used to determine whether the device is a tablet or a desktop.
+  double? get maxTabletWidth => parentState == null
+      ? null
+      : (parentState!.widget as v.AppStatefulWidget).onMaxTabletWidth();
 
   /// Used to complete asynchronous operations
   @override
@@ -349,19 +368,9 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     super.dispose();
   }
 
-  /// The breakpoint used to determine whether the device is a mobile device or a tablet.
-  final double? maxMobileWidth;
-
-  /// The breakpoint used to determine whether the device is a tablet or a desktop.
-  final double? maxTabletWidth;
-
   /// Override build to avoid the built-in Future Builder.
   @override
-  Widget build(BuildContext context) => Sizer(
-        builder: (context, orientation, deviceType) => buildF(context),
-        maxMobileWidth: maxMobileWidth ?? 599,
-        maxTabletWidth: maxTabletWidth,
-      );
+  Widget build(BuildContext context) => buildF(context);
 
   // Called by buildF()
   @override
@@ -410,7 +419,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
     if (_useRouterConfig!) {
       // Make the GoRouter readily available without requiring a context.
-      App.goRouter = _routerConfig;
+      v.App.goRouter = _routerConfig;
     }
 
     // If the routerConfig is to be used, the others must all be null.
@@ -431,15 +440,15 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
     // There's possibly a preferred Locale.
     // The app can specify its own Locale
-    if (_allowChangeLocale && App.preferredLocale != null) {
-      _locale = App.preferredLocale;
+    if (_allowChangeLocale && v.App.preferredLocale != null) {
+      _locale = v.App.preferredLocale;
     } else {
       _locale = _locale ?? onLocale();
     }
 
     // If the locale was saved in the preferences, save the new one if any
     if (_allowChangeLocale) {
-      App.saveLocale(_locale);
+      v.App.saveLocale(_locale);
     }
 
     // Assign to the L10n
@@ -681,7 +690,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   }
 
   /// Supply the App widget if you wish.
-  Widget? buildApp(AppState? appState) => null;
+  Widget? buildApp(AppStateX? appState) => null;
 
   /// Determine if the dependencies should be updated.
   @override
@@ -695,7 +704,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
     if (_allowChangeTheme) {
       // If a saved preference
-      final theme = App.iOSThemeData;
+      final theme = v.App.iOSThemeData;
       if (theme != null) {
         cupertinoThemeData = theme;
       }
@@ -703,18 +712,18 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
     if (cupertinoThemeData == null) {
       // Possibly Material can provide
-      final themeData = _theme ?? onTheme() ?? App.themeData;
+      final themeData = _theme ?? onTheme() ?? v.App.themeData;
 
       if (themeData == null) {
         // The original theme
-        App.iOSThemeData ??= CupertinoTheme.of(context).resolveFrom(context);
+        v.App.iOSThemeData ??= CupertinoTheme.of(context).resolveFrom(context);
       } else {
         // Assign the provided theme
-        App.iOSThemeData = themeData;
+        v.App.iOSThemeData = themeData;
       }
-      cupertinoThemeData = App.iOSThemeData;
+      cupertinoThemeData = v.App.iOSThemeData;
     } else {
-      App.iOSThemeData = cupertinoThemeData;
+      v.App.iOSThemeData = cupertinoThemeData;
     }
     return cupertinoThemeData;
   }
@@ -726,7 +735,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
     if (_allowChangeTheme) {
       // If a saved preference
-      final theme = App.themeData;
+      final theme = v.App.themeData;
       if (theme != null) {
         themeData = theme;
       }
@@ -735,24 +744,25 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
     // If not explicitly provided by the user
     if (themeData == null) {
       // possibly Cupertino can provide
-      final cupertinoThemeData = _iOSTheme ?? oniOSTheme() ?? App.iOSThemeData;
+      final cupertinoThemeData =
+          _iOSTheme ?? oniOSTheme() ?? v.App.iOSThemeData;
 
       if (cupertinoThemeData == null) {
         // The original theme
-        App.themeData ??= ThemeData.fallback(useMaterial3: false);
+        v.App.themeData ??= ThemeData.fallback(useMaterial3: false);
       } else {
         // Cupertino values
-        App.themeData = cupertinoThemeData;
+        v.App.themeData = cupertinoThemeData;
       }
-      themeData = App.themeData;
+      themeData = v.App.themeData;
     } else {
-      App.themeData = themeData;
+      v.App.themeData = themeData;
     }
     return themeData;
   }
 
   /// Rebuild the 'latest/current' State object and the 'root/first' State object
-  /// This is to address the possibility an App has called another App.
+  /// This is to address the possibility an App has called another v.App.
   void refresh() {
     _AppState? state;
     if (_AppState._appInApp) {
@@ -770,7 +780,7 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
   /// During development, if a hot reload occurs, the reassemble method is called.
   @override
   void reassemble() {
-    App.hotReload = true;
+    v.App.hotReload = true;
     super.reassemble();
   }
 
@@ -842,10 +852,10 @@ class AppState<T extends StatefulWidget> extends _AppState<T>
 
 /// The underlying State object representing the App's View in the MVC pattern.
 /// Allows for setting debug settings and defining the App's error routine.
-abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
+abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
   //
   _AppState({
-    AppController? controller,
+    AppStateXController? controller,
     super.controllers,
     super.object,
     super.notifyClientsInBuild,
@@ -905,7 +915,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
 //  })  : _statesRouteObserver = StatesRouteObserver(),
   }) : super(controller: controller) {
     // Listen to the device's connectivity.
-    App.addConnectivityListener(controller);
+    v.App.addConnectivityListener(controller);
 
     // Take in the parameters
     _locale = locale;
@@ -1657,7 +1667,7 @@ abstract class _AppState<T extends StatefulWidget> extends AppStateX<T> {
         );
         try {
           // Call the App's 'current' error handler.
-          App.onError(details);
+          v.App.onError(details);
         } catch (e, stack) {
           // Error in the error handler? That's a pickle.
           recordException(e, stack);
@@ -1685,7 +1695,7 @@ Widget defaultErrorWidgetBuilder(
       minimumWidth: minimumWidth,
       backgroundColor: backgroundColor,
       customPainter: customPainter,
-      stackTrace: stackTrace ?? App.inDebugMode,
+      stackTrace: stackTrace ?? v.App.inDebugMode,
     ).builder(details);
 
 /// The extension of the State class.
@@ -1708,7 +1718,7 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
   /// If you don't use it, use the buildAndroid() or buildiOS() function.
   @override
   Widget builder(BuildContext context) =>
-      App.useMaterial ? buildAndroid(context) : buildiOS(context);
+      v.App.useMaterial ? buildAndroid(context) : buildiOS(context);
 
   /// This is an optional function allowing you to make the distinction.
   /// Build the Android interface.
@@ -1725,23 +1735,23 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
 /// Supply the Global Navigator and all its methods.
 mixin NavigatorStateMethodsMixin {
   /// Whether the navigator can be popped.
-  bool canPop() => App.appState?.navigator?.canPop() ?? false;
+  bool canPop() => v.App.appState?.navigator?.canPop() ?? false;
 
   /// Complete the lifecycle for a route that has been popped off the navigator.
   void finalizeRoute(Route<dynamic> route) =>
-      App.appState!.navigator?.finalizeRoute(route);
+      v.App.appState!.navigator?.finalizeRoute(route);
 
   /// Consults the current route's [Route.popDisposition] method, and acts
   /// accordingly, potentially popping the route as a result; returns whether
   /// the pop request should be considered handled.
   @optionalTypeArgs
   Future<bool> maybePop<T extends Object?>([T? result]) =>
-      App.appState!.navigator!.maybePop<T>(result);
+      v.App.appState!.navigator!.maybePop<T>(result);
 
   /// Pop the top-most route off the navigator.
   @optionalTypeArgs
   void pop<T extends Object?>([T? result]) =>
-      App.appState!.navigator?.pop<T>(result);
+      v.App.appState!.navigator?.pop<T>(result);
 
   /// Pop the current route off the navigator and push a named route in its
   /// place.
@@ -1750,24 +1760,24 @@ mixin NavigatorStateMethodsMixin {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      App.appState!.navigator!.popAndPushNamed<T, TO>(routeName,
+      v.App.appState!.navigator!.popAndPushNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Calls [pop] repeatedly until the predicate returns true.
   void popUntil(RoutePredicate predicate) =>
-      App.appState!.navigator?.popUntil(predicate);
+      v.App.appState!.navigator?.popUntil(predicate);
 
   /// Push the given route onto the navigator.
   @optionalTypeArgs
   Future<T?> push<T extends Object?>(Route<T> route) =>
-      App.appState!.navigator!.push<T>(route);
+      v.App.appState!.navigator!.push<T>(route);
 
   /// Push the given route onto the navigator, and then remove all the previous
   /// routes until the `predicate` returns true.
   @optionalTypeArgs
   Future<T?> pushAndRemoveUntil<T extends Object?>(
           Route<T> newRoute, RoutePredicate predicate) =>
-      App.appState!.navigator!.pushAndRemoveUntil<T>(newRoute, predicate);
+      v.App.appState!.navigator!.pushAndRemoveUntil<T>(newRoute, predicate);
 
   /// Push a named route onto the navigator.
   @optionalTypeArgs
@@ -1775,14 +1785,14 @@ mixin NavigatorStateMethodsMixin {
     String routeName, {
     Object? arguments,
   }) =>
-      App.appState!.navigator!.pushNamed<T>(routeName, arguments: arguments);
+      v.App.appState!.navigator!.pushNamed<T>(routeName, arguments: arguments);
 
   /// Push the route with the given name onto the navigator, and then remove all
   /// the previous routes until the `predicate` returns true.
   @optionalTypeArgs
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
           String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
-      App.appState!.navigator!.pushNamedAndRemoveUntil<T>(
+      v.App.appState!.navigator!.pushNamedAndRemoveUntil<T>(
           newRouteName, predicate,
           arguments: arguments);
 
@@ -1793,7 +1803,8 @@ mixin NavigatorStateMethodsMixin {
   Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
           Route<T> newRoute,
           {TO? result}) =>
-      App.appState!.navigator!.pushReplacement<T, TO>(newRoute, result: result);
+      v.App.appState!.navigator!
+          .pushReplacement<T, TO>(newRoute, result: result);
 
   /// Replace the current route of the navigator by pushing the route named
   /// [routeName] and then disposing the previous route once the new route has
@@ -1803,24 +1814,24 @@ mixin NavigatorStateMethodsMixin {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      App.appState!.navigator!.pushReplacementNamed<T, TO>(routeName,
+      v.App.appState!.navigator!.pushReplacementNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Immediately remove `route` from the navigator, and [Route.dispose] it.
   void removeRoute(Route<dynamic> route) =>
-      App.appState!.navigator?.removeRoute(route);
+      v.App.appState!.navigator?.removeRoute(route);
 
   /// Immediately remove a route from the navigator, and [Route.dispose] it. The
   /// route to be removed is the one below the given `anchorRoute`.
   void removeRouteBelow(Route<dynamic> anchorRoute) =>
-      App.appState!.navigator?.removeRouteBelow(anchorRoute);
+      v.App.appState!.navigator?.removeRouteBelow(anchorRoute);
 
   /// Replaces a route on the navigator that most tightly encloses the given
   /// context with a new route.
   @optionalTypeArgs
   void replace<T extends Object?>(
           {required Route<dynamic> oldRoute, required Route<T> newRoute}) =>
-      App.appState!.navigator!
+      v.App.appState!.navigator!
           .replace<T>(oldRoute: oldRoute, newRoute: newRoute);
 
   /// Replaces a route on the navigator with a new route. The route to be
@@ -1828,7 +1839,7 @@ mixin NavigatorStateMethodsMixin {
   @optionalTypeArgs
   void replaceRouteBelow<T extends Object?>(
           {required Route<dynamic> anchorRoute, required Route<T> newRoute}) =>
-      App.appState!.navigator!
+      v.App.appState!.navigator!
           .replaceRouteBelow<T>(anchorRoute: anchorRoute, newRoute: newRoute);
 
   /// Pop the current route off the navigator and push a named route in its
@@ -1838,7 +1849,7 @@ mixin NavigatorStateMethodsMixin {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      App.appState!.navigator!.restorablePopAndPushNamed<T, TO>(routeName,
+      v.App.appState!.navigator!.restorablePopAndPushNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Push a new route onto the navigator.
@@ -1846,7 +1857,7 @@ mixin NavigatorStateMethodsMixin {
   String restorablePush<T extends Object?>(
           RestorableRouteBuilder<T> routeBuilder,
           {Object? arguments}) =>
-      App.appState!.navigator!
+      v.App.appState!.navigator!
           .restorablePush<T>(routeBuilder, arguments: arguments);
 
   /// Push a new route onto the navigator, and then remove all the previous
@@ -1855,7 +1866,7 @@ mixin NavigatorStateMethodsMixin {
   String restorablePushAndRemoveUntil<T extends Object?>(
           RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate,
           {Object? arguments}) =>
-      App.appState!.navigator!.restorablePushAndRemoveUntil<T>(
+      v.App.appState!.navigator!.restorablePushAndRemoveUntil<T>(
           newRouteBuilder, predicate,
           arguments: arguments);
 
@@ -1865,7 +1876,7 @@ mixin NavigatorStateMethodsMixin {
     String routeName, {
     Object? arguments,
   }) =>
-      App.appState!.navigator!
+      v.App.appState!.navigator!
           .restorablePushNamed<T>(routeName, arguments: arguments);
 
   /// Push the route with the given name onto the navigator that most tightly
@@ -1874,7 +1885,7 @@ mixin NavigatorStateMethodsMixin {
   @optionalTypeArgs
   String restorablePushNamedAndRemoveUntil<T extends Object?>(
           String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
-      App.appState!.navigator!.restorablePushNamedAndRemoveUntil<T>(
+      v.App.appState!.navigator!.restorablePushNamedAndRemoveUntil<T>(
           newRouteName, predicate,
           arguments: arguments);
 
@@ -1886,7 +1897,7 @@ mixin NavigatorStateMethodsMixin {
           RestorableRouteBuilder<T> routeBuilder,
           {TO? result,
           Object? arguments}) =>
-      App.appState!.navigator!.restorablePushReplacement<T, TO>(routeBuilder,
+      v.App.appState!.navigator!.restorablePushReplacement<T, TO>(routeBuilder,
           result: result, arguments: arguments);
 
   /// Replace the current route of the navigator that most tightly encloses the
@@ -1897,8 +1908,10 @@ mixin NavigatorStateMethodsMixin {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      App.appState!.navigator!.restorablePushReplacementNamed<T, TO>(routeName,
-          result: result, arguments: arguments);
+      v.App.appState!.navigator!.restorablePushReplacementNamed<T, TO>(
+          routeName,
+          result: result,
+          arguments: arguments);
 
   /// Replaces a route on the navigator that most tightly encloses the given
   /// context with a new route.
@@ -1907,7 +1920,7 @@ mixin NavigatorStateMethodsMixin {
           {required Route<dynamic> oldRoute,
           required RestorableRouteBuilder<T> newRouteBuilder,
           Object? arguments}) =>
-      App.appState!.navigator!.restorableReplace<T>(
+      v.App.appState!.navigator!.restorableReplace<T>(
           oldRoute: oldRoute,
           newRouteBuilder: newRouteBuilder,
           arguments: arguments);
@@ -1919,8 +1932,138 @@ mixin NavigatorStateMethodsMixin {
           {required Route<dynamic> anchorRoute,
           required RestorableRouteBuilder<T> newRouteBuilder,
           Object? arguments}) =>
-      App.appState!.navigator!.restorableReplaceRouteBelow<T>(
+      v.App.appState!.navigator!.restorableReplaceRouteBelow<T>(
           anchorRoute: anchorRoute,
           newRouteBuilder: newRouteBuilder,
           arguments: arguments);
+}
+
+///
+/// The View for the app. The 'look and feel' for the whole app.
+///
+@Deprecated('Use AppStateX instead.')
+class AppState<T extends StatefulWidget> extends AppStateX<T> {
+  /// Provide a huge array of options and features to the 'App State object.'
+  AppState({
+    super.key,
+    super.home,
+    super.controller,
+    super.controllers,
+    super.object,
+    super.notifyClientsInBuild,
+    super.materialApp,
+    super.cupertinoApp,
+    super.routeInformationProvider,
+    super.routeInformationParser,
+    super.routerDelegate,
+    super.useRouterConfig,
+    super.routerConfig,
+    super.backButtonDispatcher,
+    super.scaffoldMessengerKey,
+    super.routes,
+    super.initialRoute,
+    super.onGenerateRoute,
+    super.onUnknownRoute,
+    super.onNavigationNotification,
+    super.navigatorKey,
+    super.navigatorObservers,
+    super.builder,
+    super.title,
+    super.onGenerateTitle,
+    super.color,
+    super.allowChangeTheme,
+    super.theme,
+    super.iOSTheme,
+    super.darkTheme,
+    super.highContrastTheme,
+    super.highContrastDarkTheme,
+    super.themeMode,
+    super.themeAnimationDuration,
+    super.themeAnimationCurve,
+    super.allowChangeLocale,
+    super.locale,
+    super.localizationsDelegates,
+    super.localeListResolutionCallback,
+    super.localeResolutionCallback,
+    super.supportedLocales,
+    super.useMaterial,
+    super.useCupertino,
+    super.switchUI,
+    super.allowChangeUI,
+    super.debugShowMaterialGrid,
+    super.showPerformanceOverlay,
+    super.checkerboardRasterCacheImages,
+    super.checkerboardOffscreenLayers,
+    super.showSemanticsDebugger,
+    super.debugShowCheckedModeBanner,
+    super.debugShowWidgetInspector,
+    super.debugPaintSizeEnabled,
+    super.debugPaintBaselinesEnabled,
+    super.debugPaintPointersEnabled,
+    super.debugPaintLayerBordersEnabled,
+    super.debugRepaintRainbowEnabled,
+    super.debugRepaintTextRainbowEnabled,
+    super.debugPrintRebuildDirtyWidgets,
+    // ignore: avoid_positional_boolean_parameters
+    super.debugOnRebuildDirtyWidget,
+    super.debugPrintBuildScope,
+    super.debugPrintScheduleBuildForStacks,
+    super.debugPrintGlobalKeyedWidgetLifecycle,
+    super.debugProfileBuildsEnabled,
+    super.debugProfileBuildsEnabledUserWidgets,
+    super.debugEnhanceBuildTimelineArguments,
+    super.debugHighlightDeprecatedWidgets,
+    super.shortcuts,
+    super.actions,
+    super.restorationScopeId,
+    super.scrollBehavior,
+    super.errorHandler,
+    super.errorScreen,
+    super.errorReport,
+    super.inErrorHandler,
+    super.inErrorScreen,
+    super.inErrorReport,
+    super.presentError,
+    super.inInitState,
+    super.inInitAsync,
+    super.inCatchAsyncError,
+    super.inAsyncError,
+    super.inHome,
+    super.inRouteInformationProvider,
+    super.inRouteInformationParser,
+    super.inRouterDelegate,
+    super.inRouterConfig,
+    super.inBackButtonDispatcher,
+    super.inRoutes,
+    super.inInitialRoute,
+    super.inNavigatorObservers,
+    super.inUpdateShouldNotify,
+    super.inTransBuilder,
+    super.inTitle,
+    super.inGenerateTitle,
+    super.inTheme,
+    super.iniOSTheme,
+    super.inDarkTheme,
+    super.inHighContrastTheme,
+    super.inHighContrastDarkTheme,
+    super.inThemeMode,
+    super.inThemeAnimationDuration,
+    super.inThemeAnimationCurve,
+    super.inColor,
+    super.inLocale,
+    super.inLocalizationsDelegates,
+    super.inLocaleListResolutionCallback,
+    super.inLocaleResolutionCallback,
+    super.inSupportedLocales,
+    super.inDebugShowMaterialGrid,
+    super.inShowPerformanceOverlay,
+    super.inCheckerboardRasterCacheImages,
+    super.inCheckerboardOffscreenLayers,
+    super.inShowSemanticsDebugger,
+    super.inDebugShowCheckedModeBanner,
+    super.inShortcuts,
+    super.inActions,
+    super.inRestorationScopeId,
+    super.inScrollBehavior,
+  });
 }
