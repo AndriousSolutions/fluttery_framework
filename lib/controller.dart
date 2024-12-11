@@ -21,6 +21,7 @@ export 'package:state_extended/state_extended.dart'
 export '/view/app_object.dart' show App, AppDrawer;
 
 //App's Controller
+// ignore: deprecated_member_use_from_same_package
 export 'controller/app_statex_controller.dart' show AppController, AppStateXController;
 
 // Device Info

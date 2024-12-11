@@ -129,13 +129,6 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       maxMobileWidth: widget.onMaxMobileWidth() ?? 599,
       maxTabletWidth: widget.onMaxTabletWidth(),
     );
-
-    return FutureBuilder<bool>(
-      key: UniqueKey(), // UniqueKey() for hot reload
-      future: future,
-      initialData: false,
-      builder: (_, snapshot) => _futureBuilder(snapshot),
-    );
   }
 
   /// Runs all the asynchronous operations necessary before the app can proceed.

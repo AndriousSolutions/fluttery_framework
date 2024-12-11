@@ -1,4 +1,4 @@
-## 5.4.2
+## 5.4.2+1
 December 11, 2024
 - *BUGFIX* Moved Sizer() from app_statex.dart to app_statefulwidget.dart
 - app.dart renamed app_object.dart
@@ -7,6 +7,8 @@ December 11, 2024
 - *Deprecated* AppState() and AppController() class are deprecated.
 - class AppState renamed class AppStateX
 - class AppController renamed AppStateXController
+- sizer: ^3.0.0
+- Removed unnecessary_library_name in radiobutton_widget.dart
   
 ## 5.4.1
 December 04, 2024
