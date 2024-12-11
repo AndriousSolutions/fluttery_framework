@@ -1,3 +1,9 @@
+
+## 5.5.0
+December 11, 2024
+- Introduced parameter, themeAnimationStyle,for class MaterialApp
+- @protected @factory v.AppStateX createAppState();
+
 ## 5.4.2+1
 December 11, 2024
 - *BUGFIX* Moved Sizer() from app_statex.dart to app_statefulwidget.dart

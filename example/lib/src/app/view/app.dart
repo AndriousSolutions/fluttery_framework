@@ -10,7 +10,7 @@ class FlutteryExampleApp extends AppStatefulWidget {
   FlutteryExampleApp({super.key});
   // This is the 'App State object' of the application.
   @override
-  AppStateX createAppState() => _ExampleAppState();
+  AppStateX<FlutteryExampleApp> createAppState() => _ExampleAppState();
 }
 
 /// This is the 'View' of the application.

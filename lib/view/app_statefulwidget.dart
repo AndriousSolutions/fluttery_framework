@@ -63,6 +63,8 @@ abstract class AppStatefulWidget extends StatefulWidget {
   final bool? circularProgressIndicator;
 
   /// Create the app-level State object.
+  @protected
+  @factory
   v.AppStateX createAppState();
 
   /// Creates the App's State object.

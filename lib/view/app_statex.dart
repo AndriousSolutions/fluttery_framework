@@ -139,6 +139,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T>
     Map<Type, Action<Intent>>? actions,
     String? restorationScopeId,
     ScrollBehavior? scrollBehavior,
+    AnimationStyle? themeAnimationStyle,
     super.errorHandler,
     super.errorScreen,
     super.errorReport,
@@ -187,6 +188,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T>
     super.inActions,
     super.inRestorationScopeId,
     super.inScrollBehavior,
+    super.inThemeAnimationStyle,
   }) : super(controller: controller ?? AppStateXController()) {
     //
     _key = key;
@@ -272,6 +274,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T>
     _actions = actions;
     _restorationScopeId = restorationScopeId;
     _scrollBehavior = scrollBehavior;
+    _themeAnimationStyle = themeAnimationStyle;
   }
 
   /// The 'App State Objects' [Key]
@@ -625,6 +628,8 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T>
             actions: _actions ?? onActions(),
             restorationScopeId: _restorationScopeId ?? onRestorationScopeId(),
             scrollBehavior: _scrollBehavior ?? onScrollBehavior(),
+            themeAnimationStyle:
+                _themeAnimationStyle ?? onThemeAnimationStyle(),
             // Let the parameters run before the home parameter.
             home: _home ?? onHome(),
           );
@@ -682,6 +687,8 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T>
             actions: _actions ?? onActions(),
             restorationScopeId: _restorationScopeId ?? onRestorationScopeId(),
             scrollBehavior: _scrollBehavior ?? onScrollBehavior(),
+            themeAnimationStyle:
+            _themeAnimationStyle ?? onThemeAnimationStyle(),
           );
         }
       }
@@ -912,6 +919,7 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
     this.inActions,
     this.inRestorationScopeId,
     this.inScrollBehavior,
+    this.inThemeAnimationStyle,
 //  })  : _statesRouteObserver = StatesRouteObserver(),
   }) : super(controller: controller) {
     // Listen to the device's connectivity.
@@ -1121,6 +1129,7 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
   Map<Type, Action<Intent>>? _actions;
   String? _restorationScopeId;
   ScrollBehavior? _scrollBehavior;
+  AnimationStyle? _themeAnimationStyle;
 
   /// Used to complete asynchronous operations
   Future<bool> onInitAsync() async => await inInitAsync?.call() ?? true;
@@ -1375,6 +1384,9 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
   /// Returns the App's [ScrollBehavior] if any.
   ScrollBehavior? onScrollBehavior() => inScrollBehavior?.call();
 
+  /// Used to override the theme animation curve and duration.
+  AnimationStyle? onThemeAnimationStyle() => inThemeAnimationStyle?.call();
+
   /// Perform asynchronous operations
   final Future<bool> Function()? inInitAsync;
 
@@ -1498,6 +1510,9 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
 
   /// Returns the App's [ScrollBehavior] if any.
   final ScrollBehavior? Function()? inScrollBehavior;
+
+  /// Used to override the theme animation curve and duration.
+  final AnimationStyle? Function()? inThemeAnimationStyle;
 
   /// Returns the App's 'Async Error Handler' if any.
   final void Function(Object error)? inAsyncError;
@@ -2017,6 +2032,7 @@ class AppState<T extends StatefulWidget> extends AppStateX<T> {
     super.actions,
     super.restorationScopeId,
     super.scrollBehavior,
+    super.themeAnimationStyle,
     super.errorHandler,
     super.errorScreen,
     super.errorReport,
@@ -2065,5 +2081,6 @@ class AppState<T extends StatefulWidget> extends AppStateX<T> {
     super.inActions,
     super.inRestorationScopeId,
     super.inScrollBehavior,
+    super.inThemeAnimationStyle,
   });
 }
