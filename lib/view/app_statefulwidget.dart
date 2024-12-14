@@ -41,15 +41,7 @@ abstract class AppStatefulWidget extends StatefulWidget {
     this.inSplashScreen,
     this.circularProgressIndicator,
   })  : _app = v.AppObject(),
-        super(key: key ?? GlobalKey<_AppStatefulWidgetState>()) {
-    // Right at the start! Initialise the binding.
-    final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    final indicator = onCircularProgressIndicator() ?? true;
-    if (!indicator) {
-      // defer displaying anything while starting up
-      widgetsBinding.deferFirstFrame();
-    }
-  }
+        super(key: key ?? GlobalKey<_AppStatefulWidgetState>());
   //
   final v.AppObject _app;
 
@@ -78,8 +70,8 @@ abstract class AppStatefulWidget extends StatefulWidget {
   double? onMaxTabletWidth() => null;
 
   /// Supply a 'splash screen' (called in _futureBuilder() below)
-  Widget? onSplashScreen(BuildContext context) =>
-      inSplashScreen != null ? inSplashScreen!() : null;
+  // inSplashScreen != null ? inSplashScreen!() : null;
+  Widget? onSplashScreen(BuildContext context) => inSplashScreen?.call();
 
   /// Display a Circular Process Indicator at start up or not
   bool? onCircularProgressIndicator() => circularProgressIndicator;
@@ -98,6 +90,14 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
   @override
   void initState() {
     super.initState();
+    //
+    final widget = this.widget;
+    // No Circular Progress Indicator
+    if (!(widget.onCircularProgressIndicator() ?? true)) {
+      // defer displaying anything while starting up
+      WidgetsFlutterBinding.ensureInitialized().deferFirstFrame();
+    }
+
     _isAppInApp();
     _appGlobalKey = GlobalKey<v.AppStateX>();
     _assets = Assets();
@@ -247,11 +247,11 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
     if (snapshot.hasData &&
         snapshot.data! &&
         (v.App.isInit != null && v.App.isInit!)) {
-      // Is the CircularProgressIndicator displayed
-      final circularProgressIndicator =
-          widget.onCircularProgressIndicator() ?? true;
+      //
+      final widget = this.widget;
 
-      if (!circularProgressIndicator) {
+      if (!(widget.onCircularProgressIndicator() ?? true)) {
+        // Corresponding with its deferFirstFrame();
         WidgetsFlutterBinding.ensureInitialized().allowFirstFrame();
       }
       // Supply a GlobalKey so the 'App' State object is not disposed of if moved in Widget tree.
@@ -310,11 +310,13 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // In case the Splash Screen errors for some unknown reason.
       try {
         final widget = this.widget;
-        if (widget.onCircularProgressIndicator() ?? true) {
-          // Only create once!
-          splashScreen ??=
-              widget.splashScreen ?? widget.onSplashScreen(context);
-        }
+        // final indicator = widget.onCircularProgressIndicator() ?? true;
+        // if (!indicator) {
+        // Only create once!
+        splashScreen ??= widget.splashScreen ??
+            widget.onSplashScreen(context) ??
+            _appState?.onSplashScreen(context);
+        // }
       } catch (e) {
         splashScreen = null;
       }

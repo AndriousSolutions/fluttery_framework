@@ -29,4 +29,8 @@ class _RandomCatState extends ImageAPIStateX<RandomCat> {
             path: 'api/v2/random/animal/cat',
           ),
         );
+
+  /// Supply a 'splash screen' while the FutureBuilder is processing.
+  @override
+  Widget? onSplashScreen(BuildContext context) => const SplashScreen();
 }

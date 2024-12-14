@@ -5,12 +5,18 @@ import '/src/model.dart';
 
 import '/src/view.dart';
 
-/// App
+/// The App's State object
 class FlutteryExampleApp extends AppStatefulWidget {
-  FlutteryExampleApp({super.key});
+  FlutteryExampleApp({super.key}) : super(
+    splashScreen: const SplashScreen(),   // three ways to present a Splash screen
+    inSplashScreen: () => const SplashScreen(),
+  );
   // This is the 'App State object' of the application.
   @override
   AppStateX<FlutteryExampleApp> createAppState() => _ExampleAppState();
+
+  @override
+  Widget? onSplashScreen(BuildContext context) => const SplashScreen();
 }
 
 /// This is the 'View' of the application.

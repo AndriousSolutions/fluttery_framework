@@ -12,3 +12,6 @@ export 'view/menu/radio_material.dart';
 
 // Color picker routine
 export 'view/color_picker.dart';
+
+// Splash Screen
+export 'view/splash_screen.dart';

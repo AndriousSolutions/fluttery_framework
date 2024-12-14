@@ -7,7 +7,7 @@ import '/src/model.dart' show Settings;
 import '/src/view.dart';
 
 ///
-class ExampleAppController extends AppController {
+class ExampleAppController extends AppStateXController {
   factory ExampleAppController() => _this ??= ExampleAppController._();
   ExampleAppController._();
   static ExampleAppController? _this;
@@ -251,9 +251,20 @@ class ExampleAppController extends AppController {
   /// **************  Life cycle events ****************
 
   /// Called to complete any asynchronous operations.
+  /// In production, this is where databases are opened, logins attempted, etc.
   @override
   Future<bool> initAsync() async {
     final init = await super.initAsync();
+
+    // Demonstrating ways to retrieve the StatefulWidget
+    var widget = firstState!.widget as FlutteryExampleApp;
+    widget = rootState!.widget as FlutteryExampleApp;
+
+    // For demonstration purposes, wait for the Splash Screen to appear for a time at startup.
+    await Future<bool>.delayed(const Duration(seconds: 10), () {
+      return true;
+    });
+
     //
     if (initAsyncError) {
       initAsyncError = false;

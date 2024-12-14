@@ -12,7 +12,7 @@ import '_unit_test_controller.dart';
 Future<void> testAppController() async {
   // This class extends StateXController but implements
   // initAsync(), onAsyncError() and onConnectivityChanged()
-  final app = AppController();
+  final app = AppStateXController();
 
   // Override to run any asynchronous operations before the app starts
   await app.initAsync();

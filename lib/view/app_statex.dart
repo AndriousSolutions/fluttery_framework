@@ -1593,7 +1593,6 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
   /// Supply an 'error handler' routine to fire when an error occurs.
   // details.exception, details.stack
   /// Override if you like to customize error handling.
-  //  @mustCallSuper // Allow a complete override. gp
   @override
   void onError(FlutterErrorDetails details) {
     // Don't call this routine within itself.
@@ -1602,28 +1601,6 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
     }
     // In case there's an error in this routine
     inErrorRoutine = true;
-
-    // Call the latest SateX object's error routine
-    // Possibly the error occurred there.
-    // onStateError(details);
-
-    // if (AppErrorHandler.presentError) {
-    //   // Logs 'every' error as the error count is reset.
-    //   logErrorDetails(details);
-    // }
-
-    // try {
-    //   // Call the App's error handler.
-    //   _errorHandler?.flutteryExceptionHandler?.call(details);
-    // } catch (e, stack) {
-    //   recordException(e, stack);
-    // }
-    //
-    // // Always test if there was an error in the error handler
-    // // Include it in the error reporting as well.
-    // if (hasError) {
-    //   _onErrorInHandler();
-    // }
 
     try {
       // If handler not explicitly passed as a parameter

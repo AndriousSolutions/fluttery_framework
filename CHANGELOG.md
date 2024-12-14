@@ -1,4 +1,12 @@
 
+## 5.6.0
+December 14, 2024
+- Introduce Splash screen to example app
+- deferFirstFrame() in initState() in app_statefulwidget.dart
+- Add mixins: class AppErrorHandler with HandleError, StateXonErrorMixin {
+- Update the function, runApp(), with optional error handling
+  void runApp(m.Widget app, {FlutterExceptionHandler? onError, bool? runZoneGuard}) {
+
 ## 5.5.0
 December 11, 2024
 - Introduced parameter, themeAnimationStyle,for class MaterialApp

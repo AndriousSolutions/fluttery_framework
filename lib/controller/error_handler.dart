@@ -10,6 +10,8 @@
 import 'dart:ui' as i
     show ParagraphBuilder, ParagraphConstraints, ParagraphStyle, TextStyle;
 
+import '/controller.dart' show HandleError;
+
 import '/view.dart'
     show
         App,
@@ -36,6 +38,7 @@ import '/view.dart'
         PaintingContext,
         PaintingStyle,
         Rect,
+        StateXonErrorMixin,
         TextBaseline,
         TextDirection,
         Widget;
@@ -45,6 +48,7 @@ import 'package:flutter/rendering.dart'
         Color,
         DiagnosticPropertiesBuilder,
         EdgeInsets,
+        ErrorDescription,
         FlutterError,
         Offset,
         Paint,
@@ -62,14 +66,14 @@ typedef ReportErrorHandler = Future<void> Function(
 
 /// {@category Error handling}
 /// Your App's error handler.
-class AppErrorHandler {
+class AppErrorHandler with HandleError, StateXonErrorMixin {
   /// Singleton Pattern with only one instance of this Error Handler.
   /// Optionally supply the Error handler, Builder, and Report routines.
   factory AppErrorHandler({
     FlutterExceptionHandler? handler,
     ErrorWidgetBuilder? screen,
     ReportErrorHandler? report,
-    bool? presentError,
+    bool? presentError, //  Present error to user or not
     bool? allowNewErrorHandlers,
     i.ParagraphStyle? paragraphStyle,
     i.TextStyle? textStyle,
@@ -340,7 +344,7 @@ class AppErrorHandler {
     InformationCollector? informationCollector,
   }) async {
     if (_errorReport == null) {
-      message ??= 'while attempting to execute your app';
+      message ??= 'while attempting to run your app';
       library ??= 'Your app';
       _debugReportException(
         ErrorSummary(message),
@@ -356,22 +360,30 @@ class AppErrorHandler {
 
   /// Report the error in an isolate.
   void isolateError(dynamic ex, StackTrace stack) {
-    reportError(
-      ex,
-      stack,
-      message: 'while attempting to execute main()',
-      library: 'likely main.dart',
-    );
+
+    // Record the Exception
+    getError(ex);
+
+    FlutterError.reportError(FlutterErrorDetails(
+      exception: ex,
+      stack: StackTrace.current,
+      context: ErrorDescription('error in main()'),
+      library: 'main.dart',
+    ));
   }
 
   /// Report the error in a zone.
   void runZonedError(dynamic ex, StackTrace stack) {
-    reportError(
-      ex,
-      stack,
-      message: 'while attempting to execute runApp()',
-      library: 'controller/app.dart',
-    );
+
+    // Record the Exception
+    getError(ex);
+
+    FlutterError.reportError(FlutterErrorDetails(
+      exception: ex,
+      stack: stack,
+      context: ErrorDescription('error in file containing main()'),
+      library: 'main.dart',
+    ));
   }
 
   /// Supplies the error details to the designated error handler.

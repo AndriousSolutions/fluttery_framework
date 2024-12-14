@@ -5,7 +5,7 @@ import '/src/model.dart';
 
 import '/src/view.dart';
 
-class CounterController extends AppController {
+class CounterController extends AppStateXController {
   factory CounterController() => _this ??= CounterController._();
   CounterController._() : super() {
     //
