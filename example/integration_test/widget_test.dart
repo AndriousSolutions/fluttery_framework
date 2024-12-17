@@ -19,6 +19,7 @@ void integrationTestFlutteryFramework() {
     // Use pump() or pumpAndSettle() to ask Flutter to rebuild the widget.
     await tester.pumpWidget(FlutteryExampleApp());
 
+    // Ensure Slash screen is finished
     // pumpAndSettle() waits for all animations to complete.
     await tester.pumpAndSettle();
 
@@ -75,6 +76,13 @@ void integrationTestFlutteryFramework() {
 
     // Change app to use the router
     con.useRouterConfig = true;
+
+    // Hot Reload the app
+    final binding = WidgetsFlutterBinding.ensureInitialized();
+    await binding.reassembleApplication();
+
+    /// Wait for the transition of the Interface
+    await tester.pumpAndSettle(const Duration(seconds: 4));
 
     // Switch the Interface
     await openInterfaceMenu(tester);

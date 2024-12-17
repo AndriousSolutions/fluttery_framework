@@ -1,4 +1,9 @@
 
+## 5.7.0
+December 16, 2024
+- App.inFlutterTest
+- Tests are updated
+
 ## 5.6.0
 December 14, 2024
 - Introduce Splash screen to example app

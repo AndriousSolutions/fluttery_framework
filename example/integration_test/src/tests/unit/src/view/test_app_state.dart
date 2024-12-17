@@ -1,3 +1,4 @@
+// ignore_for_file: unused_local_variable
 import '_unit_test_view.dart';
 
 Future<void> testAppState(WidgetTester tester) async {
@@ -7,27 +8,43 @@ Future<void> testAppState(WidgetTester tester) async {
 
   final appState = ExampleAppController().state as AppStateX;
 
-  bool? use = appState.useCupertino;
+  bool? booleanValue = appState.useCupertino;
 
-  use = appState.useCupertino;
+  booleanValue = appState.useCupertino;
 
-  use = appState.useMaterial;
+  booleanValue = appState.useMaterial;
 
-  use = appState.useMaterial;
+  booleanValue = appState.useMaterial;
+
+  booleanValue = appState.switchUI;
+
+  booleanValue = appState.appInApp;
+
+  double? doubleValue = appState.maxMobileWidth;
+
+  doubleValue = appState.maxTabletWidth;
 
   await appState.didPopRoute();
 
   appState.activate();
 
-  appState.onHome();
-
   appState.onRouteInformationProvider();
 
   appState.onBackButtonDispatcher();
 
+  appState.onRouterConfig();
+
+  appState.onOnGenerateRoute(RouteSettings());
+
+  appState.onOnUnknownRoute(RouteSettings());
+
+  appState.onOnNavigationNotification(NavigationNotification(canHandlePop: false));
+
   appState.oniOSTheme();
 
   appState.onLocale();
+
+  appState.onLocalizationsDelegates();
 
   appState.onDebugShowMaterialGrid();
 
@@ -39,9 +56,15 @@ Future<void> testAppState(WidgetTester tester) async {
 
   appState.onShowSemanticsDebugger();
 
+  appState.onDebugShowWidgetInspector();
+
   appState.onDebugShowCheckedModeBanner();
 
   appState.app;
 
-  appState.onError(FlutterErrorDetails(exception: AssertionError('Error')));
+  final errorDetails = FlutterErrorDetails(exception: AssertionError('Error'));
+
+  appState.onError(errorDetails);
+
+  appState.onErrorScreen(errorDetails);
 }

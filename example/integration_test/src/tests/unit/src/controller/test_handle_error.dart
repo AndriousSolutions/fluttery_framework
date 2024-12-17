@@ -1,3 +1,4 @@
+// ignore_for_file: unused_local_variable
 library;
 
 /// Copyright 2023 Andrious Solutions Ltd. All rights reserved.
@@ -39,7 +40,13 @@ void testHandleError(WidgetTester tester) {
 
   AppErrorHandler.inDebugMode;
 
+  AppErrorHandler.presentError;
+
   AppErrorHandler.presentError = true;
+
+  errorHandler.oldBuilder;
+
+  errorHandler.oldOnError;
 
   AppErrorHandler.errorDisplayWidget(details);
 

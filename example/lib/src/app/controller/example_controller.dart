@@ -260,10 +260,13 @@ class ExampleAppController extends AppStateXController {
     var widget = firstState!.widget as FlutteryExampleApp;
     widget = rootState!.widget as FlutteryExampleApp;
 
-    // For demonstration purposes, wait for the Splash Screen to appear for a time at startup.
-    await Future<bool>.delayed(const Duration(seconds: 10), () {
-      return true;
-    });
+    // Don't delay if in testing for example
+    if (App.inWidgetsFlutterBinding) {
+      // For demonstration purposes, wait for the Splash Screen to appear for a time at startup.
+      await Future<bool>.delayed(const Duration(seconds: 10), () {
+        return true;
+      });
+    }
 
     //
     if (initAsyncError) {

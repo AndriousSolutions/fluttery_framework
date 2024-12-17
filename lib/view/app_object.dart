@@ -65,8 +65,10 @@ class AppObject
   bool? _inWidgetsFlutterBinding;
 
   /// Indicate if running under a 'Flutter Test' environment
+  // @Deprecated('Unreliable. Use inWidgetsFlutterBinding instead.')
   bool get inFlutterTest =>
-      _inFlutterTest ??= Platform.environment.containsKey('FLUTTER_TEST');
+      _inFlutterTest ??= Platform.environment.containsKey('FLUTTER_TEST') ||
+          WidgetsBinding.instance is! WidgetsFlutterBinding;
   bool? _inFlutterTest;
 
   // Current Error Handler.
@@ -113,7 +115,8 @@ class AppObject
   @override
   Future<void> getDeviceInfo() async {
     // There's 'no device' while testing and so don't collect device info.
-    if (!inFlutterTest) {
+    // if (!inFlutterTest) {
+    if (inWidgetsFlutterBinding) {
       // Assign _packageInfo
       await super.getDeviceInfo();
       // Collect Device Information
@@ -439,7 +442,8 @@ class AppObject
   /// Internal Initialization routines.
   Future<void> initInternal() async {
     //
-    if (inFlutterTest) {
+    // if (inFlutterTest) {
+    if (!inWidgetsFlutterBinding) {
       // Such functionality is not available during testing
       return;
     }

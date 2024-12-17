@@ -6,7 +6,7 @@ dartdoc:
       markdown: doc/statex.md
     "State Object Controller":
       markdown: doc/controllers.md
-    "AppState class":
+    "AppStateX class":
       markdown: doc/appstate.md
     "App object":
       markdown: doc/app-object.md
