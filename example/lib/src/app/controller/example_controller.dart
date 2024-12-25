@@ -8,6 +8,7 @@ import '/src/view.dart';
 
 ///
 class ExampleAppController extends AppStateXController {
+  ///
   factory ExampleAppController() => _this ??= ExampleAppController._();
   ExampleAppController._();
   static ExampleAppController? _this;
@@ -24,7 +25,7 @@ class ExampleAppController extends AppStateXController {
   /// Error right at the start
   bool errorAtStartup = false;
 
-  // Assign to the 'leading' widget on the interface.
+  /// Assign to the 'leading' widget on the interface.
   void leading() => changeUI();
 
   /// Switch to the other User Interface.
@@ -66,9 +67,9 @@ class ExampleAppController extends AppStateXController {
   bool get contactsApp => _appNames[_appCount] == 'Contacts';
 
   int _appCount = 0;
-//  final _appNames = ['Counter', 'Word Pairs', 'Contacts', 'Inherited'];
-  final _appNames = ['Counter', 'Word Pairs', 'Inherited'];
+  final _appNames = ['Counter', 'Word Pairs', 'Inherited', 'Navigation'];
 
+  ///
   Widget onHome() {
     //
     _appCount = Prefs.getInt('appRun');
@@ -93,13 +94,16 @@ class ExampleAppController extends AppStateXController {
       case 'Inherited':
         widget = const HomePage();
         break;
+      case 'Navigation':
+        widget = Page01(rootState!);
+        break;
       default:
         widget = const SizedBox();
     }
     return widget;
   }
 
-  // Supply what the interface
+  /// Supply what the interface
   String get application => _appNames[_appCount];
 
   /// Switch to the other application.
@@ -132,9 +136,10 @@ class ExampleAppController extends AppStateXController {
     App.setState(() {});
   }
 
+  ///
   Future<void> changeLocale() async {
-    //
-    final appState = rootState! as AppStateX;
+    ///
+    final appState = rootState!;
 
     final locale = appState.locale!;
 
@@ -184,6 +189,7 @@ class ExampleAppController extends AppStateXController {
     );
   }
 
+  ///
   void aboutApp() => showAboutDialog(
         context: App.context!,
         applicationName: App.appState?.title ?? '',
@@ -232,13 +238,13 @@ class ExampleAppController extends AppStateXController {
               changeUI();
               break;
             case 'application':
-              changeApp();
+              await changeApp();
               break;
             case 'locale':
-              changeLocale();
+              await changeLocale();
               break;
             case 'color':
-              changeColor();
+              await changeColor();
               break;
             case 'about':
               aboutApp();
@@ -254,9 +260,11 @@ class ExampleAppController extends AppStateXController {
   /// In production, this is where databases are opened, logins attempted, etc.
   @override
   Future<bool> initAsync() async {
+    //
     final init = await super.initAsync();
 
     // Demonstrating ways to retrieve the StatefulWidget
+    // ignore: unused_local_variable
     var widget = firstState!.widget as FlutteryExampleApp;
     widget = rootState!.widget as FlutteryExampleApp;
 

@@ -7,23 +7,31 @@
 
 import '/view.dart';
 
-///
-extension AppNavigationExtension on AppObject {
+/// Supply the Global Navigator and all its methods.
+mixin RouteNavigatorMethodsMixin {
+  /// Supply app's NavigatorState object
+  NavigatorState? get appNavigator => _appNavigator ??= App.appState?.navigator;
+  // Make the effort to call this when thw app shuts down
+  set appNavigator(NavigatorState? navigator) => _appNavigator = navigator;
+  NavigatorState? _appNavigator;
+
   /// Whether the navigator can be popped.
-  bool canPop() => appState!.canPop();
+  bool canPop() => appNavigator?.canPop() ?? false;
 
   /// Complete the lifecycle for a route that has been popped off the navigator.
-  void finalizeRoute(Route<dynamic> route) => appState!.finalizeRoute(route);
+  void finalizeRoute(Route<dynamic> route) =>
+      appNavigator?.finalizeRoute(route);
 
-  /// potentially popping the route as a result; returns whether the pop request
-  /// should be considered handled.
+  /// Consults the current route's [Route.popDisposition] method, and acts
+  /// accordingly, potentially popping the route as a result; returns whether
+  /// the pop request should be considered handled.
   @optionalTypeArgs
   Future<bool> maybePop<T extends Object?>([T? result]) =>
-      appState!.maybePop<T>(result);
+      appNavigator!.maybePop<T>(result);
 
   /// Pop the top-most route off the navigator.
   @optionalTypeArgs
-  void pop<T extends Object?>([T? result]) => appState!.pop<T>(result);
+  void pop<T extends Object?>([T? result]) => appNavigator?.pop<T>(result);
 
   /// Pop the current route off the navigator and push a named route in its
   /// place.
@@ -32,23 +40,23 @@ extension AppNavigationExtension on AppObject {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      appState!.popAndPushNamed<T, TO>(routeName,
+      appNavigator!.popAndPushNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Calls [pop] repeatedly until the predicate returns true.
-  void popUntil(RoutePredicate predicate) => appState!.popUntil(predicate);
+  void popUntil(RoutePredicate predicate) => appNavigator?.popUntil(predicate);
 
   /// Push the given route onto the navigator.
   @optionalTypeArgs
   Future<T?> push<T extends Object?>(Route<T> route) =>
-      appState!.push<T>(route);
+      appNavigator!.push<T>(route);
 
   /// Push the given route onto the navigator, and then remove all the previous
   /// routes until the `predicate` returns true.
   @optionalTypeArgs
   Future<T?> pushAndRemoveUntil<T extends Object?>(
           Route<T> newRoute, RoutePredicate predicate) =>
-      appState!.pushAndRemoveUntil<T>(newRoute, predicate);
+      appNavigator!.pushAndRemoveUntil<T>(newRoute, predicate);
 
   /// Push a named route onto the navigator.
   @optionalTypeArgs
@@ -56,14 +64,14 @@ extension AppNavigationExtension on AppObject {
     String routeName, {
     Object? arguments,
   }) =>
-      appState!.pushNamed(routeName, arguments: arguments);
+      appNavigator!.pushNamed<T>(routeName, arguments: arguments);
 
   /// Push the route with the given name onto the navigator, and then remove all
   /// the previous routes until the `predicate` returns true.
   @optionalTypeArgs
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
           String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
-      appState!.pushNamedAndRemoveUntil<T>(newRouteName, predicate,
+      appNavigator!.pushNamedAndRemoveUntil<T>(newRouteName, predicate,
           arguments: arguments);
 
   /// Replace the current route of the navigator by pushing the given route and
@@ -73,7 +81,7 @@ extension AppNavigationExtension on AppObject {
   Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
           Route<T> newRoute,
           {TO? result}) =>
-      appState!.pushReplacement<T, TO>(newRoute, result: result);
+      appNavigator!.pushReplacement<T, TO>(newRoute, result: result);
 
   /// Replace the current route of the navigator by pushing the route named
   /// [routeName] and then disposing the previous route once the new route has
@@ -83,30 +91,34 @@ extension AppNavigationExtension on AppObject {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      appState!.pushReplacementNamed<T, TO>(routeName,
+      appNavigator!.pushReplacementNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Immediately remove `route` from the navigator, and [Route.dispose] it.
-  void removeRoute(Route<dynamic> route) => appState!.removeRoute(route);
+  void removeRoute(Route<dynamic> route) => appNavigator?.removeRoute(route);
 
   /// Immediately remove a route from the navigator, and [Route.dispose] it. The
   /// route to be removed is the one below the given `anchorRoute`.
   void removeRouteBelow(Route<dynamic> anchorRoute) =>
-      appState!.removeRouteBelow(anchorRoute);
+      appNavigator?.removeRouteBelow(anchorRoute);
 
   /// Replaces a route on the navigator that most tightly encloses the given
   /// context with a new route.
   @optionalTypeArgs
-  void replace<T extends Object?>(
-          {required Route<dynamic> oldRoute, required Route<T> newRoute}) =>
-      appState!.replace<T>(oldRoute: oldRoute, newRoute: newRoute);
+  void replace<T extends Object?>({
+    required Route<dynamic> oldRoute,
+    required Route<T> newRoute,
+  }) =>
+      appNavigator!.replace<T>(oldRoute: oldRoute, newRoute: newRoute);
 
   /// Replaces a route on the navigator with a new route. The route to be
   /// replaced is the one below the given `anchorRoute`.
   @optionalTypeArgs
-  void replaceRouteBelow<T extends Object?>(
-          {required Route<dynamic> anchorRoute, required Route<T> newRoute}) =>
-      appState!
+  void replaceRouteBelow<T extends Object?>({
+    required Route<dynamic> anchorRoute,
+    required Route<T> newRoute,
+  }) =>
+      appNavigator!
           .replaceRouteBelow<T>(anchorRoute: anchorRoute, newRoute: newRoute);
 
   /// Pop the current route off the navigator and push a named route in its
@@ -116,7 +128,7 @@ extension AppNavigationExtension on AppObject {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      appState!.restorablePopAndPushNamed<T, TO>(routeName,
+      appNavigator!.restorablePopAndPushNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Push a new route onto the navigator.
@@ -124,7 +136,7 @@ extension AppNavigationExtension on AppObject {
   String restorablePush<T extends Object?>(
           RestorableRouteBuilder<T> routeBuilder,
           {Object? arguments}) =>
-      appState!.restorablePush<T>(routeBuilder, arguments: arguments);
+      appNavigator!.restorablePush<T>(routeBuilder, arguments: arguments);
 
   /// Push a new route onto the navigator, and then remove all the previous
   /// routes until the `predicate` returns true.
@@ -132,7 +144,7 @@ extension AppNavigationExtension on AppObject {
   String restorablePushAndRemoveUntil<T extends Object?>(
           RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate,
           {Object? arguments}) =>
-      appState!.restorablePushAndRemoveUntil<T>(newRouteBuilder, predicate,
+      appNavigator!.restorablePushAndRemoveUntil<T>(newRouteBuilder, predicate,
           arguments: arguments);
 
   /// Push a named route onto the navigator.
@@ -141,7 +153,7 @@ extension AppNavigationExtension on AppObject {
     String routeName, {
     Object? arguments,
   }) =>
-      appState!.restorablePushNamed(routeName, arguments: arguments);
+      appNavigator!.restorablePushNamed<T>(routeName, arguments: arguments);
 
   /// Push the route with the given name onto the navigator that most tightly
   /// encloses the given context, and then remove all the previous routes until
@@ -149,7 +161,8 @@ extension AppNavigationExtension on AppObject {
   @optionalTypeArgs
   String restorablePushNamedAndRemoveUntil<T extends Object?>(
           String newRouteName, RoutePredicate predicate, {Object? arguments}) =>
-      appState!.restorablePushNamedAndRemoveUntil<T>(newRouteName, predicate,
+      appNavigator!.restorablePushNamedAndRemoveUntil<T>(
+          newRouteName, predicate,
           arguments: arguments);
 
   /// Replace the current route of the navigator by pushing a new route and
@@ -160,7 +173,7 @@ extension AppNavigationExtension on AppObject {
           RestorableRouteBuilder<T> routeBuilder,
           {TO? result,
           Object? arguments}) =>
-      appState!.restorablePushReplacement<T, TO>(routeBuilder,
+      appNavigator!.restorablePushReplacement<T, TO>(routeBuilder,
           result: result, arguments: arguments);
 
   /// Replace the current route of the navigator that most tightly encloses the
@@ -171,7 +184,7 @@ extension AppNavigationExtension on AppObject {
           String routeName,
           {TO? result,
           Object? arguments}) =>
-      appState!.restorablePushReplacementNamed<T, TO>(routeName,
+      appNavigator!.restorablePushReplacementNamed<T, TO>(routeName,
           result: result, arguments: arguments);
 
   /// Replaces a route on the navigator that most tightly encloses the given
@@ -181,7 +194,7 @@ extension AppNavigationExtension on AppObject {
           {required Route<dynamic> oldRoute,
           required RestorableRouteBuilder<T> newRouteBuilder,
           Object? arguments}) =>
-      appState!.restorableReplace<T>(
+      appNavigator!.restorableReplace<T>(
           oldRoute: oldRoute,
           newRouteBuilder: newRouteBuilder,
           arguments: arguments);
@@ -193,7 +206,7 @@ extension AppNavigationExtension on AppObject {
           {required Route<dynamic> anchorRoute,
           required RestorableRouteBuilder<T> newRouteBuilder,
           Object? arguments}) =>
-      appState!.restorableReplaceRouteBelow<T>(
+      appNavigator!.restorableReplaceRouteBelow<T>(
           anchorRoute: anchorRoute,
           newRouteBuilder: newRouteBuilder,
           arguments: arguments);

@@ -9,4 +9,24 @@ library;
 
 import '_unit_test_model.dart';
 
-void testFiles(WidgetTester tester) {}
+Future<void> testFiles(WidgetTester tester) async {
+  //
+  const fileName = InstallFile.fileName;
+
+  final file = await Files.get(fileName);
+
+  final id = await InstallFile.readInstallationFile(file);
+
+  final here = await Files.exists(fileName);
+
+  if (here) {
+    //
+    final delete = await Files.delete(fileName);
+
+    await InstallFile.id();
+
+    if (delete && id.isNotEmpty) {
+      await Files.writeFile(file, id);
+    }
+  }
+}

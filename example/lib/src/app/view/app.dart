@@ -7,6 +7,7 @@ import '/src/view.dart';
 
 /// The App's State object
 class FlutteryExampleApp extends AppStatefulWidget {
+  ///
   FlutteryExampleApp({super.key})
       : super(
         // splashScreen: const SplashScreen(),   // three ways to present a Splash screen
@@ -30,7 +31,6 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
       : super(
           controller: ExampleAppController(),
           inTitle: () => 'Demo App',
-          debugShowCheckedModeBanner: false,
           switchUI: ExampleAppController().switchUI,
           useRouterConfig: ExampleAppController().useRouterConfig,
           errorScreen: defaultErrorWidgetBuilder,
@@ -100,8 +100,12 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
   @override
   Widget onHome() => (controller as ExampleAppController).onHome();
 
+  /// Programmatically determine whether the banner is diaplayed or not.
   @override
-  onOnNavigationNotification(notification) {
+  bool onDebugShowCheckedModeBanner() => false;
+
+  @override
+  bool onOnNavigationNotification(notification) {
     if (kDebugMode) {
       debugPrint('############ Event: Navigation change.');
     }
@@ -125,6 +129,20 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           // ),
         ],
       );
+
+  @override
+  Map<String, WidgetBuilder>? onRoutes() => {
+    '/Page01': (_) => Page01(this),
+    '/Page02': (_) => Page02(this),
+    '/Page03': (_) => Page03(this),
+    '/Page04': (_) => Page04(this),
+    '/Page05': (_) => Page05(this),
+    '/Page06': (_) => Page06(this),
+    '/Page07': (_) => Page07(this),
+    '/Page08': (_) => Page08(this),
+    '/Page09': (_) => Page09(this),
+    '/Page10': (_) => Page10(this),
+  };
 
   /// Place a breakpoint here and see how it works
   @override

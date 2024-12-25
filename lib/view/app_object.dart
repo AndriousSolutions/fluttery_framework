@@ -36,7 +36,11 @@ final App = AppObject();
 /// {@category Get started}
 /// {@category App object}
 class AppObject
-    with ConnectivityListener, _AppPackageInfoMixin, _AppThemeDataMixin {
+    with
+        ConnectivityListener,
+        _AppPackageInfoMixin,
+        _AppThemeDataMixin,
+        v.RouteNavigatorMethodsMixin {
   /// One single instance of the App object
   factory AppObject({
     @Deprecated("The 'error' parameter is deprecated.")

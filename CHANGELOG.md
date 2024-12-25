@@ -1,4 +1,18 @@
 
+## 5.7.1
+December 25, 2024
+- class StateX has
+  AppStateX? get rootState => super.rootState as AppStateX;
+  StateXController? get controller {
+  final con = super.controller; return con as StateXController;
+- class AppStateXController has
+  AppStateX? get rootState => super.rootState as AppStateX;
+- class StateXController has
+  AppStateX? get rootState => super.rootState as AppStateX;
+- AppObject, AppStateX, and StateX uses Mixin in app_navigation.dart
+- Introduce testing of app_navigation.dart with navigating_screens.dart
+- Future<void> testFiles(WidgetTester tester) async {
+
 ## 5.7.0
 December 16, 2024
 - App.inFlutterTest

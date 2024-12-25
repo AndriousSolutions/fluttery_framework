@@ -11,7 +11,7 @@ unitTests(WidgetTester tester) async {
 
   await testDeviceInfo();
 
-  await testFileUtils(tester);
+  await testFiles(tester);
 
   testHandleError(tester);
 

@@ -15,14 +15,15 @@ export 'package:flutter/cupertino.dart'
 
 // State Object's Controller
 export 'package:state_extended/state_extended.dart'
-    show StateXController, SetStateMixin, StateListener, RootState, AsyncOps;
+    show SetStateMixin, StateListener, RootState, AsyncOps;
 
 // App's View
 export '/view/app_object.dart' show App, AppDrawer;
 
-//App's Controller
+//App's Controller & StateXController
 // ignore: deprecated_member_use_from_same_package
-export 'controller/app_statex_controller.dart' show AppController, AppStateXController;
+export 'controller/app_statex_controller.dart'
+    show AppController, AppStateXController, StateXController;
 
 // Device Info
 export 'controller/device_info.dart' show DeviceInfo;
