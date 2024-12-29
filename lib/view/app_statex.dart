@@ -7,6 +7,8 @@
 
 import 'dart:ui' as i show ParagraphStyle, TextStyle;
 
+import 'package:flutter_test/flutter_test.dart' show Future, TestFailure;
+
 import '/controller.dart'
     show
         AppErrorHandler,
@@ -1638,7 +1640,7 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
     }
 
     // If in testing, after the supplied handler, call its Error handler
-    if (_errorHandler?.errorHandler != null &&
+    if (details.exception is TestFailure &&
         WidgetsBinding.instance is! WidgetsFlutterBinding) {
       _errorHandler?.oldOnError?.call(details);
     }

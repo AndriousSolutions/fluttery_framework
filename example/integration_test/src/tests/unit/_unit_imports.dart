@@ -25,6 +25,8 @@ export 'drawer_dialog_tests.dart';
 
 export 'simple_buttom_bar_test.dart';
 
+export '../menu/open_drawer.dart';
+
 export '../unit/src/controller/_unit_test_controller.dart';
 
 export '../unit/src/view/utils/test_app_settings.dart';

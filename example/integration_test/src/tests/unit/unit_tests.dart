@@ -1,7 +1,7 @@
 import 'src/model/_unit_test_model.dart';
 
 //
-unitTests(WidgetTester tester) async {
+Future<void> unitTests(WidgetTester tester) async {
 //
   await testAssets();
 

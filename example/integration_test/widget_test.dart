@@ -57,6 +57,9 @@ void integrationTestFlutteryFramework() {
       cnt++;
     }
 
+    // Testing Navigation
+    await appNavigationTest(tester);
+
     // Open About menu
     await openAboutMenu(tester);
 

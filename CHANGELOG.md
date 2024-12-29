@@ -1,4 +1,10 @@
 
+## 5.7.2
+December 27, 2024
+- Corrected image_api.dart in example app
+- Acknowledge any Testng errors in app_statex.dart
+- More testing with test_navigation.dart
+
 ## 5.7.1
 December 25, 2024
 - class StateX has

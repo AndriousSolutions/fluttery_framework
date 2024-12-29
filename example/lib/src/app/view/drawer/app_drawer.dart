@@ -3,10 +3,10 @@ import 'package:fluttery_framework/view.dart' as v;
 
 import '/src/view.dart';
 
+/// The App's Drawer
 class AppDrawer extends v.AppDrawer {
+  ///
   factory AppDrawer({Key? key}) => _this ??= AppDrawer._(key);
-  static AppDrawer? _this;
-
   AppDrawer._(Key? key) : super(key: key) {
     //
     addAll([
@@ -39,6 +39,14 @@ class AppDrawer extends v.AppDrawer {
               msg: 'This is a Message Box.',
             ).show();
           }),
+      ListTile(
+        key: const Key('Navigation'),
+        subtitle: const Text('App Navigation'),
+        onTap: () async {
+          await App.pushNamed('/Page01');
+        },
+      ),
     ]);
   }
+  static AppDrawer? _this;
 }

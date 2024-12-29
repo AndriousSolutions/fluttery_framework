@@ -18,8 +18,7 @@ class ImageAPIStateX<T extends StatefulWidget> extends StateX<T>
     required this.uri,
     this.message,
     super.controller,
-//  }) : super(runAsync: true) {
-  }) : super(runAsync: true, useInherited: true) {
+  }) : super(runAsync: true) {
     //
     final id = add(ImageAPIController());
     // Retrieve the Controller by its unique id.

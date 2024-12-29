@@ -67,18 +67,17 @@ class ExampleAppController extends AppStateXController {
   bool get contactsApp => _appNames[_appCount] == 'Contacts';
 
   int _appCount = 0;
-  final _appNames = ['Counter', 'Word Pairs', 'Inherited', 'Navigation'];
+  final _appNames = ['Counter', 'Word Pairs', 'Inherited'];
 
   ///
   Widget onHome() {
     //
     _appCount = Prefs.getInt('appRun');
 
-    // // Possibly running in a test and can't run the Contacts app
-    // // There's no sqlite in the test environment
-    // if (App.inFlutterTest && _appCount == 2) {
-    //   _appCount = 0;
-    // }
+    // Ensure a valid index has been saved.
+    if (_appCount < 0 || _appCount > _appNames.length - 1) {
+      _appCount = 0;
+    }
 
     Widget? widget;
 
@@ -93,9 +92,6 @@ class ExampleAppController extends AppStateXController {
         break;
       case 'Inherited':
         widget = const HomePage();
-        break;
-      case 'Navigation':
-        widget = Page01(rootState!);
         break;
       default:
         widget = const SizedBox();

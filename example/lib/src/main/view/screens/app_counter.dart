@@ -10,6 +10,7 @@ import '/src/controller.dart';
 
 ///
 class CounterPage extends StatefulWidget {
+  ///
   const CounterPage({super.key});
   @override
   State createState() => _CounterPageState();

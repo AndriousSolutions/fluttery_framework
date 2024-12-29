@@ -13,7 +13,11 @@ export 'tests/menu/app_menu.dart';
 export 'tests/menu/interface_menu.dart';
 export 'tests/menu/locale_menu.dart';
 export 'tests/menu/material_ver_menu.dart';
+export 'tests/menu/open_drawer.dart';
 export 'tests/menu/open_menu.dart';
+
+/// Navigation Tests
+export '../test_navigation.dart';
 
 /// Individual Tests
 export 'tests/counter_test.dart';

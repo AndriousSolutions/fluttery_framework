@@ -6,7 +6,11 @@ String _location = '========================== about_menu.dart';
 /// Open the About menu
 Future<void> openAboutMenu(WidgetTester tester) async {
   /// Open popup menu
-  await openPopupMenu(tester);
+  final opened = await openPopupMenu(tester);
+
+  if(!opened){
+    return;
+  }
 
   /// Open the About window
   final about = find.byKey(const Key('aboutMenuItem'));

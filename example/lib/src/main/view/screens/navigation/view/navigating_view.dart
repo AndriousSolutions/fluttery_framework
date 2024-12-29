@@ -40,7 +40,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   ///
   Widget canPopWidget() {
     return RouteButton(
-      key: const Key('canPopWidget'),
+      key: Key('canPopWidget$title'),
       onPressed: () => _con.canPop(),
       child: const Text('canPop'),
     );
@@ -50,7 +50,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget finalizeRouteWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('finalizeRouteWidget'),
+      key: Key('finalizeRouteWidget$title'),
       onPressed: enabled ? () => _con.finalizeRoute() : null,
       child: const Text('finalizeRoute'),
     );
@@ -60,7 +60,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget maybePopWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('maybePopWidget'),
+      key: Key('maybePopWidget$title'),
       onPressed: enabled ? () => _con.maybePop() : null,
       child: const Text('maybePop'),
     );
@@ -70,7 +70,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget popWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('popWidget'),
+      key: Key('popWidget$title'),
       onPressed: enabled ? () => _con.pop() : null,
       child: const Text('pop'),
     );
@@ -80,7 +80,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget popAndPushNamedWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('popAndPushNamedWidget'),
+      key: Key('popAndPushNamedWidget$title'),
       onPressed: enabled ? () => _con.popAndPushNamed() : null,
       child: const Text('popAndPushNamed'),
     );
@@ -90,7 +90,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget popUntilWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('popUntilWidget'),
+      key: Key('popUntilWidget$title'),
       onPressed: enabled ? () => _con.popUntil() : null,
       child: const Text('popUntil'),
     );
@@ -100,7 +100,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget pushWidget() {
     final enabled = _con.lastRoute;
     return RouteButton(
-      key: const Key('pushWidget'),
+      key: Key('pushWidget$title'),
       onPressed: enabled ? () => _con.push() : null,
       child: const Text('push'),
     );
@@ -110,7 +110,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget pushAndRemoveUntilWidget() {
     final enabled = _con.lastRoute;
     return RouteButton(
-      key: const Key('pushAndRemoveUntilWidget'),
+      key: Key('pushAndRemoveUntilWidget$title'),
       onPressed: enabled ? () => _con.pushAndRemoveUntil() : null,
       child: const Text('pushAndRemoveUntil'),
     );
@@ -120,7 +120,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget pushNamedWidget() {
     final enabled = _con.lastRoute;
     return RouteButton(
-      key: const Key('pushNamedWidget'),
+      key: Key('pushNamedWidget$title'),
       onPressed: enabled ? () => _con.pushNamed() : null,
       child: const Text('pushNamed'),
     );
@@ -130,7 +130,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget pushNamedAndRemoveUntilWidget() {
     final enabled = _con.lastRoute;
     return RouteButton(
-      key: const Key('pushNamedAndRemoveUntilWidget'),
+      key: Key('pushNamedAndRemoveUntilWidget$title'),
       onPressed: enabled ? () => _con.pushNamedAndRemoveUntil() : null,
       child: const Text('pushNamedAndRemoveUntil'),
     );
@@ -140,7 +140,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget pushReplacementWidget() {
     final enabled = _con.lastRoute;
     return RouteButton(
-      key: const Key('pushReplacementWidget'),
+      key: Key('pushReplacementWidget$title'),
       onPressed: enabled ? () => _con.pushReplacement() : null,
       child: const Text('pushReplacement'),
     );
@@ -150,7 +150,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget pushReplacementNamedWidget() {
     final enabled = _con.lastRoute;
     return RouteButton(
-      key: const Key('pushReplacementNamedWidget'),
+      key: Key('pushReplacementNamedWidget$title'),
       onPressed: enabled ? () => _con.pushReplacement() : null,
       child: const Text('pushReplacementNamed'),
     );
@@ -160,7 +160,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget removeRouteWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('removeRouteWidget'),
+      key: Key('removeRouteWidget$title'),
       onPressed: enabled ? () => _con.removeRoute() : null,
       child: const Text('removeRoute'),
     );
@@ -170,7 +170,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget removeRouteBelowWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('removeRouteBelowWidget'),
+      key: Key('removeRouteBelowWidget$title'),
       onPressed: enabled ? () => _con.removeRouteBelow() : null,
       child: const Text('removeRouteBelow'),
     );
@@ -180,7 +180,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget replaceWidget() {
     final enabled = _con.lastRoute;
     return RouteButton(
-      key: const Key('replaceWidget'),
+      key: Key('replaceWidget$title'),
       onPressed: enabled ? () => _con.replace() : null,
       child: const Text('replace'),
     );
@@ -190,7 +190,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget replaceRouteBelowWidget() {
     final enabled = _con.lastRoute;
     return RouteButton(
-      key: const Key('replaceRouteBelowWidget'),
+      key: Key('replaceRouteBelowWidget$title'),
       onPressed: enabled ? () => _con.replaceRouteBelow() : null,
       child: const Text('replaceRouteBelow'),
     );
@@ -200,7 +200,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePopAndPushNamedWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('restorablePopAndPushNamedWidget'),
+      key: Key('restorablePopAndPushNamedWidget$title'),
       onPressed: enabled ? () => _con.restorablePopAndPushNamed() : null,
       child: const Text('restorablePopAndPushNamed'),
     );
@@ -210,7 +210,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePushWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('restorablePushWidget'),
+      key: Key('restorablePushWidget$title'),
       onPressed: enabled ? () => _con.restorablePush() : null,
       child: const Text('restorablePush'),
     );
@@ -220,7 +220,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePushAndRemoveUntilWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('restorablePushAndRemoveUntilWidget'),
+      key: Key('restorablePushAndRemoveUntilWidget$title'),
       onPressed: enabled ? () => _con.restorablePushAndRemoveUntil() : null,
       child: const Text('restorablePushAndRemoveUntil'),
     );
@@ -230,7 +230,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePushNamedWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('restorablePushNamedWidget'),
+      key: Key('restorablePushNamedWidget$title'),
       onPressed: enabled ? () => _con.restorablePushNamed() : null,
       child: const Text('restorablePushNamed'),
     );
@@ -240,7 +240,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePushNamedAndRemoveUntilWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('restorablePushNamedAndRemoveUntilWidget'),
+      key: Key('restorablePushNamedAndRemoveUntilWidget$title'),
       onPressed:
           enabled ? () => _con.restorablePushNamedAndRemoveUntil() : null,
       child: const Text('restorablePushNamedAndRemoveUntil'),
@@ -251,7 +251,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePushReplacementWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('restorablePushReplacementWidget'),
+      key: Key('restorablePushReplacementWidget$title'),
       onPressed: enabled ? () => _con.restorablePushReplacement() : null,
       child: const Text('restorablePushReplacement'),
     );
@@ -261,7 +261,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePushReplacementNamedWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('restorablePushReplacementNamedWidget'),
+      key: Key('restorablePushReplacementNamedWidget$title'),
       onPressed: enabled ? () => _con.restorablePushReplacementNamed() : null,
       child: const Text('restorablePushReplacementNamed'),
     );
@@ -271,7 +271,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorableReplaceWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('restorableReplaceWidget'),
+      key: Key('restorableReplaceWidget$title'),
       onPressed: enabled ? () => _con.restorableReplace() : null,
       child: const Text('restorableReplace'),
     );
@@ -281,7 +281,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorableReplaceRouteBelowWidget() {
     final enabled = _con.canPopRoute;
     return RouteButton(
-      key: const Key('restorableReplaceRouteBelowWidget'),
+      key: Key('restorableReplaceRouteBelowWidget$title'),
       onPressed: enabled ? () => _con.restorableReplaceRouteBelow() : null,
       child: const Text('restorableReplaceRouteBelow'),
     );
@@ -340,7 +340,8 @@ class RouteButton extends StatelessWidget {
       };
     }
 
-//    return _Row(
+    final textKey = Key('${(key as ValueKey).value}Text');
+
     return Row(
       children: [
         Align(
@@ -358,7 +359,7 @@ class RouteButton extends StatelessWidget {
             child: child,
           ),
         ),
-        Flexible(child: Text(text ?? '')),
+        Flexible(child: Text(text ?? '', key: textKey)),
       ],
     );
   }

@@ -126,8 +126,12 @@ class _NavState<T extends NavWidget> extends NavState<T> {
       // Nullify theses properties now
       con.mainText = '';
     }
+    // Reference for the previous page
+    final prevTitle = prevWidget == null ? 'Exit' : 'Prev Page';
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('App Navigation'.tr),
+      ),
       primary: false,
       body: Column(
         children: [
@@ -196,27 +200,26 @@ class _NavState<T extends NavWidget> extends NavState<T> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            if (prevWidget == null)
-              const Text('         ')
-            else
-              ElevatedButton(
-                child: Text('Prev Page'.tr),
-                onPressed: () {
-                  if (canPop()) {
-                    con.maybePop();
-                  } else {
-                    con.mainText = 'Nowhere to go.';
-                  }
-                },
-              ),
+            ElevatedButton(
+              key: Key(prevTitle),
+              child: Text(prevTitle.tr),
+              onPressed: () {
+                if (canPop()) {
+                  con.maybePop();
+                } else {
+                  con.mainText = 'Nowhere to go.';
+                }
+              },
+            ),
             Flexible(child: Text(text ?? '')),
             if (nextWidget == null)
               const Text('         ')
             else
               ElevatedButton(
+                key: const Key('Next Page'),
                 child: Text('Next Page'.tr),
                 onPressed: () async {
-                     await con.push();
+                  await con.push();
                 },
               ),
           ],
