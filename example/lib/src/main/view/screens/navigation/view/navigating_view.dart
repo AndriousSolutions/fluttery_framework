@@ -342,6 +342,8 @@ class RouteButton extends StatelessWidget {
 
     final textKey = Key('${(key as ValueKey).value}Text');
 
+    final buttonKey = Key('${(key as ValueKey).value}Button');
+
     return Row(
       children: [
         Align(
@@ -349,6 +351,7 @@ class RouteButton extends StatelessWidget {
           widthFactor: widthFactor,
           heightFactor: heightFactor,
           child: ElevatedButton(
+            key: buttonKey,
             style: ElevatedButton.styleFrom(
               disabledBackgroundColor:
                   Theme.of(context).buttonTheme.colorScheme?.secondaryFixedDim,

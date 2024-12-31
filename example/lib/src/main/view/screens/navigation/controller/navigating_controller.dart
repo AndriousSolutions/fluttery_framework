@@ -189,7 +189,7 @@ class NavController extends StateXController {
   void removeRouteBelow() {
     // _s.removeRouteBelow(anchorRoute);
     text = 'NOT IMPLEMENTED YET.';
-    setState((){});
+    setState(() {});
   }
 
   ///
@@ -209,7 +209,7 @@ class NavController extends StateXController {
     //   newRoute: newRoute,
     // );
     text = 'NOT IMPLEMENTED YET.';
-    setState((){});
+    setState(() {});
   }
 
   ///
@@ -220,7 +220,7 @@ class NavController extends StateXController {
     //   arguments: arguments,
     // );
     text = 'NOT IMPLEMENTED YET.';
-    setState((){});
+    setState(() {});
   }
 
   ///
@@ -230,7 +230,7 @@ class NavController extends StateXController {
     //   arguments: arguments,
     // );
     text = 'NOT IMPLEMENTED YET.';
-    setState((){});
+    setState(() {});
   }
 
   ///
@@ -241,7 +241,7 @@ class NavController extends StateXController {
     //   arguments: arguments,
     // );
     text = 'NOT IMPLEMENTED YET.';
-    setState((){});
+    setState(() {});
   }
 
   ///
@@ -251,7 +251,7 @@ class NavController extends StateXController {
     //   arguments: arguments,
     // );
     text = 'NOT IMPLEMENTED YET.';
-    setState((){});
+    setState(() {});
   }
 
   ///
@@ -262,7 +262,7 @@ class NavController extends StateXController {
     //   arguments: arguments,
     // );
     text = 'NOT IMPLEMENTED YET.';
-    setState((){});
+    setState(() {});
   }
 
   ///
@@ -273,7 +273,7 @@ class NavController extends StateXController {
     //   arguments: arguments,
     // );
     text = 'NOT IMPLEMENTED YET.';
-    setState((){});
+    setState(() {});
   }
 
   ///
@@ -284,7 +284,7 @@ class NavController extends StateXController {
     //   arguments: arguments,
     // );
     text = 'NOT IMPLEMENTED YET.';
-    setState((){});
+    setState(() {});
   }
 
   ///
@@ -295,7 +295,7 @@ class NavController extends StateXController {
     //   arguments: arguments,
     // );
     text = 'NOT IMPLEMENTED YET.';
-    setState((){});
+    setState(() {});
   }
 
   ///
@@ -306,7 +306,7 @@ class NavController extends StateXController {
     //   arguments: arguments,
     // );
     text = 'NOT IMPLEMENTED YET.';
-    setState((){});
+    setState(() {});
   }
 
   ///

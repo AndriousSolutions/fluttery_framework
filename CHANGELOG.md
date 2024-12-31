@@ -1,4 +1,12 @@
 
+## 5.7.3
+December 29, 2024
+- Recognize only 'Testing Errors' in  app_statex.dart
+  details.exception is TestFailure || details.exception is Error
+- Tests for RouteNavigatorMethodsMixin in app_navigation.dart
+- app_navigation.dart renamed app_navigator_mixin.dart
+- Add a Navigation listener with addNavigationListener() in app_statex.dart
+  
 ## 5.7.2
 December 27, 2024
 - Corrected image_api.dart in example app

@@ -446,7 +446,6 @@ class AppObject
   /// Internal Initialization routines.
   Future<void> initInternal() async {
     //
-    // if (inFlutterTest) {
     if (!inWidgetsFlutterBinding) {
       // Such functionality is not available during testing
       return;

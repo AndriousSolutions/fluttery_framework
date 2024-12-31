@@ -17,7 +17,7 @@ export 'tests/menu/open_drawer.dart';
 export 'tests/menu/open_menu.dart';
 
 /// Navigation Tests
-export '../test_navigation.dart';
+export '../test_navigator_mixin.dart';
 
 /// Individual Tests
 export 'tests/counter_test.dart';

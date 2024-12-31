@@ -70,7 +70,7 @@ export '/view/app_menu.dart';
 
 /// Extensions
 export '/view/app/app_appstate.dart';
-export '/view/app/app_navigation.dart';
+export '/view/app/app_navigator_mixin.dart';
 
 /// Web
 export 'package:url_launcher/link.dart';

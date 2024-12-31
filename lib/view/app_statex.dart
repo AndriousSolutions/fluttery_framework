@@ -373,6 +373,8 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T>
     _app = null;
     // Null th app's NavigatorState object
     appNavigator = null;
+    // Clear any listeners
+    _navigationListeners.clear();
     super.dispose();
   }
 
@@ -1273,9 +1275,38 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
     return route;
   }
 
+  /// Navigation listeners.
+  final Set<NotificationListenerCallback<NavigationNotification>> _navigationListeners =
+      {};
+
+  /// Add a Navigation listener.
+  bool addNavigationListener(
+      NotificationListenerCallback<NavigationNotification>? listener) {
+    var add = listener != null;
+    if (add) {
+      add = _navigationListeners.add(listener);
+    }
+    return add;
+  }
+
+  /// Remove a Navigation listener.
+  bool removeNavigationListener(
+      NotificationListenerCallback<NavigationNotification>? listener) {
+    var remove = listener != null;
+    if (remove) {
+      remove = _navigationListeners.remove(listener);
+    }
+    return remove;
+  }
+
   bool _onOnNavigationNotification(NavigationNotification notification) {
     final canHandlePop = _onNavigationNotification?.call(notification);
-    final handled = onOnNavigationNotification(notification);
+    var handled = onOnNavigationNotification(notification);
+    for (final listener in _navigationListeners) {
+      if (!listener(notification)) {
+        handled = false;
+      }
+    }
     return (canHandlePop ?? false) || handled;
   }
 
@@ -1640,7 +1671,8 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
     }
 
     // If in testing, after the supplied handler, call its Error handler
-    if (details.exception is TestFailure &&
+    // An `Error` is a failure that the programmer should have avoided.
+    if ((details.exception is TestFailure || details.exception is Error) &&
         WidgetsBinding.instance is! WidgetsFlutterBinding) {
       _errorHandler?.oldOnError?.call(details);
     }
