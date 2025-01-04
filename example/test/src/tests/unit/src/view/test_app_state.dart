@@ -6,7 +6,7 @@ Future<void> testAppState(WidgetTester tester) async {
   // Find its StatefulWidget first then the 'type' of State object.
 //  final appState = tester.firstState<AppState>(find.byType(FlutteryExampleApp));
 
-  final appState = ExampleAppController().state as AppStateX;
+  final appState = ExampleAppController().appState!;
 
   bool? booleanValue = appState.useCupertino;
 
@@ -34,11 +34,11 @@ Future<void> testAppState(WidgetTester tester) async {
 
   appState.onRouterConfig();
 
-  appState.onOnGenerateRoute(RouteSettings());
+  appState.onOnGenerateRoute(const RouteSettings());
 
-  appState.onOnUnknownRoute(RouteSettings());
+  appState.onOnUnknownRoute(const RouteSettings());
 
-  appState.onOnNavigationNotification(NavigationNotification(canHandlePop: false));
+  appState.onOnNavigationNotification(const NavigationNotification(canHandlePop: false));
 
   appState.oniOSTheme();
 

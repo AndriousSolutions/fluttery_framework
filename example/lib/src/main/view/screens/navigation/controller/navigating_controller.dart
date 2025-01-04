@@ -10,7 +10,7 @@ class NavController extends StateXController {
 
   NavController._() {
     /// set up the necessary lists
-    routes = rootState?.onRoutes() ?? {};
+    routes = appState?.onRoutes() ?? {};
     if (routes.isEmpty) {
       keysList = [];
       routeList = [];

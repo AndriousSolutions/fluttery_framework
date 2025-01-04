@@ -11,10 +11,6 @@ import 'package:state_extended/state_extended.dart' as c;
 import '/view.dart';
 
 ///
-@Deprecated('Use AppStateXController instead.')
-class AppController extends AppStateXController {}
-
-///
 /// A Controller for the 'app level'.
 ///
 /// dartdoc:
@@ -27,10 +23,6 @@ class AppStateXController extends StateXController
   /// If the device's connectivity changes.
   @override
   void onConnectivityChanged(ConnectivityResult result) {}
-
-  /// Returns the 'first' StateX object in the App
-  @override
-  AppStateX? get rootState => super.rootState as AppStateX;
 }
 
 /// Your 'working' class most concerned with the app's functionality.
@@ -44,7 +36,67 @@ class AppStateXController extends StateXController
 class StateXController extends c.StateXController {
   ///
   StateXController([super.state]);
+
   /// Returns the 'first' StateX object in the App
+  /// Supply this version of AppStateX
+  AppStateX? get appState {
+    final state = super.rootState;
+    return state == null ? null : state as AppStateX;
+  }
+
+  /// Supply this version of StateX
   @override
-  AppStateX? get rootState => super.rootState as AppStateX;
+  StateX? get state {
+    var state = super.state;
+    if (state != null) {
+      assert(state is! AppStateX,
+          "'${state.toStringShort()}' is type, AppStateX.\nMust use the getter, appState, instead.");
+      if (state is AppStateX) {
+        state = null; // In Fluttery, AppStateX is not a subtype of this StateX
+      }
+    }
+    return state == null ? null : state as StateX;
+  }
+
+  /// Supply this version of StateX
+  @override
+  StateX? stateOf<T extends StatefulWidget>() {
+    var state = super.stateOf<T>();
+    if (state != null) {
+      assert(state is! AppStateX,
+      "'${state.toStringShort()}' is type, AppStateX.\nIn Fluttery, use the getter, appState, instead.");
+      if (state is AppStateX) {
+        state = null; // In Fluttery, AppStateX is not a subtype of this StateX
+      }
+    }
+    return state == null ? null : state as StateX;
+  }
+
+  /// Return the first State object
+  @override
+  StateX? get firstState {
+    var state = super.firstState;
+    if (state != null) {
+      assert(state is! AppStateX,
+      "Replace getter, 'firstState', with 'appState'.\nIn Fluttery, AppStateX is not type, StateX.");
+      if (state is AppStateX) {
+        state = null; // In Fluttery, AppStateX is not a subtype of this StateX
+      }
+    }
+    return state == null ? null : state as StateX;
+  }
+
+  /// Return the 'latest' State object
+  @override
+  StateX? get lastState {
+    var state = super.lastState;
+    if (state != null) {
+      assert(state is! AppStateX,
+      "Replace getter, 'lastState', with 'appState'.\nIn Fluttery, AppStateX is not type, StateX.");
+      if (state is AppStateX) {
+        state = null; // In Fluttery, AppStateX is not a subtype of this StateX
+      }
+    }
+    return state == null ? null : state as StateX;
+  }
 }

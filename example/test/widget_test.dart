@@ -7,11 +7,11 @@ library;
 ///          Created 18 July, 2022
 ///
 
-/// Flutter Test files
-import '../integration_test/src/_test_imports.dart';
-
 /// Calls the example app's very own test
 import '../integration_test/widget_test.dart';
+
+/// Flutter Test files
+import '../test/src/_test_imports.dart';
 
 void main() => testFlutteryFramework();
 
@@ -45,14 +45,14 @@ void testFlutteryFramework() {
     // Code that clears caches can go here
   });
 
-  //
+  // Integration and unit tests
   group('Integration Tests', _testIntegrationGroup);
 
   //
   group('Builder Error Tests', _builderErrorTest);
 
   //
-  group('Async Error Tests', asyncErrorTest);
+  group('Async Error Tests', _asyncErrorTest);
 }
 
 /// Calls a number of testWidgets() functions one after the other
@@ -77,7 +77,7 @@ void _builderErrorTest() {
 }
 
 /// Test for an Error occurring at startup in the initAsync() function itself!
-void asyncErrorTest() {
+void _asyncErrorTest() {
   ///
   testWidgets('Error in initAsync()', (WidgetTester tester) async {
     // The Example app

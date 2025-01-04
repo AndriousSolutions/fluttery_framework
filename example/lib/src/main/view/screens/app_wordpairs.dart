@@ -3,8 +3,9 @@ import '/src/view.dart';
 
 /// An absolute path is preferred but this source code is copied by other app.
 import '/src/controller.dart';
-
+///
 class WordPairs extends StatefulWidget {
+  ///
   const WordPairs({super.key});
 
   @override

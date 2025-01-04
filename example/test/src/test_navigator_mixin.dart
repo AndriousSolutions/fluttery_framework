@@ -1,5 +1,6 @@
 //
-import 'src/_test_imports.dart';
+// Flutter Test files
+import '../src/_test_imports.dart';
 
 String _location = '========================== test_navigation.dart';
 
@@ -31,7 +32,7 @@ class _AppNavigationTest extends StateXController {
 
   @override
   void dispose() {
-    con.rootState?.removeNavigationListener(_callback);
+    con.appState?.removeNavigationListener(_navListener);
     super.dispose();
   }
 
@@ -42,7 +43,17 @@ class _AppNavigationTest extends StateXController {
 
     await _canPopWidgetTest(this);
 
+    //
+    appState?.addNavigationListener(_navListener);
+
+    // Attempt to pop the route
+    if(state!.canPop()){
+      popped = false;
+    }
+
     await _maybePopWidgetTest(this);
+
+    expect(popped, isTrue, reason: _location);
 
     await _exitScreens(tester);
   }
@@ -52,6 +63,14 @@ class _AppNavigationTest extends StateXController {
   bool popped = false;
   bool pushedNext = false;
   bool poppedNext = false;
+
+  // Called with an Navigator change
+  bool _navListener(NavigationNotification notification) {
+    final canHandlePop = notification.canHandlePop;
+    expectSync(canHandlePop, isTrue, reason: _location);
+    popped = true;
+    return canHandlePop;
+  }
 }
 
 //
@@ -63,9 +82,6 @@ Future<void> _canPopWidgetTest(_AppNavigationTest app) => _buttonTest(
 
 //
 Future<void> _maybePopWidgetTest(_AppNavigationTest app) {
-  //
-  app.rootState?.addNavigationListener(_callback);
-
   return _tapButton(app, 'maybePopWidget');
 }
 
@@ -99,12 +115,3 @@ Future<void> _exitScreens(WidgetTester tester) async {
 
   await closeDrawer(tester);
 }
-
-
-NotificationListenerCallback<NavigationNotification> _callback =
-    (NavigationNotification notification) {
-  //
-  final canHandlePop = notification.canHandlePop;
-  expectSync(canHandlePop, isTrue, reason: _location);
-  return canHandlePop;
-};

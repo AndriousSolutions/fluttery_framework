@@ -118,12 +118,6 @@ class ExampleAppController extends AppStateXController {
       _appCount = _appNames.indexOf(appName.trim());
     }
 
-    // Possibly running in a test and can't run the Contacts app
-    // There's no sqlite in the test environment
-    if (App.inFlutterTest && _appCount == 2) {
-      _appCount = 0;
-    }
-
     await Prefs.setBool('words', _appNames[_appCount] == 'Word');
 
     // Rerun the whole app with App.setState(() {})
@@ -135,11 +129,11 @@ class ExampleAppController extends AppStateXController {
   ///
   Future<void> changeLocale() async {
     ///
-    final appState = rootState!;
+    final app = appState!;
 
-    final locale = appState.locale!;
+    final locale = app.locale!;
 
-    final locales = appState.supportedLocales;
+    final locales = app.supportedLocales;
 
     // record selected locale
     Locale? appLocale;
@@ -159,7 +153,7 @@ class ExampleAppController extends AppStateXController {
     );
 
     await DialogBox(
-      context: appState.lastContext!,
+      context: app.lastContext!,
       title: 'Current Language'.tr,
       body: [spinner],
       press01: () {},
@@ -259,10 +253,7 @@ class ExampleAppController extends AppStateXController {
     //
     final init = await super.initAsync();
 
-    // Demonstrating ways to retrieve the StatefulWidget
-    // ignore: unused_local_variable
-    var widget = firstState!.widget as FlutteryExampleApp;
-    widget = rootState!.widget as FlutteryExampleApp;
+    final widget = appState!.widget as FlutteryExampleApp;
 
     // Don't delay if in testing for example
     if (App.inWidgetsFlutterBinding) {
@@ -277,9 +268,6 @@ class ExampleAppController extends AppStateXController {
       initAsyncError = false;
       throw Exception('Error in initAsync()!');
     }
-
-    //
-    state?.add(MaterialController());
 
     if (inDebugMode) {
       debugPrint('############ Event: initAsync() in $this');

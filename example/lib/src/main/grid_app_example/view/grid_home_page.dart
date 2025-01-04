@@ -56,24 +56,28 @@ class _HomePageState extends StateX<HomePage> {
             children: [
               Flexible(
                 child: TextButton(
+                  key: const Key('New Dogs'),
                   onPressed: () => con.newDogs(),
                   child: Text('New Dogs'.tr),
                 ),
               ),
               Flexible(
                 child: TextButton(
+                  key: const Key('New Cats'),
                   onPressed: () => con.newCats(),
                   child: Text('New Cats'.tr),
                 ),
               ),
               Flexible(
                 child: TextButton(
+                  key: const Key('New Foxes'),
                   onPressed: () => con.newFoxes(),
                   child: Text('New Foxes'.tr),
                 ),
               ),
               Flexible(
                 child: TextButton(
+                  key: const Key('New Birds'),
                   onPressed: () => con.newBirds(),
                   child: Text('New Birds'.tr),
                 ),

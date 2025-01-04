@@ -8,7 +8,7 @@ import '/src/view.dart';
 import 'package:fluttery_framework/controller.dart';
 
 import 'package:english_words/english_words.dart';
-
+///
 class WordPairsTimer extends StateXController {
   /// Only one instance of the class is necessary and desired.
   factory WordPairsTimer({
@@ -26,15 +26,21 @@ class WordPairsTimer extends StateXController {
         super(state);
 
   static WordPairsTimer? _this;
+  ///
   final int? seconds;
+  ///
   final Duration? duration;
+  ///
   final void Function()? callback;
+  ///
   final int? count;
+  ///
   final WordPairsModel model;
-
+  ///
   Timer? timer;
-
+  ///
   final suggestions = <WordPair>[];
+  ///
   int index = 0;
 
   @override
@@ -152,7 +158,7 @@ class WordPairsTimer extends StateXController {
       /// Change dataObject will rebuild the InheritedWidget
       /// Changing the 'dataObject' will call the SetState class implemented above
       /// and only that widget.
-      rootState?.dataObject = _wordPair;
+      appState?.dataObject = _wordPair;
     } catch (ex) {
       /// Stop the timer.
       /// Something is not working. Don't have the timer repeat it over and over.

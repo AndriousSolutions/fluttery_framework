@@ -18,25 +18,25 @@ void testHandleError(WidgetTester tester) {
 
   StateXController con = ExampleAppController();
 
-  var state = con.state;
+  final appState = con.appState;
 
-  if (state != null && state is AppStateX) {
+  if (appState != null) {
     //
-    state.onError(FlutterErrorDetails(exception: error));
+    appState.onError(FlutterErrorDetails(exception: error));
   }
 
   final details = FlutterErrorDetails(exception: error);
 
   con = CounterController();
 
-  state = con.state;
+  final state = con.state;
 
   if (state != null) {
     //
     state.onError(details);
   }
 
-  AppErrorHandler? errorHandler = AppErrorHandler();
+  final AppErrorHandler errorHandler = AppErrorHandler();
 
   AppErrorHandler.inDebugMode;
 
@@ -52,9 +52,9 @@ void testHandleError(WidgetTester tester) {
 
 //  FlutterExceptionHandler? hnd = errorHandler.onError;
 
-  Widget? widget = errorHandler.displayError(details);
+  final Widget widget = errorHandler.displayError(details);
 
-  bool mode = AppErrorHandler.inDebugMode;
+  final bool mode = AppErrorHandler.inDebugMode;
 
   errorHandler.reportError(error, StackTrace.empty);
 

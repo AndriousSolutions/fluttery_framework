@@ -6,6 +6,8 @@ export 'package:fluttery_framework_example/src/model.dart' hide StateSetter;
 export 'package:fluttery_framework_example/src/view.dart';
 
 /// Supply all the dependencies necessary to complete the testing.
+///
+
 export 'package:flutter_test/flutter_test.dart';
 
 export 'package:fluttery_framework/view.dart' hide AppDrawer, PopupMenuWidget;
@@ -18,8 +20,6 @@ export 'unit_tests.dart';
 ///
 
 export 'controller_test.dart';
-
-export 'wordpairs_model.dart';
 
 export 'drawer_dialog_tests.dart';
 

@@ -1,4 +1,14 @@
 
+## 5.7.4
+December 30, 2024
+- Correctly cast the Fluttery Framework version of StateX; not state_extended version.
+  getter appState gets Fluttery version; getter rootState gets state_extended version.
+  StateX get state in app_statex_controller.dart
+  StateX? get firstState, StateX? get lastState in app_statex_controller.dart
+  StateX? stateOf<T extends StatefulWidget>() in app_statex_controller.dart
+  stateOf<T extends StatefulWidget>() in app_statex_controller.dart
+- Corrected changeApp() in example_controller.dart
+
 ## 5.7.3
 December 29, 2024
 - Recognize only 'Testing Errors' in  app_statex.dart

@@ -20,7 +20,8 @@ import '/controller.dart'
 import 'package:flutter/cupertino.dart'
     show CupertinoApp, CupertinoTheme, CupertinoThemeData;
 
-import 'package:flutter/foundation.dart' show FlutterExceptionHandler;
+import 'package:flutter/foundation.dart'
+    show FlutterExceptionHandler;
 
 /// Translations
 import 'package:l10n_translator/l10n.dart';
@@ -65,8 +66,8 @@ import 'package:universal_platform/universal_platform.dart';
 /// {@category Get started}
 /// {@category StateX class}
 /// {@category Error handling}
-class AppStateX<T extends StatefulWidget> extends _AppState<T>
-    with v.RouteNavigatorMethodsMixin {
+
+class AppStateX<T extends StatefulWidget> extends _AppState<T> {
   /// Provide a huge array of options and features to the 'App State object.'
   AppStateX({
     Key? key,
@@ -371,8 +372,6 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T>
   @mustCallSuper
   void dispose() {
     _app = null;
-    // Null th app's NavigatorState object
-    appNavigator = null;
     // Clear any listeners
     _navigationListeners.clear();
     super.dispose();
@@ -927,7 +926,6 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
     this.inRestorationScopeId,
     this.inScrollBehavior,
     this.inThemeAnimationStyle,
-//  })  : _statesRouteObserver = StatesRouteObserver(),
   }) : super(controller: controller) {
     // Listen to the device's connectivity.
     v.App.addConnectivityListener(controller);
@@ -1138,6 +1136,29 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
   ScrollBehavior? _scrollBehavior;
   AnimationStyle? _themeAnimationStyle;
 
+
+  // @override
+  // void activate() {
+  //   // Return the Error Handler
+  //   _errorHandler?.activate();
+  //   super.activate(); // IMPORTANT to call last
+  // }
+
+  // @override
+  // void deactivate() {
+  //   // Restore original Error Handler
+  //   _errorHandler?.deactivate();
+  //   super.deactivate(); // IMPORTANT to call last
+  // }
+
+  @override
+  void dispose() {
+    // Restore original Error Handler
+    _errorHandler?.dispose();
+    _errorHandler = null;
+    super.dispose();
+  }
+
   /// Used to complete asynchronous operations
   Future<bool> onInitAsync() async => await inInitAsync?.call() ?? true;
 
@@ -1276,8 +1297,8 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
   }
 
   /// Navigation listeners.
-  final Set<NotificationListenerCallback<NavigationNotification>> _navigationListeners =
-      {};
+  final Set<NotificationListenerCallback<NavigationNotification>>
+      _navigationListeners = {};
 
   /// Add a Navigation listener.
   bool addNavigationListener(
@@ -1569,25 +1590,6 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
   // This App is within another App
   static bool _appInApp = false;
 
-  @override
-  void activate() {
-    _errorHandler?.activate();
-    super.activate(); // IMPORTANT to call last
-  }
-
-  @override
-  void deactivate() {
-    _errorHandler?.deactivate();
-    super.deactivate(); // IMPORTANT to call last
-  }
-
-  @override
-  void dispose() {
-    _errorHandler?.dispose();
-    _errorHandler = null;
-    super.dispose();
-  }
-
   FlutterExceptionHandler? errorHandler;
   bool? presentError;
   ErrorWidgetBuilder? errorScreen;
@@ -1761,8 +1763,7 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
   Widget buildiOS(BuildContext context) => buildAndroid(context);
 
   /// Returns the 'first' StateX object in the App
-  @override
-  AppStateX? get rootState => super.rootState as AppStateX;
+  AppStateX? get appState => super.rootState as AppStateX;
 
   /// Provide the 'main' controller to this 'State View.'
   @override
@@ -1783,136 +1784,4 @@ class StateX<T extends StatefulWidget> extends s.StateX<T>
     }
     return con as StateXController;
   }
-}
-
-///
-/// The View for the app. The 'look and feel' for the whole app.
-///
-@Deprecated('Use AppStateX instead.')
-class AppState<T extends StatefulWidget> extends AppStateX<T> {
-  /// Provide a huge array of options and features to the 'App State object.'
-  AppState({
-    super.key,
-    super.home,
-    super.controller,
-    super.controllers,
-    super.object,
-    super.notifyClientsInBuild,
-    super.materialApp,
-    super.cupertinoApp,
-    super.routeInformationProvider,
-    super.routeInformationParser,
-    super.routerDelegate,
-    super.useRouterConfig,
-    super.routerConfig,
-    super.backButtonDispatcher,
-    super.scaffoldMessengerKey,
-    super.routes,
-    super.initialRoute,
-    super.onGenerateRoute,
-    super.onUnknownRoute,
-    super.onNavigationNotification,
-    super.navigatorKey,
-    super.navigatorObservers,
-    super.builder,
-    super.title,
-    super.onGenerateTitle,
-    super.color,
-    super.allowChangeTheme,
-    super.theme,
-    super.iOSTheme,
-    super.darkTheme,
-    super.highContrastTheme,
-    super.highContrastDarkTheme,
-    super.themeMode,
-    super.themeAnimationDuration,
-    super.themeAnimationCurve,
-    super.allowChangeLocale,
-    super.locale,
-    super.localizationsDelegates,
-    super.localeListResolutionCallback,
-    super.localeResolutionCallback,
-    super.supportedLocales,
-    super.useMaterial,
-    super.useCupertino,
-    super.switchUI,
-    super.allowChangeUI,
-    super.debugShowMaterialGrid,
-    super.showPerformanceOverlay,
-    super.checkerboardRasterCacheImages,
-    super.checkerboardOffscreenLayers,
-    super.showSemanticsDebugger,
-    super.debugShowCheckedModeBanner,
-    super.debugShowWidgetInspector,
-    super.debugPaintSizeEnabled,
-    super.debugPaintBaselinesEnabled,
-    super.debugPaintPointersEnabled,
-    super.debugPaintLayerBordersEnabled,
-    super.debugRepaintRainbowEnabled,
-    super.debugRepaintTextRainbowEnabled,
-    super.debugPrintRebuildDirtyWidgets,
-    // ignore: avoid_positional_boolean_parameters
-    super.debugOnRebuildDirtyWidget,
-    super.debugPrintBuildScope,
-    super.debugPrintScheduleBuildForStacks,
-    super.debugPrintGlobalKeyedWidgetLifecycle,
-    super.debugProfileBuildsEnabled,
-    super.debugProfileBuildsEnabledUserWidgets,
-    super.debugEnhanceBuildTimelineArguments,
-    super.debugHighlightDeprecatedWidgets,
-    super.shortcuts,
-    super.actions,
-    super.restorationScopeId,
-    super.scrollBehavior,
-    super.themeAnimationStyle,
-    super.errorHandler,
-    super.errorScreen,
-    super.errorReport,
-    super.inErrorHandler,
-    super.inErrorScreen,
-    super.inErrorReport,
-    super.presentError,
-    super.inInitState,
-    super.inInitAsync,
-    super.inCatchAsyncError,
-    super.inAsyncError,
-    super.inHome,
-    super.inRouteInformationProvider,
-    super.inRouteInformationParser,
-    super.inRouterDelegate,
-    super.inRouterConfig,
-    super.inBackButtonDispatcher,
-    super.inRoutes,
-    super.inInitialRoute,
-    super.inNavigatorObservers,
-    super.inUpdateShouldNotify,
-    super.inTransBuilder,
-    super.inTitle,
-    super.inGenerateTitle,
-    super.inTheme,
-    super.iniOSTheme,
-    super.inDarkTheme,
-    super.inHighContrastTheme,
-    super.inHighContrastDarkTheme,
-    super.inThemeMode,
-    super.inThemeAnimationDuration,
-    super.inThemeAnimationCurve,
-    super.inColor,
-    super.inLocale,
-    super.inLocalizationsDelegates,
-    super.inLocaleListResolutionCallback,
-    super.inLocaleResolutionCallback,
-    super.inSupportedLocales,
-    super.inDebugShowMaterialGrid,
-    super.inShowPerformanceOverlay,
-    super.inCheckerboardRasterCacheImages,
-    super.inCheckerboardOffscreenLayers,
-    super.inShowSemanticsDebugger,
-    super.inDebugShowCheckedModeBanner,
-    super.inShortcuts,
-    super.inActions,
-    super.inRestorationScopeId,
-    super.inScrollBehavior,
-    super.inThemeAnimationStyle,
-  });
 }

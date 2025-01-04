@@ -4,8 +4,9 @@ import '/src/controller.dart';
 import '/src/model.dart';
 
 import '/src/view.dart';
-
+///
 class CounterController extends AppStateXController {
+  ///
   factory CounterController() => _this ??= CounterController._();
   CounterController._() : super() {
     //
@@ -17,6 +18,7 @@ class CounterController extends AppStateXController {
   static CounterController? _this;
 
   late final CounterModel _model;
+  ///
   late final WordPairsTimer wordPairsTimer;
 
   /// The flag indicating if an InheritedWidget is to used.

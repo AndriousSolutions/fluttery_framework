@@ -12,7 +12,7 @@ Future<void> testTemplateController(WidgetTester tester) async {
 
   con.detachedAppLifecycleState();
 
-  con.changeApp('Counter');
+  await con.changeApp('Counter');
 
   await tester.pumpAndSettle();
 

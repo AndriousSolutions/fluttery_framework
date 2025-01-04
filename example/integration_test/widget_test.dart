@@ -1,4 +1,6 @@
-import 'src/_test_imports.dart';
+//
+// Test files
+import '_test_imports.dart';
 
 import 'package:integration_test/integration_test.dart'
     show IntegrationTestWidgetsFlutterBinding;
@@ -6,6 +8,7 @@ import 'package:integration_test/integration_test.dart'
 void main() => integrationTestFlutteryFramework();
 
 void integrationTestFlutteryFramework() {
+  // Call this function instead of using the 'default' TestWidgetsFlutterBinding
   // Allow for Integration testing
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -13,8 +16,6 @@ void integrationTestFlutteryFramework() {
   // to work with. The WidgetTester allows you to build and interact
   // with widgets in the test environment.
   testWidgets('testing example app', (WidgetTester tester) async {
-    //
-
     // Flutter won’t automatically rebuild your widget in the test environment.
     // Use pump() or pumpAndSettle() to ask Flutter to rebuild the widget.
     await tester.pumpWidget(FlutteryExampleApp());
@@ -47,6 +48,11 @@ void integrationTestFlutteryFramework() {
 
           // Test dialog windows
           await dialogTests(tester);
+
+          break;
+        case 'Inherited':
+
+          await animalsTest(tester);
 
           break;
       }
@@ -95,9 +101,6 @@ void integrationTestFlutteryFramework() {
 
     reportTestErrors();
 
-    // // WordPairs App Model Unit Testing
-    // await wordPairsModelTest(tester);
-    //
-    // return;
+    return;
   });
 }
