@@ -1,8 +1,8 @@
 
-## 5.8.0
+## 5.8.0+1
 January 04, 2024
 - extension ColorExts on Color to overcome Flutter 3.27 conversion issue
-- Addressed Dart Analysis issues: e.g. /// Missing Documentation
+- Addressed Dart Analysis issues: e.g. /// Missing documentation for public members
 
 ## 5.7.6
 January 04, 2024

@@ -360,7 +360,6 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
 
   /// Report the error in an isolate.
   void isolateError(dynamic ex, StackTrace stack) {
-
     // Record the Exception
     getError(ex);
 
@@ -374,7 +373,6 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
 
   /// Report the error in a zone.
   void runZonedError(dynamic ex, StackTrace stack) {
-
     // Record the Exception
     getError(ex);
 
