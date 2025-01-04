@@ -17,7 +17,7 @@ Future<bool> openMaterialVersionMenu(WidgetTester tester) async {
     return false;
   }
 
-  /// Switch the application
+  /// Switch Material version
   final material =
       find.byKey(const Key('materialButtons'), skipOffstage: false);
 

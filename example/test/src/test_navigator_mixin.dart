@@ -5,49 +5,51 @@ import '../src/_test_imports.dart';
 String _location = '========================== test_navigation.dart';
 
 /// Testing the counter app
-Future<void> appNavigationTest(WidgetTester tester) async {
-  //
-  final opened = await openDrawerOption('Navigation', tester);
-
-  if (!opened) {
-    return;
-  }
-  // Run tests
-  await _AppNavigationTest(tester).tests();
-}
+Future<void> appNavigationTest(WidgetTester tester) =>
+    _AppNavigationTest(tester).tests();
 
 // Helper class
 class _AppNavigationTest extends StateXController {
-  _AppNavigationTest(this.tester) {
-    con = NavController();
-    con.state?.add(this);
-  }
+  factory _AppNavigationTest(WidgetTester tester) =>
+      _this ??= _AppNavigationTest._(tester);
+  _AppNavigationTest._(this.tester);
+  static _AppNavigationTest? _this;
 
   final WidgetTester tester;
 
-  late NavController con;
-
   /// Current Page
-  String get page => (con.state as NavState).title;
+  String get page => (NavController().state as NavState).title;
 
   @override
   void dispose() {
-    con.appState?.removeNavigationListener(_navListener);
+    appState?.removeNavigationListener(navListener);
     super.dispose();
   }
 
   /// Series of tests
   Future<void> tests() async {
     //
+    var opened = await openDrawerOption('Navigation', tester);
+
+    if (!opened) {
+      return;
+    }
+
+    final con = NavController();
+
+    con.state?.add(this);
+
     await tapButton(tester, key: 'Next Page', count: 2);
+
+    //
+    appState?.addNavigationListener(navListener);
 
     await _canPopWidgetTest(this);
 
-    //
-    appState?.addNavigationListener(_navListener);
+    expect(page == 'Page04', isTrue, reason: _location);
 
     // Attempt to pop the route
-    if(state!.canPop()){
+    if (con.state!.canPop()) {
       popped = false;
     }
 
@@ -55,7 +57,40 @@ class _AppNavigationTest extends StateXController {
 
     expect(popped, isTrue, reason: _location);
 
-    await _exitScreens(tester);
+    expect(page == 'Page03', isTrue, reason: _location);
+
+    // Attempt to pop the next route
+    popped = false;
+
+    await _popWidgetTest(this);
+
+    expect(popped, isTrue, reason: _location);
+
+    expect(page == 'Page02', isTrue, reason: _location);
+
+    // Attempt to pop the next route
+    popped = false;
+
+    await _popAndPushNamedWidget(this);
+
+    expect(popped, isTrue, reason: _location);
+
+    expect(page == 'Page06', isTrue, reason: _location);
+
+    // // Attempt to pop the next route
+    // popped = false;
+    //
+    // await _popUntilWidget(this);
+    //
+    // expect(popped, isTrue, reason: _location);
+    //
+    // expect(page == 'Page02', isTrue, reason: _location);
+
+
+    // await _pushWidget(this);
+
+
+    await exitScreens(tester);
   }
 
   // toggled when push and pop
@@ -65,53 +100,60 @@ class _AppNavigationTest extends StateXController {
   bool poppedNext = false;
 
   // Called with an Navigator change
-  bool _navListener(NavigationNotification notification) {
+  bool navListener(NavigationNotification notification) {
     final canHandlePop = notification.canHandlePop;
     expectSync(canHandlePop, isTrue, reason: _location);
     popped = true;
     return canHandlePop;
   }
+
+  // Tap a button and expect the passed Finder function
+  Future<void> buttonTest(
+    String keyValue,
+    Finder Function() finder,
+  ) async {
+    //
+    await tap(keyValue);
+
+    expect(finder(), findsOneWidget, reason: _location);
+  }
+
+  // Tap a button
+  Future<void> tap(String keyValue) async {
+    //
+    final keyButton = '$keyValue${page}Button';
+
+    await tapButton(tester, key: keyButton);
+  }
+
+  /// Exit screens
+  Future<void> exitScreens(WidgetTester tester) async {
+    /// Retreat back and exit the screen
+    await tapButton(tester, key: 'Prev Page', keyUntil: 'Exit');
+
+    await closeDrawer(tester);
+  }
 }
 
 //
-Future<void> _canPopWidgetTest(_AppNavigationTest app) => _buttonTest(
-      app,
-      'canPopWidget',
-      () => find.textContaining('has returned'),
-    );
+Future<void> _canPopWidgetTest(_AppNavigationTest app) =>
+    app.buttonTest('canPopWidget', () => find.textContaining('has returned'));
 
 //
-Future<void> _maybePopWidgetTest(_AppNavigationTest app) {
-  return _tapButton(app, 'maybePopWidget');
-}
+Future<void> _maybePopWidgetTest(_AppNavigationTest app) =>
+    app.tap('maybePopWidget');
 
-// Tap a button and expect the passed Finder function
-Future<void> _buttonTest(
-  _AppNavigationTest con,
-  String keyValue,
-  Finder Function() finder,
-) async {
-  //
-  await _tapButton(con, keyValue);
+//
+Future<void> _popWidgetTest(_AppNavigationTest app) => app.tap('popWidget');
 
-  expect(finder(), findsOneWidget, reason: _location);
-}
+//
+Future<void> _popAndPushNamedWidget(_AppNavigationTest app) =>
+    app.tap('popAndPushNamedWidget');
 
-// Tap a button
-Future<void> _tapButton(
-  _AppNavigationTest app,
-  String keyValue,
-) async {
-  //
-  final keyButton = '$keyValue${app.page}Button';
+//
+Future<void> _popUntilWidget(_AppNavigationTest app) =>
+    app.tap('popUntilWidget');
 
-  await tapButton(app.tester, key: keyButton);
-}
-
-/// Exit screens
-Future<void> _exitScreens(WidgetTester tester) async {
-  /// Retreat back and exit the screen
-  await tapButton(tester, key: 'Prev Page', keyUntil: 'Exit');
-
-  await closeDrawer(tester);
-}
+//
+Future<void> _pushWidget(_AppNavigationTest app) =>
+    app.tap('pushWidget');

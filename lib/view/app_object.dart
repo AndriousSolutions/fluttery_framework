@@ -69,7 +69,6 @@ class AppObject
   bool? _inWidgetsFlutterBinding;
 
   /// Indicate if running under a 'Flutter Test' environment
-  // @Deprecated('Unreliable. Use inWidgetsFlutterBinding instead.')
   bool get inFlutterTest =>
       _inFlutterTest ??= Platform.environment.containsKey('FLUTTER_TEST') ||
           WidgetsBinding.instance is! WidgetsFlutterBinding;

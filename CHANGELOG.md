@@ -1,4 +1,9 @@
 
+## 5.7.5
+January 03, 2024
+- Avoid, Unable to load asset: "assets/images/meow.gif", during testing
+  App.inFlutterTest ? null : const SplashScreen();
+
 ## 5.7.4
 December 30, 2024
 - Correctly cast the Fluttery Framework version of StateX; not state_extended version.

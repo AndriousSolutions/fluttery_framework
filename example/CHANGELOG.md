@@ -1,4 +1,8 @@
 
+## 1.5.0
+January 03, 2024
+- App.inFlutterTest ? null : const SplashScreen();
+
 ## 1.3.0
 December 11, 2024
 - class AppState renamed class AppStateX

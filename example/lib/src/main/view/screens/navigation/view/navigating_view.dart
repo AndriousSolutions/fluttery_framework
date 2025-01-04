@@ -26,9 +26,6 @@ class NavState<T extends NavWidget> extends StateX<T> {
   }
 
   ///
-  late AppStateX appState;
-
-  ///
   String title = '';
 
   ///
