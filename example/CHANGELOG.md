@@ -1,5 +1,5 @@
 
-## 1.5.0
+## 1.5.0+1
 January 03, 2024
 - App.inFlutterTest ? null : const SplashScreen();
 

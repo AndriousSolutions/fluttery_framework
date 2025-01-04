@@ -1,5 +1,5 @@
 
-## 5.7.5
+## 5.7.5+1
 January 03, 2024
 - Avoid, Unable to load asset: "assets/images/meow.gif", during testing
   App.inFlutterTest ? null : const SplashScreen();

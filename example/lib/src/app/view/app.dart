@@ -20,7 +20,7 @@ class FlutteryExampleApp extends AppStatefulWidget {
 
   @override
   Widget? onSplashScreen(BuildContext context) =>
-      App.inFlutterTest ? const SplashScreen() : null;
+      App.inFlutterTest ? null : const SplashScreen();
 }
 
 /// This is the 'View' of the application.
@@ -71,29 +71,20 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           inInitAsync: () => Future.value(true), // Demonstration purposes
           inInitState: () {/* Optional inInitState() function */},
           inErrorHandler: (details) {
-            //
-            final appState = App.appState!;
-            // You see? appState is this object!
+            // Retrieve the last Flutter Error that has occurred.
+            // Note, the function retrieves and then 'clears' the last error from storage.
+            final lastErrorDetails =
+                ExampleAppController().appState?.lastFlutterError();
+
             assert(() {
-              if (appState is _ExampleAppState) {
+              if (lastErrorDetails != null &&
+                  details.exception != lastErrorDetails.exception) {
+                //
                 debugPrint(
-                    '=========== inErrorHandler: appState is _ExampleAppState');
+                    '=========== inErrorHandler: ${details.exceptionAsString()}');
               }
               return true;
             }());
-
-            // Retrieve the last Flutter Error that has occurred.
-            var lastErrorDetails = appState.lastFlutterErrorDetails;
-
-            // Retrieve the last Flutter Error that has occurred.
-            // Note, this function retrieves and then 'clears' the last error from storage.
-            lastErrorDetails = appState.lastFlutterError();
-
-            // This, of course, will be the same. It's this very error that's caught here.
-            if (details == lastErrorDetails) {
-              debugPrint(
-                  '=========== inErrorHandler: details == lastErrorDetails');
-            }
           },
         );
 
@@ -132,17 +123,17 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
 
   @override
   Map<String, WidgetBuilder>? onRoutes() => {
-    '/Page01': (_) => Page01(this),
-    '/Page02': (_) => Page02(this),
-    '/Page03': (_) => Page03(this),
-    '/Page04': (_) => Page04(this),
-    '/Page05': (_) => Page05(this),
-    '/Page06': (_) => Page06(this),
-    '/Page07': (_) => Page07(this),
-    '/Page08': (_) => Page08(this),
-    '/Page09': (_) => Page09(this),
-    '/Page10': (_) => Page10(this),
-  };
+        '/Page01': (_) => Page01(this),
+        '/Page02': (_) => Page02(this),
+        '/Page03': (_) => Page03(this),
+        '/Page04': (_) => Page04(this),
+        '/Page05': (_) => Page05(this),
+        '/Page06': (_) => Page06(this),
+        '/Page07': (_) => Page07(this),
+        '/Page08': (_) => Page08(this),
+        '/Page09': (_) => Page09(this),
+        '/Page10': (_) => Page10(this),
+      };
 
   /// Place a breakpoint here and see how it works
   @override
@@ -164,28 +155,22 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
   // ignore: unnecessary_overrides
   void onErrorHandler(FlutterErrorDetails details) {
     //
-    final appState = App.appState!;
-    // You see? appState is this object!
-    assert(() {
-      // ignore: unnecessary_type_check
-      if (this is _ExampleAppState && appState is _ExampleAppState) {
-        debugPrint(
-            '=========== onErrorHandler: this is _ExampleAppState && appState is _ExampleAppState');
-      }
-      return true;
-    }());
-
     // Retrieve the last Flutter Error that has occurred.
-    var lastErrorDetails = lastFlutterErrorDetails;
+    final lastErrorDetails = lastFlutterErrorDetails;
 
-    // You see? appState is this object!
     assert(() {
       if (lastErrorDetails != null &&
           details.exception == lastErrorDetails.exception &&
           lastFlutterErrorMessage ==
               'Exception: Fake error to demonstrate error handling!') {
-        debugPrint(
-            '=========== onErrorHandler(): details.exception == lastErrorDetails.exception');
+        //
+        debugPrint('=========== onErrorHandler(): $lastFlutterErrorMessage');
+      } else {
+        // An error in Testing?
+        if (App.inFlutterTest) {
+          //
+          debugPrint('=========== onErrorHandler(): ${details.exception}');
+        }
       }
       return true;
     }());
