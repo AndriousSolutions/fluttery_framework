@@ -1,4 +1,8 @@
 
+## 5.7.6
+January 04, 2024
+- Flexible() introduced in radiobutton_widget.dart
+
 ## 5.7.5+1
 January 03, 2024
 - Avoid, Unable to load asset: "assets/images/meow.gif", during testing

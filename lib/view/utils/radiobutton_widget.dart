@@ -175,64 +175,12 @@ List<Widget> radioButtonsBuilder<T>(
           //
           var radioItems = [
             Flexible(
+              fit: fit ?? FlexFit.loose,
               child: buildRadioButton(value as T),
             ),
             if (space > 0) SizedBox(width: space),
-            Flexible(
-              flex: flex ?? 1,
-              fit: fit ?? FlexFit.loose,
-              child: Text(
-                value,
-                style: style,
-                strutStyle: strutStyle,
-                textAlign: textAlign,
-                textDirection: textDirection,
-                locale: locale,
-                softWrap: softWrap,
-                overflow: overflow,
-                textScaler: textScaler,
-                maxLines: maxLines,
-                semanticsLabel: semanticsLabel,
-                textWidthBasis: textWidthBasis,
-                textHeightBehavior: textHeightBehavior,
-                selectionColor: selectionColor,
-              ),
-            ),
-          ];
-
-          if (textFirst ?? false) {
-            radioItems = radioItems.reversed.toList(growable: false);
-          }
-
-          radioButtons.add(
-            Flex(
-                direction: direction ?? Axis.horizontal,
-                mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
-                mainAxisSize: mainAxisSize ?? MainAxisSize.max,
-                crossAxisAlignment:
-                    crossAxisAlignment ?? CrossAxisAlignment.center,
-                textDirection: textDirection,
-                verticalDirection: verticalDirection ?? VerticalDirection.down,
-                textBaseline: textBaseline,
-                clipBehavior: clipBehavior ?? Clip.none,
-                children: radioItems),
-          );
-        }
-      }
-    } else if (items is Map<String, T>) {
-      //
-      items.forEach((String key, T value) {
-        //
-        var radioItems = [
-          Flexible(
-            child: buildRadioButton(value),
-          ),
-          if (space! > 0) SizedBox(width: space),
-          Flexible(
-            flex: flex ?? 1,
-            fit: fit ?? FlexFit.loose,
-            child: Text(
-              key,
+            Text(
+              value,
               style: style,
               strutStyle: strutStyle,
               textAlign: textAlign,
@@ -247,6 +195,58 @@ List<Widget> radioButtonsBuilder<T>(
               textHeightBehavior: textHeightBehavior,
               selectionColor: selectionColor,
             ),
+          ];
+
+          if (textFirst ?? false) {
+            radioItems = radioItems.reversed.toList(growable: false);
+          }
+
+          radioButtons.add(
+            Flexible(
+              flex: flex ?? 1,
+              fit: fit ?? FlexFit.loose,
+              child: Flex(
+                  direction: direction ?? Axis.horizontal,
+                  mainAxisAlignment:
+                      mainAxisAlignment ?? MainAxisAlignment.start,
+                  mainAxisSize: mainAxisSize ?? MainAxisSize.max,
+                  crossAxisAlignment:
+                      crossAxisAlignment ?? CrossAxisAlignment.center,
+                  textDirection: textDirection,
+                  verticalDirection:
+                      verticalDirection ?? VerticalDirection.down,
+                  textBaseline: textBaseline,
+                  clipBehavior: clipBehavior ?? Clip.none,
+                  children: radioItems),
+            ),
+          );
+        }
+      }
+    } else if (items is Map<String, T>) {
+      //
+      items.forEach((String key, T value) {
+        //
+        var radioItems = [
+          Flexible(
+            fit: fit ?? FlexFit.loose,
+            child: buildRadioButton(value),
+          ),
+          if (space! > 0) SizedBox(width: space),
+          Text(
+            key,
+            style: style,
+            strutStyle: strutStyle,
+            textAlign: textAlign,
+            textDirection: textDirection,
+            locale: locale,
+            softWrap: softWrap,
+            overflow: overflow,
+            textScaler: textScaler,
+            maxLines: maxLines,
+            semanticsLabel: semanticsLabel,
+            textWidthBasis: textWidthBasis,
+            textHeightBehavior: textHeightBehavior,
+            selectionColor: selectionColor,
           ),
         ];
 
@@ -255,16 +255,21 @@ List<Widget> radioButtonsBuilder<T>(
         }
 
         radioButtons.add(
-          Flex(
-            direction: direction ?? Axis.horizontal,
-            mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
-            mainAxisSize: mainAxisSize ?? MainAxisSize.max,
-            crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
-            textDirection: textDirection,
-            verticalDirection: verticalDirection ?? VerticalDirection.down,
-            textBaseline: textBaseline,
-            clipBehavior: clipBehavior ?? Clip.none,
-            children: radioItems,
+          Flexible(
+            flex: flex ?? 1,
+            fit: fit ?? FlexFit.loose,
+            child: Flex(
+              direction: direction ?? Axis.horizontal,
+              mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
+              mainAxisSize: mainAxisSize ?? MainAxisSize.max,
+              crossAxisAlignment:
+                  crossAxisAlignment ?? CrossAxisAlignment.center,
+              textDirection: textDirection,
+              verticalDirection: verticalDirection ?? VerticalDirection.down,
+              textBaseline: textBaseline,
+              clipBehavior: clipBehavior ?? Clip.none,
+              children: radioItems,
+            ),
           ),
         );
       });

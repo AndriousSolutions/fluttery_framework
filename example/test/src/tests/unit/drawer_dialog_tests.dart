@@ -12,7 +12,7 @@ Future<void> dialogTests(WidgetTester tester) async {
     //
     await _openDialogWindow('Show Box', tester);
 
-    await _openDialogWindow('Dialog Box', tester);
+    await _openDialogWindow('Dialog Box', tester, skipOffstage: false);
 
     await _openDialogWindow('Message Box', tester);
 
@@ -23,9 +23,9 @@ Future<void> dialogTests(WidgetTester tester) async {
 }
 
 /// Open a particular type of dialog window.
-Future<void> _openDialogWindow(String key, WidgetTester tester) async {
+Future<void> _openDialogWindow(String key, WidgetTester tester, {bool? skipOffstage}) async {
   //
-  var finder = find.byKey(Key(key));
+  var finder = find.byKey(Key(key), skipOffstage: skipOffstage ?? true);
 
   expect(finder, findsOneWidget, reason: _location);
 

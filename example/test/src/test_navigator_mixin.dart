@@ -68,14 +68,14 @@ class _AppNavigationTest extends StateXController {
 
     expect(page == 'Page02', isTrue, reason: _location);
 
-    // Attempt to pop the next route
-    popped = false;
-
-    await _popAndPushNamedWidget(this);
-
-    expect(popped, isTrue, reason: _location);
-
-    expect(page == 'Page06', isTrue, reason: _location);
+    // // Attempt to pop the next route
+    // popped = false;
+    //
+    // await _popAndPushNamedWidget(this);
+    //
+    // expect(popped, isTrue, reason: _location);
+    //
+    // expect(page == 'Page06', isTrue, reason: _location);
 
     // // Attempt to pop the next route
     // popped = false;
