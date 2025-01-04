@@ -1,4 +1,4 @@
-//
+///
 Map<String, String> zhCN = {
   'Demo App': '演示应用',
   'Counter Page Demo': '计数器页面演示',

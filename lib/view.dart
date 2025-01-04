@@ -51,6 +51,9 @@ export '/view/app_statefulwidget.dart' hide ErrorWidgetBuilder;
 /// Settings
 export '/view/utils/app_settings.dart';
 
+/// Color
+export '/view/utils/color_extension.dart';
+
 /// GoRouter
 export '/view/utils/gorouter_extension.dart';
 

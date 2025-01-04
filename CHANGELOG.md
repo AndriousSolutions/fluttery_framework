@@ -1,4 +1,9 @@
 
+## 5.8.0
+January 04, 2024
+- extension ColorExts on Color to overcome Flutter 3.27 conversion issue
+- Addressed Dart Analysis issues: e.g. /// Missing Documentation
+
 ## 5.7.6
 January 04, 2024
 - Flexible() introduced in radiobutton_widget.dart

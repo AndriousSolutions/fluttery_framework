@@ -5,6 +5,7 @@ import '/src/controller.dart';
 ///
 /// {@category Get started}
 class ThemeController extends StateXController {
+  ///
   factory ThemeController() => _this ??= ThemeController._();
   ThemeController._() {
     _isDarkmode = Prefs.getBool('darkmode', false);

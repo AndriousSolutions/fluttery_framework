@@ -25,7 +25,7 @@ Future<void> testAppObject(WidgetTester tester) async {
 
   App.themeData = const CupertinoThemeData();
 
-  App.themeData = Color(App.themeData!.primaryColor.value);
+  App.themeData = Color(App.themeData!.primaryColor.toARGB32);
 
   App.isInit = App.isInit;
 
@@ -39,7 +39,7 @@ Future<void> testAppObject(WidgetTester tester) async {
 
   App.allowChangeTheme;
 
-  App.getInstallNum();
+  await App.getInstallNum();
 
   final details = FlutterErrorDetails(exception: AssertionError('error'));
 
@@ -51,7 +51,7 @@ Future<void> testAppObject(WidgetTester tester) async {
   App.mainWindow;
 
   // ignore: unused_local_variable
-  GlobalKey<ScaffoldMessengerState>? key = App.appState!.scaffoldMessengerKey;
+  final GlobalKey<ScaffoldMessengerState>? key = App.appState!.scaffoldMessengerKey;
 
   App.getMaterialColor(Colors.red);
 

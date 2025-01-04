@@ -6,11 +6,14 @@ import '/src/model.dart';
 // You can see 'at a glance' this Controller also 'talks to' the interface (View).
 import '/src/view.dart';
 
+///
 class WordPairsController extends StateXController {
+  ///
   factory WordPairsController([StateX? state]) =>
       _this ??= WordPairsController._(state);
   WordPairsController._(StateX? super.state) : model = WordPairsModel();
   static WordPairsController? _this;
+  ///
   final WordPairsModel model;
 
   /// The framework will call this method exactly once.
@@ -24,14 +27,19 @@ class WordPairsController extends StateXController {
     }
   }
 
+  ///
   void build(int i) => model.build(i);
 
+  ///
   String get data => model.data;
 
+  ///
   Widget get trailing => model.trailing;
 
+  ///
   void onTap(int i) => model.onTap(i);
 
+  ///
   Iterable<Widget> tiles() => model.tiles();
 
   /// **************  Life cycle events ****************

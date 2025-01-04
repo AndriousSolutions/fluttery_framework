@@ -96,7 +96,7 @@ class _CounterPageState extends StateX<CounterPage> {
                 children: [
                   Flexible(
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 50.0),
+                      padding: const EdgeInsets.only(right: 50),
                       child: ElevatedButton(
                         key: const Key('Page 1'),
                         onPressed: () async {
@@ -121,6 +121,7 @@ class _CounterPageState extends StateX<CounterPage> {
         onPressed: () {
           // Deliberately throw an error to demonstrate error handling.
           throw Exception('Fake error to demonstrate error handling!');
+          // ignore: dead_code
           setState(con.onPressed);
         },
         child: const Icon(Icons.add),
@@ -192,7 +193,7 @@ class _CounterPageState extends StateX<CounterPage> {
                     children: [
                       Flexible(
                         child: Padding(
-                          padding: const EdgeInsets.only(right: 50.0),
+                          padding: const EdgeInsets.only(right: 50),
                           child: ElevatedButton(
                             key: const Key('Page 1'),
                             onPressed: () async {
@@ -411,7 +412,7 @@ class _CounterPageState extends StateX<CounterPage> {
   /// Called when a request is received from the system to exit the application.
   @override
   Future<AppExitResponse> didRequestAppExit() async {
-    super.didRequestAppExit();
+    await super.didRequestAppExit();
     return AppExitResponse.exit;
   }
 

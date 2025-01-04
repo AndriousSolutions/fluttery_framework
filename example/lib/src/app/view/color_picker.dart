@@ -6,8 +6,9 @@ import '/src/view.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart'
     show MaterialColorPicker;
 
+///
 class ColorPicker {
-  //
+  ///
   static Color get color => _color;
 
   static set color(Color? color) {
@@ -18,7 +19,9 @@ class ColorPicker {
 
   static Color _color = Colors.red;
 
+  ///
   static ColorSwatch<int?> get colorSwatch => _colorSwatch;
+  ///
   static set colorSwatch(ColorSwatch<int?> swatch) {
     _color = swatch;
     _colorSwatch = swatch;
@@ -26,8 +29,11 @@ class ColorPicker {
 
   static ColorSwatch<int?> _colorSwatch = Colors.red;
 
+  ///
   static bool allowShades = false;
+  ///
   static double get circleSize => _circleSize;
+  ///
   static set circleSize(double size) {
     if (size > 1.0) {
       _circleSize = size;
@@ -36,6 +42,7 @@ class ColorPicker {
 
   static double _circleSize = 60;
 
+  ///
   static IconData iconSelected = Icons.check;
 
   // ignore: avoid_setters_without_getters
@@ -46,8 +53,10 @@ class ColorPicker {
   static set onChange(ValueChanged<ColorSwatch<int?>> func) => _onChange = func;
   static ValueChanged<ColorSwatch<int?>>? _onChange;
 
+  ///
   static List<ColorSwatch<int?>> get colors => Colors.primaries;
 
+  ///
   static Future<ColorSwatch<int>?> showColorPicker({
     required BuildContext context,
     ValueChanged<Color>? onColorChange,
@@ -101,9 +110,14 @@ class ColorPicker {
   int get hashCode => 0;
 }
 
+///
 enum DialogDemoAction {
+  ///
   cancel,
+  ///
   discard,
+  ///
   disagree,
+  ///
   agree,
 }

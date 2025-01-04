@@ -29,7 +29,7 @@ class _AppNavigationTest extends StateXController {
   /// Series of tests
   Future<void> tests() async {
     //
-    var opened = await openDrawerOption('Navigation', tester);
+    final opened = await openDrawerOption('Navigation', tester);
 
     if (!opened) {
       return;

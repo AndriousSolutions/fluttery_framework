@@ -1,4 +1,4 @@
-//
+///
 Map<String, String> frFR = {
   'Demo App': 'Application de démonstration',
   'Counter Page Demo': 'Démo de la page de compteur',
@@ -42,5 +42,4 @@ Map<String, String> frFR = {
   'New Cats': 'Nouveaux chats',
   'New Foxes': 'Nouveaux renards',
   'New Birds': 'Nouveaux oiseaux',
-  'Material Ver.': '',
 };

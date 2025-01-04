@@ -1,4 +1,4 @@
-//
+///
 Map<String, String> ruRU = {
   'Demo App': 'Демонстрационное приложение',
   'Counter Page Demo': 'Демонстрационная страница счетчика',

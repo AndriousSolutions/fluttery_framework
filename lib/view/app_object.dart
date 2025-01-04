@@ -554,7 +554,7 @@ mixin _AppThemeDataMixin {
     ColorSwatch<int?>? swatch,
   }) {
     //
-    final value = swatch?.value;
+    final value = swatch?.toARGB32;
 
     if (!Prefs.ready()) {
       return value == null ? null : Color(value);
@@ -578,7 +578,7 @@ mixin _AppThemeDataMixin {
       //
       materialColor = Colors.primaries[index];
 
-      color ??= Color(materialColor.value);
+      color ??= Color(materialColor.toARGB32);
 
       /// Assign the colour to the floating button as well.
       themeData = ThemeData(
@@ -599,9 +599,9 @@ mixin _AppThemeDataMixin {
       return null;
     }
 
-    final int red = color.red;
-    final int green = color.green;
-    final int blue = color.blue;
+    final int red = color.intRed;
+    final int green = color.intGreen;
+    final int blue = color.intBlue;
 
     final Map<int, Color> shades = {
       50: Color.fromRGBO(red, green, blue, .1),
@@ -615,7 +615,7 @@ mixin _AppThemeDataMixin {
       800: Color.fromRGBO(red, green, blue, .9),
       900: Color.fromRGBO(red, green, blue, 1),
     };
-    return MaterialColor(color.value, shades);
+    return MaterialColor(color.toARGB32, shades);
   }
 
   ///

@@ -1,3 +1,4 @@
+// ignore_for_file: unused_local_variable
 library;
 
 /// Copyright 2024 Andrious Solutions Ltd. All rights reserved.

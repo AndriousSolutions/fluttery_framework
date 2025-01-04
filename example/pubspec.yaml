@@ -29,15 +29,15 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # https://pub.dev/packages/flutter_material_color_picker/
+  flutter_material_color_picker: ^1.2.0
+
   # https://pub.dev/packages/fluttery_framework
   fluttery_framework:
     path: ../
 
   # https://pub.dev/packages/http
   http: ^1.2.2
-
-  # https://pub.dev/packages/flutter_material_color_picker/
-  flutter_material_color_picker: ^1.2.0
 
   # Extensions
   more_extensions:

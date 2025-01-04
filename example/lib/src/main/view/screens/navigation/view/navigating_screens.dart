@@ -211,7 +211,7 @@ class _NavState<T extends NavWidget> extends NavState<T> {
                 }
               },
             ),
-            Flexible(child: Text(text ?? '')),
+            Flexible(child: Text(text)),
             if (nextWidget == null)
               const Text('         ')
             else

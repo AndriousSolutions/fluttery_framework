@@ -1,4 +1,4 @@
-//
+///
 Map<String, String> esAR = {
   'Demo App': 'Aplicación de demostración',
   'Counter Page Demo': 'Demostración de página de contador',

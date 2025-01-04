@@ -348,7 +348,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   /// another activity is focused, such as a split-screen app, a phone call,
   /// a picture-in-picture app, a system dialog, or another window.
   ///
-  /// Apps in this state should assume that they may be [pausedLifecycleState] at any time.
+  /// Apps in this state should assume that they may be ['pausedLifecycleState]' at any time.
   @override
   void inactiveAppLifecycleState() {
     if (inDebugMode) {
@@ -400,7 +400,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     if (inDebugMode) {
       debugPrint('############ Event: didRequestAppExit in $this');
     }
-    super.didRequestAppExit();
+    await super.didRequestAppExit();
     return AppExitResponse.exit;
   }
 

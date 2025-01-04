@@ -7,6 +7,7 @@ import 'package:english_words/english_words.dart';
 
 /// Representing the data source (the model) of this App's design pattern.
 class WordPairsModel extends StateXController {
+  ///
   factory WordPairsModel([StateX? state]) => _this ??= WordPairsModel._(state);
   WordPairsModel._(StateX? super.state) {
     words = _EnglishWords();
@@ -14,31 +15,41 @@ class WordPairsModel extends StateXController {
     onPressed();
   }
   static WordPairsModel? _this;
+  ///
   // ignore: library_private_types_in_public_api
   late _EnglishWords words;
   late int _counter;
 
   int _index = 0;
 
-  // data for the name generator app.
+  /// data for the name generator app.
   String get data => words.current.asPascalCase;
 
+  ///
   void onPressed() => words.build(_counter++);
 
+  ///
   List<WordPair> get suggestions => words.suggestions;
 
+  ///
   Set<WordPair> get saved => words.saved;
 
+  ///
   WordPair get current => words.current;
 
+  ///
   String get title => current.asPascalCase;
 
+  ///
   Icon get icon => words.icon;
 
+  ///
   Widget get trailing => icon;
 
+  ///
   void build(int i) => words.build(i);
 
+  ///
   Iterable<Widget> tiles({TextStyle style = const TextStyle(fontSize: 25)}) =>
       words.saved.map(
         (WordPair pair) {
@@ -57,6 +68,7 @@ class WordPairsModel extends StateXController {
         },
       );
 
+  ///
   void onTap(int i) => setState(() {
         words.onTap(i);
       });

@@ -23,7 +23,7 @@ export '/view/app_object.dart' show App, AppDrawer;
 //App's Controller & StateXController
 // ignore: deprecated_member_use_from_same_package
 export 'controller/app_statex_controller.dart'
-    show AppController, AppStateXController, StateXController;
+    show AppStateXController, StateXController;
 
 // Device Info
 export 'controller/device_info.dart' show DeviceInfo;

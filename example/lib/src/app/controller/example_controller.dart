@@ -165,7 +165,7 @@ class ExampleAppController extends AppStateXController {
   /// Change the app's colour theme
   Future<void> changeColor() async {
     // Get the current colour.
-    ColorPicker.color = Color(App.themeData!.primaryColor.value);
+    ColorPicker.color = Color(App.themeData!.primaryColor.toARGB32);
 
     await ColorPicker.showColorPicker(
       context: App.context!,
@@ -253,6 +253,7 @@ class ExampleAppController extends AppStateXController {
     //
     final init = await super.initAsync();
 
+    // ignore: unused_local_variable
     final widget = appState!.widget as FlutteryExampleApp;
 
     // Don't delay if in testing for example

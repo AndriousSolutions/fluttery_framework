@@ -1,3 +1,4 @@
+//
 library;
 
 /// Copyright 2022 Andrious Solutions Ltd. All rights reserved.
@@ -32,6 +33,7 @@ void testFlutteryFramework() {
   // Runs before EACH test or group
   setUp(() {
     // Ensure TestWidgetsFlutterBinding is explicitly initialized
+    // ignore: unused_local_variable
     final TestWidgetsFlutterBinding binding =
         TestWidgetsFlutterBinding.ensureInitialized();
 

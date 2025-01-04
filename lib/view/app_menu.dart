@@ -229,7 +229,7 @@ class PopupMenuWidget<T> extends StatefulWidget
   @override
   List<PopupMenuEntry<T>>? onMenuEntries() => [];
 
-  /// Explicitly pass a BuildContext: List<PopupMenuEntry<T>> Function(BuildContext context);
+  /// Explicitly pass a BuildContext: List\<PopupMenuEntry\<T>> Function(BuildContext context);
   @override
   PopupMenuItemBuilder<T>? onItemBuilder() => null;
 
@@ -701,7 +701,7 @@ mixin PopupMenuFunctionsMixin<T> {
   /// List of menu entry items of type T to appear in the popup menu.
   List<PopupMenuEntry<T>>? onMenuEntries() => null;
 
-  /// Explicitly pass a BuildContext: List<PopupMenuEntry<T>> Function(BuildContext context);
+  /// Explicitly pass a BuildContext: List\<PopupMenuEntry\<T>> Function(BuildContext context);
   PopupMenuItemBuilder<T>? onItemBuilder() => null;
 
   /// Called when the popup menu is shown.

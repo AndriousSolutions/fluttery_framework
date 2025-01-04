@@ -12,6 +12,7 @@ Future<void> counterTest(WidgetTester tester) async {
   expect(find.text('1'), findsNothing, reason: _location);
 
   // Assume the AppState object is utilized in this app.
+  // ignore: unused_local_variable
   final appState = CounterController().rootState!;
 
   // 9 counts
@@ -21,7 +22,7 @@ Future<void> counterTest(WidgetTester tester) async {
     await tester.pump();
   }
 
-  var counter = int.parse(count);
+  final counter = int.parse(count);
 
   count = (counter + 9).toString();
 

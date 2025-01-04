@@ -1,3 +1,4 @@
+// ignore_for_file: unnecessary_statements
 library;
 
 /// Copyright 2023 Andrious Solutions Ltd. All rights reserved.

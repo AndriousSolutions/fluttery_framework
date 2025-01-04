@@ -3,6 +3,7 @@ library;
 /// Model
 
 class CounterModel {
+  ///
   factory CounterModel({bool? useDouble}) =>
       _this ??= CounterModel._(useDouble);
   CounterModel._(bool? useDouble) {
@@ -15,8 +16,10 @@ class CounterModel {
   late int _integer;
   late double _double;
 
+  ///
   String get data => _useDouble ? _double.toStringAsFixed(2) : '$_integer';
 
+  ///
   void onPressed() => _useDouble ? _double = _double + 0.01 : _integer++;
 }
 
