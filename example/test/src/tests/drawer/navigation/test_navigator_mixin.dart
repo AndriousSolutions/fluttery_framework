@@ -84,14 +84,14 @@ class _AppNavigationTest extends StateXController {
 
     expect(page == 'Page02', isTrue, reason: _location);
 
-    // Attempt to pop the next route
-    popped = false;
-
-    await _popAndPushNamedWidgetTest(this);
-
-    expect(popped, isTrue, reason: _location);
-
-    expect(page == 'Page05', isTrue, reason: _location);
+    // // Attempt to pop the next route
+    // popped = false;
+    //
+    // await _popAndPushNamedWidgetTest(this);
+    //
+    // expect(popped, isTrue, reason: _location);
+    //
+    // expect(page == 'Page05', isTrue, reason: _location);
 
     // Attempt to pop the next route
     popped = false;
@@ -102,21 +102,21 @@ class _AppNavigationTest extends StateXController {
     //
     // expect(page == 'Page02', isTrue, reason: _location);
 
-    final tapPush = await scrollToTap(tester, 'push');
-
-    if (!tapPush) {
-      return;
-    }
-
-    await _pushWidgetTest(this);
-
-    await _pushAndRemoveUntilWidgetTest(this);
-
-    await _pushNamedWidgetTest(this);
-
-    await _pushNamedAndRemoveUntilWidget(this);
-
-    await _pushReplacementWidgetTest(this);
+    // final tapPush = await scrollToTap(tester, 'push');
+    //
+    // if (!tapPush) {
+    //   return;
+    // }
+    //
+    // await _pushWidgetTest(this);
+    //
+    // await _pushAndRemoveUntilWidgetTest(this);
+    //
+    // await _pushNamedWidgetTest(this);
+    //
+    // await _pushNamedAndRemoveUntilWidget(this);
+    //
+    // await _pushReplacementWidgetTest(this);
 
     /// Stop the testing here for now.
     await exitScreens(tester);

@@ -35,255 +35,289 @@ class NavState<T extends NavWidget> extends StateX<T> {
   int index = -1;
 
   ///
-  Widget canPopWidget() {
-    return RouteButton(
-      key: Key('canPopWidget$title'),
-      onPressed: () => _con.canPop(),
-      child: const Text('canPop'),
-    );
-  }
+  Widget canPopWidget() => RouteButton(
+        key: Key('canPopWidget$title'),
+        onPressed: () => _con.canPop(),
+        child: const Text('canPop'),
+      );
 
   ///
-  Widget finalizeRouteWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('finalizeRouteWidget$title'),
-      onPressed: enabled ? () => _con.finalizeRoute() : null,
-      child: const Text('finalizeRoute'),
-    );
-  }
+  Widget finalizeRouteWidget() => RouteButton(
+        key: Key('finalizeRouteWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.finalizeRoute();
+          }
+        },
+        child: const Text('finalizeRoute'),
+      );
 
   ///
-  Widget maybePopWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('maybePopWidget$title'),
-      onPressed: enabled ? () => _con.maybePop<bool>(true) : null,
-      child: const Text('maybePop'),
-    );
-  }
+  Widget maybePopWidget() => RouteButton(
+        key: Key('maybePopWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.maybePop<bool>(true);
+          }
+        },
+        child: const Text('maybePop'),
+      );
 
   ///
-  Widget popWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('popWidget$title'),
-      onPressed: enabled ? () => _con.pop<bool>(true) : null,
-      child: const Text('pop'),
-    );
-  }
+  Widget popWidget() => RouteButton(
+        key: Key('popWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.pop<bool>(true);
+          }
+        },
+        child: const Text('pop'),
+      );
 
   ///
-  Widget popAndPushNamedWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('popAndPushNamedWidget$title'),
-      onPressed: enabled ? () => _con.popAndPushNamed() : null,
-      child: const Text('popAndPushNamed'),
-    );
-  }
+  Widget popAndPushNamedWidget() => RouteButton(
+        key: Key('popAndPushNamedWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.popAndPushNamed();
+          }
+        },
+        child: const Text('popAndPushNamed'),
+      );
 
   ///
-  Widget popUntilWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('popUntilWidget$title'),
-      onPressed: enabled ? () => _con.popUntil() : null,
-      child: const Text('popUntil'),
-    );
-  }
+  Widget popUntilWidget() => RouteButton(
+        key: Key('popUntilWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.popUntil();
+          }
+        },
+        child: const Text('popUntil'),
+      );
 
   ///
-  Widget pushWidget() {
-    final enabled = _con.lastRoute;
-    return RouteButton(
-      key: Key('pushWidget$title'),
-      onPressed: enabled ? () => _con.push() : null,
-      child: const Text('push'),
-    );
-  }
+  Widget pushWidget() => RouteButton(
+        key: Key('pushWidget$title'),
+        onPressed: () {
+          final enabled = _con.lastRoute;
+          if (enabled) {
+            _con.push();
+          }
+        },
+        child: const Text('push'),
+      );
 
   ///
-  Widget pushAndRemoveUntilWidget() {
-    final enabled = _con.lastRoute;
-    return RouteButton(
-      key: Key('pushAndRemoveUntilWidget$title'),
-      onPressed: enabled ? () => _con.pushAndRemoveUntil() : null,
-      child: const Text('pushAndRemoveUntil'),
-    );
-  }
+  Widget pushAndRemoveUntilWidget() => RouteButton(
+        key: Key('pushAndRemoveUntilWidget$title'),
+        onPressed: () {
+          final last = _con.lastRoute;
+          if (!last) {
+            _con.pushAndRemoveUntil();
+          }
+        },
+        child: const Text('pushAndRemoveUntil'),
+      );
 
   ///
-  Widget pushNamedWidget() {
-    final enabled = _con.lastRoute;
-    return RouteButton(
-      key: Key('pushNamedWidget$title'),
-      onPressed: enabled ? () => _con.pushNamed() : null,
-      child: const Text('pushNamed'),
-    );
-  }
+  Widget pushNamedWidget() => RouteButton(
+        key: Key('pushNamedWidget$title'),
+        onPressed: () {
+          final last = _con.lastRoute;
+          if (!last) {
+            _con.pushNamed();
+          }
+        },
+        child: const Text('pushNamed'),
+      );
 
   ///
-  Widget pushNamedAndRemoveUntilWidget() {
-    return RouteButton(
-      key: Key('pushNamedAndRemoveUntilWidget$title'),
-      onPressed: () {
-        final last = _con.lastRoute;
-        if (!last) {
-          _con.pushNamedAndRemoveUntil();
-        }
-      },
-      child: const Text('pushNamedAndRemoveUntil'),
-    );
-  }
+  Widget pushNamedAndRemoveUntilWidget() => RouteButton(
+        key: Key('pushNamedAndRemoveUntilWidget$title'),
+        onPressed: () {
+          final last = _con.lastRoute;
+          if (!last) {
+            _con.pushNamedAndRemoveUntil();
+          }
+        },
+        child: const Text('pushNamedAndRemoveUntil'),
+      );
 
   ///
-  Widget pushReplacementWidget() {
-    return RouteButton(
-      key: Key('pushReplacementWidget$title'),
-      onPressed: () => _con.pushReplacement(),
-      child: const Text('pushReplacement'),
-    );
-  }
+  Widget pushReplacementWidget() => RouteButton(
+        key: Key('pushReplacementWidget$title'),
+        onPressed: () => _con.pushReplacement(),
+        child: const Text('pushReplacement'),
+      );
 
   ///
-  Widget pushReplacementNamedWidget() {
-    return RouteButton(
-      key: Key('pushReplacementNamedWidget$title'),
-      onPressed: _con.lastRoute ? () => _con.pushReplacement() : null,
-      child: const Text('pushReplacementNamed'),
-    );
-  }
+  Widget pushReplacementNamedWidget() => RouteButton(
+        key: Key('pushReplacementNamedWidget$title'),
+        onPressed: () {
+          final last = _con.lastRoute;
+          if (!last) {
+            _con.pushReplacement();
+          }
+        },
+        child: const Text('pushReplacementNamed'),
+      );
 
   ///
-  Widget removeRouteWidget() {
-    return RouteButton(
-      key: Key('removeRouteWidget$title'),
-      onPressed: _con.canPopRoute ? () => _con.removeRoute() : null,
-      child: const Text('removeRoute'),
-    );
-  }
+  Widget removeRouteWidget() => RouteButton(
+        key: Key('removeRouteWidget$title'),
+        onPressed: _con.canPopRoute ? () => _con.removeRoute() : null,
+        child: const Text('removeRoute'),
+      );
 
   ///
-  Widget removeRouteBelowWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('removeRouteBelowWidget$title'),
-      onPressed: enabled ? () => _con.removeRouteBelow() : null,
-      child: const Text('removeRouteBelow'),
-    );
-  }
+  Widget removeRouteBelowWidget() => RouteButton(
+        key: Key('removeRouteBelowWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.removeRouteBelow();
+          }
+        },
+        child: const Text('removeRouteBelow'),
+      );
 
   ///
-  Widget replaceWidget() {
-    final enabled = _con.lastRoute;
-    return RouteButton(
-      key: Key('replaceWidget$title'),
-      onPressed: enabled ? () => _con.replace() : null,
-      child: const Text('replace'),
-    );
-  }
+  Widget replaceWidget() => RouteButton(
+        key: Key('replaceWidget$title'),
+        onPressed: () {
+          final last = _con.lastRoute;
+          if (!last) {
+            _con.replace();
+          }
+        },
+        child: const Text('replace'),
+      );
 
   ///
-  Widget replaceRouteBelowWidget() {
-    final enabled = _con.lastRoute;
-    return RouteButton(
-      key: Key('replaceRouteBelowWidget$title'),
-      onPressed: enabled ? () => _con.replaceRouteBelow() : null,
-      child: const Text('replaceRouteBelow'),
-    );
-  }
+  Widget replaceRouteBelowWidget() => RouteButton(
+        key: Key('replaceRouteBelowWidget$title'),
+        onPressed: () {
+          final last = _con.lastRoute;
+          if (!last) {
+            _con.replaceRouteBelow();
+          }
+        },
+        child: const Text('replaceRouteBelow'),
+      );
 
   ///
-  Widget restorablePopAndPushNamedWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('restorablePopAndPushNamedWidget$title'),
-      onPressed: enabled ? () => _con.restorablePopAndPushNamed() : null,
-      child: const Text('restorablePopAndPushNamed'),
-    );
-  }
+  Widget restorablePopAndPushNamedWidget() => RouteButton(
+        key: Key('restorablePopAndPushNamedWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.restorablePopAndPushNamed();
+          }
+        },
+        child: const Text('restorablePopAndPushNamed'),
+      );
 
   ///
-  Widget restorablePushWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('restorablePushWidget$title'),
-      onPressed: enabled ? () => _con.restorablePush() : null,
-      child: const Text('restorablePush'),
-    );
-  }
+  Widget restorablePushWidget() => RouteButton(
+        key: Key('restorablePushWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.restorablePush();
+          }
+        },
+        child: const Text('restorablePush'),
+      );
 
   ///
-  Widget restorablePushAndRemoveUntilWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('restorablePushAndRemoveUntilWidget$title'),
-      onPressed: enabled ? () => _con.restorablePushAndRemoveUntil() : null,
-      child: const Text('restorablePushAndRemoveUntil'),
-    );
-  }
+  Widget restorablePushAndRemoveUntilWidget() => RouteButton(
+        key: Key('restorablePushAndRemoveUntilWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.restorablePushAndRemoveUntil();
+          }
+        },
+        child: const Text('restorablePushAndRemoveUntil'),
+      );
 
   ///
-  Widget restorablePushNamedWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('restorablePushNamedWidget$title'),
-      onPressed: enabled ? () => _con.restorablePushNamed() : null,
-      child: const Text('restorablePushNamed'),
-    );
-  }
+  Widget restorablePushNamedWidget() => RouteButton(
+        key: Key('restorablePushNamedWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.restorablePushNamed();
+          }
+        },
+        child: const Text('restorablePushNamed'),
+      );
 
   ///
-  Widget restorablePushNamedAndRemoveUntilWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('restorablePushNamedAndRemoveUntilWidget$title'),
-      onPressed:
-          enabled ? () => _con.restorablePushNamedAndRemoveUntil() : null,
-      child: const Text('restorablePushNamedAndRemoveUntil'),
-    );
-  }
+  Widget restorablePushNamedAndRemoveUntilWidget() => RouteButton(
+        key: Key('restorablePushNamedAndRemoveUntilWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.restorablePushNamedAndRemoveUntil();
+          }
+        },
+        child: const Text('restorablePushNamedAndRemoveUntil'),
+      );
 
   ///
-  Widget restorablePushReplacementWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('restorablePushReplacementWidget$title'),
-      onPressed: enabled ? () => _con.restorablePushReplacement() : null,
-      child: const Text('restorablePushReplacement'),
-    );
-  }
+  Widget restorablePushReplacementWidget() => RouteButton(
+        key: Key('restorablePushReplacementWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.restorablePushReplacement();
+          }
+        },
+        child: const Text('restorablePushReplacement'),
+      );
 
   ///
-  Widget restorablePushReplacementNamedWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('restorablePushReplacementNamedWidget$title'),
-      onPressed: enabled ? () => _con.restorablePushReplacementNamed() : null,
-      child: const Text('restorablePushReplacementNamed'),
-    );
-  }
+  Widget restorablePushReplacementNamedWidget() => RouteButton(
+        key: Key('restorablePushReplacementNamedWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.restorablePushReplacementNamed();
+          }
+        },
+        child: const Text('restorablePushReplacementNamed'),
+      );
 
   ///
-  Widget restorableReplaceWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('restorableReplaceWidget$title'),
-      onPressed: enabled ? () => _con.restorableReplace() : null,
-      child: const Text('restorableReplace'),
-    );
-  }
+  Widget restorableReplaceWidget() => RouteButton(
+        key: Key('restorableReplaceWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.restorableReplace();
+          }
+        },
+        child: const Text('restorableReplace'),
+      );
 
   ///
-  Widget restorableReplaceRouteBelowWidget() {
-    final enabled = _con.canPopRoute;
-    return RouteButton(
-      key: Key('restorableReplaceRouteBelowWidget$title'),
-      onPressed: enabled ? () => _con.restorableReplaceRouteBelow() : null,
-      child: const Text('restorableReplaceRouteBelow'),
-    );
-  }
+  Widget restorableReplaceRouteBelowWidget() => RouteButton(
+        key: Key('restorableReplaceRouteBelowWidget$title'),
+        onPressed: () {
+          final enabled = _con.canPopRoute;
+          if (enabled) {
+            _con.restorableReplaceRouteBelow();
+          }
+        },
+        child: const Text('restorableReplaceRouteBelow'),
+      );
 }
 
 ///

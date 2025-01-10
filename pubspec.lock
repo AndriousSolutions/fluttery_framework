@@ -312,7 +312,7 @@ packages:
       path: example
       relative: true
     source: path
-    version: "1.5.0+1"
+    version: "1.5.0+2"
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter
@@ -837,10 +837,10 @@ packages:
     dependency: "direct main"
     description:
       name: url_launcher_web
-      sha256: "772638d3b34c779ede05ba3d38af34657a05ac55b06279ea6edd409e323dca8e"
+      sha256: "3ba963161bd0fe395917ba881d320b9c4f6dd3c4a233da62ab18a5025c85f1e9"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.3"
+    version: "2.4.0"
   url_launcher_windows:
     dependency: transitive
     description:
@@ -931,4 +931,4 @@ packages:
     version: "6.5.0"
 sdks:
   dart: ">=3.6.0 <4.0.0"
-  flutter: ">=3.24.0"
+  flutter: ">=3.27.0"

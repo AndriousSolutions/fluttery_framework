@@ -1,7 +1,8 @@
 
-## 1.5.0+1
+## 1.5.0+2
 January 03, 2024
 - App.inFlutterTest ? null : const SplashScreen();
+- Further changes to tests in test_navigator_mixin.dart 
 
 ## 1.3.0
 December 11, 2024

@@ -1,5 +1,5 @@
 
-## 5.9.0+1
+## 5.9.0+2
 January 08, 2024
 - Moved class app_drawer to its own Dart file
 In app_statex.dart:
@@ -27,6 +27,7 @@ New 'in-line' functions allowing the dynamic use of development tools:
 - mixin DebugPaintPrintProfileOptionsMixin supplies development tools. For example:
   debug.debugPaintSizeEnabled = debugPaintSizeEnabled ?? onDebugPaintSizeEnabled() ?? false;
 - app_drawer.dart contains the class, AppDrawer
+- Further changes to tests in test_navigator_mixin.dart
 
 ## 5.8.0+1
 January 04, 2025
