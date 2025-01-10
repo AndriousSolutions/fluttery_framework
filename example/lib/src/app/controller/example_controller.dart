@@ -430,7 +430,7 @@ class ExampleAppController extends AppStateXController {
     /// AppLifecycleState.resume
     if (inDebugMode) {
       debugPrint(
-          '############ Event: didChangeAppLifecycleState() in ${this.state} for $this');
+          '############ Event: didChangeAppLifecycleState() in $appState for $this');
     }
   }
 

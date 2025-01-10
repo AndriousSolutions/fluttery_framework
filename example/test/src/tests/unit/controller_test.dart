@@ -1,5 +1,5 @@
 //
-import '../../_test_imports.dart';
+import '../../_tests_exports.dart';
 
 String _location = '========================== controller_test.dart';
 

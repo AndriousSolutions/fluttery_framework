@@ -32,8 +32,23 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           controller: ExampleAppController(),
           inTitle: () => 'Demo App',
           switchUI: ExampleAppController().switchUI,
-          useRouterConfig: ExampleAppController().useRouterConfig,
           errorScreen: defaultErrorWidgetBuilder,
+          // Commented out. It will always the value 'first' passed to the parameter
+          // Named parameters always takes precedence over inDebugShowCheckedModeBanner and onDebugShowCheckedModeBanner()
+          // debugShowCheckedModeBanner: dev.debugShowCheckedModeBanner,
+          inDebugShowCheckedModeBanner: () => dev.debugShowCheckedModeBanner,
+          inDebugPaintSizeEnabled: () => dev.debugPaintSizeEnabled,
+          inDebugPaintBaselinesEnabled: () => dev.debugPaintBaselinesEnabled,
+          inDebugPaintPointersEnabled: () => dev.debugPaintPointersEnabled,
+          inDebugPaintLayerBordersEnabled: () =>
+              dev.debugPaintLayerBordersEnabled,
+          inDebugRepaintRainbowEnabled: () => dev.debugRepaintRainbowEnabled,
+          inDebugRepaintTextRainbowEnabled: () =>
+              dev.debugRepaintTextRainbowEnabled,
+          inDebugShowMaterialGrid: () => dev.debugShowMaterialGrid,
+          inShowPerformanceOverlay: () => dev.showPerformanceOverlay,
+          inShowSemanticsDebugger: () => dev.showSemanticsDebugger,
+          useRouterConfig: ExampleAppController().useRouterConfig,
           onNavigationNotification: (notification) {
             if (kDebugMode) {
               debugPrint('############ Event: onNavigationNotification()');
@@ -47,6 +62,12 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
             }
             return route;
           },
+          // inTheme: () {
+          //   return ThemeData.from(
+          //     useMaterial3: dev.useMaterial3,
+          //     colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          //   );
+          // },
           inSupportedLocales: () {
             /// The app's translations
             L10n.translations = {
@@ -59,6 +80,20 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
             };
             return L10n.supportedLocales;
           },
+          routeInformationProvider: AppRouteInformationProvider(),
+          routeInformationParser: AppRouteInformationParser(),
+          // routerDelegate: AppRouterDelegate(routes: {
+          //   '/Page01': (_) => const Page01(),
+          //   '/Page02': (_) => const Page02(),
+          //   '/Page03': (_) => const Page03(),
+          //   '/Page04': (_) => const Page04(),
+          //   '/Page05': (_) => const Page05(),
+          //   '/Page06': (_) => const Page06(),
+          //   '/Page07': (_) => const Page07(),
+          //   '/Page08': (_) => const Page08(),
+          //   '/Page09': (_) => const Page09(),
+          //   '/Page10': (_) => const Page10(),
+          // }),
           localizationsDelegates: [
             L10n.delegate,
             GlobalWidgetsLocalizations.delegate,
@@ -88,12 +123,16 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           },
         );
 
-  @override
-  Widget onHome() => (controller as ExampleAppController).onHome();
+  // Development Tools Settings
+  static final DevTools dev = DevTools();
 
-  /// Programmatically determine whether the banner is diaplayed or not.
+  // @override
+  // Widget onHome() => (controller as ExampleAppController).onHome();
+
+  /// Programmatically determine whether the banner is displayed or not.
+  /// Place a breakpoint in your IDE and see what happens in there
   @override
-  bool onDebugShowCheckedModeBanner() => false;
+  bool? onDebugShowCheckedModeBanner() => super.onDebugShowCheckedModeBanner();
 
   @override
   bool onOnNavigationNotification(notification) {
@@ -103,37 +142,49 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
     return notification.canHandlePop;
   }
 
+  /// Note, will be ignored if parameter, useRouterConfig, is false or null.
   @override
   RouterConfig<Object>? onRouterConfig() => GoRouter(
         routes: <RouteBase>[
           GoRoute(
             path: '/',
             builder: (BuildContext context, GoRouterState state) {
-              return onHome();
+              return (controller as ExampleAppController).onHome();
             },
           ),
-          // GoRoute(
-          //   path: '/add',
-          //   builder: (BuildContext context, GoRouterState state) {
-          //     return const AddContact();
-          //   },
-          // ),
         ],
       );
 
   @override
   Map<String, WidgetBuilder>? onRoutes() => {
-        '/Page01': (_) => Page01(this),
-        '/Page02': (_) => Page02(this),
-        '/Page03': (_) => Page03(this),
-        '/Page04': (_) => Page04(this),
-        '/Page05': (_) => Page05(this),
-        '/Page06': (_) => Page06(this),
-        '/Page07': (_) => Page07(this),
-        '/Page08': (_) => Page08(this),
-        '/Page09': (_) => Page09(this),
-        '/Page10': (_) => Page10(this),
+        '/': (_) => (controller as ExampleAppController).onHome(),
+        '/Page01': (_) => const Page01(),
+        '/Page02': (_) => const Page02(),
+        '/Page03': (_) => const Page03(),
+        '/Page04': (_) => const Page04(),
+        '/Page05': (_) => const Page05(),
+        '/Page06': (_) => const Page06(),
+        '/Page07': (_) => const Page07(),
+        '/Page08': (_) => const Page08(),
+        '/Page09': (_) => const Page09(),
+        '/Page10': (_) => const Page10(),
       };
+
+  @override
+  AppRouterDelegate onRouterDelegate() =>
+      AppRouterDelegate(appState: this, routes: {
+        '/': (_) => (controller as ExampleAppController).onHome(),
+        '/Page01': (_) => const Page01(),
+        '/Page02': (_) => const Page02(),
+        '/Page03': (_) => const Page03(),
+        '/Page04': (_) => const Page04(),
+        '/Page05': (_) => const Page05(),
+        '/Page06': (_) => const Page06(),
+        '/Page07': (_) => const Page07(),
+        '/Page08': (_) => const Page08(),
+        '/Page09': (_) => const Page09(),
+        '/Page10': (_) => const Page10(),
+      });
 
   /// Place a breakpoint here and see how it works
   @override

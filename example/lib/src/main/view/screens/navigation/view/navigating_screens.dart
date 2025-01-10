@@ -7,7 +7,7 @@ import '/src/view.dart';
 ///
 class Page01 extends NavWidget {
   ///
-  const Page01(super.appState, {super.key});
+  const Page01({super.key});
 
   @override
   State createState() => _NavState<Page01>();
@@ -16,7 +16,7 @@ class Page01 extends NavWidget {
 ///
 class Page02 extends NavWidget {
   ///
-  const Page02(super.appState, {super.key});
+  const Page02({super.key});
 
   @override
   State createState() => _NavState<Page02>();
@@ -25,7 +25,7 @@ class Page02 extends NavWidget {
 ///
 class Page03 extends NavWidget {
   ///
-  const Page03(super.appState, {super.key});
+  const Page03({super.key});
 
   @override
   State createState() => _NavState<Page03>();
@@ -34,7 +34,7 @@ class Page03 extends NavWidget {
 ///
 class Page04 extends NavWidget {
   ///
-  const Page04(super.appState, {super.key});
+  const Page04({super.key});
 
   @override
   State createState() => _NavState<Page04>();
@@ -43,7 +43,7 @@ class Page04 extends NavWidget {
 ///
 class Page05 extends NavWidget {
   ///
-  const Page05(super.appState, {super.key});
+  const Page05({super.key});
 
   @override
   State createState() => _NavState<Page05>();
@@ -52,7 +52,7 @@ class Page05 extends NavWidget {
 ///
 class Page06 extends NavWidget {
   ///
-  const Page06(super.appState, {super.key});
+  const Page06({super.key});
 
   @override
   State createState() => _NavState<Page06>();
@@ -61,7 +61,7 @@ class Page06 extends NavWidget {
 ///
 class Page07 extends NavWidget {
   ///
-  const Page07(super.appState, {super.key});
+  const Page07({super.key});
 
   @override
   State createState() => _NavState<Page07>();
@@ -70,7 +70,7 @@ class Page07 extends NavWidget {
 ///
 class Page08 extends NavWidget {
   ///
-  const Page08(super.appState, {super.key});
+  const Page08({super.key});
 
   @override
   State createState() => _NavState<Page08>();
@@ -79,7 +79,7 @@ class Page08 extends NavWidget {
 ///
 class Page09 extends NavWidget {
   ///
-  const Page09(super.appState, {super.key});
+  const Page09({super.key});
 
   @override
   State createState() => _NavState<Page09>();
@@ -88,7 +88,7 @@ class Page09 extends NavWidget {
 ///
 class Page10 extends NavWidget {
   ///
-  const Page10(super.appState, {super.key});
+  const Page10({super.key});
 
   @override
   State createState() => _NavState<Page10>();
@@ -97,10 +97,8 @@ class Page10 extends NavWidget {
 ///
 class NavWidget extends StatefulWidget {
   ///
-  const NavWidget(this.appState, {super.key});
+  const NavWidget({super.key});
 
-  ///
-  final AppStateX appState;
   @override
   State createState() => _NavState();
 }
@@ -133,6 +131,7 @@ class _NavState<T extends NavWidget> extends NavState<T> {
         title: Text('App Navigation'.tr),
       ),
       primary: false,
+      drawer: AppDrawer(),
       body: Column(
         children: [
           Text(
@@ -205,7 +204,7 @@ class _NavState<T extends NavWidget> extends NavState<T> {
               child: Text(prevTitle.tr),
               onPressed: () {
                 if (canPop()) {
-                  con.maybePop();
+                  con.maybePop<bool>(true);
                 } else {
                   con.mainText = 'Nowhere to go.';
                 }

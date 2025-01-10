@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 // Copyright 2020 Andrious Solutions Ltd. All rights reserved.
 // Use of this source code is governed by a 2-clause BSD License.
 // The main directory contains that LICENSE file.
@@ -11,6 +13,7 @@ import 'package:flutter_test/flutter_test.dart' show Future, TestFailure;
 
 import '/controller.dart'
     show
+        App,
         AppErrorHandler,
         AppStateXController,
         AppWidgetErrorDisplayed,
@@ -18,10 +21,9 @@ import '/controller.dart'
         StateXController;
 
 import 'package:flutter/cupertino.dart'
-    show CupertinoApp, CupertinoTheme, CupertinoThemeData;
+    show CupertinoApp, CupertinoPageRoute, CupertinoTheme, CupertinoThemeData;
 
-import 'package:flutter/foundation.dart'
-    show FlutterExceptionHandler;
+import 'package:flutter/foundation.dart' show FlutterExceptionHandler;
 
 /// Translations
 import 'package:l10n_translator/l10n.dart';
@@ -67,6 +69,7 @@ import 'package:universal_platform/universal_platform.dart';
 /// {@category StateX class}
 /// {@category Error handling}
 
+///
 class AppStateX<T extends StatefulWidget> extends _AppState<T> {
   /// Provide a huge array of options and features to the 'App State object.'
   AppStateX({
@@ -130,8 +133,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     bool? debugRepaintRainbowEnabled,
     bool? debugRepaintTextRainbowEnabled,
     bool? debugPrintRebuildDirtyWidgets,
-    // ignore: avoid_positional_boolean_parameters
-    void Function(Element e, bool builtOnce)? debugOnRebuildDirtyWidget,
+    RebuildDirtyWidgetCallback? debugOnRebuildDirtyWidget,
     bool? debugPrintBuildScope,
     bool? debugPrintScheduleBuildForStacks,
     bool? debugPrintGlobalKeyedWidgetLifecycle,
@@ -188,6 +190,21 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     super.inCheckerboardOffscreenLayers,
     super.inShowSemanticsDebugger,
     super.inDebugShowCheckedModeBanner,
+    super.inDebugPaintSizeEnabled,
+    super.inDebugPaintBaselinesEnabled,
+    super.inDebugPaintPointersEnabled,
+    super.inDebugPaintLayerBordersEnabled,
+    super.inDebugRepaintRainbowEnabled,
+    super.inDebugRepaintTextRainbowEnabled,
+    super.inDebugPrintRebuildDirtyWidgets,
+    super.inDebugOnRebuildDirtyWidget,
+    super.inDebugPrintBuildScope,
+    super.inDebugPrintScheduleBuildForStacks,
+    super.inDebugPrintGlobalKeyedWidgetLifecycle,
+    super.inDebugProfileBuildsEnabled,
+    super.inDebugProfileBuildsEnabledUserWidgets,
+    super.inDebugEnhanceBuildTimelineArguments,
+    super.inDebugHighlightDeprecatedWidgets,
     super.inShortcuts,
     super.inActions,
     super.inRestorationScopeId,
@@ -215,7 +232,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     _routeInformationProvider = routeInformationProvider;
     _routeInformationParser = routeInformationParser;
     _routerDelegate = routerDelegate;
-    _useRouterConfig = useRouterConfig;
+    _useRouterConfig = useRouterConfig ?? false;
     _routerConfig = routerConfig;
     _backButtonDispatcher = backButtonDispatcher;
     _scaffoldMessengerKey = scaffoldMessengerKey;
@@ -243,6 +260,26 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     _localeResolutionCallback = localeResolutionCallback;
     _supportedLocales = supportedLocales ?? [];
 
+    /// Development tools in Flutter's debug.dart
+    this.debugPaintSizeEnabled = debugPaintSizeEnabled;
+    this.debugPaintBaselinesEnabled = debugPaintBaselinesEnabled;
+    this.debugPaintPointersEnabled = debugPaintPointersEnabled;
+    this.debugPaintLayerBordersEnabled = debugPaintLayerBordersEnabled;
+    this.debugRepaintRainbowEnabled = debugRepaintRainbowEnabled;
+    this.debugRepaintTextRainbowEnabled = debugRepaintTextRainbowEnabled;
+    this.debugPrintRebuildDirtyWidgets = debugPrintRebuildDirtyWidgets;
+    this.debugOnRebuildDirtyWidget = debugOnRebuildDirtyWidget;
+    this.debugPrintBuildScope = debugPrintBuildScope;
+    this.debugPrintScheduleBuildForStacks = debugPrintScheduleBuildForStacks;
+    this.debugPrintGlobalKeyedWidgetLifecycle =
+        debugPrintGlobalKeyedWidgetLifecycle;
+    this.debugProfileBuildsEnabled = debugProfileBuildsEnabled;
+    this.debugProfileBuildsEnabledUserWidgets =
+        debugProfileBuildsEnabledUserWidgets;
+    this.debugEnhanceBuildTimelineArguments =
+        debugEnhanceBuildTimelineArguments;
+    this.debugHighlightDeprecatedWidgets = debugHighlightDeprecatedWidgets;
+
     _debugShowMaterialGrid = debugShowMaterialGrid;
     _showPerformanceOverlay = showPerformanceOverlay;
     _checkerboardRasterCacheImages = checkerboardRasterCacheImages;
@@ -250,29 +287,6 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     _showSemanticsDebugger = showSemanticsDebugger;
     _debugShowCheckedModeBanner = debugShowCheckedModeBanner;
     _debugShowWidgetInspector = debugShowWidgetInspector;
-
-    this.debugPaintSizeEnabled = debugPaintSizeEnabled ?? false;
-    this.debugPaintBaselinesEnabled = debugPaintBaselinesEnabled ?? false;
-    this.debugPaintPointersEnabled = debugPaintPointersEnabled ?? false;
-    this.debugPaintLayerBordersEnabled = debugPaintLayerBordersEnabled ?? false;
-    this.debugRepaintRainbowEnabled = debugRepaintRainbowEnabled ?? false;
-    this.debugRepaintTextRainbowEnabled =
-        debugRepaintTextRainbowEnabled ?? false;
-
-    this.debugPrintRebuildDirtyWidgets = debugPrintRebuildDirtyWidgets ?? false;
-    this.debugOnRebuildDirtyWidget = debugOnRebuildDirtyWidget;
-    this.debugPrintBuildScope = debugPrintBuildScope ?? false;
-    this.debugPrintScheduleBuildForStacks =
-        debugPrintScheduleBuildForStacks ?? false;
-    this.debugPrintGlobalKeyedWidgetLifecycle =
-        debugPrintGlobalKeyedWidgetLifecycle ?? false;
-    this.debugProfileBuildsEnabled = debugProfileBuildsEnabled ?? false;
-    this.debugProfileBuildsEnabledUserWidgets =
-        debugProfileBuildsEnabledUserWidgets ?? false;
-    this.debugEnhanceBuildTimelineArguments =
-        debugEnhanceBuildTimelineArguments ?? false;
-    this.debugHighlightDeprecatedWidgets =
-        debugHighlightDeprecatedWidgets ?? false;
 
     _shortcuts = shortcuts;
     _actions = actions;
@@ -388,29 +402,66 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     Widget? app;
 
     assert(() {
-      /// Highlights UI while debugging.
-      debug.debugPaintSizeEnabled = debugPaintSizeEnabled;
-      debug.debugPaintBaselinesEnabled = debugPaintBaselinesEnabled;
-      debug.debugPaintPointersEnabled = debugPaintPointersEnabled;
-      debug.debugPaintLayerBordersEnabled = debugPaintLayerBordersEnabled;
-      debug.debugRepaintRainbowEnabled = debugRepaintRainbowEnabled;
-      debug.debugRepaintTextRainbowEnabled = debugRepaintTextRainbowEnabled;
-
-      /// Log how widgets are built
-      debug.debugPrintRebuildDirtyWidgets = this.debugPrintRebuildDirtyWidgets;
-      debug.debugOnRebuildDirtyWidget = this.debugOnRebuildDirtyWidget;
-      debug.debugPrintBuildScope = this.debugPrintBuildScope;
+      // Highlights UI while debugging.
+      debug.debugPaintSizeEnabled =
+          debugPaintSizeEnabled ?? onDebugPaintSizeEnabled() ?? false;
+      // Causes each RenderBox to paint a line at each of its baselines.
+      debug.debugPaintBaselinesEnabled =
+          debugPaintBaselinesEnabled ?? onDebugPaintBaselinesEnabled() ?? false;
+      // Causes objects like ['RenderPointerListener]' to flash when tapped.
+      debug.debugPaintPointersEnabled =
+          debugPaintPointersEnabled ?? onDebugPaintPointersEnabled() ?? false;
+      // Causes each Layer to paint a box around its bounds.
+      debug.debugPaintLayerBordersEnabled = debugPaintLayerBordersEnabled ??
+          onDebugPaintLayerBordersEnabled() ??
+          false;
+      // Overlay a rotating set of colors when repainting layers in debug mode.
+      debug.debugRepaintRainbowEnabled =
+          debugRepaintRainbowEnabled ?? onDebugRepaintRainbowEnabled() ?? false;
+      // Overlay a rotating set of colors when repainting text in debug mode.
+      debug.debugRepaintTextRainbowEnabled = debugRepaintTextRainbowEnabled ??
+          onDebugRepaintTextRainbowEnabled() ??
+          false;
+      // Log the dirty widgets that are built each frame.
+      debug.debugPrintRebuildDirtyWidgets =
+          this.debugPrintRebuildDirtyWidgets ??
+              onDebugPrintRebuildDirtyWidgets() ??
+              false;
+      // Callback invoked for every dirty widget built each frame.
+      debug.debugOnRebuildDirtyWidget =
+          this.debugOnRebuildDirtyWidget ?? onDebugOnRebuildDirtyWidget();
+      // Log all calls to [BuildOwner.buildScope].
+      debug.debugPrintBuildScope =
+          this.debugPrintBuildScope ?? onDebugPrintBuildScope() ?? false;
+      // Log the call stacks that mark widgets as needing to be rebuilt.
       debug.debugPrintScheduleBuildForStacks =
-          this.debugPrintScheduleBuildForStacks;
+          this.debugPrintScheduleBuildForStacks ??
+              onDebugPrintScheduleBuildForStacks() ??
+              false;
+      // Log when widgets with global keys are deactivated and log when they are reactivated.
       debug.debugPrintGlobalKeyedWidgetLifecycle =
-          this.debugPrintGlobalKeyedWidgetLifecycle;
-      debug.debugProfileBuildsEnabled = this.debugProfileBuildsEnabled;
+          this.debugPrintGlobalKeyedWidgetLifecycle ??
+              onDebugPrintGlobalKeyedWidgetLifecycle() ??
+              false;
+      // Adds [Timeline] events for every Widget built.
+      debug.debugProfileBuildsEnabled = this.debugProfileBuildsEnabled ??
+          onDebugProfileBuildsEnabled() ??
+          false;
+      // Adds [Timeline] events for every user-created [Widget] built.
       debug.debugProfileBuildsEnabledUserWidgets =
-          this.debugProfileBuildsEnabledUserWidgets;
+          this.debugProfileBuildsEnabledUserWidgets ??
+              onDebugProfileBuildsEnabledUserWidgets() ??
+              false;
+      // Adds debugging information to [Timeline] events related to [Widget] builds.
       debug.debugEnhanceBuildTimelineArguments =
-          this.debugEnhanceBuildTimelineArguments;
+          this.debugEnhanceBuildTimelineArguments ??
+              onDebugEnhanceBuildTimelineArguments() ??
+              false;
+      // Show banners for deprecated widgets.
       debug.debugHighlightDeprecatedWidgets =
-          this.debugHighlightDeprecatedWidgets;
+          this.debugHighlightDeprecatedWidgets ??
+              onDebugHighlightDeprecatedWidgets() ??
+              false;
 
       // If running in a tester. Don't open the Widget tree inspector.
       if (WidgetsBinding.instance is WidgetsFlutterBinding) {
@@ -424,26 +475,29 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     _routerConfig ??= onRouterConfig();
 
     // Set the flag only if the configuration was provided
-    _useRouterConfig = _routerConfig != null && (_useRouterConfig ?? false);
+    _useRouterConfig = _routerConfig != null && _useRouterConfig;
 
-    if (_useRouterConfig!) {
+    if (_useRouterConfig) {
       // Make the GoRouter readily available without requiring a context.
       v.App.goRouter = _routerConfig;
+    } else {
+      // Not to be used so not provided
+      _routerConfig = null;
     }
 
     // If the routerConfig is to be used, the others must all be null.
-    _routeInformationProvider = _useRouterConfig!
+    _routeInformationProvider = _useRouterConfig
         ? null
         : _routeInformationProvider ?? onRouteInformationProvider();
 
-    _routeInformationParser = _useRouterConfig!
+    _routeInformationParser = _useRouterConfig
         ? null
         : _routeInformationParser ?? onRouteInformationParser();
 
     _routerDelegate =
-        _useRouterConfig! ? null : _routerDelegate ?? onRouterDelegate();
+        _useRouterConfig ? null : _routerDelegate ?? onRouterDelegate();
 
-    _backButtonDispatcher = _useRouterConfig!
+    _backButtonDispatcher = _useRouterConfig
         ? null
         : _backButtonDispatcher ?? onBackButtonDispatcher();
 
@@ -489,7 +543,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
         if (cupertinoApp != null) {
           app = cupertinoApp!;
           //
-        } else if (_routerDelegate == null && !_useRouterConfig!) {
+        } else if (_routerDelegate == null && !_useRouterConfig) {
           //
           app = CupertinoApp(
             key: key,
@@ -579,7 +633,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
           //
           app = materialApp!;
           //
-        } else if (_routerDelegate == null && !_useRouterConfig!) {
+        } else if (_routerDelegate == null && !_useRouterConfig) {
           //
           app = MaterialApp(
             key: key,
@@ -601,7 +655,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
             highContrastTheme: _highContrastTheme ?? onHighContrastTheme(),
             highContrastDarkTheme:
                 _highContrastDarkTheme ?? onHighContrastDarkTheme(),
-            themeMode: _themeMode ?? onThemeMode() ?? ThemeMode.system,
+            themeMode: _themeMode ?? onThemeMode(),
             themeAnimationDuration: _themeAnimationDuration ??
                 onThemeAnimationDuration() ??
                 const Duration(milliseconds: 200),
@@ -660,7 +714,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
             highContrastTheme: _highContrastTheme ?? onHighContrastTheme(),
             highContrastDarkTheme:
                 _highContrastDarkTheme ?? onHighContrastDarkTheme(),
-            themeMode: _themeMode ?? onThemeMode() ?? ThemeMode.system,
+            themeMode: _themeMode ?? onThemeMode(),
             themeAnimationDuration: _themeAnimationDuration ??
                 onThemeAnimationDuration() ??
                 const Duration(milliseconds: 200),
@@ -863,9 +917,17 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
   }
 }
 
+/// Signature for the common boolean Function implementations.
+typedef BooleanFunctionIndicatorCallback = bool? Function();
+
+/// A function that returns a specific type
+typedef ReturnRouteFunctionType = Route<dynamic> Function(
+    WidgetBuilder builder, RouteSettings settings);
+
 /// The underlying State object representing the App's View in the MVC pattern.
 /// Allows for setting debug settings and defining the App's error routine.
-abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
+abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
+    with v.DebugPaintPrintProfileOptionsMixin {
   //
   _AppState({
     AppStateXController? controller,
@@ -921,6 +983,21 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
     this.inShowSemanticsDebugger,
     this.inDebugShowWidgetInspector,
     this.inDebugShowCheckedModeBanner,
+    BooleanFunctionIndicatorCallback? inDebugPaintSizeEnabled,
+    BooleanFunctionIndicatorCallback? inDebugPaintBaselinesEnabled,
+    BooleanFunctionIndicatorCallback? inDebugPaintPointersEnabled,
+    BooleanFunctionIndicatorCallback? inDebugPaintLayerBordersEnabled,
+    BooleanFunctionIndicatorCallback? inDebugRepaintRainbowEnabled,
+    BooleanFunctionIndicatorCallback? inDebugRepaintTextRainbowEnabled,
+    BooleanFunctionIndicatorCallback? inDebugPrintRebuildDirtyWidgets,
+    RebuildDirtyWidgetCallback? inDebugOnRebuildDirtyWidget,
+    BooleanFunctionIndicatorCallback? inDebugPrintBuildScope,
+    BooleanFunctionIndicatorCallback? inDebugPrintScheduleBuildForStacks,
+    BooleanFunctionIndicatorCallback? inDebugPrintGlobalKeyedWidgetLifecycle,
+    BooleanFunctionIndicatorCallback? inDebugProfileBuildsEnabled,
+    BooleanFunctionIndicatorCallback? inDebugProfileBuildsEnabledUserWidgets,
+    BooleanFunctionIndicatorCallback? inDebugEnhanceBuildTimelineArguments,
+    BooleanFunctionIndicatorCallback? inDebugHighlightDeprecatedWidgets,
     this.inShortcuts,
     this.inActions,
     this.inRestorationScopeId,
@@ -940,6 +1017,26 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
       report: errorReport ?? onErrorReport, // has to be assigned
       presentError: presentError,
     );
+
+    this.inDebugPaintSizeEnabled = inDebugPaintSizeEnabled;
+    this.inDebugPaintBaselinesEnabled = inDebugPaintBaselinesEnabled;
+    this.inDebugPaintPointersEnabled = inDebugPaintPointersEnabled;
+    this.inDebugPaintLayerBordersEnabled = inDebugPaintLayerBordersEnabled;
+    this.inDebugRepaintRainbowEnabled = inDebugRepaintRainbowEnabled;
+    this.inDebugRepaintTextRainbowEnabled = inDebugRepaintTextRainbowEnabled;
+    this.inDebugPrintRebuildDirtyWidgets = inDebugPrintRebuildDirtyWidgets;
+    this.inDebugOnRebuildDirtyWidget = inDebugOnRebuildDirtyWidget;
+    this.inDebugPrintBuildScope = inDebugPrintBuildScope;
+    this.inDebugPrintScheduleBuildForStacks =
+        inDebugPrintScheduleBuildForStacks;
+    this.inDebugPrintGlobalKeyedWidgetLifecycle =
+        inDebugPrintGlobalKeyedWidgetLifecycle;
+    this.inDebugProfileBuildsEnabled = inDebugProfileBuildsEnabled;
+    this.inDebugProfileBuildsEnabledUserWidgets =
+        inDebugProfileBuildsEnabledUserWidgets;
+    this.inDebugEnhanceBuildTimelineArguments =
+        inDebugEnhanceBuildTimelineArguments;
+    this.inDebugHighlightDeprecatedWidgets = inDebugHighlightDeprecatedWidgets;
   }
 
   // The App's error handler.
@@ -962,7 +1059,7 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
   BackButtonDispatcher? _backButtonDispatcher;
 
   /// Use RouterConfig or not
-  bool? _useRouterConfig;
+  bool _useRouterConfig = false;
 
   RouterConfig<Object>? _routerConfig;
   GlobalKey<ScaffoldMessengerState>? get scaffoldMessengerKey =>
@@ -974,11 +1071,25 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
   RouteFactory? _onUnknownRoute;
 
   /// Use this to navigate throughout the your app
-  NavigatorState? get navigator => navigatorKey!.currentState;
+  NavigatorState? get navigator => navigatorState;
+  NavigatorState? get navigatorState {
+    if (_navigatorState == null) {
+      _navigatorState = navigatorKey!.currentState;
+      if (_navigatorState == null) {
+        final context = lastContext;
+        if (context != null) {
+          _navigatorState = Navigator.maybeOf(context, rootNavigator: true);
+        }
+      }
+    }
+    return _navigatorState;
+  }
+
+  NavigatorState? _navigatorState;
 
   /// The Navigator State Key
-  GlobalKey<NavigatorState>? get navigatorKey =>
-      _navigatorKey ??= GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState>? get navigatorKey => _navigatorKey ??=
+      GlobalObjectKey<NavigatorState>(this); //GlobalKey<NavigatorState>();
   GlobalKey<NavigatorState>? _navigatorKey;
 
   List<NavigatorObserver>? _navigatorObservers;
@@ -1072,70 +1183,22 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
   }
 
   Iterable<LocalizationsDelegate<dynamic>>? _localizationsDelegates;
-
   LocaleListResolutionCallback? _localeListResolutionCallback;
-
   LocaleResolutionCallback? _localeResolutionCallback;
-
   List<Locale> get supportedLocales => _supportedLocales;
   late List<Locale> _supportedLocales;
-
   bool? _debugShowMaterialGrid;
-
   bool? _showPerformanceOverlay;
-
   bool? _checkerboardRasterCacheImages;
-
   bool? _checkerboardOffscreenLayers;
-
   bool? _showSemanticsDebugger;
-
   bool? _debugShowWidgetInspector;
-
   bool? _debugShowCheckedModeBanner;
-
-  /// Highlights UI while debugging.
-  late bool debugPaintSizeEnabled;
-  late bool debugPaintBaselinesEnabled;
-  late bool debugPaintPointersEnabled;
-  late bool debugPaintLayerBordersEnabled;
-  late bool debugRepaintRainbowEnabled;
-  late bool debugRepaintTextRainbowEnabled;
-
-  /// Log the dirty widgets that are built each frame.
-  late bool debugPrintRebuildDirtyWidgets;
-
-  /// Callback invoked for every dirty widget built each frame.
-  // ignore: avoid_positional_boolean_parameters
-  void Function(Element e, bool builtOnce)? debugOnRebuildDirtyWidget;
-
-  /// Log all calls to [BuildOwner.buildScope].
-  late bool debugPrintBuildScope;
-
-  /// Log the call stacks that mark widgets as needing to be rebuilt.
-  late bool debugPrintScheduleBuildForStacks;
-
-  /// Log when widgets with global keys are deactivated and log when they are reactivated (retaken).
-  late bool debugPrintGlobalKeyedWidgetLifecycle;
-
-  /// Adds 'Timeline' events for every Widget built.
-  late bool debugProfileBuildsEnabled;
-
-  /// Adds 'Timeline' events for every user-created [Widget] built.
-  late bool debugProfileBuildsEnabledUserWidgets;
-
-  /// Adds debugging information to 'Timeline' events related to [Widget] builds.
-  late bool debugEnhanceBuildTimelineArguments;
-
-  /// Show banners for deprecated widgets.
-  late bool debugHighlightDeprecatedWidgets;
-
   Map<LogicalKeySet, Intent>? _shortcuts;
   Map<Type, Action<Intent>>? _actions;
   String? _restorationScopeId;
   ScrollBehavior? _scrollBehavior;
   AnimationStyle? _themeAnimationStyle;
-
 
   // @override
   // void activate() {
@@ -1280,6 +1343,30 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
   /// Returns the App's title if any.
   String onTitle() => inTitle?.call() ?? '';
 
+  ///
+  Route<dynamic>? onGenerateRoute(RouteSettings settings) {
+    var route = _onOnGenerateRoute(settings);
+    if (route == null) {
+      final routes = onRoutes();
+      if (routes != null) {
+        final builder = routes[settings.name];
+        if (builder != null) {
+          if (settings.arguments != null &&
+              settings.arguments is ReturnRouteFunctionType) {
+            route = (settings.arguments as ReturnRouteFunctionType).call(builder, settings);
+          } else if (App.useMaterial) {
+            route = MaterialPageRoute<dynamic>(
+                settings: settings, builder: builder);
+          } else {
+            route = CupertinoPageRoute<dynamic>(
+                settings: settings, builder: builder);
+          }
+        }
+      }
+    }
+    return route;
+  }
+
   Route<dynamic>? _onOnGenerateRoute(RouteSettings settings) {
     Route<dynamic>? route;
     route = _onGenerateRoute?.call(settings);
@@ -1287,6 +1374,10 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T> {
     route ??= onOnGenerateRoute(settings);
     return route;
   }
+
+  ///
+  Route<dynamic>? onUnknownRoute(RouteSettings settings) =>
+      _onOnUnknownRoute(settings);
 
   Route<dynamic>? _onOnUnknownRoute(RouteSettings settings) {
     Route<dynamic>? route;

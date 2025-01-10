@@ -1,15 +1,44 @@
 
+## 5.9.0
+January 08, 2024
+- Moved class app_drawer to its own Dart file
+In app_statex.dart:
+- new getter, NavigatorState? get navigatorState
+- Route<dynamic>? onGenerateRoute(RouteSettings settings)
+- Route<dynamic>? onUnknownRoute(RouteSettings settings)
+New 'in-line' functions allowing the dynamic use of development tools:
+- super.inDebugPaintSizeEnabled,  
+- super.inDebugPaintBaselinesEnabled,
+- super.inDebugPaintPointersEnabled,
+- super.inDebugPaintLayerBordersEnabled,
+- super.inDebugRepaintRainbowEnabled,
+- super.inDebugRepaintTextRainbowEnabled,
+- super.inDebugPrintRebuildDirtyWidgets,
+- super.inDebugOnRebuildDirtyWidget,
+- super.inDebugPrintBuildScope,
+- super.inDebugPrintScheduleBuildForStacks,
+- super.inDebugPrintGlobalKeyedWidgetLifecycle,
+- super.inDebugProfileBuildsEnabled,
+- super.inDebugProfileBuildsEnabledUserWidgets,
+- super.inDebugEnhanceBuildTimelineArguments,
+- super.inDebugHighlightDeprecatedWidgets,
+- More tests for mixin RouteNavigatorMethodsMixin
+- Introduced typedef ReturnRouteFunctionType
+- mixin DebugPaintPrintProfileOptionsMixin supplies development tools. For example:
+  debug.debugPaintSizeEnabled = debugPaintSizeEnabled ?? onDebugPaintSizeEnabled() ?? false;
+- app_drawer.dart contains the class, AppDrawer
+
 ## 5.8.0+1
-January 04, 2024
+January 04, 2025
 - extension ColorExts on Color to overcome Flutter 3.27 conversion issue
 - Addressed Dart Analysis issues: e.g. /// Missing documentation for public members
 
 ## 5.7.6
-January 04, 2024
+January 04, 2025
 - Flexible() introduced in radiobutton_widget.dart
 
 ## 5.7.5+1
-January 03, 2024
+January 03, 2025
 - Avoid, Unable to load asset: "assets/images/meow.gif", during testing
   App.inFlutterTest ? null : const SplashScreen();
 

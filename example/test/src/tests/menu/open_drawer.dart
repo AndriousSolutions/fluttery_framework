@@ -6,13 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 String _location = '========================== open_drawer.dart';
 
 /// Open a particular type of dialog window.
-Future<bool> openDrawerOption(String key, WidgetTester tester) async {
+Future<bool> openDrawerOption(String key, WidgetTester tester, { bool? skipOffstage}) async {
   //
   final opened = await openDrawer(tester);
 
   if (opened) {
     //
-    final finder = find.byKey(Key(key));
+    final finder = find.byKey(Key(key), skipOffstage: skipOffstage ?? true);
 
     expect(finder, findsOneWidget, reason: _location);
 

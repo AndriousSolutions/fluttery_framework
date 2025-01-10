@@ -57,7 +57,7 @@ class NavController extends StateXController {
   Key? key;
 
   /// Supply text to the widget
-  String? text;
+  static String? text;
 
   /// Main screen text
   String mainText = '';
@@ -77,10 +77,10 @@ class NavController extends StateXController {
   }
 
   ///
-  Future<void> maybePop() async {
+  Future<void> maybePop<T extends Object?>([T? result]) async {
     final pop = _s.canPop();
     if (pop) {
-      await _s.maybePop();
+      await _s.maybePop<T>(result);
     } else {
       text = 'has returned $pop'.tr;
       setState(() {});
@@ -88,21 +88,29 @@ class NavController extends StateXController {
   }
 
   ///
-  void pop() {
+  void pop<T extends Object?>([T? result]) {
     final pop = _s.canPop();
     if (!pop) {
       text = ' Nothing to pop to.'.tr;
       setState(() {});
     } else {
-      _s.pop();
+      _s.pop<T>(result);
     }
   }
 
   ///
   void popAndPushNamed() {
-    final name = _pushNextName(2);
+    final name = _pushNextName(1);
     if (_notFirstPage() && name.isNotEmpty) {
-      _s.popAndPushNamed(name);
+      ReturnRouteFunctionType func;
+      if (App.useMaterial) {
+        func = (WidgetBuilder builder, RouteSettings settings) =>
+            MaterialPageRoute<bool>(builder: builder, settings: settings);
+      } else {
+        func = (WidgetBuilder builder, RouteSettings settings) =>
+            CupertinoPageRoute<bool>(builder: builder, settings: settings);
+      }
+      _s.popAndPushNamed<bool, bool>(name, result: true, arguments: func);
     }
   }
 
@@ -118,17 +126,18 @@ class NavController extends StateXController {
   ///
   Future<void> push() async {
     setState(() {});
-    await _s.push(_nextRoute());
+    await _s.push<bool>(_nextRoute<bool>());
   }
 
   ///
   void pushAndRemoveUntil() {
-    final name = _pushNextName(2);
+    final name = _pushNextName(1);
     if (_notFirstPage() && name.isNotEmpty) {
-      const predicate = '/Page02';
+      const predicate = '/Page01';
       text =
           'Push to $name onto the navigator, and then remove all the previous routes until the `$predicate` returns true.';
-      _s.pushAndRemoveUntil(_nextRoute(name), ModalRoute.withName(predicate));
+      _s.pushAndRemoveUntil<bool>(
+          _nextRoute(name), ModalRoute.withName(predicate));
     }
   }
 
@@ -139,29 +148,41 @@ class NavController extends StateXController {
       text = 'Unable to find the next page.'.tr;
       setState(() {});
     } else {
+      //
       text = 'Pushed'.tr + ' ' + 'to'.tr + ' ' + name;
-      _s.pushNamed(name);
+      ReturnRouteFunctionType func;
+      if (App.useMaterial) {
+        func = (WidgetBuilder builder, RouteSettings settings) =>
+            MaterialPageRoute<bool>(builder: builder, settings: settings);
+      } else {
+        func = (WidgetBuilder builder, RouteSettings settings) =>
+            CupertinoPageRoute<bool>(builder: builder, settings: settings);
+      }
+      _s.pushNamed<bool>(name, arguments: func);
     }
   }
 
   ///
   void pushNamedAndRemoveUntil() {
-    final name = _pushNextName(2);
+    final name = _pushNextName(1);
     if (_notFirstPage() && name.isNotEmpty) {
       const predicate = '/Page02';
       text =
           'Push to $name onto the navigator, and then remove all the previous routes until the `$predicate` returns true.';
-      _s.pushNamedAndRemoveUntil(name, ModalRoute.withName(predicate));
+      _s.pushNamedAndRemoveUntil<bool>(name, ModalRoute.withName(predicate));
     }
   }
 
   ///
   void pushReplacement() {
-    final name = _pushNextName(2);
+    final name = _pushNextName(1);
     if (_notFirstPage() && name.isNotEmpty) {
       final key = _s.routekey;
       text = 'Replaced'.tr + ' ' + key + ' ' + 'with'.tr + ' ' + name;
-      _s.pushReplacement(_nextRoute(name));
+      _s.pushReplacement<bool, bool>(_nextRoute(name), result: true);
+    } else {
+      text = "Unable to find the next page for 'pushReplacement'.".tr;
+      setState(() {});
     }
   }
 
@@ -171,17 +192,22 @@ class NavController extends StateXController {
     if (_notFirstPage() && name.isNotEmpty) {
       final key = _s.routekey;
       text = 'Replaced'.tr + ' ' + key + ' ' + 'with'.tr + ' ' + name;
-      _s.pushReplacementNamed(name);
+      _s.pushReplacementNamed<bool, bool>(name);
     }
   }
 
   ///
   void removeRoute() {
-    final name = _pushNextName(2);
-    if (_notFirstPage() && name.isNotEmpty) {
-      final key = _s.routekey;
-      text = 'Removed'.tr + ' ' + key;
-      _s.removeRoute(_nextRoute(name));
+    var name = _pushNextName(2);
+    if (_notFirstPage()) {
+      if (name.isEmpty) {
+        name = _pushNextName();
+      }
+      if (name.isNotEmpty) {
+        final key = _s.routekey;
+        text = 'Removed'.tr + ' ' + key;
+        _s.removeRoute(_nextRoute(name));
+      }
     }
   }
 
@@ -198,7 +224,7 @@ class NavController extends StateXController {
     if (_notFirstPage() && name.isNotEmpty) {
       final key = _s.routekey;
       text = 'Replaced'.tr + ' ' + key + ' ' + 'with'.tr + ' ' + name;
-      _s.replace(oldRoute: _nextRoute(key), newRoute: _nextRoute(name));
+      _s.replace<bool>(oldRoute: _nextRoute(key), newRoute: _nextRoute(name));
     }
   }
 
@@ -347,9 +373,11 @@ class NavController extends StateXController {
 
     PageRoute<T> route;
     if (App.useMaterial) {
-      route = MaterialPageRoute<T>(builder: builder);
+      route = MaterialPageRoute<T>(
+          settings: RouteSettings(name: name), builder: builder);
     } else {
-      route = CupertinoPageRoute<T>(builder: builder);
+      route = CupertinoPageRoute<T>(
+          settings: RouteSettings(name: name), builder: builder);
     }
     return route;
   }

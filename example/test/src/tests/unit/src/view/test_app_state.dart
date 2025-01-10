@@ -1,5 +1,5 @@
 // ignore_for_file: unused_local_variable
-import '_unit_test_view.dart';
+import '_tests_unit_view.dart';
 
 Future<void> testAppState(WidgetTester tester) async {
   //

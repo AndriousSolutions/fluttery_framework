@@ -6,9 +6,13 @@ import '/src/view.dart';
 /// The App's Drawer
 class AppDrawer extends v.AppDrawer {
   ///
-  factory AppDrawer({Key? key}) => _this ??= AppDrawer._(key);
-  AppDrawer._(Key? key) : super(key: key) {
+  AppDrawer({super.key}) : _dev = DevToolsSettings() {
     //
+    // Don't offer these development tools if testing the app
+    if (!App.inFlutterTest) {
+      addAll(_dev.devSettings);
+    }
+
     addAll([
       ListTile(
         key: const Key('Show Box'),
@@ -48,5 +52,6 @@ class AppDrawer extends v.AppDrawer {
       ),
     ]);
   }
-  static AppDrawer? _this;
+  //
+  final DevToolsSettings _dev;
 }

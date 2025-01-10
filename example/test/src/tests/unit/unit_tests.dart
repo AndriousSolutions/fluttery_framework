@@ -1,5 +1,5 @@
 //
-import 'src/model/_unit_test_model.dart';
+import 'src/model/_tests_unit_model.dart';
 
 //
 Future<void> unitTests(WidgetTester tester) async {
@@ -16,21 +16,9 @@ Future<void> unitTests(WidgetTester tester) async {
 
   testHandleError(tester);
 
-  testAppSettings(tester);
-
-  // testAppErrorHandler(tester);
-
-  // testInheritedStateWidget(tester);
-
-  // testLoadingScreen(tester);
-
   testAppMenu(tester);
 
-  // testAppRouterDelegate(tester);
-
   await testAppState(tester);
-
-  // testAppStatefulWidget(tester);
 
   await testAppObject(tester);
 }

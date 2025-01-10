@@ -8,9 +8,9 @@ library;
 ///          Created 17 March, 2023
 ///
 
-import '_unit_test_controller.dart';
+import '_tests_unit_controller.dart';
 
-import '../view/_unit_test_view.dart';
+import '../view/_tests_unit_view.dart';
 
 void testHandleError(WidgetTester tester) {
   //

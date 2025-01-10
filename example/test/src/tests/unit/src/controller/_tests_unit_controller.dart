@@ -4,7 +4,7 @@ library;
 ///
 ///
 
-export '../../_unit_imports.dart';
+export '../../_tests_unit_exports.dart';
 
 export '../controller/test_app.dart';
 export '../controller/test_device_info.dart';

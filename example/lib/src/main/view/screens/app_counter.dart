@@ -61,6 +61,7 @@ class _CounterPageState extends StateX<CounterPage> {
         actions: [AppMenu()],
       ),
       drawer: AppDrawer(),
+ //    drawer: DevToolsSettings(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

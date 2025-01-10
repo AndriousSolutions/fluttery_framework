@@ -12,7 +12,7 @@ export 'package:flutter_test/flutter_test.dart';
 
 export 'package:fluttery_framework/view.dart' hide AppDrawer, PopupMenuWidget;
 
-export 'package:fluttery_framework/controller.dart' hide AppDrawer;
+export 'package:fluttery_framework/controller.dart';
 
 export 'unit_tests.dart';
 
@@ -27,15 +27,6 @@ export 'simple_buttom_bar_test.dart';
 
 export '../menu/open_drawer.dart';
 
-export '../unit/src/controller/_unit_test_controller.dart';
+export '../unit/src/controller/_tests_unit_controller.dart';
 
-export '../unit/src/view/utils/test_app_settings.dart';
-export '../unit/src/view/utils/test_error_handler.dart';
-export '../unit/src/view/utils/test_inherited_state.dart';
-export '../unit/src/view/utils/test_loading_screen.dart';
-
-export '../unit/src/view/test_app.dart';
-export '../unit/src/view/test_app_menu.dart';
-export '../unit/src/view/test_app_navigator.dart';
-export '../unit/src/view/test_app_state.dart';
-export '../unit/src/view/test_app_statefulwidget.dart';
+export '../unit/src/view/_tests_unit_view.dart';

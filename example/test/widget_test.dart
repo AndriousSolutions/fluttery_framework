@@ -12,7 +12,7 @@ library;
 import '../integration_test/widget_test.dart';
 
 /// Flutter Test files
-import '../test/src/_test_imports.dart';
+import '../test/src/_tests_exports.dart';
 
 void main() => testFlutteryFramework();
 

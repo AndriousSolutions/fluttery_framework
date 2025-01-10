@@ -58,7 +58,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
     final enabled = _con.canPopRoute;
     return RouteButton(
       key: Key('maybePopWidget$title'),
-      onPressed: enabled ? () => _con.maybePop() : null,
+      onPressed: enabled ? () => _con.maybePop<bool>(true) : null,
       child: const Text('maybePop'),
     );
   }
@@ -68,7 +68,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
     final enabled = _con.canPopRoute;
     return RouteButton(
       key: Key('popWidget$title'),
-      onPressed: enabled ? () => _con.pop() : null,
+      onPressed: enabled ? () => _con.pop<bool>(true) : null,
       child: const Text('pop'),
     );
   }
@@ -125,40 +125,41 @@ class NavState<T extends NavWidget> extends StateX<T> {
 
   ///
   Widget pushNamedAndRemoveUntilWidget() {
-    final enabled = _con.lastRoute;
     return RouteButton(
       key: Key('pushNamedAndRemoveUntilWidget$title'),
-      onPressed: enabled ? () => _con.pushNamedAndRemoveUntil() : null,
+      onPressed: () {
+        final last = _con.lastRoute;
+        if (!last) {
+          _con.pushNamedAndRemoveUntil();
+        }
+      },
       child: const Text('pushNamedAndRemoveUntil'),
     );
   }
 
   ///
   Widget pushReplacementWidget() {
-    final enabled = _con.lastRoute;
     return RouteButton(
       key: Key('pushReplacementWidget$title'),
-      onPressed: enabled ? () => _con.pushReplacement() : null,
+      onPressed: () => _con.pushReplacement(),
       child: const Text('pushReplacement'),
     );
   }
 
   ///
   Widget pushReplacementNamedWidget() {
-    final enabled = _con.lastRoute;
     return RouteButton(
       key: Key('pushReplacementNamedWidget$title'),
-      onPressed: enabled ? () => _con.pushReplacement() : null,
+      onPressed: _con.lastRoute ? () => _con.pushReplacement() : null,
       child: const Text('pushReplacementNamed'),
     );
   }
 
   ///
   Widget removeRouteWidget() {
-    final enabled = _con.canPopRoute;
     return RouteButton(
       key: Key('removeRouteWidget$title'),
-      onPressed: enabled ? () => _con.removeRoute() : null,
+      onPressed: _con.canPopRoute ? () => _con.removeRoute() : null,
       child: const Text('removeRoute'),
     );
   }
@@ -321,9 +322,9 @@ class RouteButton extends StatelessWidget {
     String? text;
 
     if (key == con.key) {
-      text = con.text;
+      text = NavController.text;
       // Nullify theses properties now
-      con.key = con.text = null;
+      con.key = NavController.text = null;
     }
     //
     VoidCallback? onPressed;
@@ -364,36 +365,3 @@ class RouteButton extends StatelessWidget {
     );
   }
 }
-
-// /// A Flexible Row widget
-// class _Row extends StatelessWidget {
-//   const _Row({
-//     super.key,
-//     this.mainAxisAlignment,
-//     this.mainAxisSize,
-//     this.crossAxisAlignment,
-//     this.textDirection,
-//     this.verticalDirection,
-//     this.textBaseline,
-//     required this.children,
-//   });
-//
-//   final MainAxisAlignment? mainAxisAlignment;
-//   final MainAxisSize? mainAxisSize;
-//   final CrossAxisAlignment? crossAxisAlignment;
-//   final TextDirection? textDirection;
-//   final VerticalDirection? verticalDirection;
-//   final TextBaseline? textBaseline;
-//   final List<Widget> children;
-//
-//   @override
-//   Widget build(_) => Row(
-//         mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
-//         mainAxisSize: mainAxisSize ?? MainAxisSize.max,
-//         crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
-//         textDirection: textDirection,
-//         verticalDirection: verticalDirection ?? VerticalDirection.down,
-//         textBaseline: textBaseline,
-//         children: children,
-//       );
-// }

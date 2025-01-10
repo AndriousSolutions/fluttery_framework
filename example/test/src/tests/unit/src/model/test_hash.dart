@@ -8,7 +8,7 @@ library;
 ///          Created 17 September, 2024
 ///
 
-import '_unit_test_model.dart';
+import '_tests_unit_model.dart';
 
 Future<void> testHash(WidgetTester tester) async {
   int hash;
