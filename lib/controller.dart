@@ -18,7 +18,7 @@ export 'package:state_extended/state_extended.dart'
     show SetStateMixin, StateListener, RootState, AsyncOps;
 
 // App's View
-export '/view/app_object.dart' show App, AppDrawer;
+export '/view/app_object.dart' show App;
 
 //App's Controller & StateXController
 // ignore: deprecated_member_use_from_same_package
