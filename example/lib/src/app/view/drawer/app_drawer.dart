@@ -6,11 +6,11 @@ import '/src/view.dart';
 /// The App's Drawer
 class AppDrawer extends v.AppDrawer {
   ///
-  AppDrawer({super.key}) : _dev = DevToolsSettings() {
+  AppDrawer({super.key}) {
     //
     // Don't offer these development tools if testing the app
     if (!App.inFlutterTest) {
-      addAll(_dev.devSettings);
+      add(const DevToolsSettings.column());
     }
 
     addAll([
@@ -52,6 +52,4 @@ class AppDrawer extends v.AppDrawer {
       ),
     ]);
   }
-  //
-  final DevToolsSettings _dev;
 }

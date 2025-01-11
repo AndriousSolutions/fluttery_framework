@@ -1,4 +1,8 @@
 
+## 5.10.0
+January 10, 2024
+- DevToolsSettings.column() in Example app
+
 ## 5.9.0+2
 January 08, 2024
 - Moved class app_drawer to its own Dart file

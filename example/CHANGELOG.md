@@ -1,4 +1,8 @@
 
+## 1.6.0
+January 10, 2024
+- DevToolsSettings.column()
+
 ## 1.5.0+2
 January 03, 2024
 - App.inFlutterTest ? null : const SplashScreen();
