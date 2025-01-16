@@ -4,26 +4,27 @@ import '/src/controller.dart';
 import '/src/view.dart';
 
 ///
-class NavState<T extends NavWidget> extends StateX<T> {
+class NavState<T extends StatefulWidget> extends StateX<T> {
   ///
   NavState({
     super.runAsync,
     super.useInherited,
     // Highlight the call of event functions
   }) : super(controller: NavController(), printEvents: true) {
-    _con = controller as NavController;
+    con = controller as NavController;
   }
-  late NavController _con;
+  ///
+  late NavController con;
 
   ///
-  Widget? prevWidget, nextWidget;
-
-  @override
-  void dispose() {
-    prevWidget = null;
-    nextWidget = null;
-    super.dispose();
-  }
+  // Widget? prevWidget, nextWidget;
+  //
+  // @override
+  // void dispose() {
+  //   prevWidget = null;
+  //   nextWidget = null;
+  //   super.dispose();
+  // }
 
   ///
   String title = '';
@@ -37,7 +38,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   ///
   Widget canPopWidget() => RouteButton(
         key: Key('canPopWidget$title'),
-        onPressed: () => _con.canPop(),
+        onPressed: () => con.canPop(),
         child: const Text('canPop'),
       );
 
@@ -45,9 +46,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget finalizeRouteWidget() => RouteButton(
         key: Key('finalizeRouteWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.finalizeRoute();
+            con.finalizeRoute();
           }
         },
         child: const Text('finalizeRoute'),
@@ -57,9 +58,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget maybePopWidget() => RouteButton(
         key: Key('maybePopWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.maybePop<bool>(true);
+            con.maybePop<bool>(true);
           }
         },
         child: const Text('maybePop'),
@@ -69,9 +70,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget popWidget() => RouteButton(
         key: Key('popWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.pop<bool>(true);
+            con.pop<bool>(true);
           }
         },
         child: const Text('pop'),
@@ -81,9 +82,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget popAndPushNamedWidget() => RouteButton(
         key: Key('popAndPushNamedWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.popAndPushNamed();
+            con.popAndPushNamed();
           }
         },
         child: const Text('popAndPushNamed'),
@@ -93,9 +94,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget popUntilWidget() => RouteButton(
         key: Key('popUntilWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.popUntil();
+            con.popUntil();
           }
         },
         child: const Text('popUntil'),
@@ -105,9 +106,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget pushWidget() => RouteButton(
         key: Key('pushWidget$title'),
         onPressed: () {
-          final enabled = _con.lastRoute;
+          final enabled = !con.lastRoute;
           if (enabled) {
-            _con.push();
+            con.push();
           }
         },
         child: const Text('push'),
@@ -117,9 +118,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget pushAndRemoveUntilWidget() => RouteButton(
         key: Key('pushAndRemoveUntilWidget$title'),
         onPressed: () {
-          final last = _con.lastRoute;
+          final last = con.lastRoute;
           if (!last) {
-            _con.pushAndRemoveUntil();
+            con.pushAndRemoveUntil();
           }
         },
         child: const Text('pushAndRemoveUntil'),
@@ -129,9 +130,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget pushNamedWidget() => RouteButton(
         key: Key('pushNamedWidget$title'),
         onPressed: () {
-          final last = _con.lastRoute;
+          final last = con.lastRoute;
           if (!last) {
-            _con.pushNamed();
+            con.pushNamed();
           }
         },
         child: const Text('pushNamed'),
@@ -141,9 +142,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget pushNamedAndRemoveUntilWidget() => RouteButton(
         key: Key('pushNamedAndRemoveUntilWidget$title'),
         onPressed: () {
-          final last = _con.lastRoute;
+          final last = con.lastRoute;
           if (!last) {
-            _con.pushNamedAndRemoveUntil();
+            con.pushNamedAndRemoveUntil();
           }
         },
         child: const Text('pushNamedAndRemoveUntil'),
@@ -152,7 +153,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   ///
   Widget pushReplacementWidget() => RouteButton(
         key: Key('pushReplacementWidget$title'),
-        onPressed: () => _con.pushReplacement(),
+        onPressed: () => con.pushReplacement(),
         child: const Text('pushReplacement'),
       );
 
@@ -160,9 +161,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget pushReplacementNamedWidget() => RouteButton(
         key: Key('pushReplacementNamedWidget$title'),
         onPressed: () {
-          final last = _con.lastRoute;
+          final last = con.lastRoute;
           if (!last) {
-            _con.pushReplacement();
+            con.pushReplacement();
           }
         },
         child: const Text('pushReplacementNamed'),
@@ -171,7 +172,7 @@ class NavState<T extends NavWidget> extends StateX<T> {
   ///
   Widget removeRouteWidget() => RouteButton(
         key: Key('removeRouteWidget$title'),
-        onPressed: _con.canPopRoute ? () => _con.removeRoute() : null,
+        onPressed: con.canPopRoute ? () => con.removeRoute() : null,
         child: const Text('removeRoute'),
       );
 
@@ -179,9 +180,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget removeRouteBelowWidget() => RouteButton(
         key: Key('removeRouteBelowWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.removeRouteBelow();
+            con.removeRouteBelow();
           }
         },
         child: const Text('removeRouteBelow'),
@@ -191,9 +192,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget replaceWidget() => RouteButton(
         key: Key('replaceWidget$title'),
         onPressed: () {
-          final last = _con.lastRoute;
+          final last = con.lastRoute;
           if (!last) {
-            _con.replace();
+            con.replace();
           }
         },
         child: const Text('replace'),
@@ -203,9 +204,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget replaceRouteBelowWidget() => RouteButton(
         key: Key('replaceRouteBelowWidget$title'),
         onPressed: () {
-          final last = _con.lastRoute;
+          final last = con.lastRoute;
           if (!last) {
-            _con.replaceRouteBelow();
+            con.replaceRouteBelow();
           }
         },
         child: const Text('replaceRouteBelow'),
@@ -215,9 +216,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePopAndPushNamedWidget() => RouteButton(
         key: Key('restorablePopAndPushNamedWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.restorablePopAndPushNamed();
+            con.restorablePopAndPushNamed();
           }
         },
         child: const Text('restorablePopAndPushNamed'),
@@ -227,9 +228,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePushWidget() => RouteButton(
         key: Key('restorablePushWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.restorablePush();
+            con.restorablePush();
           }
         },
         child: const Text('restorablePush'),
@@ -239,9 +240,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePushAndRemoveUntilWidget() => RouteButton(
         key: Key('restorablePushAndRemoveUntilWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.restorablePushAndRemoveUntil();
+            con.restorablePushAndRemoveUntil();
           }
         },
         child: const Text('restorablePushAndRemoveUntil'),
@@ -251,9 +252,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePushNamedWidget() => RouteButton(
         key: Key('restorablePushNamedWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.restorablePushNamed();
+            con.restorablePushNamed();
           }
         },
         child: const Text('restorablePushNamed'),
@@ -263,9 +264,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePushNamedAndRemoveUntilWidget() => RouteButton(
         key: Key('restorablePushNamedAndRemoveUntilWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.restorablePushNamedAndRemoveUntil();
+            con.restorablePushNamedAndRemoveUntil();
           }
         },
         child: const Text('restorablePushNamedAndRemoveUntil'),
@@ -275,9 +276,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePushReplacementWidget() => RouteButton(
         key: Key('restorablePushReplacementWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.restorablePushReplacement();
+            con.restorablePushReplacement();
           }
         },
         child: const Text('restorablePushReplacement'),
@@ -287,9 +288,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorablePushReplacementNamedWidget() => RouteButton(
         key: Key('restorablePushReplacementNamedWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.restorablePushReplacementNamed();
+            con.restorablePushReplacementNamed();
           }
         },
         child: const Text('restorablePushReplacementNamed'),
@@ -299,9 +300,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorableReplaceWidget() => RouteButton(
         key: Key('restorableReplaceWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.restorableReplace();
+            con.restorableReplace();
           }
         },
         child: const Text('restorableReplace'),
@@ -311,9 +312,9 @@ class NavState<T extends NavWidget> extends StateX<T> {
   Widget restorableReplaceRouteBelowWidget() => RouteButton(
         key: Key('restorableReplaceRouteBelowWidget$title'),
         onPressed: () {
-          final enabled = _con.canPopRoute;
+          final enabled = con.canPopRoute;
           if (enabled) {
-            _con.restorableReplaceRouteBelow();
+            con.restorableReplaceRouteBelow();
           }
         },
         child: const Text('restorableReplaceRouteBelow'),

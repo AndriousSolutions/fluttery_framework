@@ -11,13 +11,14 @@ class NavController extends StateXController {
   NavController._() {
     /// set up the necessary lists
     routes = appState?.onRoutes() ?? {};
-    if (routes.isEmpty) {
-      keysList = [];
-      routeList = [];
-    } else {
-      keysList = routes.keys.toList(growable: false);
-      routeList = routes.values.toList(growable: false);
-    }
+    // if (routes.isEmpty) {
+    //   keysList = [];
+    //   routeList = [];
+    // } else {
+    //   keysList = routes.keys.toList(growable: false);
+    //   routeList = routes.values.toList(growable: false);
+    // }
+    routesLength = routes.length;
   }
 
   static NavController? _this;
@@ -29,10 +30,13 @@ class NavController extends StateXController {
   void initState() {
     super.initState();
     // Initialize the current State object
-    _initNavState();
-    onFirstPage = _s.title == 'Page01';
+    _s = state as NavState;
+    _s.title = _s.widget.runtimeType.toString();
+    _s.routekey = '/${_s.title}';
+    _s.index = routes.keys.toList(growable: false).indexOf(_s.routekey);
+    lastRoute = _s.index == routesLength - 1;
+    onFirstPage = _s.index == 0;
     canPopRoute = onFirstPage || _s.canPop();
-    lastRoute = onFirstPage || (_s.index < keysList.length - 1);
   }
 
   ///
@@ -44,14 +48,17 @@ class NavController extends StateXController {
   ///
   late bool lastRoute;
 
-  ///
+  /// Routes Map
   late final Map<String, WidgetBuilder> routes;
 
-  ///
-  late final List<String> keysList;
+  /// Length of the Routes Map
+  int routesLength = 0;
 
-  ///
-  late final List<WidgetBuilder> routeList;
+  // ///
+  // late final List<String> keysList;
+  //
+  // ///
+  // late final List<WidgetBuilder> routeList;
 
   /// Record the last selected widget
   Key? key;
@@ -118,6 +125,10 @@ class NavController extends StateXController {
   void popUntil() {
     if (_notFirstPage()) {
       const predicate = '/Page02';
+      final index = routes.keys.toList(growable: false).indexOf(predicate);
+      if (index > _s.index) {
+        routesLength = routesLength - (index - _s.index);
+      }
       text = 'Pop until `$predicate`';
       _s.popUntil(ModalRoute.withName(predicate));
     }
@@ -167,6 +178,11 @@ class NavController extends StateXController {
     final name = _pushNextName(1);
     if (_notFirstPage() && name.isNotEmpty) {
       const predicate = '/Page02';
+      final index = routes.keys.toList(growable: false).indexOf(predicate);
+      final currentIndex = _s.index;
+      if (index > currentIndex) {
+        routesLength = index - currentIndex;
+      }
       text =
           'Push to $name onto the navigator, and then remove all the previous routes until the `$predicate` returns true.';
       _s.pushNamedAndRemoveUntil<bool>(name, ModalRoute.withName(predicate));
@@ -335,41 +351,23 @@ class NavController extends StateXController {
     setState(() {});
   }
 
-  ///
-  void _initNavState() {
-    //
-    _s = state as NavState;
-
-    if (_s.routekey.isEmpty) {
-      _s.title = _s.widget.runtimeType.toString();
-      _s.routekey = '/${_s.title}';
-      _s.index = keysList.indexOf(_s.routekey);
-      if (_s.index >= 0) {
-        final prev = _s.index - 1;
-        if (prev >= 0) {
-          _s.prevWidget = routeList[prev].call(_s.context);
-        }
-        final next = _s.index + 1;
-        if (next < routeList.length) {
-          _s.nextWidget = routeList[next].call(_s.context);
-        }
-      }
-    }
-  }
-
   /// Returns the route for the 'next' Widget
   PageRoute<T> _nextRoute<T extends Object?>([String? name]) {
     WidgetBuilder? builder;
-    // If provided a Route name
+
+    var index = _s.index;
+
     if (name != null) {
-      final index = keysList.indexOf(name);
-      if (index > 0) {
-        builder = routeList[index];
+      // If provided a Route name
+      builder = routes[name];
+    } else {
+      // The next one if any
+      if (index + 1 < routesLength) {
+        index++;
       }
     }
-
-    // The State object itself will provide the 'next' Widget.
-    builder ??= (BuildContext context) => (state as NavState).nextWidget!;
+    //
+    builder ??= routes.values.toList(growable: false)[index];
 
     PageRoute<T> route;
     if (App.useMaterial) {
@@ -391,6 +389,7 @@ class NavController extends StateXController {
   String _pushNextName([int? increment]) {
     //
     var name = '';
+    final keysList = routes.keys.toList(growable: false);
     final index = keysList.indexOf(_s.routekey);
     var push = index >= 0;
     if (push) {

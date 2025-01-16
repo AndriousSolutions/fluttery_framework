@@ -29,10 +29,12 @@ class FlutteryExampleApp extends AppStatefulWidget {
 class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
   _ExampleAppState()
       : super(
+          title: 'Fluttery Demo App',
           controller: ExampleAppController(),
-          inTitle: () => 'Demo App',
-          switchUI: ExampleAppController().switchUI,
-          errorScreen: defaultErrorWidgetBuilder,
+          errorScreen: AppErrorHandler.displayErrorWidget,
+          onUnknownRoute: AppErrorHandler.onUnknownRoute,
+          useRouterConfig: false,
+          // useRouterConfig: true,
           // Commented out. It will always the value 'first' passed to the parameter
           // Named parameters always takes precedence over inDebugShowCheckedModeBanner and onDebugShowCheckedModeBanner()
           // debugShowCheckedModeBanner: dev.debugShowCheckedModeBanner,
@@ -48,26 +50,12 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           inDebugShowMaterialGrid: () => dev.debugShowMaterialGrid,
           inShowPerformanceOverlay: () => dev.showPerformanceOverlay,
           inShowSemanticsDebugger: () => dev.showSemanticsDebugger,
-          useRouterConfig: ExampleAppController().useRouterConfig,
           onNavigationNotification: (notification) {
             if (kDebugMode) {
               debugPrint('############ Event: onNavigationNotification()');
             }
             return notification.canHandlePop;
           },
-          onUnknownRoute: (settings) {
-            Route<dynamic>? route;
-            if (kDebugMode) {
-              debugPrint('############ Event: onUnknownRoute()');
-            }
-            return route;
-          },
-          // inTheme: () {
-          //   return ThemeData.from(
-          //     useMaterial3: dev.useMaterial3,
-          //     colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-          //   );
-          // },
           inSupportedLocales: () {
             /// The app's translations
             L10n.translations = {
@@ -80,31 +68,16 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
             };
             return L10n.supportedLocales;
           },
-          routeInformationProvider: AppRouteInformationProvider(),
-          routeInformationParser: AppRouteInformationParser(),
-          // routerDelegate: AppRouterDelegate(routes: {
-          //   '/Page01': (_) => const Page01(),
-          //   '/Page02': (_) => const Page02(),
-          //   '/Page03': (_) => const Page03(),
-          //   '/Page04': (_) => const Page04(),
-          //   '/Page05': (_) => const Page05(),
-          //   '/Page06': (_) => const Page06(),
-          //   '/Page07': (_) => const Page07(),
-          //   '/Page08': (_) => const Page08(),
-          //   '/Page09': (_) => const Page09(),
-          //   '/Page10': (_) => const Page10(),
-          // }),
           localizationsDelegates: [
             L10n.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
           ],
+          switchUI: ExampleAppController().switchUI,
           allowChangeTheme: true, // Allow the App's theme to change
           allowChangeLocale: true, // Allow the app to change locale
           allowChangeUI: true, // Allow the app to change its design interface
-          inInitAsync: () => Future.value(true), // Demonstration purposes
-          inInitState: () {/* Optional inInitState() function */},
           inErrorHandler: (details) {
             // Retrieve the last Flutter Error that has occurred.
             // Note, the function retrieves and then 'clears' the last error from storage.
@@ -121,43 +94,15 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
               return true;
             }());
           },
+          // Programmatically determine the home page
+          inHome: () => ExampleAppController().onHome(),
         );
 
   // Development Tools Settings
-  static final DevTools dev = DevTools();
-
-  // @override
-  // Widget onHome() => (controller as ExampleAppController).onHome();
-
-  /// Programmatically determine whether the banner is displayed or not.
-  /// Place a breakpoint in your IDE and see what happens in there
-  @override
-  bool? onDebugShowCheckedModeBanner() => super.onDebugShowCheckedModeBanner();
-
-  @override
-  bool onOnNavigationNotification(notification) {
-    if (kDebugMode) {
-      debugPrint('############ Event: Navigation change.');
-    }
-    return notification.canHandlePop;
-  }
-
-  /// Note, will be ignored if parameter, useRouterConfig, is false or null.
-  @override
-  RouterConfig<Object>? onRouterConfig() => GoRouter(
-        routes: <RouteBase>[
-          GoRoute(
-            path: '/',
-            builder: (BuildContext context, GoRouterState state) {
-              return (controller as ExampleAppController).onHome();
-            },
-          ),
-        ],
-      );
+  static final DevToolsController dev = DevToolsController();
 
   @override
   Map<String, WidgetBuilder>? onRoutes() => {
-        '/': (_) => (controller as ExampleAppController).onHome(),
         '/Page01': (_) => const Page01(),
         '/Page02': (_) => const Page02(),
         '/Page03': (_) => const Page03(),
@@ -170,21 +115,64 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
         '/Page10': (_) => const Page10(),
       };
 
+  /// Note, will be ignored if parameter, useRouterConfig, is false or null.
   @override
-  AppRouterDelegate onRouterDelegate() =>
-      AppRouterDelegate(appState: this, routes: {
-        '/': (_) => (controller as ExampleAppController).onHome(),
-        '/Page01': (_) => const Page01(),
-        '/Page02': (_) => const Page02(),
-        '/Page03': (_) => const Page03(),
-        '/Page04': (_) => const Page04(),
-        '/Page05': (_) => const Page05(),
-        '/Page06': (_) => const Page06(),
-        '/Page07': (_) => const Page07(),
-        '/Page08': (_) => const Page08(),
-        '/Page09': (_) => const Page09(),
-        '/Page10': (_) => const Page10(),
-      });
+  RouterConfig<Object>? onRouterConfig() => GoRouter(
+        routes: <RouteBase>[
+          GoRoute(
+            path: '/',
+            builder: (BuildContext context, GoRouterState state) {
+              return (controller as ExampleAppController).onHome();
+            },
+          ),
+          GoRoute(
+            path: '/page01',
+            name: '/Page01',
+            builder: (_, __) => const Page01(),
+          ),
+          GoRoute(
+            path: '/page02',
+            name: '/Page02',
+            builder: (_, __) => const Page02(),
+          ),
+          GoRoute(
+            path: '/page03',
+            name: '/Page03',
+            builder: (_, __) => const Page03(),
+          ),
+          GoRoute(
+            path: '/page04',
+            name: '/Page04',
+            builder: (_, __) => const Page04(),
+          ),
+          GoRoute(
+            path: '/page05',
+            name: '/Page05',
+            builder: (_, __) => const Page05(),
+          ),
+          GoRoute(
+            path: '/page06',
+            name: '/Page06',
+            builder: (_, __) => const Page06(),
+          ),
+          GoRoute(
+            path: '/page07',
+            name: '/Page07',
+            builder: (_, __) => const Page07(),
+          ),
+          GoRoute(
+            path: '/page08',
+            name: '/Page08',
+            builder: (_, __) => const Page08(),
+          ),
+          GoRoute(
+            path: '/page09',
+            name: '/Page09',
+            builder: (_, __) => const Page09(),
+          ),
+        ],
+        debugLogDiagnostics: true,
+      );
 
   /// Place a breakpoint here and see how it works
   @override
@@ -200,6 +188,19 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
       throw Exception('Error in builder!');
     }
     return super.builder(context);
+  }
+
+  /// Programmatically determine whether the banner is displayed or not.
+  /// Place a breakpoint in your IDE and see what happens in there
+  @override
+  bool? onDebugShowCheckedModeBanner() => super.onDebugShowCheckedModeBanner();
+
+  @override
+  bool onOnNavigationNotification(notification) {
+    if (kDebugMode) {
+      debugPrint('############ Event: Navigation change.');
+    }
+    return notification.canHandlePop;
   }
 
   @override
@@ -232,18 +233,6 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
   void onError(FlutterErrorDetails details) {
     // This is the app's State object's error routine.
     super.onError(details);
-  }
-
-  @override
-  // ignore: unnecessary_overrides
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
-    return super.updateShouldNotify(oldWidget);
-  }
-
-  @override
-  // ignore: unnecessary_overrides
-  bool dependOnInheritedWidget(BuildContext? context) {
-    return super.dependOnInheritedWidget(context);
   }
 
   @override

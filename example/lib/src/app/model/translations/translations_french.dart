@@ -42,4 +42,9 @@ Map<String, String> frFR = {
   'New Cats': 'Nouveaux chats',
   'New Foxes': 'Nouveaux renards',
   'New Birds': 'Nouveaux oiseaux',
+  'Exit': 'Sortie',
+  'Prev Page': 'Page précédente',
+  'App Navigation': 'Navigation dans les applications',
+  'Next Page': 'Page suivante',
+  'Nowhere to go': 'Nulle part où aller',
 };

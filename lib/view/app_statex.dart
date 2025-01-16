@@ -391,7 +391,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     super.dispose();
   }
 
-  /// Override build to avoid the built-in Future Builder.
+  // Override build to avoid the built-in Future Builder.
   @override
   Widget build(BuildContext context) => buildF(context);
 
@@ -1099,20 +1099,40 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   String _appTitle = ''; // actual title
   late String _title;
 
+  //
   GenerateAppTitle? _onGenerateTitle;
+  //
   NotificationListenerCallback<NavigationNotification>?
       _onNavigationNotification;
+
+  //
   ThemeData? _theme;
+
+  //
   CupertinoThemeData? _iOSTheme;
+
+  //
   ThemeData? _darkTheme;
+
+  //
   ThemeData? _highContrastTheme;
+
+  //
   ThemeData? _highContrastDarkTheme;
+
+  //
   ThemeMode? _themeMode;
+
+  //
   Duration? _themeAnimationDuration;
+
+  //
   Curve? _themeAnimationCurve;
 
+  //
   Color? _color;
 
+  ///
   Locale? get locale =>
       _locale ??
       (mounted ? Localizations.maybeLocaleOf(context) : null) ??
@@ -1122,6 +1142,7 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
         supportedLocales,
       );
 
+  ///
   set locale(Locale? locale) {
     if (locale != null &&
         (_supportedLocales.isEmpty || _supportedLocales.contains(locale))) {
@@ -1130,6 +1151,7 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
     }
   }
 
+  //
   Locale? _locale;
 
   /// Determine the locale used by the Mobile phone.
@@ -1289,7 +1311,8 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
 
   /// Returns a Map of Routes if any.
   Map<String, WidgetBuilder>? onRoutes() =>
-      inRoutes?.call() ?? const <String, WidgetBuilder>{};
+      // _routes is redundant, but then allows a Routes list provided to a Route Delegate!
+      _routes ?? inRoutes?.call() ?? const <String, WidgetBuilder>{};
 
   /// Returns the initial Route if any.
   String? onInitialRoute() => inInitialRoute?.call();
@@ -1297,8 +1320,44 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   /// Returns the 'Generate Routes' routine if any.
   Route<dynamic>? onOnGenerateRoute(RouteSettings settings) => null;
 
+  ///
+  Route<dynamic>? onGenerateRoute(RouteSettings settings) =>
+      _onOnGenerateRoute(settings);
+  // Route<dynamic>? onGenerateRoute(RouteSettings settings) {
+  //   var route = _onOnGenerateRoute(settings);
+  //   if (route == null) {
+  //     // Unlike Flutter, this allows you to use tha List of Routes with a Delegate!
+  //     final routes = onRoutes();
+  //     if (routes != null) {
+  //       final builder = routes[settings.name];
+  //       if (builder != null) {
+  //         if (settings.arguments != null &&
+  //             settings.arguments is ReturnRouteFunctionType) {
+  //           route = (settings.arguments as ReturnRouteFunctionType)
+  //               .call(builder, settings);
+  //         } else if (App.useMaterial) {
+  //           route = MaterialPageRoute<dynamic>(
+  //               settings: settings, builder: builder);
+  //         } else {
+  //           route = CupertinoPageRoute<dynamic>(
+  //               settings: settings, builder: builder);
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return route;
+  // }
+
+  /// Flag telling you if the routes were generated or not
+  bool get routesGenerated => _routesGenerated;
+  bool _routesGenerated = false;
+
   /// Returns the 'Unknown Route' if any.
   Route<dynamic>? onOnUnknownRoute(RouteSettings settings) => null;
+
+  ///
+  Route<dynamic>? onUnknownRoute(RouteSettings settings) =>
+      _onOnUnknownRoute(settings);
 
   /// Called when a navigation event occurs
   /// Return true if you deem this change is handled.
@@ -1343,17 +1402,24 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   /// Returns the App's title if any.
   String onTitle() => inTitle?.call() ?? '';
 
-  ///
-  Route<dynamic>? onGenerateRoute(RouteSettings settings) {
-    var route = _onOnGenerateRoute(settings);
-    if (route == null) {
+  Route<dynamic>? _onOnGenerateRoute(RouteSettings settings) {
+    Route<dynamic>? route;
+    route = _onGenerateRoute?.call(settings);
+    // Passed parameter takes precedence over the function below.
+    route ??= onOnGenerateRoute(settings);
+    if (route != null) {
+      // Flag the routes were generated.
+      _routesGenerated = true;
+    } else {
+      // Unlike Flutter, this allows you to use tha List of Routes even with a Delegate!
       final routes = onRoutes();
       if (routes != null) {
         final builder = routes[settings.name];
         if (builder != null) {
           if (settings.arguments != null &&
               settings.arguments is ReturnRouteFunctionType) {
-            route = (settings.arguments as ReturnRouteFunctionType).call(builder, settings);
+            route = (settings.arguments as ReturnRouteFunctionType)
+                .call(builder, settings);
           } else if (App.useMaterial) {
             route = MaterialPageRoute<dynamic>(
                 settings: settings, builder: builder);
@@ -1366,18 +1432,6 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
     }
     return route;
   }
-
-  Route<dynamic>? _onOnGenerateRoute(RouteSettings settings) {
-    Route<dynamic>? route;
-    route = _onGenerateRoute?.call(settings);
-    // Passed parameter takes precedence over the function below.
-    route ??= onOnGenerateRoute(settings);
-    return route;
-  }
-
-  ///
-  Route<dynamic>? onUnknownRoute(RouteSettings settings) =>
-      _onOnUnknownRoute(settings);
 
   Route<dynamic>? _onOnUnknownRoute(RouteSettings settings) {
     Route<dynamic>? route;
@@ -1799,7 +1853,8 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   }
 }
 
-/// Supply a customized Error Widget.
+///
+@Deprecated("Use 'AppErrorHandler.displayErrorWidget' instead.")
 Widget defaultErrorWidgetBuilder(
   FlutterErrorDetails details, {
   i.ParagraphStyle? paragraphStyle,
@@ -1810,15 +1865,20 @@ Widget defaultErrorWidgetBuilder(
   CustomPainter? customPainter,
   bool? stackTrace,
 }) =>
-    AppWidgetErrorDisplayed(
+    AppErrorHandler.displayErrorWidget(
+      details,
       paragraphStyle: paragraphStyle,
       textStyle: textStyle,
       padding: padding,
       minimumWidth: minimumWidth,
       backgroundColor: backgroundColor,
-      customPainter: customPainter,
       stackTrace: stackTrace ?? v.App.inDebugMode,
-    ).builder(details);
+    );
+
+///
+Route<dynamic>? defaultAppUnknownRoute(RouteSettings settings) {
+  return null;
+}
 
 /// The extension of the State class.
 ///

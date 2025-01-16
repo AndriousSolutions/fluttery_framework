@@ -41,4 +41,9 @@ Map<String, String> zhCN = {
   'New Cats': '新猫',
   'New Foxes': '新狐狸',
   'New Birds': '新鸟',
+  'Exit': '出口',
+  'Prev Page': '上一页',
+  'App Navigation': '应用程序导航',
+  'Next Page': '下一页',
+  'Nowhere to go': '无处可去',
 };

@@ -1,4 +1,11 @@
 
+## 5.11.0
+January 15, 2024
+- Updated onGenerateRoute() & onRoutes() in app_statex.dart
+- Added the getter, routesGenerated, in app_statex.dart
+- displayErrorWidget() & onUnknownRoute() in error_handler.dart
+- Updated translations directory
+
 ## 5.10.0
 January 10, 2024
 - DevToolsSettings.column() in Example app

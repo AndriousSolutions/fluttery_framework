@@ -43,4 +43,9 @@ Map<String, String> ruRU = {
   'New Cats': 'Новые кошки',
   'New Foxes': 'Новые Лисы',
   'New Birds': 'Новые птицы',
+  'Exit': 'Выход',
+  'Prev Page': 'Предыдущая страница',
+  'App Navigation': 'Навигация по приложениям',
+  'Next Page': 'Следующая страница',
+  'Nowhere to go': 'Некуда идти',
 };

@@ -43,4 +43,9 @@ Map<String, String> deDE = {
   'New Cats': 'Neue Katzen',
   'New Foxes': 'Neue Füchse',
   'New Birds': 'Neue Vögel',
+  'Exit': 'Ausfahrt',
+  'Prev Page': 'Vorherige Seite',
+  'App Navigation': 'App-Navigation',
+  'Next Page': 'Nächste Seite',
+  'Nowhere to go': 'Nirgendwohin',
 };

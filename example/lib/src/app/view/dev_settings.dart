@@ -23,11 +23,11 @@ class DevToolsSettings extends StatefulWidget {
 
 ///
 class _DevToolsSettingsState extends StateX<DevToolsSettings> {
-  _DevToolsSettingsState() : super(controller: DevTools()) {
-    con = controller as DevTools;
+  _DevToolsSettingsState() : super(controller: DevToolsController()) {
+    con = controller as DevToolsController;
   }
 
-  late DevTools con;
+  late DevToolsController con;
 
   @override
   Widget builder(BuildContext context) {
@@ -195,11 +195,17 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
 }
 
 ///
-class DevTools extends StateXController {
+class DevToolsController extends StateXController {
   /// Singleton Pattern
-  factory DevTools() => _this ??= DevTools._();
-  DevTools._();
-  static DevTools? _this;
+  factory DevToolsController() => _this ??= DevToolsController._();
+  DevToolsController._();
+  static DevToolsController? _this;
+
+  @override
+  void initState() {
+    super.initState();
+    _useMaterial3 = App.themeData?.useMaterial3 ?? false;
+  }
 
   ///
   bool get debugShowCheckedModeBanner => _debugShowCheckedModeBanner;
@@ -326,11 +332,13 @@ class DevTools extends StateXController {
   set useMaterial3(bool? v) {
     if (v != null) {
       _useMaterial3 = v;
-      App.themeData = ThemeData.from(
-        useMaterial3: _useMaterial3,
-        colorScheme: Theme.of(state!.context).colorScheme,
-      );
-      setSettingState();
+      final themeData = App.themeData;
+      if (themeData != null) {
+        final colorScheme = themeData.colorScheme;
+        App.themeData =
+            ThemeData.from(colorScheme: colorScheme, useMaterial3: v);
+        setSettingState();
+      }
     }
   }
 

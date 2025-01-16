@@ -26,42 +26,42 @@ void integrationTestFlutteryFramework() {
 
     final con = ExampleAppController();
 
-    // //
-    // int cnt = 1;
     //
-    // while (cnt <= 3) {
-    //   //
-    //   switch (con.application) {
-    //     case 'Counter':
-    //
-    //       // Counter app testing
-    //       await counterTest(tester);
-    //
-    //       // Testing its Bottom bar
-    //       await bottomBarTests(tester);
-    //
-    //       break;
-    //     case 'Word Pairs':
-    //
-    //       // Random Word Pairs app
-    //       await wordsTest(tester);
-    //
-    //       // Test dialog windows
-    //       await dialogTests(tester);
-    //
-    //       break;
-    //     case 'Inherited':
-    //
-    //       await animalsTest(tester);
-    //
-    //       break;
-    //   }
-    //
-    //   // Switch the app through the popupmenu
-    //   await openApplicationMenu(tester);
-    //
-    //   cnt++;
-    // }
+    int cnt = 1;
+
+    while (cnt <= 3) {
+      //
+      switch (con.application) {
+        case 'Counter':
+
+          // Counter app testing
+          await counterTest(tester);
+
+          // Testing its Bottom bar
+          await bottomBarTests(tester);
+
+          break;
+        case 'Word Pairs':
+
+          // Random Word Pairs app
+          await wordsTest(tester);
+
+          // Test dialog windows
+          await dialogTests(tester);
+
+          break;
+        case 'Inherited':
+
+          await animalsTest(tester);
+
+          break;
+      }
+
+      // Switch the app through the popupmenu
+      await openApplicationMenu(tester);
+
+      cnt++;
+    }
 
     // Testing Navigation
     await appNavigationTest(tester);

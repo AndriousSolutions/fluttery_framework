@@ -42,4 +42,9 @@ Map<String, String> heIL = {
   'New Cats': 'חתולים חדשים',
   'New Foxes': 'שועלים חדשים',
   'New Birds': 'ציפורים חדשות',
+  'Exit': 'יְצִיאָה',
+  'Prev Page': 'עמוד קודם',
+  'App Navigation': 'ניווט באפליקציה',
+  'Next Page': 'העמוד הבא',
+  'Nowhere to go': 'אין לאן ללכת',
 };

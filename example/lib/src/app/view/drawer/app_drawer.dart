@@ -43,13 +43,16 @@ class AppDrawer extends v.AppDrawer {
               msg: 'This is a Message Box.',
             ).show();
           }),
-      ListTile(
+    ]);
+
+    if (App.appState?.routesGenerated ?? false) {
+      add(ListTile(
         key: const Key('Navigation'),
         subtitle: const Text('App Navigation'),
         onTap: () async {
           await App.pushNamed('/Page01');
         },
-      ),
-    ]);
+      ));
+    }
   }
 }

@@ -5,7 +5,7 @@ import '/src/controller.dart';
 import '/src/view.dart';
 
 ///
-class Page01 extends NavWidget {
+class Page01 extends StatefulWidget {
   ///
   const Page01({super.key});
 
@@ -14,7 +14,7 @@ class Page01 extends NavWidget {
 }
 
 ///
-class Page02 extends NavWidget {
+class Page02 extends StatefulWidget {
   ///
   const Page02({super.key});
 
@@ -23,7 +23,7 @@ class Page02 extends NavWidget {
 }
 
 ///
-class Page03 extends NavWidget {
+class Page03 extends StatefulWidget {
   ///
   const Page03({super.key});
 
@@ -32,7 +32,7 @@ class Page03 extends NavWidget {
 }
 
 ///
-class Page04 extends NavWidget {
+class Page04 extends StatefulWidget {
   ///
   const Page04({super.key});
 
@@ -41,7 +41,7 @@ class Page04 extends NavWidget {
 }
 
 ///
-class Page05 extends NavWidget {
+class Page05 extends StatefulWidget {
   ///
   const Page05({super.key});
 
@@ -50,7 +50,7 @@ class Page05 extends NavWidget {
 }
 
 ///
-class Page06 extends NavWidget {
+class Page06 extends StatefulWidget {
   ///
   const Page06({super.key});
 
@@ -59,7 +59,7 @@ class Page06 extends NavWidget {
 }
 
 ///
-class Page07 extends NavWidget {
+class Page07 extends StatefulWidget {
   ///
   const Page07({super.key});
 
@@ -68,7 +68,7 @@ class Page07 extends NavWidget {
 }
 
 ///
-class Page08 extends NavWidget {
+class Page08 extends StatefulWidget {
   ///
   const Page08({super.key});
 
@@ -77,7 +77,7 @@ class Page08 extends NavWidget {
 }
 
 ///
-class Page09 extends NavWidget {
+class Page09 extends StatefulWidget {
   ///
   const Page09({super.key});
 
@@ -86,7 +86,7 @@ class Page09 extends NavWidget {
 }
 
 ///
-class Page10 extends NavWidget {
+class Page10 extends StatefulWidget {
   ///
   const Page10({super.key});
 
@@ -94,26 +94,17 @@ class Page10 extends NavWidget {
   State createState() => _NavState<Page10>();
 }
 
-///
-class NavWidget extends StatefulWidget {
-  ///
-  const NavWidget({super.key});
-
-  @override
-  State createState() => _NavState();
-}
+// ///
+// class NavWidget extends StatefulWidget {
+//   ///
+//   const NavWidget({super.key});
+//
+//   @override
+//   State createState() => _NavState();
+// }
 
 /// Supply a particular State class for this example app.
-class _NavState<T extends NavWidget> extends NavState<T> {
-  ///
-  @override
-  void initState() {
-    super.initState();
-    con = controller as NavController;
-  }
-
-  late NavController con;
-
+class _NavState<T extends StatefulWidget> extends NavState<T> {
   ///
   @override
   Widget build(BuildContext context) {
@@ -125,13 +116,12 @@ class _NavState<T extends NavWidget> extends NavState<T> {
       con.mainText = '';
     }
     // Reference for the previous page
-    final prevTitle = prevWidget == null ? 'Exit' : 'Prev Page';
+    final prevTitle = con.onFirstPage ? 'Exit'.tr : 'Prev Page'.tr;
     return Scaffold(
       appBar: AppBar(
         title: Text('App Navigation'.tr),
       ),
-      primary: false,
-      drawer: AppDrawer(),
+      endDrawer: AppDrawer(),
       body: Column(
         children: [
           Text(
@@ -206,12 +196,12 @@ class _NavState<T extends NavWidget> extends NavState<T> {
                 if (canPop()) {
                   con.maybePop<bool>(true);
                 } else {
-                  con.mainText = 'Nowhere to go.';
+                  con.mainText = 'Nowhere to go.'.tr;
                 }
               },
             ),
             Flexible(child: Text(text)),
-            if (nextWidget == null)
+            if (con.lastRoute)
               const Text('         ')
             else
               ElevatedButton(

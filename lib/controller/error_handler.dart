@@ -10,11 +10,18 @@
 import 'dart:ui' as i
     show ParagraphBuilder, ParagraphConstraints, ParagraphStyle, TextStyle;
 
-import '/controller.dart' show HandleError;
+import '/controller.dart'
+    show
+        CupertinoPageRoute,
+        HandleError,
+        MaterialPageRoute,
+        Route,
+        RouteSettings;
 
 import '/view.dart'
     show
         App,
+        AppStateExtension,
         BuildContext,
         Color,
         Colors,
@@ -50,6 +57,7 @@ import 'package:flutter/rendering.dart'
         EdgeInsets,
         ErrorDescription,
         FlutterError,
+        Key,
         Offset,
         Paint,
         PaintingContext,
@@ -130,7 +138,7 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
 
         // Define our own 'error building widget' widget if one is not provided.
         ErrorWidget.builder =
-            (FlutterErrorDetails details) => errorDisplayWidget(
+            (FlutterErrorDetails details) => displayErrorWidget(
                   details,
                   paragraphStyle: _paragraphStyle,
                   textStyle: _textStyle,
@@ -322,7 +330,7 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
       widget = ErrorWidget.builder(details);
     } catch (ex) {
       // low-level primitives used to display the error
-      widget = errorDisplayWidget(details);
+      widget = displayErrorWidget(details);
     }
     return widget;
   }
@@ -404,96 +412,52 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
     return details;
   }
 
+  ///
+  @Deprecated('Use displayErrorWidget instead.')
+  static Widget errorDisplayWidget(
+    FlutterErrorDetails details, {
+    Key? key,
+    i.ParagraphStyle? paragraphStyle,
+    i.TextStyle? textStyle,
+    EdgeInsets? padding,
+    double? minimumWidth,
+    Color? backgroundColor,
+    bool? stackTrace,
+  }) =>
+      displayErrorWidget(
+        details,
+        key: key,
+        paragraphStyle: paragraphStyle,
+        textStyle: textStyle,
+        padding: padding,
+        minimumWidth: minimumWidth,
+        backgroundColor: backgroundColor,
+        stackTrace: stackTrace,
+      );
+
   /// This function is intentionally doing things using the low-level
   /// primitives to avoid depending on any subsystems that may have ended
   /// up in an unstable state -- after all, this class is mainly used when
   /// things have gone wrong.
-  static Widget errorDisplayWidget(
+  static Widget displayErrorWidget(
     FlutterErrorDetails details, {
+    Key? key,
+    String? header,
     i.ParagraphStyle? paragraphStyle,
     i.TextStyle? textStyle,
     EdgeInsets? padding,
     double? minimumWidth,
     Color? backgroundColor,
+    bool? stackTrace,
   }) {
-    String message;
-    try {
-      message = 'ERROR\n\n${details.exception}\n\n';
-
-      final stackTrace = details.stack.toString().split('\n');
-
-      final length = stackTrace.length > 5 ? 5 : stackTrace.length;
-
-      final buffer = StringBuffer()..write(message);
-      for (var i = 0; i < length; i++) {
-        buffer.write('${stackTrace[i]}\n');
-      }
-      message = buffer.toString();
-    } catch (e) {
-      message = 'Error';
-    }
-    return _ErrorRenderObjectWidget(
-      message: message,
-      error: details.exception,
-      paragraphStyle: paragraphStyle,
-      textStyle: textStyle,
-      padding: padding,
-      minimumWidth: minimumWidth,
-      backgroundColor: backgroundColor,
-    );
-  }
-}
-
-/// A simply 'Widget Error' Screen if an app's widget fails to display
-class AppWidgetErrorDisplayed {
-  ///
-  const AppWidgetErrorDisplayed({
-    this.paragraphStyle,
-    this.textStyle,
-    this.padding,
-    this.minimumWidth,
-    this.backgroundColor,
-    this.customPainter,
-    this.stackTrace = false,
-  });
-
-  ///
-  final i.ParagraphStyle? paragraphStyle;
-
-  ///
-  final i.TextStyle? textStyle;
-
-  ///
-  final EdgeInsets? padding;
-
-  ///
-  final double? minimumWidth;
-
-  ///
-  final Color? backgroundColor;
-
-  ///
-  final CustomPainter? customPainter;
-
-  ///
-  final bool? stackTrace;
-
-  ///
-  Widget builder(
-    FlutterErrorDetails details, {
-    i.ParagraphStyle? paragraphStyle,
-    i.TextStyle? textStyle,
-    EdgeInsets? padding,
-    double? minimumWidth,
-    Color? backgroundColor,
-    CustomPainter? customPainter,
-  }) {
+    //
     String? message;
+    //
     try {
       //
       message = '\n\n${details.exception}\n\n';
 
-      if (details.stack != null && stackTrace != null && stackTrace!) {
+      if (details.stack != null && (stackTrace ?? true)) {
         //
         final stack = details.stack.toString().split('\n');
 
@@ -509,16 +473,52 @@ class AppWidgetErrorDisplayed {
     } catch (e) {
       message = null;
     }
+    //
     return _ErrorRenderObjectWidget(
+      key: key,
+      header: header,
       message: message,
       error: details.exception,
-      paragraphStyle: paragraphStyle ?? this.paragraphStyle,
-      textStyle: textStyle ?? this.textStyle,
-      padding: padding ?? this.padding,
-      minimumWidth: minimumWidth ?? this.minimumWidth,
-      backgroundColor:
-          backgroundColor ?? this.backgroundColor ?? const Color(0xFFFFFFFF),
+      paragraphStyle: paragraphStyle,
+      textStyle: textStyle,
+      padding: padding,
+      minimumWidth: minimumWidth,
+      backgroundColor: backgroundColor ?? const Color(0xFFFFFFFF),
     );
+  }
+
+  /// Using the low-level primitives to avoid an unstable state
+  static Route<dynamic>? onUnknownRoute(
+    RouteSettings settings, {
+    FlutterErrorDetails? details,
+    String? header,
+    String? message,
+    StackTrace? stack,
+    String? library,
+    String? description,
+  }) {
+    //
+    if (details == null) {
+      //
+      message ??= 'Route "${settings.name}" not found!';
+      description ??= 'The onUnknownRoute callback returned this screen instead.';
+      details = FlutterErrorDetails(
+        exception: Exception(message),
+        stack: stack,
+        library: library,
+        context: ErrorDescription(description),
+      );
+    }
+    final widget = displayErrorWidget(details, header: header ?? '404');
+    Route<dynamic> route;
+    if (App.useMaterial) {
+      route = MaterialPageRoute<dynamic>(
+          builder: (_) => widget, settings: settings);
+    } else {
+      route = CupertinoPageRoute<dynamic>(
+          builder: (_) => widget, settings: settings);
+    }
+    return route;
   }
 }
 
@@ -527,6 +527,7 @@ class _ErrorRenderObjectWidget extends LeafRenderObjectWidget {
   /// Supply an error message to display and or a Error object.
   const _ErrorRenderObjectWidget({
     super.key,
+    this.header,
     this.message,
     this.error,
     this.paragraphStyle,
@@ -535,6 +536,9 @@ class _ErrorRenderObjectWidget extends LeafRenderObjectWidget {
     this.minimumWidth,
     this.backgroundColor,
   });
+
+  /// Header of the text
+  final String? header;
 
   /// The message to display.
   final String? message;
@@ -559,6 +563,7 @@ class _ErrorRenderObjectWidget extends LeafRenderObjectWidget {
 
   @override
   RenderBox createRenderObject(BuildContext context) => _ErrorBox(
+        header: header,
         message: _errorMessage(message, error),
         paragraphStyle: paragraphStyle,
         textStyle: textStyle,
@@ -604,6 +609,7 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   /// A message can optionally be provided. If a message is provided, an attempt
   /// will be made to render the message when the box paints.
   _ErrorBox({
+    this.header,
     String? message,
     i.ParagraphStyle? paragraphStyle,
     // ignore: avoid_unused_constructor_parameters
@@ -637,7 +643,7 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
       //
       context.canvas.drawRect(offset & size, Paint()..color = _backgroundColor);
 
-      _drawWordERROR(context, 0, text: 'Oops!');
+      _drawWordERROR(context, 0, text: header ?? 'Oops!');
 
       _drawIcon(context, 50);
 
@@ -657,8 +663,11 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
     }
   }
 
+  /// Header beginning the test displayed
+  String? header;
+
   /// The message to attempt to display at paint time.
-  late String? _message;
+  String? _message;
 
 //  late i.Paragraph _paragraph;  // Not used??
 
@@ -860,4 +869,66 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
       ..strokeWidth = 4;
     context.canvas.drawRect(rect, paint);
   }
+}
+
+/// A simply 'Widget Error' Screen if an app's widget fails to display
+@Deprecated("Use 'AppErrorHandler.displayErrorWidget()' instead.")
+class AppWidgetErrorDisplayed {
+  ///
+  const AppWidgetErrorDisplayed({
+    this.key,
+    this.paragraphStyle,
+    this.textStyle,
+    this.padding,
+    this.minimumWidth,
+    this.backgroundColor,
+    this.customPainter,
+    this.stackTrace,
+  });
+
+  ///
+  final Key? key;
+
+  ///
+  final i.ParagraphStyle? paragraphStyle;
+
+  ///
+  final i.TextStyle? textStyle;
+
+  ///
+  final EdgeInsets? padding;
+
+  ///
+  final double? minimumWidth;
+
+  ///
+  final Color? backgroundColor;
+
+  ///
+  final CustomPainter? customPainter;
+
+  ///
+  final bool? stackTrace;
+
+  ///
+  Widget builder(
+    FlutterErrorDetails details, {
+    Key? key,
+    i.ParagraphStyle? paragraphStyle,
+    i.TextStyle? textStyle,
+    EdgeInsets? padding,
+    double? minimumWidth,
+    Color? backgroundColor,
+    bool? stackTrace,
+  }) =>
+      AppErrorHandler.displayErrorWidget(
+        key: key ?? this.key,
+        details,
+        paragraphStyle: paragraphStyle ?? this.paragraphStyle,
+        textStyle: textStyle ?? this.textStyle,
+        padding: padding ?? this.padding,
+        minimumWidth: minimumWidth ?? this.minimumWidth,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        stackTrace: stackTrace ?? this.stackTrace ?? false,
+      );
 }

@@ -42,4 +42,9 @@ Map<String, String> esAR = {
   'New Cats': 'Nuevos gatos',
   'New Foxes': 'Nuevos zorros',
   'New Birds': 'Nuevas aves',
+  'Exit': 'Salida',
+  'Prev Page': 'Página anterior',
+  'App Navigation': 'Navegación de aplicaciones',
+  'Next Page': 'Página siguiente',
+  'Nowhere to go': 'Ningún lugar adonde ir',
 };

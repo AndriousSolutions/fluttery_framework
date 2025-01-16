@@ -1,4 +1,8 @@
 
+## 1.7.0
+January 11, 2024
+- Updated translations directory
+
 ## 1.6.0
 January 10, 2024
 - DevToolsSettings.column()

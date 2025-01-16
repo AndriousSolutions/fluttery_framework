@@ -18,7 +18,7 @@ mixin RouteNavigatorMethodsMixin {
   NavigatorState? _appNavigator;
 
   /// Whether the navigator can be popped.
-  bool canPop() => appNavigator?.canPop() ?? false;
+  bool canPop() => appNavigator?.canPop() ?? App.goRouter?.canPop() ?? false;
 
   /// Complete the lifecycle for a route that has been popped off the navigator.
   void finalizeRoute(Route<dynamic> route) =>
@@ -35,10 +35,15 @@ mixin RouteNavigatorMethodsMixin {
 
   /// Pop the top-most route off the navigator.
   @optionalTypeArgs
-  void pop<T extends Object?>([T? result]) => appNavigator?.pop<T>(result);
+  void pop<T extends Object?>([T? result]) {
+    if (appNavigator == null) {
+      App.goRouter?.pop<T>(result);
+    } else {
+      appNavigator?.pop<T>(result);
+    }
+  }
 
-  /// Pop the current route off the navigator and push a named route in its
-  /// place.
+  /// Pop the current route off the navigator and push a named route in its place.
   @optionalTypeArgs
   Future<T?> popAndPushNamed<T extends Object?, TO extends Object?>(
       String routeName,
@@ -55,7 +60,7 @@ mixin RouteNavigatorMethodsMixin {
   /// Push the given route onto the navigator.
   @optionalTypeArgs
   Future<T?> push<T extends Object?>(Route<T> route) async {
-    final push = appNavigator?.push<T>(route);
+    final push = await appNavigator?.push<T>(route);
     return push;
   }
 
@@ -64,7 +69,7 @@ mixin RouteNavigatorMethodsMixin {
   @optionalTypeArgs
   Future<T?> pushAndRemoveUntil<T extends Object?>(
       Route<T> newRoute, RoutePredicate predicate) async {
-    final push = appNavigator?.pushAndRemoveUntil<T>(newRoute, predicate);
+    final push = await appNavigator?.pushAndRemoveUntil<T>(newRoute, predicate);
     return push;
   }
 
@@ -74,7 +79,27 @@ mixin RouteNavigatorMethodsMixin {
     String routeName, {
     Object? arguments,
   }) async {
-    final push = appNavigator?.pushNamed<T>(routeName, arguments: arguments);
+    T? push;
+    final generated = App.appState?.routesGenerated ?? false;
+    // goRouter should be tried first
+    if (generated) {
+      push = await App.goRouter?.pushNamed<T>(routeName);
+    } else {
+      final goRouter = App.goRouter;
+      if (goRouter != null) {
+        await goRouter.pushNamed(routeName, extra: arguments);
+        return push;
+      }
+    }
+    if (push == null) {
+      if (generated) {
+        push =
+            await appNavigator?.pushNamed<T>(routeName, arguments: arguments);
+      } else {
+        await appNavigator?.pushNamed(routeName, arguments: arguments);
+        return push;
+      }
+    }
     return push;
   }
 
@@ -84,9 +109,11 @@ mixin RouteNavigatorMethodsMixin {
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
       String newRouteName, RoutePredicate predicate,
       {Object? arguments}) async {
-    final push = appNavigator?.pushNamedAndRemoveUntil<T>(
-        newRouteName, predicate,
-        arguments: arguments);
+    final push = await appNavigator?.pushNamedAndRemoveUntil<T>(
+      newRouteName,
+      predicate,
+      arguments: arguments,
+    );
     return push;
   }
 
@@ -97,8 +124,14 @@ mixin RouteNavigatorMethodsMixin {
   Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
       Route<T> newRoute,
       {TO? result}) async {
-    final push =
+    var push =
         await appNavigator?.pushReplacement<T, TO>(newRoute, result: result);
+    if (push == null) {
+      final location = newRoute.settings.name;
+      if (location != null && location.isNotEmpty) {
+        push = await App.goRouter?.pushReplacement<T>(location, extra: result);
+      }
+    }
     return push;
   }
 
@@ -112,7 +145,9 @@ mixin RouteNavigatorMethodsMixin {
       Object? arguments}) async {
     final push = await appNavigator?.pushReplacementNamed<T, TO>(routeName,
         result: result, arguments: arguments);
-    return push;
+    return push ??
+        await App.goRouter
+            ?.pushReplacementNamed<T>(routeName, extra: arguments);
   }
 
   /// Immediately remove `route` from the navigator, and [Route.dispose] it.
@@ -129,8 +164,15 @@ mixin RouteNavigatorMethodsMixin {
   void replace<T extends Object?>({
     required Route<dynamic> oldRoute,
     required Route<T> newRoute,
-  }) =>
-      appNavigator?.replace<T>(oldRoute: oldRoute, newRoute: newRoute);
+  }) {
+    appNavigator?.replace<T>(oldRoute: oldRoute, newRoute: newRoute);
+    if (appNavigator == null) {
+      final location = newRoute.settings.name;
+      if (location != null && location.isNotEmpty) {
+        App.goRouter?.replace<T>(location);
+      }
+    }
+  }
 
   /// Replaces a route on the navigator with a new route. The route to be
   /// replaced is the one below the given `anchorRoute`.

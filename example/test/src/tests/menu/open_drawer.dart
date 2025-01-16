@@ -8,15 +8,25 @@ String _location = '========================== open_drawer.dart';
 /// Open a particular type of dialog window.
 Future<bool> openDrawerOption(String key, WidgetTester tester, { bool? skipOffstage}) async {
   //
-  final opened = await openDrawer(tester);
+  Finder? finder;
+
+  var opened = await openDrawer(tester);
 
   if (opened) {
     //
     final finder = find.byKey(Key(key), skipOffstage: skipOffstage ?? true);
 
-    expect(finder, findsOneWidget, reason: _location);
+    // expect(finder, findsOneWidget, reason: _location);
+    opened = finder.evaluate().isNotEmpty;
 
-    await tester.tap(finder);
+    if(!opened){
+      await closeDrawer(tester);
+    }
+  }
+
+  if (opened) {
+    //
+    await tester.tap(finder!.first);
 
     await tester.pumpAndSettle(const Duration(milliseconds: 200));
   }
