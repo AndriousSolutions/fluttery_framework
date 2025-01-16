@@ -1,5 +1,5 @@
 
-## 5.11.0
+## 5.11.0+1
 January 15, 2024
 - Updated onGenerateRoute() & onRoutes() in app_statex.dart
 - Added the getter, routesGenerated, in app_statex.dart

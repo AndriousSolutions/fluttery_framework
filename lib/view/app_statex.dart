@@ -16,7 +16,6 @@ import '/controller.dart'
         App,
         AppErrorHandler,
         AppStateXController,
-        AppWidgetErrorDisplayed,
         ReportErrorHandler,
         StateXController;
 
