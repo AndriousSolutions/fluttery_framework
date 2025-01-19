@@ -8,25 +8,17 @@ import '/src/view.dart';
 /// The App's State object
 class FlutteryExampleApp extends AppStatefulWidget {
   ///
-  FlutteryExampleApp({super.key})
-      : super(
-        // splashScreen: const SplashScreen(),   // three ways to present a Splash screen
-        // inSplashScreen: () => const SplashScreen(),
-        );
-
-  // This is the 'App State object' of the application.
-  @override
-  AppStateX<FlutteryExampleApp> createAppState() => _ExampleAppState();
+  FlutteryExampleApp({super.key});
 
   @override
-  Widget? onSplashScreen(BuildContext context) =>
-      App.inFlutterTest ? null : const SplashScreen();
+  AppStateX<StatefulWidget> createAppState() => _ExampleAppState();
 }
 
 /// This is the 'View' of the application.
 /// The 'look and behavior' of the app.
 ///
 class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
+
   _ExampleAppState()
       : super(
           title: 'Fluttery Demo App',
@@ -100,6 +92,10 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
 
   // Development Tools Settings
   static final DevToolsController dev = DevToolsController();
+
+  @override
+  Widget? onSplashScreen(BuildContext context) =>
+      App.inFlutterTest ? null : const SplashScreen();
 
   @override
   Map<String, WidgetBuilder>? onRoutes() => {

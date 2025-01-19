@@ -129,7 +129,7 @@ class AppObject
 
   /// Determine if the App initialized successfully.
   // ignore: unnecessary_getters_setters
-  bool? get isInit => _isInit;
+  bool get isInit => _isInit ?? false;
 
   /// Set the init only once.
   // ignore: unnecessary_getters_setters

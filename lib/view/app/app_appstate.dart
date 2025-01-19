@@ -42,6 +42,7 @@ extension AppStateExtension on AppObject {
   void setState(VoidCallback fn) => appState?.setState(fn);
 
   /// Refresh the 'current/latest' State object and 'root/first' State object.
+  /// todo: Is refresh() deprecated?
   void refresh() => appState?.refresh();
 
   /// Link a widget to a InheritedWidget in the root State object.

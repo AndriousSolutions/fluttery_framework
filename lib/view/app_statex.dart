@@ -843,13 +843,6 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     }
   }
 
-  /// During development, if a hot reload occurs, the reassemble method is called.
-  @override
-  void reassemble() {
-    v.App.hotReload = true;
-    super.reassemble();
-  }
-
   /// Explicitly change to a particular interface.
   bool changeUI(String? ui) {
     // Allow to chang the interface in the first place.

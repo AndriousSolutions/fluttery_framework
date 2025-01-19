@@ -1,4 +1,11 @@
 
+## 5.11.1
+January 19, 2024
+- *BUGFIX* Restored the capability to run on the Web platform with fake_model_for_web.dart
+- *BUGFIX* Repositioned the Sizer() function allowing for a responsive UI in your apps.
+- *BUGFIX* Ensure only a Hot Reload will recreate the App's State object
+  _appWidget = _AppStatefulWidget(key: GlobalObjectKey<v.AppStateX>(_appState!), appState: _appState!);
+
 ## 5.11.0+1
 January 15, 2024
 - Updated onGenerateRoute() & onRoutes() in app_statex.dart

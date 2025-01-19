@@ -85,13 +85,11 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
     // May be in a test environment instead and that can be determined here.
     v.App.inWidgetsFlutterBinding;
   }
-  v.AppStateX? _appState;
 
   @override
   void initState() {
     super.initState();
     //
-    final widget = this.widget;
     // No Circular Progress Indicator
     if (!(widget.onCircularProgressIndicator() ?? true)) {
       // defer displaying anything while starting up
@@ -99,18 +97,19 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
     }
 
     _isAppInApp();
-    _appGlobalKey = GlobalKey<v.AppStateX>();
+    // _appGlobalKey = GlobalKey<v.AppStateX>();
     _assets = Assets();
   }
 
-  late GlobalKey _appGlobalKey;
+//  late GlobalKey _appGlobalKey;
+//   late Key _appGlobalKey;
   late Assets _assets;
 
   /// Implement from the abstract v.AppStatefulWidget to create the View!
   @override
   Widget build(BuildContext context) {
     _assets.init(context);
-    final future = initAsync();
+    final future = initAsync(); // _appState is defined here!
     future.catchError(
       (Object e) {
         _appState?.catchAsyncError(e);
@@ -121,26 +120,35 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // It's got to be handled, and so it's always true to call catchError()
       test: (_) => true,
     );
-    return Sizer(
-      builder: (_, __, ___) => FutureBuilder<bool>(
-        key: UniqueKey(), // UniqueKey() for hot reload
-        future: future,
-        initialData: false,
-        builder: (_, snapshot) => _futureBuilder(snapshot),
+    return FutureBuilder<bool>(
+      key: UniqueKey(), // UniqueKey() for hot reload
+      future: future,
+      initialData: false,
+      // Orientation or Hot Reload now only occurs at this point. gp
+      builder: (_, snapshot) => Sizer(
+        builder: (_, __, ___) => _futureBuilder(snapshot),
+        maxMobileWidth: widget.onMaxMobileWidth() ?? 599,
+        maxTabletWidth: widget.onMaxTabletWidth(),
       ),
-      maxMobileWidth: widget.onMaxMobileWidth() ?? 599,
-      maxTabletWidth: widget.onMaxTabletWidth(),
     );
   }
+
+  /// The 'App State Object'
+  v.AppStateX? _appState;
+
+  /// The first and constant widget of ths App.
+  Widget? _appWidget;
 
   /// Runs all the asynchronous operations necessary before the app can proceed.
   Future<bool> initAsync() async {
     //
-    var init = _appState != null;
+    var init = v.App.isInit;
 
     // Possibly this app's called by another app.
-    if (init && !v.App.hotReload) {
-      return init;
+    if (init) {
+      if (!v.App.hotReload) {
+        return init;
+      }
     }
 
     init = true;
@@ -155,8 +163,15 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       /// Set theme using App's menu system if any theme was saved.
       v.App.setThemeData();
 
+      // A Hot Reload may have occurred
+      _appState = null;
+      _appState?.parentState = null; // Prevent possible memory leak
+
       // Create 'App State object' for this app.
       _appState = widget.createAppState();
+
+      // Record this State object.
+      _appState?.parentState = this;
 
       // Called within another app
       _appState?.appInApp = _appInApp;
@@ -169,16 +184,19 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       }
 
       // Supply the state object to the App object.
+      // v.App.hotReload is tested in here.
       v.App.appState = _appState;
 
-      // Record this State object.
-      _appState?.parentState = this;
+      // A Hot Reload may have occurred
+      _appWidget = null;
+
+      _appWidget = _AppStatefulWidget(key: GlobalObjectKey<v.AppStateX>(_appState!), appState: _appState!);
 
       // Collect package and device information while testing.
       await v.App.getDeviceInfo();
 
       // Perform any asynchronous operations.
-      init = await _appState!.initAsync();
+      init = await _appState?.initAsync() ?? init;
       //
     } catch (e) {
       init = false;
@@ -195,16 +213,11 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
   // This App is within another App
   bool _appInApp = false;
 
+  /// During development, if a hot reload occurs, the reassemble method is called.
   @override
-  void activate() {
-    super.activate();
-    _appState?.activate();
-  }
-
-  @override
-  void deactivate() {
-    _appState?.deactivate();
-    super.deactivate();
+  void reassemble() {
+    v.App.hotReload = true;
+    super.reassemble();
   }
 
   /// Clean up resources before the app is finally terminated.
@@ -220,9 +233,8 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       //
       widget._app.dispose();
     }
-    //
-    _appState?.dispose();
-    // Remove the reference to the app's view
+    // Clean up memory
+    _appWidget = null;
     _appState = null;
     //
     super.dispose();
@@ -233,7 +245,7 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
   @override
   void setState(VoidCallback fn) {
     v.App.hotReload = true;
-    _appGlobalKey = GlobalKey<v.AppStateX>();
+ //   _appGlobalKey = GlobalKey<v.AppStateX>();
     super.setState(() {});
   }
 
@@ -244,18 +256,17 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
     Widget appWidget;
     Widget? splashScreen;
 
-    if (snapshot.hasData &&
+    if (_appWidget != null &&
+        snapshot.hasData &&
         snapshot.data! &&
-        (v.App.isInit != null && v.App.isInit!)) {
+        v.App.isInit) {
       //
-      final widget = this.widget;
-
       if (!(widget.onCircularProgressIndicator() ?? true)) {
         // Corresponding with its deferFirstFrame();
         WidgetsFlutterBinding.ensureInitialized().allowFirstFrame();
       }
-      // Supply a GlobalKey so the 'App' State object is not disposed of if moved in Widget tree.
-      appWidget = _AppStatefulWidget(key: _appGlobalKey, appState: _appState!);
+
+      appWidget = _appWidget!; // if (_appWidget != null
 
       // Clear memory of the Splash Screen if any
       splashScreen = null;
@@ -362,13 +373,20 @@ class _AppStatefulWidget extends StatefulWidget {
   const _AppStatefulWidget({
     super.key,
     required this.appState,
+    //required this.builder,
   });
 
   /// The framework's 'App' State object.
   final v.AppStateX appState;
 
+  //final v.AppStateX Function() builder;
+
   /// Programmatically creates the App's State object.
   @override
-  //ignore: no_logic_in_create_state
-  v.AppStateX createState() => appState;
+  v.AppStateX createState() {
+    //ignore: no_logic_in_create_state
+    return appState;
+    //ignore: no_logic_in_create_state
+    //return builder();
+  }
 }
