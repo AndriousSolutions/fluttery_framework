@@ -173,6 +173,10 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // Record this State object.
       _appState?.parentState = this;
 
+      // Supply the state object to the App object.
+      // v.App.hotReload is tested in here.
+      v.App.appState = _appState;
+
       // Called within another app
       _appState?.appInApp = _appInApp;
 
@@ -182,10 +186,6 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
         _appState?.setThemeData(context);
         _appState?.setiOSThemeData(context);
       }
-
-      // Supply the state object to the App object.
-      // v.App.hotReload is tested in here.
-      v.App.appState = _appState;
 
       // A Hot Reload may have occurred
       _appWidget = null;

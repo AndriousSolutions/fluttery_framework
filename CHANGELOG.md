@@ -1,4 +1,15 @@
 
+## 5.11.2
+January 21, 2024
+- *BUGFIX* Run on the Web platform with fake_classes_for_web.dart to fake_model_for_web.dart
+- v.App.appState = _appState; before _appState?.setThemeData(context);
+- Optional context parameter available for both the 'on' an 'in' theme functions:
+  onTheme(context)
+  onDarkTheme(context)
+  onHighContrastTheme(context)
+  onHighContrastDarkTheme(context)
+  oniOSTheme(context)
+
 ## 5.11.1
 January 19, 2024
 - *BUGFIX* Restored the capability to run on the Web platform with fake_model_for_web.dart

@@ -650,10 +650,10 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
             onGenerateTitle: _onOnGenerateTitle,
             color: _color ?? onColor() ?? Colors.blue,
             theme: setThemeData(context),
-            darkTheme: _darkTheme ?? onDarkTheme(),
-            highContrastTheme: _highContrastTheme ?? onHighContrastTheme(),
+            darkTheme: _darkTheme ?? onDarkTheme(context),
+            highContrastTheme: _highContrastTheme ?? onHighContrastTheme(context),
             highContrastDarkTheme:
-                _highContrastDarkTheme ?? onHighContrastDarkTheme(),
+                _highContrastDarkTheme ?? onHighContrastDarkTheme(context),
             themeMode: _themeMode ?? onThemeMode(),
             themeAnimationDuration: _themeAnimationDuration ??
                 onThemeAnimationDuration() ??
@@ -709,10 +709,10 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
             onNavigationNotification: _onOnNavigationNotification,
             color: _color ?? onColor() ?? Colors.blue,
             theme: setThemeData(context),
-            darkTheme: _darkTheme ?? onDarkTheme(),
-            highContrastTheme: _highContrastTheme ?? onHighContrastTheme(),
+            darkTheme: _darkTheme ?? onDarkTheme(context),
+            highContrastTheme: _highContrastTheme ?? onHighContrastTheme(context),
             highContrastDarkTheme:
-                _highContrastDarkTheme ?? onHighContrastDarkTheme(),
+                _highContrastDarkTheme ?? onHighContrastDarkTheme(context),
             themeMode: _themeMode ?? onThemeMode(),
             themeAnimationDuration: _themeAnimationDuration ??
                 onThemeAnimationDuration() ??
@@ -766,7 +766,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
   /// Assigning the Cupertino theme
   CupertinoThemeData? setiOSThemeData(BuildContext context) {
     //
-    CupertinoThemeData? cupertinoThemeData = _iOSTheme ?? oniOSTheme();
+    CupertinoThemeData? cupertinoThemeData = _iOSTheme ?? oniOSTheme(context);
 
     if (_allowChangeTheme) {
       // If a saved preference
@@ -778,7 +778,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
 
     if (cupertinoThemeData == null) {
       // Possibly Material can provide
-      final themeData = _theme ?? onTheme() ?? v.App.themeData;
+      final themeData = _theme ?? onTheme(context) ?? v.App.themeData;
 
       if (themeData == null) {
         // The original theme
@@ -797,7 +797,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
   /// Assigning the Material theme
   ThemeData? setThemeData(BuildContext context) {
     //
-    ThemeData? themeData = _theme ?? onTheme();
+    ThemeData? themeData = _theme ?? onTheme(context);
 
     if (_allowChangeTheme) {
       // If a saved preference
@@ -811,7 +811,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     if (themeData == null) {
       // possibly Cupertino can provide
       final cupertinoThemeData =
-          _iOSTheme ?? oniOSTheme() ?? v.App.iOSThemeData;
+          _iOSTheme ?? oniOSTheme(context) ?? v.App.iOSThemeData;
 
       if (cupertinoThemeData == null) {
         // The original theme
@@ -1491,19 +1491,19 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   }
 
   /// Returns the App's [ThemeData] if any.
-  ThemeData? onTheme() => inTheme?.call();
+  ThemeData? onTheme([BuildContext? context]) => inTheme?.call(context);
 
   /// Returns the App's [CupertinoThemeData] if any.
-  CupertinoThemeData? oniOSTheme() => iniOSTheme?.call();
+  CupertinoThemeData? oniOSTheme([BuildContext? context]) => iniOSTheme?.call(context);
 
   /// Returns the App's 'Dark Theme' [ThemeData] if any.
-  ThemeData? onDarkTheme() => inDarkTheme?.call();
+  ThemeData? onDarkTheme([BuildContext? context]) => inDarkTheme?.call(context);
 
   /// Returns the App's 'High Contrast Theme' [ThemeData] if any.
-  ThemeData? onHighContrastTheme() => inHighContrastTheme?.call();
+  ThemeData? onHighContrastTheme([BuildContext? context]) => inHighContrastTheme?.call(context);
 
   /// Returns the App's 'High Contrast Dark Theme' [ThemeData] if any.
-  ThemeData? onHighContrastDarkTheme() => inHighContrastDarkTheme?.call();
+  ThemeData? onHighContrastDarkTheme([BuildContext? context]) => inHighContrastDarkTheme?.call(context);
 
   /// Returns the App's [ThemeMode] if any.
   ThemeMode? onThemeMode() => inThemeMode?.call() ?? ThemeMode.system;
@@ -1630,19 +1630,19 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   final GenerateAppTitle? inGenerateTitle;
 
   /// Returns the App's [ThemeData] if any.
-  final ThemeData? Function()? inTheme;
+  final ThemeData? Function([BuildContext? context])? inTheme;
 
   /// Returns the App's [CupertinoThemeData] if any.
-  final CupertinoThemeData? Function()? iniOSTheme;
+  final CupertinoThemeData? Function([BuildContext? context])? iniOSTheme;
 
   /// Returns the App's 'Dark Theme' [ThemeData] if any.
-  final ThemeData? Function()? inDarkTheme;
+  final ThemeData? Function([BuildContext? context])? inDarkTheme;
 
   /// Returns the App's 'High Contrast Theme' [ThemeData] if any.
-  final ThemeData? Function()? inHighContrastTheme;
+  final ThemeData? Function([BuildContext? context])? inHighContrastTheme;
 
   /// Returns the App's 'High Contrast Dark Theme' [ThemeData] if any.
-  final ThemeData? Function()? inHighContrastDarkTheme;
+  final ThemeData? Function([BuildContext? context])? inHighContrastDarkTheme;
 
   /// Returns the App's [ThemeMode] if any.
   final ThemeMode? Function()? inThemeMode;

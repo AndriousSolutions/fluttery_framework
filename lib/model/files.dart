@@ -11,7 +11,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 /// Ther
 import 'package:path_provider/path_provider.dart'
-    if (dart.library.html) 'package:fluttery_framework/model/fake_classes_for_web.dart'
+    if (dart.library.html) 'package:fluttery_framework/model/fake_model_for_web.dart'
     show getApplicationDocumentsDirectory;
 
 // ignore: avoid_classes_with_only_static_members
