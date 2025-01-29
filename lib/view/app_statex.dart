@@ -777,17 +777,17 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     }
 
     if (cupertinoThemeData == null) {
-      // Possibly Material can provide
-      final themeData = _theme ?? onTheme(context) ?? v.App.themeData;
-
-      if (themeData == null) {
-        // The original theme
-        v.App.iOSThemeData ??= CupertinoTheme.of(context).resolveFrom(context);
-      } else {
-        // Assign the provided theme
-        v.App.iOSThemeData = themeData;
-      }
-      cupertinoThemeData = v.App.iOSThemeData;
+      // // Possibly Material can provide
+      // final themeData = _theme ?? onTheme(context) ?? v.App.themeData;
+      //
+      // if (themeData == null) {
+      //   // The original theme
+      //   v.App.iOSThemeData ??= CupertinoTheme.of(context).resolveFrom(context);
+      // } else {
+      //   // Assign the provided theme
+      //   v.App.iOSThemeData = themeData;
+      // }
+      // cupertinoThemeData = v.App.iOSThemeData;
     } else {
       v.App.iOSThemeData = cupertinoThemeData;
     }
@@ -809,18 +809,18 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
 
     // If not explicitly provided by the user
     if (themeData == null) {
-      // possibly Cupertino can provide
-      final cupertinoThemeData =
-          _iOSTheme ?? oniOSTheme(context) ?? v.App.iOSThemeData;
-
-      if (cupertinoThemeData == null) {
-        // The original theme
-        v.App.themeData ??= ThemeData.fallback(useMaterial3: false);
-      } else {
-        // Cupertino values
-        v.App.themeData = cupertinoThemeData;
-      }
-      themeData = v.App.themeData;
+      // // possibly Cupertino can provide
+      // final cupertinoThemeData =
+      //     _iOSTheme ?? oniOSTheme(context) ?? v.App.iOSThemeData;
+      //
+      // if (cupertinoThemeData == null) {
+      //   // The original theme
+      //   v.App.themeData ??= ThemeData.fallback(useMaterial3: false);
+      // } else {
+      //   // Cupertino values
+      //   v.App.themeData = cupertinoThemeData;
+      // }
+      // themeData = v.App.themeData;
     } else {
       v.App.themeData = themeData;
     }

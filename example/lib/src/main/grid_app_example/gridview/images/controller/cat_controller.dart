@@ -1,9 +1,5 @@
 library;
 
-///
-///
-///
-
 //
 import '/src/controller.dart';
 

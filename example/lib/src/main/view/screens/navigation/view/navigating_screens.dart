@@ -1,5 +1,5 @@
 // ignore_for_file: unused_element
-//
+
 import '/src/controller.dart';
 
 import '/src/view.dart';

@@ -1,3 +1,4 @@
+//
 ///
 Map<String, String> zhCN = {
   'Demo App': '演示应用',

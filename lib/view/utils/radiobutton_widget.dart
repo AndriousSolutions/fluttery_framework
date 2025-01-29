@@ -292,7 +292,7 @@ List<Widget> radioButtonsBuilder<T>(
 }
 
 ///
-class RadioButtonsController<T> extends StateXController {
+class RadioButtonsController<T> extends AppStateXController {
   /// Supply the initial value of the Radio buttons
   RadioButtonsController({this.initialValue, bool? disabled}) {
     this.disabled = disabled ?? false;
@@ -317,7 +317,7 @@ class RadioButtonsController<T> extends StateXController {
   @override
   void initState() {
     super.initState();
-    final widget = state?.widget;
+    final widget = appState?.widget;
     if (widget != null && widget is RadioButtons<T>) {
       statefulWidget = widget;
     }

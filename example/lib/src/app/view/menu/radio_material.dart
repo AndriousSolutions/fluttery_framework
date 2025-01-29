@@ -1,6 +1,5 @@
-//
 // ignore_for_file: dead_code
-
+//
 import 'package:fluttery_framework/view/utils/radiobutton_widget.dart';
 
 import '/src/view.dart';

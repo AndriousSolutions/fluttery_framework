@@ -150,6 +150,7 @@ class ExampleAppController extends AppStateXController {
       onSelectedItemChanged: (int index) async {
         appLocale = L10n.getLocale(index);
       },
+      inWebPlatform: kIsWeb || UniversalPlatform.isWindows,
     );
 
     await DialogBox(

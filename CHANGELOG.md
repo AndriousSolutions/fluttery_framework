@@ -1,6 +1,11 @@
 
+## 5.12.0
+January 29, 2025
+- setiOSThemeData( and setThemeData( in app_statex.dart 
+  If a theme not explicit provided, they fallback to Flutter's default theme.
+
 ## 5.11.2
-January 21, 2024
+January 21, 2025
 - *BUGFIX* Run on the Web platform with fake_classes_for_web.dart to fake_model_for_web.dart
 - v.App.appState = _appState; before _appState?.setThemeData(context);
 - Optional context parameter available for both the 'on' an 'in' theme functions:
@@ -11,25 +16,25 @@ January 21, 2024
   oniOSTheme(context)
 
 ## 5.11.1
-January 19, 2024
+January 19, 2025
 - *BUGFIX* Restored the capability to run on the Web platform with fake_model_for_web.dart
 - *BUGFIX* Repositioned the Sizer() function allowing for a responsive UI in your apps.
 - *BUGFIX* Ensure only a Hot Reload will recreate the App's State object
   _appWidget = _AppStatefulWidget(key: GlobalObjectKey<v.AppStateX>(_appState!), appState: _appState!);
 
 ## 5.11.0+1
-January 15, 2024
+January 15, 2025
 - Updated onGenerateRoute() & onRoutes() in app_statex.dart
 - Added the getter, routesGenerated, in app_statex.dart
 - displayErrorWidget() & onUnknownRoute() in error_handler.dart
 - Updated translations directory
 
 ## 5.10.0
-January 10, 2024
+January 10, 2025
 - DevToolsSettings.column() in Example app
 
 ## 5.9.0+2
-January 08, 2024
+January 08, 2025
 - Moved class app_drawer to its own Dart file
 In app_statex.dart:
 - new getter, NavigatorState? get navigatorState

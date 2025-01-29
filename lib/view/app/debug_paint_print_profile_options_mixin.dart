@@ -10,7 +10,7 @@ import '/view.dart';
 /// Signature for the common boolean Function implementations.
 typedef BooleanFunctionIndicatorCallback = bool? Function();
 
-/// Supply the Global Navigator and all its methods.
+/// Development tools in Flutter's debug.dart
 mixin DebugPaintPrintProfileOptionsMixin {
   /// Highlights UI while debugging.
   bool? debugPaintSizeEnabled;

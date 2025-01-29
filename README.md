@@ -40,9 +40,9 @@ It supplies the adaptive functions and features expected of a production-ready a
    <li id="device"><a href="https://pub.dev/documentation/fluttery_framework/latest/topics/Device%20Information-topic.html">Device Information</a></li>
 </ul>
 
-Free overview article on medium.com:
+Free articles on Fluttery Framework:
 
-[Fluttery Framework](https://andrious.medium.com/the-fluttery-framework-35480fb834da)
+[A Fluttery Digest](https://dev.to/andrious/a-fluttery-digest-2kb8)
 
 As great as Flutter is, you will not create a ‘production-worthy’ app using Flutter right out of the box.
 When building a Flutter app, it’s expected to be one codebase that runs on an Android phone,
