@@ -4,9 +4,9 @@ library;
 // found in the LICENSE file.
 
 /// An absolute path is preferred but this source code is copied by other app.
-import '../../../../../controller.dart';
+import '/src/controller.dart';
 
-import '../../../../../view.dart';
+import '/src/view.dart';
 
 /// This separate class represents 'the Model' (the data) of the App.
 class Model extends StateXController {

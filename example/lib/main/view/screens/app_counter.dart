@@ -127,14 +127,6 @@ class _CounterPageState extends StateX<CounterPage> {
         },
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: !isPortrait
-          ? null
-          : SimpleBottomAppBar(
-              button01: HomeBarButton(),
-              button02: StatsBarButton(),
-              button03: EventsBarButton(),
-              button04: HistoryBarButton(),
-            ),
     );
   }
 
@@ -143,98 +135,153 @@ class _CounterPageState extends StateX<CounterPage> {
   @override
   Widget buildiOS(BuildContext context) => CupertinoPageScaffold(
         key: const Key('Scaffold'),
-        child: CustomScrollView(slivers: <Widget>[
-          CupertinoSliverNavigationBar(
-            largeTitle: Text('Counter Page Demo'.tr),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [AppMenu()],
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: SafeArea(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(top: 15.h), child: con.wordPair),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
-                    child: Text(
-                        'You have pushed the button this many times:'.tr,
-                        style: TextStyle(fontSize: 13.sp)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 2.h, bottom: 2.h),
-                    child: stateSet(
-                      (context) => Text(
-                        con.data,
-                        style: Theme.of(context).textTheme.headlineMedium,
+        child: SafeArea(
+          child: GestureDetector(
+            onVerticalDragUpdate: (details) {
+              final yOffset = details.delta.dy;
+              const int sensitivity = 3;
+              if (yOffset > sensitivity) {
+                // Down Swipe
+              } else if (yOffset < -sensitivity) {
+                _showActionSheet(context);
+              }
+            },
+            child: CustomScrollView(slivers: <Widget>[
+              CupertinoSliverNavigationBar(
+                largeTitle: Text('Counter Page Demo'.tr),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [AppMenu()],
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: SafeArea(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.only(top: 15.h), child: con.wordPair),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                        child: Text(
+                            'You have pushed the button this many times:'.tr,
+                            style: TextStyle(fontSize: 16.sp)),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5.h),
-                    child: Column(
-                      children: [
-                        Text('Use built-in InheritedWidget'.tr),
-                        CupertinoSwitch(
-                          value: con.useInherited,
-                          onChanged: (v) {
-                            con.useInherited = v;
-                            App.setState(() {});
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 50),
-                          child: ElevatedButton(
-                            key: const Key('Page 1'),
-                            onPressed: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) =>
-                                      const Page1(),
-                                ),
-                              );
-                            },
-                            child: L10n.t('Page 1'),
+                      Padding(
+                        padding: EdgeInsets.only(top: 2.h, bottom: 2.h),
+                        child: stateSet(
+                          (context) => Text(
+                            con.data,
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5.h),
+                        child: Column(
+                          children: [
+                            Text('Use built-in InheritedWidget'.tr),
+                            CupertinoSwitch(
+                              value: con.useInherited,
+                              onChanged: (v) {
+                                con.useInherited = v;
+                                App.setState(() {});
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 50),
+                              child: ElevatedButton(
+                                key: const Key('Page 1'),
+                                onPressed: () async {
+                                  await Navigator.push(
+                                    context,
+                                    CupertinoPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          const Page1(),
+                                    ),
+                                  );
+                                },
+                                child: L10n.t('Page 1'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5.h),
+                        child: CupertinoButton.filled(
+                          onPressed: () {
+                            // Don't interrupt any testing.
+                            if (App.inWidgetsFlutterBinding) {
+                              // Deliberately throw an error to demonstrate error handling.
+                              throw Exception(
+                                  'Fake error to demonstrate error handling!');
+                            }
+                            // This code is not reached unless in testing.
+                            setState(con.onPressed);
+            //                       rxCounter.value++;
+                          },
+                          child: const Text('Add'),
                         ),
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5.h),
-                    child: CupertinoButton.filled(
-                      onPressed: () {
-                        // Don't interrupt any testing.
-                        if (App.inWidgetsFlutterBinding) {
-                          // Deliberately throw an error to demonstrate error handling.
-                          throw Exception(
-                              'Fake error to demonstrate error handling!');
-                        }
-                        // This code is not reached unless in testing.
-                        setState(con.onPressed);
-//                       rxCounter.value++;
-                      },
-                      child: const Text('Add'),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+            ]),
           ),
-        ]),
+        ),
       );
+
+  // This shows a CupertinoModalPopup which hosts a CupertinoActionSheet.
+  void _showActionSheet(BuildContext context) {
+    final con = CounterController();
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        title: Text('Title'.tr),
+        message: Text('Message'.tr),
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            /// This parameter indicates the action would be a default
+            /// default behavior, turns the action's text to bold text.
+            isDefaultAction: true,
+            onPressed: () {
+              con.onPressed();
+              Navigator.pop(context);
+            },
+            child: Text('Default Action'.tr),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              con.onPressed();
+              Navigator.pop(context);
+            },
+            child: Text('Action'.tr),
+          ),
+          CupertinoActionSheetAction(
+            /// This parameter indicates the action would perform
+            /// a destructive action such as delete or exit and turns
+            /// the action's text color to red.
+            isDestructiveAction: true,
+            onPressed: () {
+              con.onPressed();
+              Navigator.pop(context);
+            },
+            child: Text('Destructive Action'.tr),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   void onError(FlutterErrorDetails details) {
@@ -251,8 +298,7 @@ class _CounterPageState extends StateX<CounterPage> {
     }
   }
 
-  /// Place breakpoints and step through the functions below
-  /// to see how this all works.
+  /// Place breakpoints and step through the functions below to see how this all works.
 
   @override
   //ignore: unnecessary_overrides

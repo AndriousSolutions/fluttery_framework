@@ -11,6 +11,10 @@ class FlutteryExampleApp extends AppStatefulWidget {
   FlutteryExampleApp({super.key});
 
   @override
+  Widget? onSplashScreen(BuildContext context) =>
+      App.inFlutterTest ? null : const SplashScreen();
+
+  @override
   AppStateX<StatefulWidget> createAppState() => _ExampleAppState();
 }
 
@@ -18,11 +22,12 @@ class FlutteryExampleApp extends AppStatefulWidget {
 /// The 'look and behavior' of the app.
 ///
 class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
-
   _ExampleAppState()
       : super(
           title: 'Fluttery Demo App',
           controller: ExampleAppController(),
+          controllers: [MaterialController()],
+          // allowChangeTheme: true, // Allow the App's theme to change
           errorScreen: AppErrorHandler.displayErrorWidget,
           onUnknownRoute: AppErrorHandler.onUnknownRoute,
           useRouterConfig: false,
@@ -31,6 +36,9 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           // Named parameters always takes precedence over inDebugShowCheckedModeBanner and onDebugShowCheckedModeBanner()
           // debugShowCheckedModeBanner: dev.debugShowCheckedModeBanner,
           inDebugShowCheckedModeBanner: () => dev.debugShowCheckedModeBanner,
+          inDebugShowMaterialGrid: () => dev.debugShowMaterialGrid,
+          inShowPerformanceOverlay: () => dev.showPerformanceOverlay,
+          inShowSemanticsDebugger: () => dev.showSemanticsDebugger,
           inDebugPaintSizeEnabled: () => dev.debugPaintSizeEnabled,
           inDebugPaintBaselinesEnabled: () => dev.debugPaintBaselinesEnabled,
           inDebugPaintPointersEnabled: () => dev.debugPaintPointersEnabled,
@@ -39,9 +47,23 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           inDebugRepaintRainbowEnabled: () => dev.debugRepaintRainbowEnabled,
           inDebugRepaintTextRainbowEnabled: () =>
               dev.debugRepaintTextRainbowEnabled,
-          inDebugShowMaterialGrid: () => dev.debugShowMaterialGrid,
-          inShowPerformanceOverlay: () => dev.showPerformanceOverlay,
-          inShowSemanticsDebugger: () => dev.showSemanticsDebugger,
+          inDebugPrintRebuildDirtyWidgets: () =>
+              dev.debugPrintRebuildDirtyWidgets,
+          inDebugOnRebuildDirtyWidget: dev.debugOnRebuildDirtyWidget
+              ? dev.onDebugOnRebuildDirtyWidget
+              : null,
+          inDebugPrintBuildScope: () => dev.debugPrintBuildScope,
+          inDebugPrintScheduleBuildForStacks: () =>
+              dev.debugPrintScheduleBuildForStacks,
+          inDebugPrintGlobalKeyedWidgetLifecycle: () =>
+              dev.debugPrintGlobalKeyedWidgetLifecycle,
+          inDebugProfileBuildsEnabled: () => dev.debugProfileBuildsEnabled,
+          inDebugProfileBuildsEnabledUserWidgets: () =>
+              dev.debugProfileBuildsEnabledUserWidgets,
+          inDebugEnhanceBuildTimelineArguments: () =>
+              dev.debugEnhanceBuildTimelineArguments,
+          inDebugHighlightDeprecatedWidgets: () =>
+              dev.debugHighlightDeprecatedWidgets,
           onNavigationNotification: (notification) {
             if (kDebugMode) {
               debugPrint('############ Event: onNavigationNotification()');
@@ -66,8 +88,6 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
             GlobalCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
           ],
-          switchUI: ExampleAppController().switchUI,
-          allowChangeTheme: true, // Allow the App's theme to change
           allowChangeLocale: true, // Allow the app to change locale
           allowChangeUI: true, // Allow the app to change its design interface
           inErrorHandler: (details) {
@@ -92,10 +112,6 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
 
   // Development Tools Settings
   static final DevToolsController dev = DevToolsController();
-
-  @override
-  Widget? onSplashScreen(BuildContext context) =>
-      App.inFlutterTest ? null : const SplashScreen();
 
   @override
   Map<String, WidgetBuilder>? onRoutes() => {
@@ -185,6 +201,14 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
     }
     return super.builder(context);
   }
+
+  /// Determine if to switch from the 'default' platform interface
+  @override
+  bool? onSwitchUI() {
+    //
+    return (controller as ExampleAppController).switchUI;
+  }
+
 
   /// Programmatically determine whether the banner is displayed or not.
   /// Place a breakpoint in your IDE and see what happens in there

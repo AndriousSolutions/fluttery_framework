@@ -37,21 +37,7 @@ class ExampleAppController extends AppStateXController {
     // This has to be called first.
     App.changeUI(App.useMaterial ? 'Cupertino' : 'Material');
 
-    bool switchUI;
-    if (App.useMaterial) {
-      if (UniversalPlatform.isAndroid) {
-        switchUI = false;
-      } else {
-        switchUI = true;
-      }
-    } else {
-      if (UniversalPlatform.isAndroid) {
-        switchUI = true;
-      } else {
-        switchUI = false;
-      }
-    }
-    Prefs.setBool('switchUI', switchUI);
+    Prefs.setBool('switchUI', App.appState?.switchUI ?? false);
   }
 
   /// Allow to switch Interface

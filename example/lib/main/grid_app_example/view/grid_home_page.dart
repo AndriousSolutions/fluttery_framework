@@ -37,6 +37,7 @@ class _HomePageState extends StateX<HomePage> {
             child: InheritDog(
               child: InheritFox(
                 child: GridView.count(
+                  cacheExtent: 1000,
                   crossAxisCount: 3,
                   children: con.children,
                 ),

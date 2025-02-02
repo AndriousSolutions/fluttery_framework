@@ -1,3 +1,10 @@
+## 5.13.0
+January 30, 2025
+- *BUGFIX* setiOSThemeData( and setThemeData( in app_statex.dart
+  They fallback to Flutter's default theme only in their specific platform
+- changeUI(String? ui) has if (!UniversalPlatform.isMobile) for other platforms
+- onSwitchUI()
+- Reorganized its files anf folders
 
 ## 5.12.0
 January 29, 2025

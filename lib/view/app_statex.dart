@@ -117,6 +117,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     bool? useMaterial,
     bool? useCupertino,
     bool? switchUI,
+    this.inSwitchUI,
     bool? allowChangeUI,
     bool? debugShowMaterialGrid,
     bool? showPerformanceOverlay,
@@ -223,7 +224,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     // In case null was explicitly passed in.
     _useMaterial = useMaterial ?? false;
     _useCupertino = useCupertino ?? false;
-    _switchUI = switchUI ?? false;
+    _switchUI = switchUI ?? onSwitchUI() ?? false;
 
     /// Set _useMaterial or _useCupertino to true
     _useMaterialOrCupertino();
@@ -313,6 +314,12 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
   /// Use Cupertino UI in Android and vice versa.
   bool get switchUI => _switchUI;
   late bool _switchUI;
+
+  /// If the app is to switch from the 'default' interface
+  final bool? Function()? inSwitchUI;
+
+  /// Whether to switch from the 'default' interface
+  bool? onSwitchUI() => inSwitchUI?.call();
 
   /// Explicitly use the Material theme
   bool get useMaterial => _useMaterial;
@@ -651,7 +658,8 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
             color: _color ?? onColor() ?? Colors.blue,
             theme: setThemeData(context),
             darkTheme: _darkTheme ?? onDarkTheme(context),
-            highContrastTheme: _highContrastTheme ?? onHighContrastTheme(context),
+            highContrastTheme:
+                _highContrastTheme ?? onHighContrastTheme(context),
             highContrastDarkTheme:
                 _highContrastDarkTheme ?? onHighContrastDarkTheme(context),
             themeMode: _themeMode ?? onThemeMode(),
@@ -710,7 +718,8 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
             color: _color ?? onColor() ?? Colors.blue,
             theme: setThemeData(context),
             darkTheme: _darkTheme ?? onDarkTheme(context),
-            highContrastTheme: _highContrastTheme ?? onHighContrastTheme(context),
+            highContrastTheme:
+                _highContrastTheme ?? onHighContrastTheme(context),
             highContrastDarkTheme:
                 _highContrastDarkTheme ?? onHighContrastDarkTheme(context),
             themeMode: _themeMode ?? onThemeMode(),
@@ -775,19 +784,25 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
         cupertinoThemeData = theme;
       }
     }
-
+    // // Assign to the Global reference
+    // if (cupertinoThemeData != null) {
+    //   v.App.iOSThemeData = cupertinoThemeData;
+    // }
     if (cupertinoThemeData == null) {
-      // // Possibly Material can provide
-      // final themeData = _theme ?? onTheme(context) ?? v.App.themeData;
-      //
-      // if (themeData == null) {
-      //   // The original theme
-      //   v.App.iOSThemeData ??= CupertinoTheme.of(context).resolveFrom(context);
-      // } else {
-      //   // Assign the provided theme
-      //   v.App.iOSThemeData = themeData;
-      // }
-      // cupertinoThemeData = v.App.iOSThemeData;
+      // If not running in the Apple platform
+      if (!UniversalPlatform.isApple) {
+        // Possibly Material can provide
+        final themeData = _theme ?? onTheme() ?? v.App.themeData;
+        if (themeData == null) {
+          // The original theme
+          v.App.iOSThemeData ??=
+              CupertinoTheme.of(context).resolveFrom(context);
+        } else {
+          // Assign the provided theme
+          v.App.iOSThemeData = themeData;
+        }
+        cupertinoThemeData = v.App.iOSThemeData;
+      }
     } else {
       v.App.iOSThemeData = cupertinoThemeData;
     }
@@ -806,26 +821,35 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
         themeData = theme;
       }
     }
-
+    // // Assign to the Global reference
+    // if (themeData != null) {
+    //   v.App.themeData = themeData;
+    // }
     // If not explicitly provided by the user
     if (themeData == null) {
-      // // possibly Cupertino can provide
-      // final cupertinoThemeData =
-      //     _iOSTheme ?? oniOSTheme(context) ?? v.App.iOSThemeData;
-      //
-      // if (cupertinoThemeData == null) {
-      //   // The original theme
-      //   v.App.themeData ??= ThemeData.fallback(useMaterial3: false);
-      // } else {
-      //   // Cupertino values
-      //   v.App.themeData = cupertinoThemeData;
-      // }
-      // themeData = v.App.themeData;
+      // If running in the Apple platform
+      if (UniversalPlatform.isApple) {
+        // possibly Cupertino can provide
+        final cupertinoThemeData =
+            _iOSTheme ?? oniOSTheme() ?? v.App.iOSThemeData;
+        if (cupertinoThemeData == null) {
+          // The original theme
+          v.App.themeData ??= ThemeData.fallback(useMaterial3: false);
+        } else {
+          // Cupertino values
+          v.App.themeData = cupertinoThemeData;
+        }
+        themeData = v.App.themeData;
+      }
     } else {
       v.App.themeData = themeData;
     }
     return themeData;
   }
+
+  @override
+  @Deprecated("Can use, but use AppStatefulWidget's instead.")
+  Widget? onSplashScreen(BuildContext context) => null;
 
   /// Rebuild the 'latest/current' State object and the 'root/first' State object
   /// This is to address the possibility an App has called another v.App.
@@ -861,17 +885,29 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
 
     if (change) {
       //
-      if (ui == 'Material') {
-        _useMaterial = true;
-        _useCupertino = false;
-        _switchUI = !UniversalPlatform.isAndroid;
+      if (UniversalPlatform.isMobile) {
+        if (ui == 'Material') {
+          _useMaterial = true;
+          _useCupertino = false;
+          _switchUI = !UniversalPlatform.isAndroid;
+        } else {
+          _useMaterial = false;
+          _useCupertino = true;
+          _switchUI = UniversalPlatform.isAndroid;
+        }
       } else {
-        _useMaterial = false;
-        _useCupertino = true;
-        _switchUI = UniversalPlatform.isAndroid;
+        if (ui == 'Material') {
+          _useMaterial = true;
+          _useCupertino = false;
+          _switchUI = false;
+        } else {
+          _useMaterial = false;
+          _useCupertino = true;
+          _switchUI = true;
+        }
       }
       // Reload the whole App so it works in testing
-      reload();
+      reload(); // because of WidgetsApp(key: GlobalObjectKey(this),
     }
     return change;
   }
@@ -903,8 +939,13 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
         _useCupertino = true;
       }
     } else {
-      _useMaterial = true;
-      _useCupertino = false;
+      if (_switchUI) {
+        _useMaterial = false;
+        _useCupertino = true;
+      } else {
+        _useMaterial = true;
+        _useCupertino = false;
+      }
     }
   }
 }
@@ -1494,16 +1535,19 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   ThemeData? onTheme([BuildContext? context]) => inTheme?.call(context);
 
   /// Returns the App's [CupertinoThemeData] if any.
-  CupertinoThemeData? oniOSTheme([BuildContext? context]) => iniOSTheme?.call(context);
+  CupertinoThemeData? oniOSTheme([BuildContext? context]) =>
+      iniOSTheme?.call(context);
 
   /// Returns the App's 'Dark Theme' [ThemeData] if any.
   ThemeData? onDarkTheme([BuildContext? context]) => inDarkTheme?.call(context);
 
   /// Returns the App's 'High Contrast Theme' [ThemeData] if any.
-  ThemeData? onHighContrastTheme([BuildContext? context]) => inHighContrastTheme?.call(context);
+  ThemeData? onHighContrastTheme([BuildContext? context]) =>
+      inHighContrastTheme?.call(context);
 
   /// Returns the App's 'High Contrast Dark Theme' [ThemeData] if any.
-  ThemeData? onHighContrastDarkTheme([BuildContext? context]) => inHighContrastDarkTheme?.call(context);
+  ThemeData? onHighContrastDarkTheme([BuildContext? context]) =>
+      inHighContrastDarkTheme?.call(context);
 
   /// Returns the App's [ThemeMode] if any.
   ThemeMode? onThemeMode() => inThemeMode?.call() ?? ThemeMode.system;

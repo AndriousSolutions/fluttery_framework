@@ -2,7 +2,7 @@
 export 'package:fluttery_framework/model.dart';
 
 /// Data to be used throughout the app.
-export 'app/model_app.dart';
+export '/app/model_app.dart';
 
 /// The data for the home screen.
-export 'main/model_main.dart';
+export '/main/model_main.dart';

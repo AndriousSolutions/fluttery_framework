@@ -241,11 +241,9 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
   }
 
   /// Rebuild the State object
-  /// and supply and new key to 'reload' the app.
   @override
   void setState(VoidCallback fn) {
     v.App.hotReload = true;
- //   _appGlobalKey = GlobalKey<v.AppStateX>();
     super.setState(() {});
   }
 
@@ -346,9 +344,6 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
         appWidget = splashScreen;
       }
     }
-    // Reset if there was a 'hot reload'.
-    v.App.hotReload = false;
-
     return appWidget;
   }
 

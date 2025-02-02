@@ -42,16 +42,11 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void initState() {
     super.initState();
-
     /// Override this method to perform initialization that depends on the
     /// location at which this object was inserted into the tree.
     /// (i.e. Subscribe to another object it depends on during [initState],
     /// unsubscribe object and subscribe to a new object when it changes in
     /// [didUpdateWidget], and then unsubscribe from the object in [dispose].
-    if (inDebugMode) {
-      //ignore: avoid_print
-      debugPrint('############ Event: initState in $this');
-    }
   }
 
   /// The framework calls this method whenever it removes this [StateX] object
@@ -60,15 +55,11 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void deactivate() {
     super.deactivate();
-
     /// The framework calls this method whenever it removes this [State] object
     /// from the tree. It might reinsert it into another part of the tree.
     /// Subclasses should override this method to clean up any links between
     /// this object and other elements in the tree (e.g. if you have provided an
     /// ancestor with a pointer to a descendant's [RenderObject]).
-    if (inDebugMode) {
-      debugPrint('############ Event: deactivate in $this');
-    }
   }
 
   /// Called when this object is reinserted into the tree after having been
@@ -77,7 +68,6 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void activate() {
     super.activate();
-
     /// In some cases, however, after a [State] object has been deactivated, the
     /// framework will reinsert it into another part of the tree (e.g., if the
     /// subtree containing this [State] object is grafted from one location in
@@ -90,9 +80,6 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     /// The framework does not call this method the first time a [State] object
     /// is inserted into the tree. Instead, the framework calls [initState] in
     /// that situation.
-    if (inDebugMode) {
-      debugPrint('############ Event: activate in $this');
-    }
   }
 
   /// The framework calls this method when this [StateX] object will never
@@ -102,14 +89,10 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void dispose() {
     super.dispose();
-
     /// The framework calls this method when this [StateX] object will never
     /// build again. The [State] object's lifecycle is terminated.
     /// Subclasses should override this method to release any resources retained
     /// by this object (e.g., stop any active animations).
-    if (inDebugMode) {
-      debugPrint('############ Event: dispose in $this');
-    }
   }
 
   /// Override this method to respond when the [StatefulWidget] is recreated.
@@ -117,12 +100,8 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void didUpdateWidget(RandomDog oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     /// The framework always calls build() after calling [didUpdateWidget], which
     /// means any calls to [setState] in [didUpdateWidget] are redundant.
-    if (inDebugMode) {
-      debugPrint('############ Event: didUpdateWidget in $this');
-    }
   }
 
   /// Called when immediately after [initState].
@@ -131,7 +110,6 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     ///
     /// if a State object's [build] references an [InheritedWidget] with
     /// [context.dependOnInheritedWidgetOfExactType]
@@ -139,9 +117,6 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     /// Later, if that InheritedWidget's build() function is called, all its dependencies
     /// build() functions are also called but not before this method again.
     /// Subclasses rarely use this method, but its an option if needed.
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangeDependencies in $this');
-    }
   }
 
   /// Called whenever the application is reassembled during debugging, for
@@ -150,16 +125,12 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void reassemble() {
     super.reassemble();
-
     /// Called whenever the application is reassembled during debugging, for
     /// example during hot reload.
     ///
     /// This method should rerun any initialization logic that depends on global
     /// state, for example, image loading from asset bundles (since the asset
     /// bundle may have changed).
-    if (inDebugMode) {
-      debugPrint('############ Event: reassemble in $this');
-    }
   }
 
   /// Called when the system tells the app to pop the current route.
@@ -181,9 +152,6 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   // ignore: unnecessary_overrides
   Future<bool> didPopRoute() async {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPopRoute in $this');
-    }
     return super.didPopRoute();
   }
 
@@ -199,45 +167,30 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   /// [SystemChannels.navigation].
   @override
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPushRouteInformation in $this');
-    }
     return super.didPushRouteInformation(routeInformation);
   }
 
   /// Called when this State is *first* added to as a Route observer?!
   @override
   void didPush() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPush in $this');
-    }
     super.didPush();
   }
 
   /// New route has been pushed, and this State object's route is no longer current.
   @override
   void didPushNext() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPushNext in $this');
-    }
     super.didPushNext();
   }
 
   /// Called when this State is popped off a route.
   @override
   void didPop() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPop in $this');
-    }
     super.didPop();
   }
 
   /// The top route has been popped off, and this route shows up.
   @override
   void didPopNext() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPopNext in $this');
-    }
     super.didPopNext();
   }
 
@@ -260,9 +213,6 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     ///   void didChangeMetrics() {
     ///     setState(() { _lastSize = ui.window.physicalSize; });
     ///   }
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangeMetrics in $this');
-    }
   }
 
   /// Called when the platform's text scale factor changes.
@@ -282,44 +232,29 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
     ///   void didChangeTextScaleFactor() {
     ///     setState(() { _lastTextScaleFactor = ui.window.textScaleFactor; });
     ///   }
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangeTextScaleFactor in $this');
-    }
   }
 
   /// Brightness changed.
   @override
   void didChangePlatformBrightness() {
     super.didChangePlatformBrightness();
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangePlatformBrightness in $this');
-    }
   }
 
   /// Called when the system tells the app that the user's locale has changed.
   @override
   void didChangeLocales(List<Locale>? locales) {
     super.didChangeLocales(locales);
-
     /// Called when the system tells the app that the user's locale has
     /// changed. For example, if the user changes the system language
     /// settings.
     ///
     /// This method exposes notifications from [Window.onLocaleChanged].
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangeLocales in $this');
-    }
   }
 
   /// Called when the system puts the app in the background or returns the app to the foreground.
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangeAppLifecycleState in $this');
-    }
-
     super.didChangeAppLifecycleState(state);
-
     /// Passing these possible values:
     /// AppLifecycleState.detached
     /// AppLifecycleState.resumed
@@ -331,9 +266,6 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   /// The application is visible and responding to user input.
   @override
   void resumedAppLifecycleState() {
-    if (inDebugMode) {
-      debugPrint('############ Event: resumedLifecycleState in $this');
-    }
   }
 
   /// The application is in an inactive state and is not receiving user input.
@@ -352,9 +284,6 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   /// Apps in this state should assume that they may be ['pausedLifecycleState]' at any time.
   @override
   void inactiveAppLifecycleState() {
-    if (inDebugMode) {
-      debugPrint('############ Event: inactiveLifecycleState in $this');
-    }
   }
 
   /// All views of an application are hidden, either because the application is
@@ -363,32 +292,22 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   /// is running in a window or tab that is no longer visible (on the web).
   @override
   void hiddenAppLifecycleState() {
-    if (inDebugMode) {
-      debugPrint('############ Event: hiddenLifecycleState in $this');
-    }
   }
 
   /// The application is not currently visible to the user, not responding to
   /// user input, and running in the background.
   @override
   void pausedAppLifecycleState() {
-    if (inDebugMode) {
-      debugPrint('############ Event: pausedLifecycleState in $this');
-    }
   }
 
   /// Called when the system is running low on memory.
   @override
   void didHaveMemoryPressure() {
     super.didHaveMemoryPressure();
-
     /// Called when the system is running low on memory.
     ///
     /// This method exposes the `memoryPressure` notification from
     /// [SystemChannels.system].
-    if (inDebugMode) {
-      debugPrint('############ Event: didHaveMemoryPressure in $this');
-    }
   }
 
   /// Called when a request is received from the system to exit the application.
@@ -398,9 +317,6 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   ///    AppExitResponse.cancel;
   @override
   Future<AppExitResponse> didRequestAppExit() async {
-    if (inDebugMode) {
-      debugPrint('############ Event: didRequestAppExit in $this');
-    }
     await super.didRequestAppExit();
     return AppExitResponse.exit;
   }
@@ -409,11 +325,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void didChangeAccessibilityFeatures() {
     super.didChangeAccessibilityFeatures();
-
     /// Called when the system changes the set of currently active accessibility
     /// features.
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangeAccessibilityFeatures in $this');
-    }
   }
 }

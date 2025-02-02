@@ -79,10 +79,13 @@ class Page2State extends StateX<Page2> {
     // Retrieve the app's own controller.
     final appCon = firstState?.rootCon;
 
-    final rootState = appCon?.state;
+    if (appCon != null && appCon is AppStateXController) {
+      //
+      final rootState = appCon.appState;
 
-    // All three share the same State object.
-    assert(rootState is AppStateX, "Should be the 'root' state object.");
+      // All three share the same State object.
+      assert(rootState is AppStateX, "Should be the 'root' state object.");
+    }
   }
 
   /// Define the 'child' Widget that will be passed to the InheritedWidget above.
