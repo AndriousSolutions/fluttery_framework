@@ -2,22 +2,23 @@
 //
 import 'package:fluttery_framework/view/utils/radiobutton_widget.dart';
 
+import '/src/controller.dart';
+
 import '/src/view.dart';
 
 ///
 class MaterialVersionRadioButtons extends RadioButtons<bool> {
   ///
-  const MaterialVersionRadioButtons({
+  MaterialVersionRadioButtons({
     super.key,
-    required super.controller,
     super.inChanged,
-  });
+  }) : super(controller: MaterialController());
 
   @override
   Widget radioButtons(BuildContext context) {
     final radios = radioButtonsBuilder<bool>(
       {'3': true, '2': false},
-      MaterialController(),
+      controller,
       mainAxisSize: MainAxisSize.min,
     );
     final List<Widget> widgets = [Text('Material Ver.'.tr)];
@@ -60,11 +61,20 @@ class MaterialController extends RadioButtonsController<bool> {
   MaterialController._();
   static MaterialController? _this;
 
+  ///
+  static ThemeData? get theme03Data => _theme03Data;
+  static ThemeData? _theme03Data; // Material3
+
+  ///
+  static ThemeData? get theme02Data => _theme02Data;
+  static ThemeData? _theme02Data; // Material2
+
   //
   @override
   Future<bool> initAsync() async {
-    App.themeData =
-        ThemeData.fallback(useMaterial3: Prefs.getBool('material3', false));
+    App.themeData ??=
+        ThemeData.fallback();
+    //    ThemeData.fallback(useMaterial3: Prefs.getBool('material3', false));
     return true;
   }
 
@@ -73,48 +83,40 @@ class MaterialController extends RadioButtonsController<bool> {
   void initState() {
     super.initState();
 
-    initValue = Prefs.getBool('material3', false);
+    var initUseMaterial3 = Prefs.getBool('material3', false);
 
     final useMaterial3 = App.themeData?.useMaterial3 ?? false;
 
     if (useMaterial3) {
       // Record the 'Material3' version
-      theme03Data ??= App.themeData;
+      _theme03Data ??= App.themeData;
 
-      theme02Data ??= ThemeData.fallback(useMaterial3: false);
+      _theme02Data ??= ThemeData.fallback(useMaterial3: false);
 
-      if (!initValue) {
+      if (!initUseMaterial3) {
         // Set Material3 setting to true
-        initValue = true;
+        initUseMaterial3 = true;
         Prefs.setBool('material3', true);
       }
     } else {
       // Record the 'Material2' version
-      theme02Data ??= App.themeData;
+      _theme02Data ??= App.themeData;
 
-      theme03Data ??= ThemeData.fallback(useMaterial3: true);
+      _theme03Data ??= ThemeData.fallback(useMaterial3: true);
 
-      if (initValue) {
+      if (initUseMaterial3) {
         // Set Material3 setting to false
-        initValue = false;
+        initUseMaterial3 = false;
         Prefs.setBool('material3', false);
       }
     }
     // The radio buttons group value
-    groupValue = initValue;
+    groupValue = initUseMaterial3;
   }
-  ///
-  bool initValue = false;
-
-  ///
-  static ThemeData? theme03Data; // Material3
-
-  ///
-  static ThemeData? theme02Data; // Material2
 
   @override
   void onChanged(bool? v) {
-    super.onChanged(v);
+  super.onChanged(v);
     //
     final value = groupValue ?? false;
 

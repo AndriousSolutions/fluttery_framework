@@ -49,8 +49,12 @@ class StateXController extends c.StateXController {
   StateX? get state {
     var state = super.state;
     if (state != null) {
-      assert(state is! AppStateX,
-          "'${state.toStringShort()}' is type, AppStateX.\nMust use the getter, appState, instead.");
+      assert(() {
+        if(state is AppStateX){
+          debugPrint("'${state.toStringShort()}' is type, AppStateX. Should use the getter, appState, instead.");
+        }
+        return true;
+      }());
       if (state is AppStateX) {
         state = null; // In Fluttery, AppStateX is not a subtype of this StateX
       }
@@ -63,8 +67,12 @@ class StateXController extends c.StateXController {
   StateX? stateOf<T extends StatefulWidget>() {
     var state = super.stateOf<T>();
     if (state != null) {
-      assert(state is! AppStateX,
-      "'${state.toStringShort()}' is type, AppStateX.\nIn Fluttery, use the getter, appState, instead.");
+      assert(() {
+        if(state is AppStateX){
+          debugPrint("'${state.toStringShort()}' is type, AppStateX.\nIn Fluttery, use the getter, appState, instead.");
+        }
+        return true;
+      }());
       if (state is AppStateX) {
         state = null; // In Fluttery, AppStateX is not a subtype of this StateX
       }
@@ -77,8 +85,12 @@ class StateXController extends c.StateXController {
   StateX? get firstState {
     var state = super.firstState;
     if (state != null) {
-      assert(state is! AppStateX,
-      "Replace getter, 'firstState', with 'appState'.\nIn Fluttery, AppStateX is not type, StateX.");
+      assert(() {
+        if(state is AppStateX){
+          debugPrint("Replace getter, 'firstState', with 'appState'.\nIn Fluttery, AppStateX is not type, StateX.");
+        }
+        return true;
+      }());
       if (state is AppStateX) {
         state = null; // In Fluttery, AppStateX is not a subtype of this StateX
       }
@@ -91,8 +103,12 @@ class StateXController extends c.StateXController {
   StateX? get lastState {
     var state = super.lastState;
     if (state != null) {
-      assert(state is! AppStateX,
-      "Replace getter, 'lastState', with 'appState'.\nIn Fluttery, AppStateX is not type, StateX.");
+      assert(() {
+        if(state is AppStateX){
+          debugPrint("Replace getter, 'lastState', with 'appState'.\nIn Fluttery, AppStateX is not type, StateX.");
+        }
+        return true;
+      }());
       if (state is AppStateX) {
         state = null; // In Fluttery, AppStateX is not a subtype of this StateX
       }

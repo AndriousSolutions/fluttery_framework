@@ -28,6 +28,10 @@ class _Page3State extends StateX<Page3> {
         counter: () {
           setState(() => count++);
         },
+        newKey: () {
+          final state = CounterController().state;
+          state?.setState(() {});
+        },
         page1counter: () {
           // Merely instantiating the StatefulWidget to call its function.
           final state = Controller().ofState<Page2State>()!;
@@ -42,7 +46,7 @@ class _Page3State extends StateX<Page3> {
   Widget _buildPage3({
     int count = 0,
     required void Function() counter,
-    // required void Function() newKey,
+    required void Function() newKey,
     required void Function() page1counter,
     required void Function() page2counter,
   }) =>

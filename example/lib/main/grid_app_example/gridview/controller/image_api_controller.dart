@@ -15,8 +15,11 @@ import '/src/view.dart';
 import 'package:http/http.dart' as http;
 
 /// This is the 'image API' State Object Controller.
-class ImageAPIController extends StateXController {
+class ImageAPIController extends StateXController  {
   /// No factory constructor and so multiple instances of this class is possible.
+  ImageAPIController(InheritController controller){
+    controller.addImageController(this);
+  }
 
   /// The List of data returned by the API.
   List<String> _data = [];
@@ -25,7 +28,10 @@ class ImageAPIController extends StateXController {
   Image? image;
 
   ///
-  void onTap() => state?.setState(() {});
+  void onTap() {
+    _runInitAsync = true;
+    state?.setState(() {});
+  }
 
   /// The number of images loading using this class.
   static int imageCount = 0;
@@ -128,6 +134,23 @@ class ImageAPIController extends StateXController {
     }
     return data;
   }
+
+  /// Call initAsync() all the time if returns true.
+  /// Conditional calls initAsync() creating a Future with every rebuild
+  bool runInitAsync() {
+    final run = _runInitAsync;
+    _runInitAsync = false;
+    return run;
+  }
+
+  ///
+  bool get runAsyncAgain => _runInitAsync;
+  set runAsyncAgain(bool? run){
+    if(run != null && run){
+      _runInitAsync = run;
+    }
+  }
+  bool _runInitAsync = true;
 
   /// Supply an 'error handler' routine if something goes wrong
   /// in the corresponding initAsync() routine.

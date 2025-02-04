@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-export 'controller/image_api_controller.dart';
+export '../gridview/xport/view_gridview.dart';
 
-export 'images/controller_images.dart';
+export '../inherited/inherited_view.dart';
+
+export '../view/grid_home_page.dart';

@@ -1,113 +1,96 @@
-// Copyright 2022 Andrious Solutions Ltd. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+library;
 
-// An absolute path is preferred but this source code is copied by other app.
+///
+///  The Controller for this app's Home Page StatefulWidget.
+///
+
 import '/src/controller.dart';
 
-import '../model/data_source.dart';
-
-/// An absolute path is preferred but this source code is copied by other app.
 import '/src/view.dart';
 
 ///
-class Controller extends StateXController {
-  /// It's a good practice and follow the Singleton pattern.
-  /// There's on need for more than one instance of this particular class.
-  factory Controller([StateX? state]) => _this ??= Controller._(state);
-  Controller._(StateX? super.state) : _model = Model();
-  static Controller? _this;
+class GridAppController extends StateXController {
+  ///
+  factory GridAppController() => _this ??= GridAppController._();
+  GridAppController._() : super();
+  static GridAppController? _this;
 
-  final Model _model;
+  /// The List of Widgets
+  List<Widget> get children => _imageList();
 
-  /// Note, the count comes from a separate class, _Model.
-  int get count => _model.counter;
+  List<Widget> _imageList() {
+    // Default number is assigned if one is not provided.
+    final List<Widget> images = [];
+    final animals = [1, 2, 3, 4];
 
-  /// Increment and then call the State object's setState() function to reflect the change.
-  void onPressed() => incrementCounter();
+    int cnt = 0;
+    int dog = 0;
+    int cat = 0;
+    int fox = 0;
+    int bird = 0;
 
-  /// The Controller knows how to 'talk to' the Model and to the View (interface).
-  void incrementCounter() {
-    //
-    _model.incrementCounter();
+    const number = 12;
+    const limit = 3;
 
-    /// Retrieve a particular State object. The rest is ignore if not at 'HomePage'
-    final homeState = stateOf<GridPage>();
-
-    // If we're not currently working with this particular State object
-    if (homeState == null) {
-      // Update the interface with the latest change.
-      setState(() {});
-    } else {
-      /// If count is divisible by 5
-      if (_model.counter % 5 == 0) {
-        // Assigning a value will cause 'rootState?.notifyClients()'
-        // Update the interface with the latest change.
-        dataObject = _model.sayHello();
-      } else {
-        // Call those widget's 'dependent' on the App's InheritedWidget.
-        // Update the interface with the latest change.
-        rootState!.notifyClients();
+    while (cnt < number) {
+      // Shuffle the elements
+      animals.shuffle();
+      switch (animals[0]) {
+        case 1:
+          if (dog == limit) {
+            // try again.
+            continue;
+          } else {
+            dog++;
+            images.add(RandomDog(key: Key('dog$dog')));
+          }
+          break;
+        case 2:
+          if (cat == limit) {
+            // try again.
+            continue;
+          } else {
+            cat++;
+            images.add(RandomCat(key: Key('cat$cat')));
+          }
+          break;
+        case 3:
+          if (fox == limit) {
+            // try again.
+            continue;
+          } else {
+            fox++;
+            images.add(RandomFox(key: Key('fox$fox')));
+          }
+          break;
+        case 4:
+          if (bird == limit) {
+            // try again.
+            continue;
+          } else {
+            bird++;
+            images.add(RandomBird(key: Key('bird$bird')));
+          }
+          break;
       }
+      cnt++;
     }
+    return images;
   }
+
+  ///
+  void newBirds() => BirdController().newAnimals();
+
+  ///
+  void newCats() => CatController().newAnimals();
+
+  ///
+  void newDogs() => DogController().newAnimals();
+
+  ///
+  void newFoxes() => FoxController().newAnimals();
 
   /// **************  Life cycle events ****************
-
-  /// Called to complete any asynchronous operations.
-  @override
-  Future<bool> initAsync() async {
-    // A controller can have many State objects 'registered' with it
-    // Return if the current State is Page2State
-    if (state is Page1State || state is Page2State) {
-      return true;
-    }
-    // Simply wait for 5 seconds at startup.
-    /// In production, this is where databases are opened, logins attempted, etc.
-    return Future.delayed(const Duration(seconds: 5), () {
-      return true;
-    });
-  }
-
-  /// The framework will call this method exactly once.
-  /// Only when the [StateX] object is first created.
-  @override
-  void initState() {
-    super.initState();
-    if (inDebugMode) {
-      debugPrint('############ Event: initState in $this');
-    }
-  }
-
-  /// The framework calls this method when the [StateX] object removed from widget tree.
-  /// i.e. The screen is closed.
-  @override
-  void deactivate() {
-    if (inDebugMode) {
-      debugPrint('############ Event: deactivate in $this');
-    }
-  }
-
-  /// Called when this State object was removed from widget tree for some reason
-  /// Undo what was done when [deactivate] was called.
-  @override
-  void activate() {
-    if (inDebugMode) {
-      debugPrint('############ Event: activate in $this');
-    }
-  }
-
-  /// The framework calls this method when this [StateX] object will never
-  /// build again.
-  /// Note: YOU DON'T KNOW WHEN THIS WILL RUN in the Framework.
-  /// PERFORM ANY TIME-CRITICAL OPERATION IN deactivate() INSTEAD!
-  @override
-  void dispose() {
-    if (inDebugMode) {
-      debugPrint('############ Event: dispose() in $this');
-    }
-    super.dispose();
-  }
 
   /// The application is not currently visible to the user, not responding to
   /// user input, and running in the background.

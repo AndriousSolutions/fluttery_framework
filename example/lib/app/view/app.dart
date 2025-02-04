@@ -27,7 +27,6 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           title: 'Fluttery Demo App',
           controller: ExampleAppController(),
           controllers: [MaterialController()],
-          // allowChangeTheme: true, // Allow the App's theme to change
           errorScreen: AppErrorHandler.displayErrorWidget,
           onUnknownRoute: AppErrorHandler.onUnknownRoute,
           useRouterConfig: false,
@@ -90,6 +89,7 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           ],
           allowChangeLocale: true, // Allow the app to change locale
           allowChangeUI: true, // Allow the app to change its design interface
+          allowChangeTheme: true, // Allow the app to change general appearance
           inErrorHandler: (details) {
             // Retrieve the last Flutter Error that has occurred.
             // Note, the function retrieves and then 'clears' the last error from storage.

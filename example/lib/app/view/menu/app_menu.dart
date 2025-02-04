@@ -42,12 +42,11 @@ class AppMenu extends AppPopupMenu {
             child: Text(
                 '${'Locale:'.tr} ${App.appState!.locale!.toLanguageTag()}'),
           ),
-        if (App.useMaterial)
+        if (App.useMaterial && App.allowChangeTheme)
           PopupMenuItem(
             value: 'material',
             child: MaterialVersionRadioButtons(
               key: const Key('materialButtons'),
-              controller: MaterialController(),
             ),
           ),
         if (App.useMaterial)

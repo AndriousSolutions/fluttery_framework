@@ -26,4 +26,9 @@ class _InheritCatState extends StateX<InheritCat> {
   /// Use buildIn() or builder() instead of build() to call the built-in InheritedWidget
   @override
   Widget builder(BuildContext context) => widget.child!;
+
+  /// Determine if the dependencies should be updated.
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) =>
+      (controller as InheritController).updateShouldNotify(oldWidget);
 }

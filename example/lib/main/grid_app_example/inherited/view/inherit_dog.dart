@@ -31,4 +31,9 @@ class _InheritDogState extends StateX<InheritDog> {
   /// Currently not providing an 'iOS' version of the interface.
   @override
   Widget buildiOS(BuildContext context) => buildAndroid(context);
+
+  /// Determine if the dependencies should be updated.
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) =>
+      (controller as InheritController).updateShouldNotify(oldWidget);
 }

@@ -7,43 +7,46 @@ import '/src/view.dart';
 class AppDrawer extends v.AppDrawer {
   ///
   AppDrawer({super.key}) {
-    //
-    // Don't offer these development tools if testing the app
+    /// Don't offer these development tools if testing the app
     if (!App.inFlutterTest) {
-      add(const DevToolsSettings.column());
+      if(App.useMaterial) {
+        add(const DevToolsSettings.column());
+      }else{
+        add(const DevToolsSettings.disabled());
+      }
     }
 
-    addAll([
-      ListTile(
-        key: const Key('Show Box'),
-        subtitle: const Text('Show Box'),
-        onTap: () async {
-          await showBox(
-            context: App.context!,
-            useMaterial: App.useMaterial,
-            content: const Text('This is the showBox()'),
-          );
-        },
-      ),
-      ListTile(
-        key: const Key('Dialog Box'),
-        subtitle: const Text('Dialog Window'),
-        onTap: () => dialogBox(
-          App.context!,
-          title: 'This is a dialog box.',
-        ),
-      ),
-      ListTile(
-          key: const Key('Message Box'),
-          subtitle: const Text('Message Box'),
-          onTap: () {
-            MsgBox(
-              context: App.context!,
-              title: 'Message Box',
-              msg: 'This is a Message Box.',
-            ).show();
-          }),
-    ]);
+    // addAll([
+    //   ListTile(
+    //     key: const Key('Show Box'),
+    //     subtitle: const Text('Show Box'),
+    //     onTap: () async {
+    //       await showBox(
+    //         context: App.context!,
+    //         useMaterial: App.useMaterial,
+    //         content: const Text('This is the showBox()'),
+    //       );
+    //     },
+    //   ),
+    //   ListTile(
+    //     key: const Key('Dialog Box'),
+    //     subtitle: const Text('Dialog Window'),
+    //     onTap: () => dialogBox(
+    //       App.context!,
+    //       title: 'This is a dialog box.',
+    //     ),
+    //   ),
+    //   ListTile(
+    //       key: const Key('Message Box'),
+    //       subtitle: const Text('Message Box'),
+    //       onTap: () async {
+    //         await MsgBox(
+    //           context: App.context!,
+    //           title: 'Message Box',
+    //           msg: 'This is a Message Box.',
+    //         ).show();
+    //       }),
+    // ]);
 
     if (App.appState?.routesGenerated ?? false) {
       add(ListTile(

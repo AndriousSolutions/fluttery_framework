@@ -113,10 +113,10 @@ class Page2State extends StateX<Page2> {
             style: flatButtonStyle,
             onPressed: () async {
               //
-              await Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const Page3()));
+              final route = App.useMaterial
+                  ? MaterialPageRoute<void>(builder: (_) => const Page3())
+                  : CupertinoPageRoute<void>(builder: (_) => const Page3());
+              await Navigator.push(context, route);
 
               /// A good habit to get into. Refresh the screen again.
               /// In this case, to show the count may have changed.

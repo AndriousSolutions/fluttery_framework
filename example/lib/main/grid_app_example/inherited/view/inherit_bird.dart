@@ -24,4 +24,9 @@ class _InheritBirdState extends StateX<InheritBird> {
   /// Use builder() to call buildAndroid() and buildiOS() with the built-in InheritedWidget
   @override
   Widget builder(BuildContext context) => widget.child!;
+
+  /// Determine if the dependencies should be updated.
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) =>
+      (controller as InheritController).updateShouldNotify(oldWidget);
 }

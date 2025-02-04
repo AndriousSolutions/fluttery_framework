@@ -15,10 +15,11 @@ class ImageAPIStateX<T extends StatefulWidget> extends StateX<T>
   ImageAPIStateX({
     required this.uri,
     this.message,
-    super.controller,
-  }) : super(runAsync: true) {  // run initAsync() every time!
+    required super.controller,
+  }) : super(runAsync: true) {
+    // run initAsync() every time!
     //
-    final id = add(ImageAPIController());
+    final id = add(ImageAPIController(controller as InheritController));
     // Retrieves the Controller by its unique id.
     _con = controllerById(id) as ImageAPIController;
   }
@@ -48,14 +49,19 @@ class ImageAPIStateX<T extends StatefulWidget> extends StateX<T>
     );
   }
 
+  /// Currently not providing an 'iOS' version of the interface.
+  @override
+  Widget buildiOS(BuildContext context) => buildAndroid(context);
+
+  /// Call initAsync() all the time if returns true.
+  /// Conditional calls initAsync() creating a Future with every rebuild
+  @override
+  bool runInitAsync() => _con.runInitAsync();
+
   /// Supply an 'error handler' routine if something goes wrong
   /// in the corresponding initAsync() routine.
   @override
   bool onAsyncError(FlutterErrorDetails details) => false;
-
-  /// Currently not providing an 'iOS' version of the interface.
-  @override
-  Widget buildiOS(BuildContext context) => buildAndroid(context);
 }
 
 ///

@@ -1,3 +1,11 @@
+
+## 5.14.0
+February 04, 2025
+- Directory, xport, now used in example app
+- Rewrite of setiOSThemeData() in app_statex.dart
+- assert(() {  if(state is AppStateX){ in app_statex_controller.dart
+- Rewrite of radio_material.dart
+
 ## 5.13.0
 January 30, 2025
 - *BUGFIX* setiOSThemeData( and setThemeData( in app_statex.dart

@@ -104,12 +104,10 @@ class Page1State extends StateX<Page1> {
             child: ElevatedButton(
               key: const Key('Page 2'),
               onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const Page2(),
-                  ),
-                );
+                final route = App.useMaterial
+                    ? MaterialPageRoute<void>(builder: (_) => const Page2())
+                    : CupertinoPageRoute<void>(builder: (_) => const Page2());
+                await Navigator.push(context, route);
               },
               child: L10n.t('Page 2'),
             ),

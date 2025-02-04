@@ -53,7 +53,7 @@ class ExampleAppController extends AppStateXController {
   bool get contactsApp => _appNames[_appCount] == 'Contacts';
 
   int _appCount = 0;
-  final _appNames = ['Counter', 'Word Pairs', 'Inherited'];
+  final _appNames = ['Counter', 'Inherited'];
 
   ///
   Widget onHome() {
@@ -68,16 +68,13 @@ class ExampleAppController extends AppStateXController {
     Widget? widget;
 
     switch (_appNames[_appCount]) {
-      case 'Word Pairs':
-        widget = const WordPairs();
-        break;
       case 'Counter':
         widget = CounterPage(
           key: UniqueKey(), //  UniqueKey() for built-in InheritedWidget
         );
         break;
       case 'Inherited':
-        widget = const HomePage();
+        widget = const GridPage();
         break;
       default:
         widget = const SizedBox();
@@ -298,7 +295,7 @@ class ExampleAppController extends AppStateXController {
   @override
   void pausedAppLifecycleState() {
     if (inDebugMode) {
-      debugPrint('############ Event: pausedLifecycleState() in $this');
+      debugPrint('############ Event: pausedAppLifecycleState() in $this');
     }
   }
 
@@ -306,7 +303,7 @@ class ExampleAppController extends AppStateXController {
   @override
   void resumedAppLifecycleState() {
     if (inDebugMode) {
-      debugPrint('############ Event: resumedLifecycleState() in $this');
+      debugPrint('############ Event: resumedAppLifecycleState() in $this');
     }
   }
 
@@ -314,7 +311,7 @@ class ExampleAppController extends AppStateXController {
   @override
   void inactiveAppLifecycleState() {
     if (inDebugMode) {
-      debugPrint('############ Event: inactiveLifecycleState() in $this');
+      debugPrint('############ Event: inactiveAppLifecycleState() in $this');
     }
   }
 
@@ -323,7 +320,7 @@ class ExampleAppController extends AppStateXController {
   @override
   void detachedAppLifecycleState() {
     if (inDebugMode) {
-      debugPrint('############ Event: detachedLifecycleState() in $this');
+      debugPrint('############ Event: detachedAppLifecycleState() in $this');
     }
   }
 

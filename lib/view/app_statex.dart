@@ -774,39 +774,24 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
 
   /// Assigning the Cupertino theme
   CupertinoThemeData? setiOSThemeData(BuildContext context) {
-    //
-    CupertinoThemeData? cupertinoThemeData = _iOSTheme ?? oniOSTheme(context);
-
-    if (_allowChangeTheme) {
-      // If a saved preference
-      final theme = v.App.iOSThemeData;
-      if (theme != null) {
-        cupertinoThemeData = theme;
-      }
-    }
-    // // Assign to the Global reference
-    // if (cupertinoThemeData != null) {
-    //   v.App.iOSThemeData = cupertinoThemeData;
-    // }
-    if (cupertinoThemeData == null) {
-      // If not running in the Apple platform
-      if (!UniversalPlatform.isApple) {
-        // Possibly Material can provide
-        final themeData = _theme ?? onTheme() ?? v.App.themeData;
-        if (themeData == null) {
-          // The original theme
-          v.App.iOSThemeData ??=
-              CupertinoTheme.of(context).resolveFrom(context);
-        } else {
-          // Assign the provided theme
-          v.App.iOSThemeData = themeData;
-        }
-        cupertinoThemeData = v.App.iOSThemeData;
+    // If not running in the Apple platform
+    if (!UniversalPlatform.isApple) {
+      // Possibly Material can provide
+      final themeData = _theme ?? onTheme() ?? v.App.themeData;
+      if (themeData == null) {
+        // Supply the default Cupertino theme if null
+        v.App.iOSThemeData ??= CupertinoTheme.of(context).resolveFrom(context);
+      } else {
+        // Assign the platform's theme regardless
+        v.App.iOSThemeData = themeData; // ??= won't work
       }
     } else {
-      v.App.iOSThemeData = cupertinoThemeData;
+      // If null and the user can't explicitly change the theme
+      if (!_allowChangeTheme) {
+        v.App.iOSThemeData ??= _iOSTheme ?? oniOSTheme(context);
+      }
     }
-    return cupertinoThemeData;
+    return v.App.iOSThemeData;
   }
 
   /// Assigning the Material theme
@@ -821,10 +806,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
         themeData = theme;
       }
     }
-    // // Assign to the Global reference
-    // if (themeData != null) {
-    //   v.App.themeData = themeData;
-    // }
+
     // If not explicitly provided by the user
     if (themeData == null) {
       // If running in the Apple platform
