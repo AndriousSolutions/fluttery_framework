@@ -1,5 +1,5 @@
 
-## 5.14.0+1
+## 5.14.0+2
 February 04, 2025
 - Directory, xport, now used in example app
 - Rewrite of setiOSThemeData() in app_statex.dart
