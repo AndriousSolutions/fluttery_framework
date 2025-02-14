@@ -1,9 +1,13 @@
 
-## 5.15.0+1
+## 5.15.0+2
 February 13, 2025
 - final Widget? Function()? inHome; Allow for null Widget in app_statex.dart
 - Revamped the example app
 - Upgraded to Dart 2.9.0 since toARGB32() now available in class Color
+- ui_widgets_utils 1.2.1 (was 1.2.0)
+- As of Dart 2.9.0, named parameter 'iconAlignment' was removed from TextButton widget.
+  Use ButtonStyle.iconAlignment instead.
+- Updated rules in analysis_options.yaml
 
 ## 5.14.0+2
 February 04, 2025
