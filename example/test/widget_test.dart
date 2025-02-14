@@ -71,7 +71,7 @@ void _builderErrorTest() {
     await tester.pumpWidget(FlutteryExampleApp(key: UniqueKey()));
 
     // Now trip an error right at start up.
-    ExampleAppController().errorInBuilder = true;
+    AppController().errorInBuilder = true;
 
     // pumpAndSettle() waits for all animations to complete.
     await tester.pumpAndSettle();
@@ -86,7 +86,7 @@ void _asyncErrorTest() {
     await tester.pumpWidget(FlutteryExampleApp(key: UniqueKey()));
 
     // Throw an error in the initAsync() function
-    ExampleAppController().initAsyncError = true;
+    AppController().initAsyncError = true;
 
     // pumpAndSettle() waits for all animations to complete.
     await tester.pumpAndSettle();

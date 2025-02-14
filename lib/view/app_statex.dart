@@ -1338,30 +1338,6 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   ///
   Route<dynamic>? onGenerateRoute(RouteSettings settings) =>
       _onOnGenerateRoute(settings);
-  // Route<dynamic>? onGenerateRoute(RouteSettings settings) {
-  //   var route = _onOnGenerateRoute(settings);
-  //   if (route == null) {
-  //     // Unlike Flutter, this allows you to use tha List of Routes with a Delegate!
-  //     final routes = onRoutes();
-  //     if (routes != null) {
-  //       final builder = routes[settings.name];
-  //       if (builder != null) {
-  //         if (settings.arguments != null &&
-  //             settings.arguments is ReturnRouteFunctionType) {
-  //           route = (settings.arguments as ReturnRouteFunctionType)
-  //               .call(builder, settings);
-  //         } else if (App.useMaterial) {
-  //           route = MaterialPageRoute<dynamic>(
-  //               settings: settings, builder: builder);
-  //         } else {
-  //           route = CupertinoPageRoute<dynamic>(
-  //               settings: settings, builder: builder);
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return route;
-  // }
 
   /// Flag telling you if the routes were generated or not
   bool get routesGenerated => _routesGenerated;
@@ -1617,7 +1593,7 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   final void Function()? inInitState;
 
   /// Returns the home screen if any.
-  final Widget Function()? inHome;
+  final Widget? Function()? inHome;
 
   /// Returns the Route Provider if any.
   final RouteInformationProvider Function()? inRouteInformationProvider;

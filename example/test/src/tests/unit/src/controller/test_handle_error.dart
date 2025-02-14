@@ -16,7 +16,7 @@ void testHandleError(WidgetTester tester) {
   //
   final error = Exception('Error Test');
 
-  StateXController con = ExampleAppController();
+  StateXController con = AppController();
 
   final appState = con.appState;
 

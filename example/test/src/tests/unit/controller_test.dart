@@ -4,7 +4,7 @@ import '../../_tests_exports.dart';
 String _location = '========================== controller_test.dart';
 
 Future<void> testTemplateController(WidgetTester tester) async {
-  final con = ExampleAppController();
+  final con = AppController();
 
   final app = con.application;
 

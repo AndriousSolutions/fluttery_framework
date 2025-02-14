@@ -24,12 +24,13 @@ void integrationTestFlutteryFramework() {
     // pumpAndSettle() waits for all animations to complete.
     await tester.pumpAndSettle();
 
-    final con = ExampleAppController();
+    final con = AppController();
 
     //
     int cnt = 1;
 
-    while (cnt <= 3) {
+    // while (cnt <= 3) {
+    while (cnt <= 2) {
       //
       switch (con.application) {
         case 'Counter':
@@ -41,15 +42,15 @@ void integrationTestFlutteryFramework() {
           await bottomBarTests(tester);
 
           break;
-        case 'Word Pairs':
-
-          // Random Word Pairs app
-          await wordsTest(tester);
-
-          // Test dialog windows
-          await dialogTests(tester);
-
-          break;
+        // case 'Word Pairs':
+        //
+        //   // Random Word Pairs app
+        //   await wordsTest(tester);
+        //
+        //   // Test dialog windows
+        //   await dialogTests(tester);
+        //
+        //   break;
         case 'Inherited':
 
           await animalsTest(tester);
@@ -62,9 +63,6 @@ void integrationTestFlutteryFramework() {
 
       cnt++;
     }
-
-    // Testing Navigation
-    await appNavigationTest(tester);
 
     // Open About menu
     await openAboutMenu(tester);

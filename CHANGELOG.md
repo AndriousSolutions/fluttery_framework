@@ -1,4 +1,9 @@
 
+## 5.15.0
+February 13, 2025
+- final Widget? Function()? inHome; Allow for null Widget in app_statex.dart
+- Revamped the example app
+
 ## 5.14.0+2
 February 04, 2025
 - Directory, xport, now used in example app

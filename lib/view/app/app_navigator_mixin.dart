@@ -85,9 +85,10 @@ mixin RouteNavigatorMethodsMixin {
     if (generated) {
       push = await App.goRouter?.pushNamed<T>(routeName);
     } else {
-      final goRouter = App.goRouter;
-      if (goRouter != null) {
-        await goRouter.pushNamed(routeName, extra: arguments);
+      final router = App.goRouter;
+      // May be null if Routes are used instead
+      if (router != null) {
+        await router.pushNamed(routeName, extra: arguments);
         return push;
       }
     }
