@@ -25,7 +25,9 @@ Future<void> testAppObject(WidgetTester tester) async {
 
   App.themeData = const CupertinoThemeData();
 
-  App.themeData = Color(App.themeData!.primaryColor.toARGB32);
+  final color = App.themeData!.primaryColor.toARGB32();
+
+  App.themeData = Color(color);
 
   App.isInit = App.isInit;
 

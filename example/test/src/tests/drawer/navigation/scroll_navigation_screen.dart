@@ -1,8 +1,9 @@
 //
-import 'package:flutter/material.dart' show Key, Scrollable;
+import 'package:flutter/material.dart' show Scrollable;
 
 import 'package:flutter_test/flutter_test.dart';
 
+// ignore: unused_element
 String _location = '========================== scroll_navigation_screen.dart';
 
 Future<bool> scrollToTap(WidgetTester tester, String text, {int? index}) async {

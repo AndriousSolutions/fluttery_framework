@@ -148,7 +148,7 @@ class AppController extends AppStateXController with AppOptionSettings {
   /// Change the app's colour theme
   Future<void> changeColor() async {
     // Get the current colour.
-    ColorPicker.color = Color(App.themeData!.primaryColor.toARGB32);
+    ColorPicker.color = Color(App.themeData!.primaryColor.toARGB32());
 
     await ColorPicker.showColorPicker(
       context: App.context!,

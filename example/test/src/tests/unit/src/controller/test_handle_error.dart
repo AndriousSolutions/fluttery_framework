@@ -48,7 +48,7 @@ void testHandleError(WidgetTester tester) {
 
   errorHandler.oldOnError;
 
-  AppErrorHandler.errorDisplayWidget(details);
+  AppErrorHandler.displayErrorWidget(details);
 
 //  FlutterExceptionHandler? hnd = errorHandler.onError;
 

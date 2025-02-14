@@ -44,7 +44,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final isPortrait = context.isPortrait;
+    // final isPortrait = context.isPortrait;
 
     Widget widget = child ??
         CupertinoButton(

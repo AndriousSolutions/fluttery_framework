@@ -2,8 +2,6 @@
 //
 import 'package:fluttery_framework/view/utils/radiobutton_widget.dart';
 
-import '/src/controller.dart';
-
 import '/src/view.dart';
 
 ///

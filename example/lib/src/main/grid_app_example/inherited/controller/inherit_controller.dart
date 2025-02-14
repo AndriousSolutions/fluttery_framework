@@ -52,7 +52,7 @@ class InheritController extends StateXController {
 
   /// Place breakpoints and step through the functions below to see how this all works.
 
-  /// The framework calls this method whenever it removes this [StateX] object
+  /// The framework calls this method whenever it removes this 'StateX' object
   /// from the tree.
   @override
   // ignore: unnecessary_overrides
@@ -68,7 +68,7 @@ class InheritController extends StateXController {
     super.activate();
   }
 
-  /// The framework calls this method when this [StateX] object will never
+  /// The framework calls this method when this 'StateX' object will never
   /// build again.
   /// Note: YOU WILL HAVE NO IDEA WHEN THIS WILL RUN in the Framework.
   @override

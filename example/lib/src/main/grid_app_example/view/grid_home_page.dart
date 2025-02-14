@@ -116,8 +116,6 @@ class _GridPageState extends StateX<GridPage> {
     );
   }
 
-  Widget? _gridAnimals;
-
   ///
   Widget get gridAnimals {
     //
@@ -139,7 +137,7 @@ class _GridPageState extends StateX<GridPage> {
       );
     }
 
-    return _gridAnimals = InheritBird(
+    return InheritBird(
       child: InheritCat(
         child: InheritDog(
           child: InheritFox(

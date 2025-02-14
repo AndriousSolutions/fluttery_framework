@@ -131,12 +131,14 @@ class Page1State extends StateX<Page1> {
 
   // Cupertino interface is not implemented. See what's used instead.
   @override
+  // ignore: unnecessary_overrides
   Widget buildiOS(BuildContext context) => super.buildiOS(context);
 
   /// Place breakpoints and step through the functions below
   /// to see how this all works.
 
   @override
+  // ignore: unnecessary_overrides
   Widget build(BuildContext context) => super.build(context);
 
   @override

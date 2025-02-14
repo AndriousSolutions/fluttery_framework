@@ -262,7 +262,7 @@ class AppRouterDelegate extends RouterDelegate<AppRoutePath>
 }
 
 /// Parser inspired by https://github.com/acoutts/flutter_nav_2.0_mobx/blob/master/lib/main.dart
-/// Converts a route into the user class type, <T>
+/// Converts a route into the user class type, [<T>]
 /// Using typed information instead of string allows for greater flexibility
 class AppRouteInformationParser extends RouteInformationParser<AppRoutePath> {
   /// Instantiate only one instance of the Parser.

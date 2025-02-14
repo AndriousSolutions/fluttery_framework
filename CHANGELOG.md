@@ -1,8 +1,9 @@
 
-## 5.15.0
+## 5.15.0+1
 February 13, 2025
 - final Widget? Function()? inHome; Allow for null Widget in app_statex.dart
 - Revamped the example app
+- Upgraded to Dart 2.9.0 since toARGB32() now available in class Color
 
 ## 5.14.0+2
 February 04, 2025
