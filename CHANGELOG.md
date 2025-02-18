@@ -1,5 +1,5 @@
 
-## 5.16.0+1
+## 5.16.0+2
 February 18, 2025
 - Rewrite of the example app
   Replacing the 'home' widget outright is no longer recommended
