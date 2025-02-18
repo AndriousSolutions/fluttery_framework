@@ -22,4 +22,8 @@ Future<void> animalsTest(WidgetTester tester) async {
   /// New Birds
   await tester.tap(find.byKey(const Key('New Birds')));
   await tester.pumpAndSettle(const Duration(seconds: 2));
+
+  /// Press the 'back button'
+  await tester.tap(find.byType(IconButton));
+  await tester.pumpAndSettle();
 }

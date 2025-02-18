@@ -39,73 +39,18 @@ class AppController extends AppStateXController with AppOptionSettings {
   /// Allow to switch Interface
   bool get switchUI => Prefs.getBool('switchUI');
 
-  /// Indicate if the Counter app is to run.
-  bool get counterApp => _appNames[_appCount] == 'Counter';
-
-  /// Indicate if the Words app is to run.
-  bool get wordsApp => _appNames[_appCount] == 'Word Pairs';
-
-  /// Indicate if the Contacts app is to run.
-  bool get contactsApp => _appNames[_appCount] == 'Contacts';
-
-  ///
-  int _appCount = 0;
-
-  ///
-  final _appNames = ['Counter', 'Inherited'];
-
-  ///
-  Widget onHome() {
-    //
-    Widget widget;
-
-    _appCount = Prefs.getInt('appRun');
-
-    // Ensure a valid index has been saved.
-    if (_appCount < 0 || _appCount > _appNames.length - 1) {
-      _appCount = 0;
-    }
-
-    switch (_appNames[_appCount]) {
-      case 'Counter':
-        widget = CounterPage(
-          key: UniqueKey(), //  UniqueKey() for built-in InheritedWidget
-        );
-        break;
-      case 'Inherited':
-        widget = const GridPage();
-        break;
-      default:
-        widget = const SizedBox();
-    }
-    return widget;
-  }
-
-  /// Supply what the interface
-  String get application => _appNames[_appCount];
-
   /// Switch to the other application.
-  Future<void> changeApp([String? appName = '']) async {
-    //
-    if (appName == null ||
-        appName.isEmpty ||
-        !_appNames.contains(appName.trim())) {
-      //
-      _appCount++;
-
-      if (_appCount == _appNames.length) {
-        _appCount = 0;
-      }
+  Future<void> changeApp() async {
+    const widget = GridPage();
+    Route<dynamic> route;
+    if (App.useMaterial) {
+      route = MaterialPageRoute(builder: (_) => widget);
     } else {
-      _appCount = _appNames.indexOf(appName.trim());
+      route = CupertinoPageRoute(builder: (_) => widget);
     }
-
-    await Prefs.setBool('words', _appNames[_appCount] == 'Word');
-
-    // Rerun the whole app with App.setState(() {})
-    await Prefs.setInt('appRun', _appCount);
-
-    App.setState(() {});
+    _allowChangeApp = false;
+    await App.push(route);
+    _allowChangeApp = true;
   }
 
   ///
@@ -132,7 +77,7 @@ class AppController extends AppStateXController with AppOptionSettings {
       onSelectedItemChanged: (int index) async {
         appLocale = L10n.getLocale(index);
       },
-      inWebPlatform: kIsWeb || UniversalPlatform.isWindows,
+      mouseUse: kIsWeb || UniversalPlatform.isWindows,
     );
 
     await DialogBox(
@@ -185,7 +130,7 @@ class AppController extends AppStateXController with AppOptionSettings {
           PopupMenuItem(
             key: const Key('applicationMenuItem'),
             value: 'application',
-            child: Text('${'Application:'.tr} $application'),
+            child: Text('Application: Grid App'.tr),
           ),
           PopupMenuItem(
             key: const Key('localeMenuItem'),
@@ -249,7 +194,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   void setForHome() => _appSettings.setForOnHome();
 
   /// Allow to change app
-  bool get allowChangeApp => useOnHome;
+  bool get allowChangeApp => useOnHome && _allowChangeApp;
+  bool _allowChangeApp = true;
 
   /// Use the onHome() function
   @override

@@ -29,7 +29,7 @@ Future<bool> openApplicationMenu(WidgetTester tester) async {
 
     await tester.tap(application);
 
-    await tester.pumpAndSettle(const Duration(milliseconds: 800));
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
   }
 
   return open;

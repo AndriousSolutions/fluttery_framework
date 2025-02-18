@@ -121,9 +121,12 @@ class Page2State extends StateX<Page2> {
                   if (AppController().useRoutes) {
                     await pushNamed('/Page3');
                   } else {
-                    App.appState?.onGenerateRoute(
+                    final route = App.appState?.onGenerateRoute(
                       const RouteSettings(name: '/Page3'),
                     );
+                    if (route != null) {
+                      await App.push(route);
+                    }
                   }
 
                   /// A good habit to get into. Refresh the screen again.

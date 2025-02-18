@@ -111,7 +111,7 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
             }());
           },
           // Programmatically determine the home page
-          home: AppController().useHome ? AppController().onHome() : null,
+          home: AppController().useHome ? const CounterPage() : null,
         );
 
   /// Called in a function allows for UniqueKey() in StatefulWidget
@@ -119,7 +119,9 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
   Widget? onHome() {
     Widget? home;
     if ((controller as AppController).useOnHome) {
-      home = AppController().onHome();
+      home = CounterPage(
+        key: UniqueKey(), //  UniqueKey() for built-in InheritedWidget
+      );
     }
     return home;
   }
@@ -132,7 +134,7 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
     super.initState();
     // Supply the standard set of Routes
     _routes = {
-      '/': AppController().onHome(),
+      '/': CounterPage(key: UniqueKey()),
       '/Page1': const Page1(),
       '/Page2': const Page2(),
       '/Page3': const Page3(),

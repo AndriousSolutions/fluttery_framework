@@ -5,15 +5,18 @@ String _location = '========================== counter_test.dart';
 
 /// Testing the counter app
 Future<void> counterTest(WidgetTester tester) async {
+  // Access thr 'Counter app' Controller object
+  final con = CounterController();
   // Retrieve the current count.
-  String count = CounterController().data;
+  String count = con.data;
   // Verify that our counter starts at 0.
   expect(find.text(count), findsOneWidget, reason: _location);
   expect(find.text('1'), findsNothing, reason: _location);
 
-  // Assume the AppState object is utilized in this app.
+  // Assume the AppState object is utilized in this app with the pound operator: !
   // ignore: unused_local_variable
-  final appState = CounterController().rootState!;
+  var appState = con.rootState!;
+      appState = con.appState!;   // Another name for the 'first' State object
 
   // 9 counts
   for (int cnt = 1; cnt <= 9; cnt++) {
@@ -46,7 +49,8 @@ Future<void> counterTest(WidgetTester tester) async {
   }
 
   // Retrieve the current count.
-  count = CounterController().data;
+  count = con.data;
+  count = CounterController().data; // Singleton pattern traditionally used in Controllers
 
   // Verify that our counter has incremented.
   expect(find.text(count), findsOneWidget, reason: _location);

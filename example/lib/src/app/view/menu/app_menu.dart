@@ -34,7 +34,7 @@ class AppMenu extends AppPopupMenu {
           PopupMenuItem(
             key: const Key('applicationMenuItem'),
             value: 'application',
-            child: Text('${'Application:'.tr} ${_con.application}'),
+            child: Text('Application: Grid App'.tr),
           ),
         if (App.allowChangeLocale)
           PopupMenuItem(

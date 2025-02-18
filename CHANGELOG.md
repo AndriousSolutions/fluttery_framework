@@ -1,4 +1,9 @@
 
+## 5.16.0
+February 18, 2025
+- Rewrite of the example app
+  Replacing the 'home' widget outright is no longer recommended
+
 ## 5.15.0+2
 February 13, 2025
 - final Widget? Function()? inHome; Allow for null Widget in app_statex.dart
