@@ -95,6 +95,9 @@ google-services.json
 /android/
 !/android/app/build.gradle
 !/android/build.gradle
+!/example/android/
+/example/android/app/
+
 
 # iOS/XCode related
 GoogleService-Info.plist
