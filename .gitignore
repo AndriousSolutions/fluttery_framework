@@ -96,7 +96,7 @@ google-services.json
 !/android/app/build.gradle
 !/android/build.gradle
 !/example/android/
-/example/android/app/
+/example/android/app/.cxx/
 
 
 # iOS/XCode related
