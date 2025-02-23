@@ -34,6 +34,7 @@ class Settings {
   ///
   static Future<bool> setOrder(bool value) =>
       Prefs.setBool('order_of_items', value);
+
   ///
   static bool getLeftHanded() => Prefs.getBool('left_handed', false);
 

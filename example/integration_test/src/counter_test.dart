@@ -16,7 +16,7 @@ Future<void> counterTest(WidgetTester tester) async {
   // Assume the AppState object is utilized in this app with the pound operator: !
   // ignore: unused_local_variable
   var appState = con.rootState!;
-      appState = con.appState!;   // Another name for the 'first' State object
+  appState = con.appState!; // Another name for the 'first' State object
 
   // 9 counts
   for (int cnt = 1; cnt <= 9; cnt++) {
@@ -50,7 +50,8 @@ Future<void> counterTest(WidgetTester tester) async {
 
   // Retrieve the current count.
   count = con.data;
-  count = CounterController().data; // Singleton pattern traditionally used in Controllers
+  count = CounterController()
+      .data; // Singleton pattern traditionally used in Controllers
 
   // Verify that our counter has incremented.
   expect(find.text(count), findsOneWidget, reason: _location);

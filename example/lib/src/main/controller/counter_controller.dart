@@ -4,6 +4,7 @@ import '/src/controller.dart';
 import '/src/model.dart';
 
 import '/src/view.dart';
+
 ///
 class CounterController extends AppStateXController {
   ///
@@ -18,6 +19,7 @@ class CounterController extends AppStateXController {
   static CounterController? _this;
 
   late final CounterModel _model;
+
   ///
   late final WordPairsTimer wordPairsTimer;
 

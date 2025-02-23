@@ -44,6 +44,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void initState() {
     super.initState();
+
     /// Override this method to perform initialization that depends on the
     /// location at which this object was inserted into the tree.
     /// (i.e. Subscribe to another object it depends on during [initState],
@@ -57,6 +58,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void deactivate() {
     super.deactivate();
+
     /// The framework calls this method whenever it removes this [State] object
     /// from the tree. It might reinsert it into another part of the tree.
     /// Subclasses should override this method to clean up any links between
@@ -70,6 +72,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void activate() {
     super.activate();
+
     /// In some cases, however, after a [State] object has been deactivated, the
     /// framework will reinsert it into another part of the tree (e.g., if the
     /// subtree containing this [State] object is grafted from one location in
@@ -91,6 +94,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void dispose() {
     super.dispose();
+
     /// The framework calls this method when this [StateX] object will never
     /// build again. The [State] object's lifecycle is terminated.
     /// Subclasses should override this method to release any resources retained
@@ -102,6 +106,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void didUpdateWidget(RandomDog oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     /// The framework always calls build() after calling [didUpdateWidget], which
     /// means any calls to [setState] in [didUpdateWidget] are redundant.
   }
@@ -112,6 +117,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     ///
     /// if a State object's [build] references an [InheritedWidget] with
     /// [context.dependOnInheritedWidgetOfExactType]
@@ -127,6 +133,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   // ignore: unnecessary_overrides
   void reassemble() {
     super.reassemble();
+
     /// Called whenever the application is reassembled during debugging, for
     /// example during hot reload.
     ///
@@ -246,6 +253,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void didChangeLocales(List<Locale>? locales) {
     super.didChangeLocales(locales);
+
     /// Called when the system tells the app that the user's locale has
     /// changed. For example, if the user changes the system language
     /// settings.
@@ -257,6 +265,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
+
     /// Passing these possible values:
     /// AppLifecycleState.detached
     /// AppLifecycleState.resumed
@@ -267,8 +276,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
 
   /// The application is visible and responding to user input.
   @override
-  void resumedAppLifecycleState() {
-  }
+  void resumedAppLifecycleState() {}
 
   /// The application is in an inactive state and is not receiving user input.
   ///
@@ -285,27 +293,25 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   ///
   /// Apps in this state should assume that they may be ['pausedLifecycleState]' at any time.
   @override
-  void inactiveAppLifecycleState() {
-  }
+  void inactiveAppLifecycleState() {}
 
   /// All views of an application are hidden, either because the application is
   /// about to be paused (on iOS and Android), or because it has been minimized
   /// or placed on a desktop that is no longer visible (on non-web desktop), or
   /// is running in a window or tab that is no longer visible (on the web).
   @override
-  void hiddenAppLifecycleState() {
-  }
+  void hiddenAppLifecycleState() {}
 
   /// The application is not currently visible to the user, not responding to
   /// user input, and running in the background.
   @override
-  void pausedAppLifecycleState() {
-  }
+  void pausedAppLifecycleState() {}
 
   /// Called when the system is running low on memory.
   @override
   void didHaveMemoryPressure() {
     super.didHaveMemoryPressure();
+
     /// Called when the system is running low on memory.
     ///
     /// This method exposes the `memoryPressure` notification from
@@ -327,6 +333,7 @@ class _RandomDogState extends ImageAPIStateX<RandomDog> {
   @override
   void didChangeAccessibilityFeatures() {
     super.didChangeAccessibilityFeatures();
+
     /// Called when the system changes the set of currently active accessibility
     /// features.
   }

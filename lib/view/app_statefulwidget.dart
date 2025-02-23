@@ -191,7 +191,8 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // A Hot Reload may have occurred
       _appWidget = null;
 
-      _appWidget = _AppStatefulWidget(key: GlobalObjectKey<v.AppStateX>(_appState!), appState: _appState!);
+      _appWidget = _AppStatefulWidget(
+          key: GlobalObjectKey<v.AppStateX>(_appState!), appState: _appState!);
 
       // Collect package and device information while testing.
       await v.App.getDeviceInfo();

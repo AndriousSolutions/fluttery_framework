@@ -97,7 +97,7 @@ class Page2State extends StateX<Page2> {
         ),
 
         /// Ignore BuildPage(). It's used only to highlight the other features in this page
-         tab01: (_) => BuildPage(
+        tab01: (_) => BuildPage(
           label: '2',
           count: con.count,
           counter: con.onPressed,

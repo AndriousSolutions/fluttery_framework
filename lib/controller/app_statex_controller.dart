@@ -50,8 +50,9 @@ class StateXController extends c.StateXController {
     var state = super.state;
     if (state != null) {
       assert(() {
-        if(state is AppStateX){
-          debugPrint("'${state.toStringShort()}' is type, AppStateX. Should use the getter, appState, instead.");
+        if (state is AppStateX) {
+          debugPrint(
+              "'${state.toStringShort()}' is type, AppStateX. Should use the getter, appState, instead.");
         }
         return true;
       }());
@@ -68,8 +69,9 @@ class StateXController extends c.StateXController {
     var state = super.stateOf<T>();
     if (state != null) {
       assert(() {
-        if(state is AppStateX){
-          debugPrint("'${state.toStringShort()}' is type, AppStateX.\nIn Fluttery, use the getter, appState, instead.");
+        if (state is AppStateX) {
+          debugPrint(
+              "'${state.toStringShort()}' is type, AppStateX.\nIn Fluttery, use the getter, appState, instead.");
         }
         return true;
       }());
@@ -86,8 +88,9 @@ class StateXController extends c.StateXController {
     var state = super.firstState;
     if (state != null) {
       assert(() {
-        if(state is AppStateX){
-          debugPrint("Replace getter, 'firstState', with 'appState'.\nIn Fluttery, AppStateX is not type, StateX.");
+        if (state is AppStateX) {
+          debugPrint(
+              "Replace getter, 'firstState', with 'appState'.\nIn Fluttery, AppStateX is not type, StateX.");
         }
         return true;
       }());
@@ -104,8 +107,9 @@ class StateXController extends c.StateXController {
     var state = super.lastState;
     if (state != null) {
       assert(() {
-        if(state is AppStateX){
-          debugPrint("Replace getter, 'lastState', with 'appState'.\nIn Fluttery, AppStateX is not type, StateX.");
+        if (state is AppStateX) {
+          debugPrint(
+              "Replace getter, 'lastState', with 'appState'.\nIn Fluttery, AppStateX is not type, StateX.");
         }
         return true;
       }());

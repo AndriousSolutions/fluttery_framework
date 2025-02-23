@@ -15,6 +15,7 @@ class WordPairsModel extends StateXController {
     onPressed();
   }
   static WordPairsModel? _this;
+
   ///
   // ignore: library_private_types_in_public_api
   late _EnglishWords words;

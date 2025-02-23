@@ -21,6 +21,7 @@ class ColorPicker {
 
   ///
   static ColorSwatch<int?> get colorSwatch => _colorSwatch;
+
   ///
   static set colorSwatch(ColorSwatch<int?> swatch) {
     _color = swatch;
@@ -31,8 +32,10 @@ class ColorPicker {
 
   ///
   static bool allowShades = false;
+
   ///
   static double get circleSize => _circleSize;
+
   ///
   static set circleSize(double size) {
     if (size > 1.0) {
@@ -114,10 +117,13 @@ class ColorPicker {
 enum DialogDemoAction {
   ///
   cancel,
+
   ///
   discard,
+
   ///
   disagree,
+
   ///
   agree,
 }

@@ -15,9 +15,9 @@ import '/src/view.dart';
 import 'package:http/http.dart' as http;
 
 /// This is the 'image API' State Object Controller.
-class ImageAPIController extends StateXController  {
+class ImageAPIController extends StateXController {
   /// No factory constructor and so multiple instances of this class is possible.
-  ImageAPIController(InheritController controller){
+  ImageAPIController(InheritController controller) {
     controller.addImageController(this);
   }
 
@@ -145,11 +145,12 @@ class ImageAPIController extends StateXController  {
 
   ///
   bool get runAsyncAgain => _runInitAsync;
-  set runAsyncAgain(bool? run){
-    if(run != null && run){
+  set runAsyncAgain(bool? run) {
+    if (run != null && run) {
       _runInitAsync = run;
     }
   }
+
   bool _runInitAsync = true;
 
   /// Supply an 'error handler' routine if something goes wrong

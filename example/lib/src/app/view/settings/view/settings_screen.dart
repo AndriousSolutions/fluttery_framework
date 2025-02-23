@@ -94,7 +94,6 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-
 /// Supply the appropriate ListTile widget
 Widget listTile({
   Widget? leading,

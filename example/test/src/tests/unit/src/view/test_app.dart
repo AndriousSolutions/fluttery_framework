@@ -53,7 +53,8 @@ Future<void> testAppObject(WidgetTester tester) async {
   App.mainWindow;
 
   // ignore: unused_local_variable
-  final GlobalKey<ScaffoldMessengerState>? key = App.appState!.scaffoldMessengerKey;
+  final GlobalKey<ScaffoldMessengerState>? key =
+      App.appState!.scaffoldMessengerKey;
 
   App.getMaterialColor(Colors.red);
 

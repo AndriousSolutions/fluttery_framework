@@ -8,7 +8,7 @@ Future<void> dialogTests(WidgetTester tester) async {
   //
   final opened = await openDrawer(tester);
 
-  if (opened){
+  if (opened) {
     //
     await _openDialogWindow('Show Box', tester);
 
@@ -23,7 +23,8 @@ Future<void> dialogTests(WidgetTester tester) async {
 }
 
 /// Open a particular type of dialog window.
-Future<void> _openDialogWindow(String key, WidgetTester tester, {bool? skipOffstage}) async {
+Future<void> _openDialogWindow(String key, WidgetTester tester,
+    {bool? skipOffstage}) async {
   //
   var finder = find.byKey(Key(key), skipOffstage: skipOffstage ?? true);
 

@@ -13,6 +13,7 @@ class WordPairsController extends StateXController {
       _this ??= WordPairsController._(state);
   WordPairsController._(StateX? super.state) : model = WordPairsModel();
   static WordPairsController? _this;
+
   ///
   final WordPairsModel model;
 

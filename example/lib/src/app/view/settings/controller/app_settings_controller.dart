@@ -24,7 +24,7 @@ class AppSettingsController extends StateXController with AppOptionSettings {
 
     _useHome = Prefs.getBool('useHome');
 
-    _useOnHome = Prefs.getBool('useOnHome', true);  // Default option
+    _useOnHome = Prefs.getBool('useOnHome', true); // Default option
 
     _useInheritedWidget = Prefs.getBool('useInheritedWidget');
 
@@ -37,7 +37,7 @@ class AppSettingsController extends StateXController with AppOptionSettings {
     if (App.inFlutterTest) {
       // Set to the onHome() function
       setForOnHome();
-    }else{
+    } else {
       // Ensure ae least one option is selected
       goOnHome();
     }
@@ -124,11 +124,11 @@ class AppSettingsController extends StateXController with AppOptionSettings {
   void setForOnHome() {
     // If running in a Flutter test
     // assert(() {
-      useHome = false;
-      useOnHome = true;
-      useRoutes = false;
-      useRouterConfig = false;
-      // debugPrint("============ Set app to use 'home' parameter");
+    useHome = false;
+    useOnHome = true;
+    useRoutes = false;
+    useRouterConfig = false;
+    // debugPrint("============ Set app to use 'home' parameter");
     //   return true;
     // }());
   }

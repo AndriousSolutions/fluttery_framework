@@ -38,7 +38,8 @@ Future<void> testAppState(WidgetTester tester) async {
 
   appState.onOnUnknownRoute(const RouteSettings());
 
-  appState.onOnNavigationNotification(const NavigationNotification(canHandlePop: false));
+  appState.onOnNavigationNotification(
+      const NavigationNotification(canHandlePop: false));
 
   appState.oniOSTheme();
 

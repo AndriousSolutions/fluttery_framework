@@ -91,7 +91,7 @@ class Page1State extends StateX<Page1> {
           title: Text('Three-page example'.tr),
           actions: [AppMenu()],
         ),
-         tab01: (_) => BuildPage(
+        tab01: (_) => BuildPage(
           label: '1',
           count: count,
           counter: () {

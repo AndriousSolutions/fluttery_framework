@@ -1,4 +1,3 @@
-
 // App's Settings
 export '/src/app/view/settings/view/app_settings.dart';
 

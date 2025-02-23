@@ -8,6 +8,7 @@ import '/src/view.dart';
 import 'package:fluttery_framework/controller.dart';
 
 import 'package:english_words/english_words.dart';
+
 ///
 class WordPairsTimer extends StateXController {
   /// Only one instance of the class is necessary and desired.
@@ -26,20 +27,28 @@ class WordPairsTimer extends StateXController {
         super(state);
 
   static WordPairsTimer? _this;
+
   ///
   final int? seconds;
+
   ///
   final Duration? duration;
+
   ///
   final void Function()? callback;
+
   ///
   final int? count;
+
   ///
   final WordPairsModel model;
+
   ///
   Timer? timer;
+
   ///
   final suggestions = <WordPair>[];
+
   ///
   int index = 0;
 

@@ -49,7 +49,6 @@ class InheritController extends StateXController {
     return update;
   }
 
-
   /// Place breakpoints and step through the functions below to see how this all works.
 
   /// The framework calls this method whenever it removes this 'StateX' object

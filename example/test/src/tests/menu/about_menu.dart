@@ -8,7 +8,7 @@ Future<void> openAboutMenu(WidgetTester tester) async {
   /// Open popup menu
   final opened = await openPopupMenu(tester);
 
-  if(!opened){
+  if (!opened) {
     return;
   }
 

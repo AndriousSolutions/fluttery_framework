@@ -501,7 +501,8 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
     if (details == null) {
       //
       message ??= 'Route "${settings.name}" not found!';
-      description ??= 'The onUnknownRoute callback returned this screen instead.';
+      description ??=
+          'The onUnknownRoute callback returned this screen instead.';
       details = FlutterErrorDetails(
         exception: Exception(message),
         stack: stack,
