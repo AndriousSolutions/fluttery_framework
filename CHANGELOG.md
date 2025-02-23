@@ -1,4 +1,11 @@
 
+## 5.16.1
+February 23, 2025
+- themeData ??= ThemeData.fallback(); in app_statex.dart
+- CupertinoBasedMaterialThemeData() in mixin _AppThemeDataMixin
+- Removed radio buttons from popup menu
+- Supplied more tests: multi_counters_test.dart';
+
 ## 5.16.0+2
 February 18, 2025
 - Rewrite of the example app

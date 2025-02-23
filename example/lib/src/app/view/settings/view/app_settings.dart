@@ -80,66 +80,72 @@ class _AppSettingsState extends StateX<AppSettings> {
   ///
   List<Widget> get appSettings {
     //
+    final isSmall = context.isPhone && !kIsWeb;
+    //
     final List<Widget> widgets = <Widget>[
       listTile(
-        leading: const Icon(Icons.picture_in_picture),
-        title: Text('Delay Startup'.tr),
+        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        title: isSmall ? Text('Delay'.tr) : Text('Delay Startup'.tr),
         onTap: () => onTapInitAsyncDelay(),
         tip: tipDelay,
         value: con.initAsyncDelay,
         onChanged: onTapInitAsyncDelay,
       ),
       listTile(
-        leading: const Icon(Icons.picture_in_picture),
-        title: Text('Show Splash Screen'.tr),
+        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        title: isSmall ? Text('Splash'.tr) : Text('Show Splash Screen'.tr),
         onTap: () => onTapSplashScreen(),
         tip: tipSplash,
         value: con.splashScreen,
         onChanged: onTapSplashScreen,
       ),
       listTile(
-        leading: const Icon(Icons.picture_in_picture),
-        title: Text('Use the home parameter'.tr),
+        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        title: isSmall
+            ? Text('home parameter'.tr)
+            : Text('Use the home parameter'.tr),
         onTap: () => onTapUseHome(),
         tip: tipHome,
         value: con.useHome,
         onChanged: onTapUseHome,
       ),
       listTile(
-        leading: const Icon(Icons.picture_in_picture),
-        title: Text("Use 'onHome' function".tr),
+        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        title: isSmall ? Text("'onHome'".tr) : Text("Use 'onHome' function".tr),
         onTap: () => onTapUseOnHome(),
         tip: tipOnHome,
         value: con.useOnHome,
         onChanged: onTapUseOnHome,
       ),
       listTile(
-        leading: const Icon(Icons.picture_in_picture),
-        title: Text('Use Routes instead'.tr),
+        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        title: isSmall ? Text('Routes'.tr) : Text('Use Routes instead'.tr),
         onTap: () => onTapUseRoutes(),
         tip: tipRoutes,
         value: con.useRoutes,
         onChanged: onTapUseRoutes,
       ),
       listTile(
-        leading: const Icon(Icons.picture_in_picture),
-        title: Text('Use Router Config.'.tr),
+        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        title: isSmall ? Text('Router'.tr) : Text('Use Router Config.'.tr),
         onTap: () => onTapUseRouterConfig(),
         tip: tipRouterConfig,
         value: con.useRouterConfig,
         onChanged: onTapUseRouterConfig,
       ),
       listTile(
-        leading: const Icon(Icons.picture_in_picture),
-        title: Text('Use InheritedWidget'.tr),
+        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        title: isSmall
+            ? Text('InheritedWidget'.tr)
+            : Text('Use InheritedWidget'.tr),
         onTap: () => onTapInherited(),
         tip: tipInherited,
         value: con.useInheritedWidget,
         onChanged: onTapInherited,
       ),
       listTile(
-        leading: const Icon(Icons.picture_in_picture),
-        title: Text('Error Push button'.tr),
+        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        title: isSmall ? Text('Button Error'.tr) : Text('Error Push button'.tr),
         onTap: () {
           con.buttonError = !con.buttonError;
           con.setState(() {});
@@ -151,8 +157,8 @@ class _AppSettingsState extends StateX<AppSettings> {
         },
       ),
       listTile(
-        leading: const Icon(Icons.picture_in_picture),
-        title: Text('Error in Builder'.tr),
+        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        title: isSmall ? Text('Builder Error'.tr) : Text('Error in Builder'.tr),
         onTap: () {
           con.errorInBuilder = !con.errorInBuilder;
           con.setSettingState();
@@ -164,8 +170,10 @@ class _AppSettingsState extends StateX<AppSettings> {
         },
       ),
       listTile(
-        leading: const Icon(Icons.picture_in_picture),
-        title: Text('Error in initAsync'.tr),
+        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        title: isSmall
+            ? Text('initAsync Error'.tr)
+            : Text('Error in initAsync'.tr),
         onTap: () {
           con.initAsyncError = !con.initAsyncError;
           con.setSettingState();

@@ -814,18 +814,19 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
         // possibly Cupertino can provide
         final cupertinoThemeData =
             _iOSTheme ?? oniOSTheme() ?? v.App.iOSThemeData;
-        if (cupertinoThemeData == null) {
-          // The original theme
-          v.App.themeData ??= ThemeData.fallback(useMaterial3: false);
-        } else {
-          // Cupertino values
+        if (cupertinoThemeData != null) {
+          // Cupertino converted to ThemeData
           v.App.themeData = cupertinoThemeData;
+          // Convert back
+          themeData = v.App.themeData;
         }
-        themeData = v.App.themeData;
       }
-    } else {
-      v.App.themeData = themeData;
+      // The original theme
+      themeData ??= ThemeData.fallback();
     }
+
+    v.App.themeData = themeData;
+
     return themeData;
   }
 

@@ -178,9 +178,15 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   bool get useRouterConfig => _appSettings.useRouterConfig;
 
+  @override
+  set useRouterConfig(bool? use) => _appSettings.useRouterConfig = use;
+
   /// Use the provided Routes instead
   @override
   bool get useRoutes => _appSettings.useRoutes;
+
+  @override
+  set useRoutes(bool? use) => _appSettings.useRoutes = use;
 
   /// Use InheritedWidget
   @override

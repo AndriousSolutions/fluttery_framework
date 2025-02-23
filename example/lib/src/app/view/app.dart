@@ -28,7 +28,6 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
       : super(
           title: 'Fluttery Demo App',
           controller: AppController(),
-          controllers: [MaterialController()],
           errorScreen: AppErrorHandler.displayErrorWidget,
           onUnknownRoute: AppErrorHandler.onUnknownRoute,
           useRouterConfig: AppController().useRouterConfig,
@@ -127,14 +126,14 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
   }
 
   // Development Tools Settings
-  static final DevToolsController dev = DevToolsController();
+  static final DevToolSettingsController dev = DevToolSettingsController();
 
   @override
   void initState() {
     super.initState();
     // Supply the standard set of Routes
     _routes = {
-      '/': CounterPage(key: UniqueKey()),
+      '/': const CounterPage(),
       '/Page1': const Page1(),
       '/Page2': const Page2(),
       '/Page3': const Page3(),

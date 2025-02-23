@@ -7,6 +7,7 @@ import '/src/view.dart';
 class AppMenu extends AppPopupMenu {
   /// Only one instance of the class
   factory AppMenu() => _this ??= AppMenu._();
+
   AppMenu._()
       : _con = AppController(),
         super(
@@ -42,13 +43,6 @@ class AppMenu extends AppPopupMenu {
             value: 'locale',
             child: Text(
                 '${'Locale:'.tr} ${App.appState!.locale!.toLanguageTag()}'),
-          ),
-        if (App.useMaterial && App.allowChangeTheme)
-          PopupMenuItem(
-            value: 'material',
-            child: MaterialVersionRadioButtons(
-              key: const Key('materialButtons'),
-            ),
           ),
         if (App.useMaterial)
           PopupMenuItem(

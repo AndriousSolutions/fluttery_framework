@@ -34,9 +34,7 @@ extension AppStateExtension on AppObject {
   bool get inDebugMode => appState?.inDebugMode ?? false;
 
   /// Explicitly change to a particular interface.
-  void changeUI(String ui) {
-    appState?.changeUI(ui);
-  }
+  void changeUI(String ui) => appState?.changeUI(ui);
 
   /// Refresh the root State object with the passed function.
   void setState(VoidCallback fn) => appState?.setState(fn);

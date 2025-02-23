@@ -33,10 +33,6 @@ class _Page3State extends StateX<Page3> {
           counter: () {
             setState(() => count++);
           },
-          newKey: () {
-            final state = CounterController().state;
-            state?.setState(() {});
-          },
           page1counter: () {
             // Merely instantiating the StatefulWidget to call its function.
             final state = Controller().ofState<Page2State>()!;
@@ -45,6 +41,7 @@ class _Page3State extends StateX<Page3> {
           page2counter: () {
             Controller().onPressed();
           },
+          newKey: () {},
         ),
         tab02: (_) => SettingsScreen(
           title: 'Settings'.tr,
@@ -64,15 +61,6 @@ class _Page3State extends StateX<Page3> {
         label: '3',
         count: count,
         counter: counter,
-        // column: (_) => [
-        //   Flexible(
-        //     child: ElevatedButton(
-        //       key: const Key('New Key'),
-        //       onPressed: newKey,
-        //       child: const Text('New Key for Page 1'),
-        //     ),
-        //   ),
-        // ],
         row: (BuildContext context) => [
           Flexible(
             child: ElevatedButton(
@@ -95,11 +83,7 @@ class _Page3State extends StateX<Page3> {
             ),
           ),
         ],
-        column: (context) => [
-          const Flexible(
-            child: Text(' '),
-          ),
-        ],
+        column: (_) => [const Text(' ')],
         persistentFooterButtons: <Widget>[
           ElevatedButton(
             key: const Key('Page 1 Counter'),

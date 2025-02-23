@@ -504,7 +504,8 @@ mixin _AppThemeDataMixin {
     if (value is ThemeData) {
       _themeData = value;
     } else if (value is CupertinoThemeData) {
-      // Ignore the value
+      _themeData =
+          CupertinoBasedMaterialThemeData(themeData: value).materialTheme;
     } else if (value is! ColorSwatch) {
       // Ignore the value
     } else if (_themeData == null) {

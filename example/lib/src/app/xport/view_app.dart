@@ -12,9 +12,6 @@ export '/src/app/view/drawer/app_drawer.dart';
 // App's menu
 export '/src/app/view/menu/app_menu.dart';
 
-// Radio buttons in App's menu
-export '/src/app/view/menu/radio_material.dart';
-
 // Color picker routine
 export '/src/app/view/color_picker.dart';
 

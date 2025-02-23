@@ -52,11 +52,11 @@ class DevToolsSettings extends StatefulWidget {
 
 ///
 class _DevToolsSettingsState extends StateX<DevToolsSettings> {
-  _DevToolsSettingsState() : super(controller: DevToolsController()) {
-    con = controller as DevToolsController;
+  _DevToolsSettingsState() : super(controller: DevToolSettingsController()) {
+    con = controller as DevToolSettingsController;
   }
 
-  late DevToolsController con;
+  late DevToolSettingsController con;
 
   @override
   Widget builder(BuildContext context) {
@@ -78,6 +78,8 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
   ///
   List<Widget> get devSettings {
     //
+    final isSmall = context.isPhone && !kIsWeb;
+
     // Disable if running in Cupertino
     final disable = App.useCupertino;
 
@@ -85,8 +87,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
 
     final List<Widget> widgets = <Widget>[
       listTile(
-        leading: const Icon(Icons.picture_in_picture),
-        title: Text('Show rendering performance overlay'.tr),
+        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        title: isSmall
+            ? Text('Performance overlay'.tr)
+            : Text('Show rendering performance overlay'.tr),
         onTap: () {
           con.showPerformanceOverlay = !con.showPerformanceOverlay;
         },
@@ -96,8 +100,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
         },
       ),
       listTile(
-        leading: const Icon(Icons.accessibility),
-        title: Text('Show accessibility information'.tr),
+        leading: isSmall ? null : const Icon(Icons.accessibility),
+        title: isSmall
+            ? Text('Accessibility'.tr)
+            : Text('Show accessibility information'.tr),
         onTap: () {
           con.showSemanticsDebugger = !con.showSemanticsDebugger;
         },
@@ -107,8 +113,8 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
         },
       ),
       listTile(
-        leading: const Icon(Icons.bug_report),
-        title: Text('Show DEBUG banner'.tr),
+        leading: isSmall ? null : const Icon(Icons.bug_report),
+        title: isSmall ? Text('DEBUG banner'.tr) : Text('Show DEBUG banner'.tr),
         onTap: () {
           con.debugShowCheckedModeBanner = !con.debugShowCheckedModeBanner;
         },
@@ -119,8 +125,11 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
       ),
       if (App.useMaterial)
         listTile(
-          leading: const Icon(Icons.screen_lock_landscape_sharp),
-          title: Text('Use Material 3 Design'.tr),
+          leading:
+              isSmall ? null : const Icon(Icons.screen_lock_landscape_sharp),
+          title: isSmall
+              ? Text('Material 3'.tr)
+              : Text('Use Material 3 Design'.tr),
           onTap: () {
             con.useMaterial3 = !con.useMaterial3;
           },
@@ -130,8 +139,9 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
           },
         ),
       listTile(
-        leading: const Icon(Icons.border_clear),
-        title: Text('Show material grid'.tr),
+        leading: isSmall ? null : const Icon(Icons.border_clear),
+        title:
+            isSmall ? Text('Material grid'.tr) : Text('Show material grid'.tr),
         onTap: disable
             ? null
             : () {
@@ -163,6 +173,9 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
 
   /// Supply those Dev tools available only during Development
   void devToolsOptions(List<Widget> widgets) {
+    //
+    final isSmall = context.isPhone && !kIsWeb;
+
     // Disable if running in Production
     const disable = kReleaseMode;
 
@@ -171,8 +184,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
     // material grid and size construction lines are only available in checked mode
     widgets.addAll(<Widget>[
       listTile(
-        leading: const Icon(Icons.border_all),
-        title: Text('Paint construction lines'.tr),
+        leading: isSmall ? null : const Icon(Icons.border_all),
+        title: isSmall
+            ? Text('Construct lines'.tr)
+            : Text('Paint construction lines'.tr),
         onTap: disable
             ? null
             : () => con.debugPaintSizeEnabled = !con.debugPaintSizeEnabled,
@@ -182,8 +197,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             disable ? null : (bool value) => con.debugPaintSizeEnabled = value,
       ),
       listTile(
-        leading: const Icon(Icons.format_color_text),
-        title: Text('Show character baselines'.tr),
+        leading: isSmall ? null : const Icon(Icons.format_color_text),
+        title: isSmall
+            ? Text('Character baselines'.tr)
+            : Text('Show character baselines'.tr),
         onTap: disable
             ? null
             : () {
@@ -199,8 +216,9 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.mouse),
-        title: Text('Flash interface taps'.tr),
+        leading: isSmall ? null : const Icon(Icons.mouse),
+        title:
+            isSmall ? Text('Flash taps'.tr) : Text('Flash interface taps'.tr),
         onTap: disable
             ? null
             : () {
@@ -215,8 +233,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.filter_none),
-        title: Text('Highlight layer boundaries'.tr),
+        leading: isSmall ? null : const Icon(Icons.filter_none),
+        title: isSmall
+            ? Text('Boundary lines'.tr)
+            : Text('Highlight layer boundaries'.tr),
         onTap: disable
             ? null
             : () {
@@ -232,8 +252,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.gradient),
-        title: Text('Highlight repainted layers'.tr),
+        leading: isSmall ? null : const Icon(Icons.gradient),
+        title: isSmall
+            ? Text('Highlight layers'.tr)
+            : Text('Highlight repainted layers'.tr),
         onTap: disable
             ? null
             : () {
@@ -249,8 +271,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.vignette),
-        title: Text('Rotating colors repainting text'.tr),
+        leading: isSmall ? null : const Icon(Icons.vignette),
+        title: isSmall
+            ? Text('Color text'.tr)
+            : Text('Rotating colors repainting text'.tr),
         onTap: disable
             ? null
             : () {
@@ -266,8 +290,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.dirty_lens),
-        title: Text('Log dirty widgets rebuilt'.tr),
+        leading: isSmall ? null : const Icon(Icons.dirty_lens),
+        title: isSmall
+            ? Text('Log dirty widgets'.tr)
+            : Text('Log dirty widgets rebuilt'.tr),
         onTap: disable
             ? null
             : () {
@@ -283,8 +309,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.dirty_lens_rounded),
-        title: Text('Callback called for every dirty widget rebuilt'.tr),
+        leading: isSmall ? null : const Icon(Icons.dirty_lens_rounded),
+        title: isSmall
+            ? Text('Callback for every rebuild'.tr)
+            : Text('Callback called for every dirty widget rebuilt'.tr),
         onTap: disable
             ? null
             : () {
@@ -299,8 +327,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.arrow_circle_right_outlined),
-        title: Text('Log to BuildOwner.buildScope'.tr),
+        leading: isSmall ? null : const Icon(Icons.arrow_circle_right_outlined),
+        title: isSmall
+            ? Text('Log BuildScope'.tr)
+            : Text('Log to BuildOwner.buildScope'.tr),
         onTap: disable
             ? null
             : () {
@@ -315,8 +345,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.update),
-        title: Text('Log call stacks marking widgets to rebuilt'.tr),
+        leading: isSmall ? null : const Icon(Icons.update),
+        title: isSmall
+            ? Text('Log widget rebuilds'.tr)
+            : Text('Log call stacks marking widgets to rebuild'.tr),
         onTap: disable
             ? null
             : () {
@@ -332,9 +364,12 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.language),
-        title: Text(
-            'Log widgets with global keys when deactivated and reactivated'.tr),
+        leading: isSmall ? null : const Icon(Icons.language),
+        title: isSmall
+            ? Text("Log widget's global keys".tr)
+            : Text(
+                'Log widgets with global keys when deactivated and reactivated'
+                    .tr),
         onTap: disable
             ? null
             : () {
@@ -350,8 +385,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.location_history_outlined),
-        title: Text("Adds 'Timeline' events for every Widget built".tr),
+        leading: isSmall ? null : const Icon(Icons.location_history_outlined),
+        title: isSmall
+            ? Text("'Timeline' for every build".tr)
+            : Text("Adds 'Timeline' events for every Widget build".tr),
         onTap: disable
             ? null
             : () {
@@ -366,8 +403,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.foundation),
-        title: Text("Adds 'Timeline' for every user-created [Widget] built".tr),
+        leading: isSmall ? null : const Icon(Icons.foundation),
+        title: isSmall
+            ? Text("'Timeline' for every user build".tr)
+            : Text("Adds 'Timeline' for every user-created [Widget] built".tr),
         onTap: disable
             ? null
             : () {
@@ -383,9 +422,11 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.view_timeline),
-        title: Text(
-            "Adds debugging info. to 'Timeline' related to Widget builds".tr),
+        leading: isSmall ? null : const Icon(Icons.view_timeline),
+        title: isSmall
+            ? Text('Debug info.'.tr)
+            : Text("Adds debugging info. to 'Timeline' related to Widget builds"
+                .tr),
         onTap: disable
             ? null
             : () {
@@ -401,8 +442,10 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
       listTile(
-        leading: const Icon(Icons.wrong_location),
-        title: Text('Show banners for deprecated widgets'.tr),
+        leading: isSmall ? null : const Icon(Icons.wrong_location),
+        title: isSmall
+            ? Text('Deprecated widgets'.tr)
+            : Text('Show banners for deprecated widgets'.tr),
         onTap: disable
             ? null
             : () {
@@ -418,281 +461,5 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               },
       ),
     ]);
-  }
-}
-
-///
-class DevToolsController extends StateXController {
-  /// Singleton Pattern
-  factory DevToolsController() => _this ??= DevToolsController._();
-  DevToolsController._();
-  static DevToolsController? _this;
-
-  @override
-  void initState() {
-    super.initState();
-    _useMaterial3 = App.themeData?.useMaterial3 ?? false;
-  }
-
-  ///
-  bool get debugShowCheckedModeBanner => _debugShowCheckedModeBanner;
-  set debugShowCheckedModeBanner(bool? v) {
-    if (v != null) {
-      _debugShowCheckedModeBanner = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugShowCheckedModeBanner = true;
-
-  ///
-  bool get debugShowMaterialGrid => _debugShowMaterialGrid;
-  set debugShowMaterialGrid(bool? v) {
-    if (v != null) {
-      _debugShowMaterialGrid = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugShowMaterialGrid = false;
-
-  ///
-  bool get debugPaintSizeEnabled => _debugPaintSizeEnabled;
-  set debugPaintSizeEnabled(bool? v) {
-    if (v != null) {
-      _debugPaintSizeEnabled = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugPaintSizeEnabled = false;
-
-  ///
-  bool get debugPaintBaselinesEnabled => _debugPaintBaselinesEnabled;
-  set debugPaintBaselinesEnabled(bool? v) {
-    if (v != null) {
-      _debugPaintBaselinesEnabled = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugPaintBaselinesEnabled = false;
-
-  ///
-  bool get debugPaintLayerBordersEnabled => _debugPaintLayerBordersEnabled;
-  set debugPaintLayerBordersEnabled(bool? v) {
-    if (v != null) {
-      _debugPaintLayerBordersEnabled = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugPaintLayerBordersEnabled = false;
-
-  ///
-  bool get debugPaintPointersEnabled => _debugPaintPointersEnabled;
-  set debugPaintPointersEnabled(bool? v) {
-    if (v != null) {
-      _debugPaintPointersEnabled = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugPaintPointersEnabled = false;
-
-  ///
-  bool get debugRepaintRainbowEnabled => _debugRepaintRainbowEnabled;
-  set debugRepaintRainbowEnabled(bool? v) {
-    if (v != null) {
-      _debugRepaintRainbowEnabled = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugRepaintRainbowEnabled = false;
-
-  ///
-  bool get debugRepaintTextRainbowEnabled => _debugRepaintTextRainbowEnabled;
-  set debugRepaintTextRainbowEnabled(bool? v) {
-    if (v != null) {
-      _debugRepaintTextRainbowEnabled = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugRepaintTextRainbowEnabled = false;
-
-  ///
-  bool get debugPrintRebuildDirtyWidgets => _debugPrintRebuildDirtyWidgets;
-  set debugPrintRebuildDirtyWidgets(bool? v) {
-    if (v != null) {
-      _debugPrintRebuildDirtyWidgets = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugPrintRebuildDirtyWidgets = false;
-
-  ///
-  bool get debugOnRebuildDirtyWidget => _debugOnRebuildDirtyWidget;
-  set debugOnRebuildDirtyWidget(bool? v) {
-    if (v != null) {
-      _debugOnRebuildDirtyWidget = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugOnRebuildDirtyWidget = false;
-
-  ///
-  // ignore: avoid_positional_boolean_parameters
-  void onDebugOnRebuildDirtyWidget(Element e, bool builtOnce) {
-    debugPrint('element: ${e.toStringShort()}  builtOnce: $builtOnce');
-  }
-
-  ///
-  bool get debugPrintBuildScope => _debugPrintBuildScope;
-  set debugPrintBuildScope(bool? v) {
-    if (v != null) {
-      _debugPrintBuildScope = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugPrintBuildScope = false;
-
-  ///
-  bool get debugPrintGlobalKeyedWidgetLifecycle =>
-      _debugPrintGlobalKeyedWidgetLifecycle;
-  set debugPrintGlobalKeyedWidgetLifecycle(bool? v) {
-    if (v != null) {
-      _debugPrintGlobalKeyedWidgetLifecycle = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugPrintGlobalKeyedWidgetLifecycle = false;
-
-  ///
-  bool get debugPrintScheduleBuildForStacks =>
-      _debugPrintScheduleBuildForStacks;
-  set debugPrintScheduleBuildForStacks(bool? v) {
-    if (v != null) {
-      _debugPrintScheduleBuildForStacks = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugPrintScheduleBuildForStacks = false;
-
-  ///
-  bool get debugProfileBuildsEnabled => _debugProfileBuildsEnabled;
-  set debugProfileBuildsEnabled(bool? v) {
-    if (v != null) {
-      _debugProfileBuildsEnabled = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugProfileBuildsEnabled = false;
-
-  ///
-  bool get debugProfileBuildsEnabledUserWidgets =>
-      _debugProfileBuildsEnabledUserWidgets;
-  set debugProfileBuildsEnabledUserWidgets(bool? v) {
-    if (v != null) {
-      _debugProfileBuildsEnabledUserWidgets = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugProfileBuildsEnabledUserWidgets = false;
-
-  ///
-  bool get debugEnhanceBuildTimelineArguments =>
-      _debugEnhanceBuildTimelineArguments;
-  set debugEnhanceBuildTimelineArguments(bool? v) {
-    if (v != null) {
-      _debugEnhanceBuildTimelineArguments = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugEnhanceBuildTimelineArguments = false;
-
-  ///
-  bool get debugHighlightDeprecatedWidgets => _debugHighlightDeprecatedWidgets;
-  set debugHighlightDeprecatedWidgets(bool? v) {
-    if (v != null) {
-      _debugHighlightDeprecatedWidgets = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _debugHighlightDeprecatedWidgets = false;
-
-  ///
-  bool get showPerformanceOverlay => _showPerformanceOverlay;
-  set showPerformanceOverlay(bool? v) {
-    if (v != null) {
-      _showPerformanceOverlay = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _showPerformanceOverlay = false;
-
-  ///
-  bool get showSemanticsDebugger => _showSemanticsDebugger;
-  set showSemanticsDebugger(bool? v) {
-    if (v != null) {
-      _showSemanticsDebugger = v;
-      setSettingState();
-    }
-  }
-
-  //
-  bool _showSemanticsDebugger = false;
-
-  ///
-  bool get useMaterial3 => _useMaterial3;
-  set useMaterial3(bool? v) {
-    if (v != null) {
-      _useMaterial3 = v;
-      final themeData = App.themeData;
-      if (themeData != null) {
-        final colorScheme = themeData.colorScheme;
-        App.themeData =
-            ThemeData.from(colorScheme: colorScheme, useMaterial3: v);
-        setSettingState();
-      }
-    }
-  }
-
-  //
-  bool _useMaterial3 = true;
-
-  /// Call the setState() functions
-  void setSettingState() {
-    setState(() {});
-    appState?.setState(() {});
   }
 }
