@@ -1,5 +1,5 @@
 
-## 5.17.1+2
+## 5.17.1+3
 March 03, 2025
 - Introduce three more 'inline' function routines in app_statex.dart:   
   inGenerateRoute, inUnknownRoute, and inScaffoldMessengerKey
