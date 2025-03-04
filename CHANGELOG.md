@@ -1,5 +1,5 @@
 
-## 5.17.1+1
+## 5.17.1+2
 March 03, 2025
 - Introduce three more 'inline' function routines in app_statex.dart:   
   inGenerateRoute, inUnknownRoute, and inScaffoldMessengerKey
@@ -12,6 +12,13 @@ March 03, 2025
 - Stopped using the mixin, RouteNavigatorMethodsMixin. Proved ineffective.
 - An update of the example app
 - Updated test_error_handler.dart 
+- Updated dependencies:
+   device_info_plus: ^11.2.0 -> ^11.3.0
+   go_router: ^14.0.0 -> ^14.8.0
+   http: ^1.2.2 -> ^1.3.0
+   package_info_plus: ^8.1.2 -> ^8.3.0
+   state_extended: ^5.0.0 -> ^5.10.0
+   url_launcher_web: ^2.3.3 -> ^2.4.0
 
 ## 5.16.1+1
 February 23, 2025
