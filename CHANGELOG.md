@@ -1,11 +1,12 @@
 
-## 5.17.0
+## 5.17.1
 March 03, 2025
 - Introduce three more 'inline' function routines in app_statex.dart:   
   inGenerateRoute, inUnknownRoute, and inScaffoldMessengerKey
 - Two parameters in app_statex.dart were changed with new 'inline' functions: 
   onGeneratedRoute to generateRoute and onUnknownRoute to unknownRoute
 - Renamed reload() function to hotReload()
+- Renamed mixin, RootState, to RootStateMixin
 - Revamped Fluttery's error routine in error_handler.dart making it more efficient
 - logErrorDetails(FlutterErrorDetails details) now in error_handler.dart
 - Stopped using the mixin, RouteNavigatorMethodsMixin. Proved ineffective.

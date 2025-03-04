@@ -15,7 +15,7 @@ export 'package:flutter/cupertino.dart'
 
 // State Object's Controller
 export 'package:state_extended/state_extended.dart'
-    show SetStateMixin, StateListener, RootState, AsyncOps;
+    show SetStateMixin, StateListener, RootStateMixin, AsyncOps;
 
 // App's View
 export '/view/app_object.dart' show App;

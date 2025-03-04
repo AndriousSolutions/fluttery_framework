@@ -36,6 +36,7 @@ export 'package:state_extended/state_extended.dart'
         ListenableWidgetBuilder,
         MaybeBuildWidgetType,
         RecordExceptionMixin,
+        RootStateMixin,
         SetState,
         StateXonErrorMixin,
         SetStateMixin,
