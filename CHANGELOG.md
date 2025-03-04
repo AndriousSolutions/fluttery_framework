@@ -1,5 +1,5 @@
 
-## 5.17.1
+## 5.17.1+1
 March 03, 2025
 - Introduce three more 'inline' function routines in app_statex.dart:   
   inGenerateRoute, inUnknownRoute, and inScaffoldMessengerKey
@@ -11,6 +11,7 @@ March 03, 2025
 - logErrorDetails(FlutterErrorDetails details) now in error_handler.dart
 - Stopped using the mixin, RouteNavigatorMethodsMixin. Proved ineffective.
 - An update of the example app
+- Updated test_error_handler.dart 
 
 ## 5.16.1+1
 February 23, 2025

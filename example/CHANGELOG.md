@@ -1,4 +1,8 @@
 
+## 1.8.0
+March 04, 2025
+- Update test_error_handler.dart
+
 ## 1.7.0
 January 11, 2024
 - Updated translations directory

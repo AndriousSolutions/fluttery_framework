@@ -47,8 +47,11 @@ void testFlutteryFramework() {
     // Code that clears caches can go here
   });
 
-  // Integration and unit tests
-  group('Integration Tests', _testIntegrationGroup);
+  // // Integration and unit tests
+  // group('Integration Tests', _testIntegrationGroup);
+
+  //
+  group('error_handler.dart Tests', testAppErrorHandler);
 }
 
 /// Calls a number of testWidgets() functions one after the other

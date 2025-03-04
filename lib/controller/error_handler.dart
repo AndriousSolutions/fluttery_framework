@@ -25,7 +25,6 @@ import '/view.dart'
         BuildContext,
         Color,
         Colors,
-        CustomPainter,
         DiagnosticPropertiesBuilder,
         DiagnosticsNode,
         DiagnosticsTreeStyle,
@@ -298,8 +297,8 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
       // if not already assigned
       if (ErrorWidget.builder != screen) {
         ErrorWidget.builder = screen;
+        reset = true;
       }
-      reset = true;
     }
 
     // Flag when something was assigned
@@ -913,66 +912,4 @@ class _ErrorBox extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
       ..strokeWidth = 4;
     context.canvas.drawRect(rect, paint);
   }
-}
-
-/// A simply 'Widget Error' Screen if an app's widget fails to display
-@Deprecated("Use 'AppErrorHandler.displayErrorWidget()' instead.")
-class AppWidgetErrorDisplayed {
-  ///
-  const AppWidgetErrorDisplayed({
-    this.key,
-    this.paragraphStyle,
-    this.textStyle,
-    this.padding,
-    this.minimumWidth,
-    this.backgroundColor,
-    this.customPainter,
-    this.stackTrace,
-  });
-
-  ///
-  final Key? key;
-
-  ///
-  final i.ParagraphStyle? paragraphStyle;
-
-  ///
-  final i.TextStyle? textStyle;
-
-  ///
-  final EdgeInsets? padding;
-
-  ///
-  final double? minimumWidth;
-
-  ///
-  final Color? backgroundColor;
-
-  ///
-  final CustomPainter? customPainter;
-
-  ///
-  final bool? stackTrace;
-
-  ///
-  Widget builder(
-    FlutterErrorDetails details, {
-    Key? key,
-    i.ParagraphStyle? paragraphStyle,
-    i.TextStyle? textStyle,
-    EdgeInsets? padding,
-    double? minimumWidth,
-    Color? backgroundColor,
-    bool? stackTrace,
-  }) =>
-      AppErrorHandler.displayErrorWidget(
-        key: key ?? this.key,
-        details,
-        paragraphStyle: paragraphStyle ?? this.paragraphStyle,
-        textStyle: textStyle ?? this.textStyle,
-        padding: padding ?? this.padding,
-        minimumWidth: minimumWidth ?? this.minimumWidth,
-        backgroundColor: backgroundColor ?? this.backgroundColor,
-        stackTrace: stackTrace ?? this.stackTrace ?? false,
-      );
 }
