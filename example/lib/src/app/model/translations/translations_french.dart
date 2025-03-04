@@ -48,4 +48,18 @@ Map<String, String> frFR = {
   'App Navigation': 'Navigation dans les applications',
   'Next Page': 'Page suivante',
   'Nowhere to go': 'Nulle part où aller',
+  'Three-page example': 'Exemple de trois pages',
+  "You're on page:": 'Vous êtes sur la page :',
+  'Home': 'Maison',
+  'Settings': 'Paramètres',
+  'Using built-in InheritedWidget': 'Utilisation du widget hérité intégré',
+  'Fake error to demonstrate error handling!':
+      'Fausse erreur pour démontrer la gestion des erreurs!',
+  'Page 1': 'Page 1',
+  'Page 2': 'Page 2',
+  'Page 3': 'Page 3',
+  'Page 1 Counter': 'Page 1 Compteur',
+  'Page 2 Counter': 'Page 2 Compteur',
+  "Has a 'data source' to save the count":
+      "Dispose d'une «source de données» pour enregistrer le décompte",
 };

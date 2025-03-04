@@ -16,6 +16,7 @@ import '/controller.dart'
         App,
         AppErrorHandler,
         AppStateXController,
+        Prefs,
         ReportErrorHandler,
         StateXController;
 
@@ -89,8 +90,8 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey,
     Map<String, WidgetBuilder>? routes,
     String? initialRoute,
-    Route<dynamic>? Function(RouteSettings settings)? onGenerateRoute,
-    Route<dynamic>? Function(RouteSettings settings)? onUnknownRoute,
+    Route<dynamic>? generateRoute,
+    Route<dynamic>? unknownRoute,
     bool Function(NavigationNotification notification)?
         onNavigationNotification,
     GlobalKey<NavigatorState>? navigatorKey,
@@ -165,6 +166,9 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     super.inBackButtonDispatcher,
     super.inRoutes,
     super.inInitialRoute,
+    super.inGenerateRoute,
+    super.inUnknownRoute,
+    super.inScaffoldMessengerKey,
     super.inNavigatorObservers,
     super.inUpdateShouldNotify,
     super.inTransBuilder,
@@ -226,9 +230,6 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     _useCupertino = useCupertino ?? false;
     _switchUI = switchUI ?? onSwitchUI() ?? false;
 
-    /// Set _useMaterial or _useCupertino to true
-    _useMaterialOrCupertino();
-
     _routeInformationProvider = routeInformationProvider;
     _routeInformationParser = routeInformationParser;
     _routerDelegate = routerDelegate;
@@ -238,8 +239,8 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     _scaffoldMessengerKey = scaffoldMessengerKey;
     _routes = routes;
     _initialRoute = initialRoute;
-    _onGenerateRoute = onGenerateRoute;
-    _onUnknownRoute = onUnknownRoute;
+    _generateRoute = generateRoute;
+    _unknownRoute = unknownRoute;
     _onNavigationNotification = onNavigationNotification;
     _navigatorKey = navigatorKey;
     _navigatorObservers = navigatorObservers;
@@ -369,6 +370,8 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
   /// Used to complete asynchronous operations
   @override
   Future<bool> initAsync() async {
+    /// Set _useMaterial or _useCupertino to true
+    _useMaterialOrCupertino();
     var init = await onInitAsync();
     if (init) {
       init = await super.initAsync();
@@ -557,8 +560,8 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
             theme: setiOSThemeData(context),
             routes: _routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
             initialRoute: _initialRoute ?? onInitialRoute(),
-            onGenerateRoute: _onOnGenerateRoute,
-            onUnknownRoute: _onOnUnknownRoute,
+            onGenerateRoute: _onGenerateRoute,
+            onUnknownRoute: _onUnknownRoute,
             onNavigationNotification: _onOnNavigationNotification,
             navigatorObservers: _onNavigatorObservers(),
             builder: _transitBuilder ?? onBuilder(),
@@ -645,11 +648,11 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
             key: key,
             navigatorKey: navigatorKey,
             scaffoldMessengerKey: _scaffoldMessengerKey ??=
-                onScaffoldMessengerKey(), // update getter
+                onScaffoldMessengerKey() ?? GlobalKey<ScaffoldMessengerState>(),
             routes: _routes ?? onRoutes() ?? const <String, WidgetBuilder>{},
             initialRoute: _initialRoute ?? onInitialRoute(),
-            onGenerateRoute: _onOnGenerateRoute,
-            onUnknownRoute: _onOnUnknownRoute,
+            onGenerateRoute: _onGenerateRoute,
+            onUnknownRoute: _onUnknownRoute,
             onNavigationNotification: _onOnNavigationNotification,
             navigatorObservers: _onNavigatorObservers(),
             builder: _transitBuilder ?? onBuilder(),
@@ -705,7 +708,8 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
           app = MaterialApp.router(
             key: key,
             scaffoldMessengerKey: _scaffoldMessengerKey ??=
-                onScaffoldMessengerKey(), // update getter
+                onScaffoldMessengerKey() ?? GlobalKey<ScaffoldMessengerState>(),
+            // update getter
             routeInformationProvider: _routeInformationProvider,
             routeInformationParser: _routeInformationParser,
             routerDelegate: _routerDelegate,
@@ -889,20 +893,33 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
           _switchUI = true;
         }
       }
+      Prefs.setBool('switchUI', _switchUI);
       // Reload the whole App so it works in testing
-      reload(); // because of WidgetsApp(key: GlobalObjectKey(this),
+      hotReload(); // because of WidgetsApp(key: GlobalObjectKey(this),
     }
     return change;
   }
 
   /// Reload the whole App
-  void reload() => _parentState?.setState(() {});
+  @Deprecated('Use hotReload() instead.')
+  void reload() => hotReload();
+
+  /// Reload the whole App
+  void hotReload() => _parentState?.setState(() {});
 
   /// Base of the device, which interface design to use?
   void _useMaterialOrCupertino() {
     //
+    if (_allowChangeUI) {
+      final uiChange = Prefs.getBool('switchUI');
+      if (uiChange) {
+        _switchUI = uiChange;
+      }
+    }
+
+    // Running on Android
     if (UniversalPlatform.isAndroid) {
-      if (_switchUI) {
+      if (switchUI) {
         _useMaterial = false;
         _useCupertino = true;
       } else if (_useCupertino) {
@@ -911,8 +928,9 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
         _useMaterial = true;
         _useCupertino = false;
       }
+      // Running on iOS
     } else if (UniversalPlatform.isIOS) {
-      if (_switchUI) {
+      if (switchUI) {
         _useMaterial = true;
         _useCupertino = false;
       } else if (_useMaterial) {
@@ -922,7 +940,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
         _useCupertino = true;
       }
     } else {
-      if (_switchUI) {
+      if (switchUI) {
         _useMaterial = false;
         _useCupertino = true;
       } else {
@@ -973,6 +991,9 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
     this.inBackButtonDispatcher,
     this.inRoutes,
     this.inInitialRoute,
+    this.inGenerateRoute,
+    this.inUnknownRoute,
+    this.inScaffoldMessengerKey,
     this.inNavigatorObservers,
     this.inUpdateShouldNotify,
     this.inTransBuilder,
@@ -1078,13 +1099,15 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   bool _useRouterConfig = false;
 
   RouterConfig<Object>? _routerConfig;
+
+  /// You may need this key to display an SnackBar
   GlobalKey<ScaffoldMessengerState>? get scaffoldMessengerKey =>
       _scaffoldMessengerKey;
   GlobalKey<ScaffoldMessengerState>? _scaffoldMessengerKey;
   Map<String, WidgetBuilder>? _routes;
   String? _initialRoute;
-  RouteFactory? _onGenerateRoute;
-  RouteFactory? _onUnknownRoute;
+  Route<dynamic>? _generateRoute;
+  Route<dynamic>? _unknownRoute;
 
   /// Use this to navigate throughout the your app
   NavigatorState? get navigator => navigatorState;
@@ -1301,8 +1324,8 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   void onAsyncError(FlutterErrorDetails details) {}
 
   /// Returns the App's ScaffoldMessenger Key.
-  GlobalKey<ScaffoldMessengerState> onScaffoldMessengerKey() =>
-      _scaffoldMessengerKey ??= GlobalKey<ScaffoldMessengerState>();
+  GlobalKey<ScaffoldMessengerState>? onScaffoldMessengerKey() =>
+      inScaffoldMessengerKey?.call();
 
   /// Returns the home screen if any.
   Widget? onHome() => inHome?.call();
@@ -1333,23 +1356,61 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   /// Returns the initial Route if any.
   String? onInitialRoute() => inInitialRoute?.call();
 
-  /// Returns the 'Generate Routes' routine if any.
-  Route<dynamic>? onOnGenerateRoute(RouteSettings settings) => null;
-
-  ///
   Route<dynamic>? onGenerateRoute(RouteSettings settings) =>
-      _onOnGenerateRoute(settings);
+      inGenerateRoute?.call(settings);
+
+  /// This routine is always assigned to parameter 'onGenerateRoute'
+  Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
+    // Passed parameter takes precedence over the function below.
+    var route = _generateRoute ?? onGenerateRoute(settings);
+    if (route != null) {
+      // Flag the routes were generated.
+      _routesGenerated = true;
+    } else {
+      // Turn to the App's list of Route if any
+      route = routeGenerator(settings);
+    }
+    return route;
+  }
+
+  /// Attempt to generate a Rout from the App's list of Route if any
+  Route<dynamic>? routeGenerator(RouteSettings? settings,
+      [Map<String, WidgetBuilder>? routeMap]) {
+    Route<dynamic>? route;
+    if (settings != null) {
+      // Unlike Flutter, this allows you to use tha List of Routes even with a Delegate!
+      final routes = routeMap ?? onRoutes();
+      if (routes != null) {
+        final widgetBuilder = routes[settings.name];
+        if (widgetBuilder != null) {
+          if (settings.arguments != null &&
+              settings.arguments is ReturnRouteFunctionType) {
+            route = (settings.arguments as ReturnRouteFunctionType)
+                .call(widgetBuilder, settings);
+          } else if (App.useMaterial) {
+            route = MaterialPageRoute<dynamic>(
+                settings: settings, builder: widgetBuilder);
+          } else {
+            route = CupertinoPageRoute<dynamic>(
+                settings: settings, builder: widgetBuilder);
+          }
+        }
+      }
+    }
+    return route;
+  }
 
   /// Flag telling you if the routes were generated or not
   bool get routesGenerated => _routesGenerated;
   bool _routesGenerated = false;
 
-  /// Returns the 'Unknown Route' if any.
-  Route<dynamic>? onOnUnknownRoute(RouteSettings settings) => null;
-
-  ///
+  /// Return the 'unknown' route
   Route<dynamic>? onUnknownRoute(RouteSettings settings) =>
-      _onOnUnknownRoute(settings);
+      inUnknownRoute?.call(settings);
+
+  /// This is assigned to the onUnknownRoute parameter
+  Route<dynamic>? _onUnknownRoute(RouteSettings settings) =>
+      _unknownRoute ?? onUnknownRoute(settings);
 
   /// Called when a navigation event occurs
   /// Return true if you deem this change is handled.
@@ -1393,45 +1454,6 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
 
   /// Returns the App's title if any.
   String onTitle() => inTitle?.call() ?? '';
-
-  Route<dynamic>? _onOnGenerateRoute(RouteSettings settings) {
-    Route<dynamic>? route;
-    route = _onGenerateRoute?.call(settings);
-    // Passed parameter takes precedence over the function below.
-    route ??= onOnGenerateRoute(settings);
-    if (route != null) {
-      // Flag the routes were generated.
-      _routesGenerated = true;
-    } else {
-      // Unlike Flutter, this allows you to use tha List of Routes even with a Delegate!
-      final routes = onRoutes();
-      if (routes != null) {
-        final builder = routes[settings.name];
-        if (builder != null) {
-          if (settings.arguments != null &&
-              settings.arguments is ReturnRouteFunctionType) {
-            route = (settings.arguments as ReturnRouteFunctionType)
-                .call(builder, settings);
-          } else if (App.useMaterial) {
-            route = MaterialPageRoute<dynamic>(
-                settings: settings, builder: builder);
-          } else {
-            route = CupertinoPageRoute<dynamic>(
-                settings: settings, builder: builder);
-          }
-        }
-      }
-    }
-    return route;
-  }
-
-  Route<dynamic>? _onOnUnknownRoute(RouteSettings settings) {
-    Route<dynamic>? route;
-    route = _onUnknownRoute?.call(settings);
-    // Passed parameter takes precedence over the function below.
-    route ??= onOnUnknownRoute(settings);
-    return route;
-  }
 
   /// Navigation listeners.
   final Set<NotificationListenerCallback<NavigationNotification>>
@@ -1617,6 +1639,15 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   /// Returns the initial Route if any.
   final String Function()? inInitialRoute;
 
+  /// Return a Route from the 'inline' routine.
+  final RouteFactory? inGenerateRoute;
+
+  /// From an 'inline' routine, return the 'unknown' route
+  final RouteFactory? inUnknownRoute;
+
+  ///
+  final GlobalKey<ScaffoldMessengerState>? Function()? inScaffoldMessengerKey;
+
   /// Returns a List of Navigation Observers if any.
   final List<NavigatorObserver> Function()? inNavigatorObservers;
 
@@ -1766,7 +1797,7 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   /// A flag indicating we're running in the error routine.
   ///
   /// Set to avoid infinite loop if in errors in the error routine.
-  bool inErrorRoutine = false;
+  bool _inErrorRoutine = false;
 
   /// Supply an 'error handler' routine to fire when an error occurs.
   // details.exception, details.stack
@@ -1774,21 +1805,23 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   @override
   void onError(FlutterErrorDetails details) {
     // Don't call this routine within itself.
-    if (inErrorRoutine) {
+    if (_inErrorRoutine) {
       return;
     }
     // In case there's an error in this routine
-    inErrorRoutine = true;
+    _inErrorRoutine = true;
 
     try {
-      // If handler not explicitly passed as a parameter
-      var callOriginal = _errorHandler?.errorHandler == null;
+      // Don't log the error again
+      _errorHandler?.logError = false;
 
-      if (!callOriginal) {
-        _errorHandler?.errorHandler?.call(details);
-      }
+      // App's Error handler
+      _errorHandler?.flutteryExceptionHandler?.call(details);
 
-      // Any 'on' Error handler
+      // If App's Error handler was never defined
+      var callOriginal = _errorHandler?.flutteryExceptionHandler == null;
+
+      // Any 'on' Error handler in the AppStateX object
       onErrorHandler(details);
 
       // It would appear it was not overwritten
@@ -1819,7 +1852,7 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
       _errorHandler?.oldOnError?.call(details);
     }
 
-    inErrorRoutine = false;
+    _inErrorRoutine = false;
   }
 
   // Notify the developer there's an error in the error handler.
@@ -1838,7 +1871,7 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
         );
         try {
           // Call the App's 'current' error handler.
-          v.App.onError(details);
+          AppErrorHandler().flutteryExceptionHandler?.call(details);
         } catch (e, stack) {
           // Error in the error handler? That's a pickle.
           recordException(e, stack);
@@ -1881,8 +1914,8 @@ Route<dynamic>? defaultAppUnknownRoute(RouteSettings settings) {
 /// {@category Get started}
 /// {@category StateX class}
 /// {@category Testing}
-class StateX<T extends StatefulWidget> extends s.StateX<T>
-    with v.RouteNavigatorMethodsMixin {
+class StateX<T extends StatefulWidget> extends s.StateX<T> {
+  // with v.RouteNavigatorMethodsMixin {
   /// Default useInherited to false
   StateX({
     super.controller,

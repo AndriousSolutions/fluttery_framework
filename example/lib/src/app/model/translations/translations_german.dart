@@ -49,4 +49,19 @@ Map<String, String> deDE = {
   'App Navigation': 'App-Navigation',
   'Next Page': 'Nächste Seite',
   'Nowhere to go': 'Nirgendwohin',
+  'Three-page example': 'Dreiseitiges Beispiel',
+  "You're on page:": 'Sie befinden sich auf Seite:',
+  'Home': 'Heim',
+  'Settings': 'Einstellungen',
+  'Using built-in InheritedWidget':
+      'Verwenden des integrierten InheritedWidget',
+  'Fake error to demonstrate error handling!':
+      'Vorgetäuschter Fehler um die Fehlerbehandlung zu demonstrieren!',
+  'Page 1': 'Seite 1',
+  'Page 2': 'Seite 2',
+  'Page 3': 'Seite 3',
+  'Page 1 Counter': 'Seite 1 Zähler',
+  'Page 2 Counter': 'Seite 2 Zähler',
+  "Has a 'data source' to save the count":
+      'Verfügt über eine „Datenquelle“ zum Speichern der Zählung',
 };

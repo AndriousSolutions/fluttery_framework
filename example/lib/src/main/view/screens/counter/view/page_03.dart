@@ -28,6 +28,10 @@ class _Page3State extends StateX<Page3> {
           title: Text('Three-page example'.tr),
           actions: [AppMenu()],
         ),
+        navigationBar: CupertinoNavigationBar(
+          middle: Text('Three-page example'.tr),
+          trailing: AppMenu(),
+        ),
         tab01: (_) => _buildPage3(
           count: count,
           counter: () {
@@ -61,14 +65,12 @@ class _Page3State extends StateX<Page3> {
         label: '3',
         count: count,
         counter: counter,
-        row: (BuildContext context) => [
+        row: (_) => [
           Flexible(
             child: ElevatedButton(
               key: const Key('Page 1'),
               onPressed: () {
-                Navigator.of(context)
-                  ..pop()
-                  ..pop();
+                Navigator.popUntil(context, ModalRoute.withName('/Page1'));
               },
               child: L10n.t('Page 1'),
             ),
@@ -76,14 +78,22 @@ class _Page3State extends StateX<Page3> {
           Flexible(
             child: ElevatedButton(
               key: const Key('Page 2'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: context.pop,
               child: L10n.t('Page 2'),
             ),
           ),
         ],
-        column: (_) => [const Text(' ')],
+        column: (_) => [
+          const Text(' '),
+          if (usingCupertino)
+            Padding(
+              padding: EdgeInsets.only(top: 1.h),
+              child: CupertinoButton.filled(
+                onPressed: counter,
+                child: Text('Add'.tr),
+              ),
+            ),
+        ],
         persistentFooterButtons: <Widget>[
           ElevatedButton(
             key: const Key('Page 1 Counter'),

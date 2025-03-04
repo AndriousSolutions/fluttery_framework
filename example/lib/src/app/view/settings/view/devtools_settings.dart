@@ -51,15 +51,15 @@ class DevToolsSettings extends StatefulWidget {
 }
 
 ///
-class _DevToolsSettingsState extends StateX<DevToolsSettings> {
-  _DevToolsSettingsState() : super(controller: DevToolSettingsController()) {
-    con = controller as DevToolSettingsController;
+class _DevToolsSettingsState extends State<DevToolsSettings> {
+  _DevToolsSettingsState() {
+    con = DevToolSettingsController();
   }
 
   late DevToolSettingsController con;
 
   @override
-  Widget builder(BuildContext context) {
+  Widget build(BuildContext context) {
     Widget wid;
     if (widget.column) {
       wid = Column(
@@ -89,27 +89,31 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
       listTile(
         leading: isSmall ? null : const Icon(Icons.picture_in_picture),
         title: isSmall
-            ? Text('Performance overlay'.tr)
+            ? Text('Perform overlay'.tr)
             : Text('Show rendering performance overlay'.tr),
         onTap: () {
           con.showPerformanceOverlay = !con.showPerformanceOverlay;
+          setState(() {});
         },
         value: con.showPerformanceOverlay,
         onChanged: (bool value) {
           con.showPerformanceOverlay = value;
+          setState(() {});
         },
       ),
       listTile(
         leading: isSmall ? null : const Icon(Icons.accessibility),
         title: isSmall
-            ? Text('Accessibility'.tr)
+            ? Text('Access'.tr)
             : Text('Show accessibility information'.tr),
         onTap: () {
           con.showSemanticsDebugger = !con.showSemanticsDebugger;
+          setState(() {});
         },
         value: con.showSemanticsDebugger,
         onChanged: (bool value) {
           con.showSemanticsDebugger = value;
+          setState(() {});
         },
       ),
       listTile(
@@ -117,10 +121,12 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
         title: isSmall ? Text('DEBUG banner'.tr) : Text('Show DEBUG banner'.tr),
         onTap: () {
           con.debugShowCheckedModeBanner = !con.debugShowCheckedModeBanner;
+          setState(() {});
         },
         value: con.debugShowCheckedModeBanner,
         onChanged: (bool value) {
           con.debugShowCheckedModeBanner = value;
+          setState(() {});
         },
       ),
       if (App.useMaterial)
@@ -132,10 +138,12 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
               : Text('Use Material 3 Design'.tr),
           onTap: () {
             con.useMaterial3 = !con.useMaterial3;
+            setState(() {});
           },
           value: con.useMaterial3,
           onChanged: (bool value) {
             con.useMaterial3 = value;
+            setState(() {});
           },
         ),
       listTile(
@@ -146,6 +154,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : () {
                 con.debugShowMaterialGrid = !con.debugShowMaterialGrid;
+                setState(() {});
               },
         tip: tip,
         value: con.debugShowMaterialGrid,
@@ -153,6 +162,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugShowMaterialGrid = value;
+                setState(() {});
               },
       ),
     ];
@@ -184,18 +194,24 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
     // material grid and size construction lines are only available in checked mode
     widgets.addAll(<Widget>[
       listTile(
-        leading: isSmall ? null : const Icon(Icons.border_all),
-        title: isSmall
-            ? Text('Construct lines'.tr)
-            : Text('Paint construction lines'.tr),
-        onTap: disable
-            ? null
-            : () => con.debugPaintSizeEnabled = !con.debugPaintSizeEnabled,
-        tip: tip,
-        value: con.debugPaintSizeEnabled,
-        onChanged:
-            disable ? null : (bool value) => con.debugPaintSizeEnabled = value,
-      ),
+          leading: isSmall ? null : const Icon(Icons.border_all),
+          title: isSmall
+              ? Text('Construct lines'.tr)
+              : Text('Paint construction lines'.tr),
+          onTap: disable
+              ? null
+              : () {
+                  con.debugPaintSizeEnabled = !con.debugPaintSizeEnabled;
+                  setState(() {});
+                },
+          tip: tip,
+          value: con.debugPaintSizeEnabled,
+          onChanged: disable
+              ? null
+              : (bool value) {
+                  con.debugPaintSizeEnabled = value;
+                  setState(() {});
+                }),
       listTile(
         leading: isSmall ? null : const Icon(Icons.format_color_text),
         title: isSmall
@@ -206,6 +222,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             : () {
                 con.debugPaintBaselinesEnabled =
                     !con.debugPaintBaselinesEnabled;
+                setState(() {});
               },
         tip: tip,
         value: con.debugPaintBaselinesEnabled,
@@ -213,6 +230,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugPaintBaselinesEnabled = value;
+                setState(() {});
               },
       ),
       listTile(
@@ -223,6 +241,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : () {
                 con.debugPaintPointersEnabled = !con.debugPaintPointersEnabled;
+                setState(() {});
               },
         tip: tip,
         value: con.debugPaintPointersEnabled,
@@ -230,6 +249,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugPaintPointersEnabled = value;
+                setState(() {});
               },
       ),
       listTile(
@@ -242,6 +262,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             : () {
                 con.debugPaintLayerBordersEnabled =
                     !con.debugPaintLayerBordersEnabled;
+                setState(() {});
               },
         tip: tip,
         value: con.debugPaintLayerBordersEnabled,
@@ -249,6 +270,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugPaintLayerBordersEnabled = value;
+                setState(() {});
               },
       ),
       listTile(
@@ -261,6 +283,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             : () {
                 con.debugRepaintRainbowEnabled =
                     !con.debugRepaintRainbowEnabled;
+                setState(() {});
               },
         tip: tip,
         value: con.debugRepaintRainbowEnabled,
@@ -268,6 +291,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugRepaintRainbowEnabled = value;
+                setState(() {});
               },
       ),
       listTile(
@@ -280,6 +304,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             : () {
                 con.debugRepaintTextRainbowEnabled =
                     !con.debugRepaintTextRainbowEnabled;
+                setState(() {});
               },
         tip: tip,
         value: con.debugRepaintTextRainbowEnabled,
@@ -287,6 +312,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugRepaintTextRainbowEnabled = value;
+                setState(() {});
               },
       ),
       listTile(
@@ -299,6 +325,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             : () {
                 con.debugPrintRebuildDirtyWidgets =
                     !con.debugPrintRebuildDirtyWidgets;
+                setState(() {});
               },
         tip: tip,
         value: con.debugPrintRebuildDirtyWidgets,
@@ -306,6 +333,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugPrintRebuildDirtyWidgets = value;
+                setState(() {});
               },
       ),
       listTile(
@@ -317,6 +345,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : () {
                 con.debugOnRebuildDirtyWidget = !con.debugOnRebuildDirtyWidget;
+                setState(() {});
               },
         tip: tip,
         value: con.debugOnRebuildDirtyWidget,
@@ -324,17 +353,19 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugOnRebuildDirtyWidget = value;
+                setState(() {});
               },
       ),
       listTile(
         leading: isSmall ? null : const Icon(Icons.arrow_circle_right_outlined),
         title: isSmall
-            ? Text('Log BuildScope'.tr)
+            ? Text('Log Scope'.tr)
             : Text('Log to BuildOwner.buildScope'.tr),
         onTap: disable
             ? null
             : () {
                 con.debugPrintBuildScope = !con.debugPrintBuildScope;
+                setState(() {});
               },
         tip: tip,
         value: con.debugPrintBuildScope,
@@ -342,6 +373,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugPrintBuildScope = value;
+                setState(() {});
               },
       ),
       listTile(
@@ -354,6 +386,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             : () {
                 con.debugPrintScheduleBuildForStacks =
                     !con.debugPrintScheduleBuildForStacks;
+                setState(() {});
               },
         tip: tip,
         value: con.debugPrintScheduleBuildForStacks,
@@ -361,6 +394,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugPrintScheduleBuildForStacks = value;
+                setState(() {});
               },
       ),
       listTile(
@@ -375,6 +409,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             : () {
                 con.debugPrintGlobalKeyedWidgetLifecycle =
                     !con.debugPrintGlobalKeyedWidgetLifecycle;
+                setState(() {});
               },
         tip: tip,
         value: con.debugPrintGlobalKeyedWidgetLifecycle,
@@ -382,6 +417,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugPrintGlobalKeyedWidgetLifecycle = value;
+                setState(() {});
               },
       ),
       listTile(
@@ -393,6 +429,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : () {
                 con.debugProfileBuildsEnabled = !con.debugProfileBuildsEnabled;
+                setState(() {});
               },
         tip: tip,
         value: con.debugProfileBuildsEnabled,
@@ -400,6 +437,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugProfileBuildsEnabled = value;
+                setState(() {});
               },
       ),
       listTile(
@@ -412,6 +450,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             : () {
                 con.debugProfileBuildsEnabledUserWidgets =
                     !con.debugProfileBuildsEnabledUserWidgets;
+                setState(() {});
               },
         tip: tip,
         value: con.debugProfileBuildsEnabledUserWidgets,
@@ -419,6 +458,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugProfileBuildsEnabledUserWidgets = value;
+                setState(() {});
               },
       ),
       listTile(
@@ -432,6 +472,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             : () {
                 con.debugEnhanceBuildTimelineArguments =
                     !con.debugEnhanceBuildTimelineArguments;
+                setState(() {});
               },
         tip: tip,
         value: con.debugEnhanceBuildTimelineArguments,
@@ -439,18 +480,20 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugEnhanceBuildTimelineArguments = value;
+                setState(() {});
               },
       ),
       listTile(
         leading: isSmall ? null : const Icon(Icons.wrong_location),
         title: isSmall
-            ? Text('Deprecated widgets'.tr)
+            ? Text('Deprecate widgets'.tr)
             : Text('Show banners for deprecated widgets'.tr),
         onTap: disable
             ? null
             : () {
                 con.debugHighlightDeprecatedWidgets =
                     !con.debugHighlightDeprecatedWidgets;
+                setState(() {});
               },
         tip: tip,
         value: con.debugHighlightDeprecatedWidgets,
@@ -458,6 +501,7 @@ class _DevToolsSettingsState extends StateX<DevToolsSettings> {
             ? null
             : (bool value) {
                 con.debugHighlightDeprecatedWidgets = value;
+                setState(() {});
               },
       ),
     ]);

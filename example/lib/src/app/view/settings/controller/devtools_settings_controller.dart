@@ -275,7 +275,7 @@ class DevToolSettingsController extends StateXController {
 
   /// Call the setState() functions
   void setSettingState() {
-    setState(() {});
+    // setState(() {});
     appState?.setState(() {});
   }
 }

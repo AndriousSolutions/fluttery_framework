@@ -1,4 +1,5 @@
-//
+// ignore_for_file: unnecessary_overrides
+
 import '/src/controller.dart';
 
 import '/src/model.dart';
@@ -10,11 +11,14 @@ class FlutteryExampleApp extends AppStatefulWidget {
   ///
   FlutteryExampleApp({super.key});
 
+  /// Readily supply a Splash Screen to your app.
   @override
-  Widget? onSplashScreen(BuildContext context) =>
-      App.inFlutterTest || !AppController().splashScreen
-          ? null
-          : const SplashScreen();
+  Widget? onSplashScreen(BuildContext context) {
+    Widget? widget;
+    widget = const SplashScreen(); // Comment out and see what happens
+    // When testing, a Splash Screen will interfere and so is excluded.
+    return App.inFlutterTest ? null : widget;
+  }
 
   @override
   AppStateX<StatefulWidget> createAppState() => _ExampleAppState();
@@ -29,9 +33,9 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           title: 'Fluttery Demo App',
           controller: AppController(),
           errorScreen: AppErrorHandler.displayErrorWidget,
-          onUnknownRoute: AppErrorHandler.onUnknownRoute,
+          inUnknownRoute: AppErrorHandler.onUnknownRoute,
           useRouterConfig: AppController().useRouterConfig,
-          // Commented out.
+          inGenerateRoute: AppController().onGenerateRoute,
           // Named parameters always takes precedence over inDebugShowCheckedModeBanner and onDebugShowCheckedModeBanner()
           // debugShowCheckedModeBanner: dev.debugShowCheckedModeBanner,
           inDebugShowCheckedModeBanner: () => dev.debugShowCheckedModeBanner,
@@ -113,6 +117,41 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           home: AppController().useHome ? const CounterPage() : null,
         );
 
+  /// Place a breakpoint in here and see how it works
+  /// Used to complete asynchronous operations
+  @override
+  Future<bool> initAsync() async {
+    return super.initAsync();
+  }
+
+  /// Place a breakpoint in here and see how it works
+  /// This is a State class and so has an initState() function
+  @override
+  void initState() {
+    super.initState();
+    // Supply the standard set of Routes
+    // There's the Singleton approach
+    _routes = AppController().routes;
+    //There's casting the property appropriately
+    _routes = (controller as AppController).routes;
+  }
+
+  // Supply the standard set of Routes
+  late Map<String, Widget> _routes;
+
+  /// Place a breakpoint in here and see how it works
+  @override
+  void deactivate() {
+    super.deactivate();
+  }
+
+  /// Place a breakpoint in here and see how it works
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  /// Place a breakpoint in here and see how it works
   /// Called in a function allows for UniqueKey() in StatefulWidget
   @override
   Widget? onHome() {
@@ -128,21 +167,7 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
   // Development Tools Settings
   static final DevToolSettingsController dev = DevToolSettingsController();
 
-  @override
-  void initState() {
-    super.initState();
-    // Supply the standard set of Routes
-    _routes = {
-      '/': const CounterPage(),
-      '/Page1': const Page1(),
-      '/Page2': const Page2(),
-      '/Page3': const Page3(),
-    };
-  }
-
-  // Supply the standard set of Routes
-  late Map<String, Widget> _routes;
-
+  /// Place a breakpoint in here and see how it works
   /// Note, will be ignored if parameter, useRouterConfig, is false or null.
   @override
   RouterConfig<Object>? onRouterConfig() {
@@ -164,6 +189,7 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
     );
   }
 
+  /// Place a breakpoint in here and see how it works
   @override
   Map<String, WidgetBuilder>? onRoutes() {
     //
@@ -196,13 +222,6 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
     return super.builder(context);
   }
 
-  /// Determine if to switch from the 'default' platform interface
-  @override
-  bool? onSwitchUI() {
-    //
-    return (controller as AppController).switchUI;
-  }
-
   /// Programmatically determine whether the banner is displayed or not.
   /// Place a breakpoint in your IDE and see what happens in there
   @override
@@ -217,48 +236,53 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
   }
 
   @override
-  // ignore: unnecessary_overrides
   void onErrorHandler(FlutterErrorDetails details) {
-    //
-    // Retrieve the last Flutter Error that has occurred.
-    final lastErrorDetails = lastFlutterErrorDetails;
-
-    assert(() {
-      if (lastErrorDetails != null &&
-          details.exception == lastErrorDetails.exception &&
-          lastFlutterErrorMessage ==
-              'Exception: Fake error to demonstrate error handling!') {
-        //
-        debugPrint('=========== onErrorHandler(): $lastFlutterErrorMessage');
-      } else {
-        // An error in Testing?
-        if (App.inFlutterTest) {
-          //
-          debugPrint('=========== onErrorHandler(): ${details.exception}');
-        }
+    // Look how you can catch a particular error and prevent it from happening again
+    if (details.exceptionAsString().contains('Error in builder!')) {
+      // Retrieve from the App the last Flutter Error that has occurred.
+      // It just happens to be the same provided to this function
+      final FlutterErrorDetails? sameDetails = lastFlutterErrorDetails;
+      if (sameDetails != null &&
+          sameDetails.exceptionAsString().contains('Error in builder!')) {
+        (controller as AppController).errorInBuilder = false;
       }
-      return true;
-    }());
+    }
+  }
+
+  /// initAsync() has failed and a 'error' widget instead will be displayed.
+  /// This takes in the snapshot.error details.
+  @override
+  void onAsyncError(FlutterErrorDetails details) {
+    // Look how you can catch a particular error and prevent it from happening again
+    // Identify a particular error and ensure it won't happen at restart
+    if (details.exceptionAsString().contains('Error in initAsync()!')) {
+      (controller as AppController).initAsyncError = false;
+    }
   }
 
   @override
-  // ignore: unnecessary_overrides
-  void onError(FlutterErrorDetails details) {
-    // This is the app's State object's error routine.
-    super.onError(details);
+  Route<dynamic>? onGenerateRoute(RouteSettings settings) {
+    ///  You've three options to generate a route:
+    ///  parameter inGenerateRoute, onGenerateRoute(), and the parameter, generateRoute
+    ///  In this example app the 'inline' version is used:
+    ///  inGenerateRoute: AppController().onGenerateRoute
+    ///
+    ///  The parameter, generateRoute, takes top priority and is to supply
+    ///  a Route object right at startup.
+    ///  This function is next if no parameter is supplied, and if not defined either,
+    ///  the 'inline' function version is checked
+    ///
+    /// Uncomment the line below and place a breakpoint in onUnknownRoute() below.
+    /// DON'T FORGET TO UNCOMMENT THE LINE AGAIN!
+    // return null;
+    return super.onGenerateRoute(settings);
+
+    /// If no Route is defined by now, your 'unknown' route will be displayed.
+    /// In your favorite IDE, place a breakpoint in onUnknownRoute() below:
   }
 
   @override
-  // ignore: unnecessary_overrides
-  void deactivate() {
-    // Place a breakpoint to see how this works
-    super.deactivate();
-  }
-
-  @override
-  // ignore: unnecessary_overrides
-  void dispose() {
-    // Place a breakpoint to see how this works
-    super.dispose();
+  Route<dynamic>? onUnknownRoute(RouteSettings settings) {
+    return super.onUnknownRoute(settings);
   }
 }

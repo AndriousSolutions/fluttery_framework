@@ -161,8 +161,27 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
   }
   static AppErrorHandler? _this;
 
-  /// Allow new handlers in the future
-  static bool allowNewErrorHandlers = true;
+  /// Explicitly call the assigned Error routine.
+  @override
+  void onError(FlutterErrorDetails details) =>
+      flutteryExceptionHandler?.call(details);
+
+  /// Allow new handlers in the future or not
+  static bool get allowNewErrorHandlers => _allowNewErrorHandlers;
+
+  /// Lets you to disallow but then never allows you again
+  static set allowNewErrorHandlers(bool? allow) {
+    // Once set false, that's it.
+    if (_allowNewErrorHandlers) {
+      if (allow != null) {
+        _allowNewErrorHandlers = allow;
+      }
+    }
+  }
+
+  //
+  static bool _allowNewErrorHandlers = true;
+
   static bool _givenErrorHandler = false;
 
   /// The original Error Handler at start up.
@@ -191,6 +210,7 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
   ErrorWidgetBuilder? _flutteryErrorWidgetBuilder;
 
   /// The current Error Handler. Used in app_state.dart
+  @Deprecated('Use flutteryExceptionHandler instead.')
   FlutterExceptionHandler? get errorHandler => _errorHandler;
   static FlutterExceptionHandler? _errorHandler;
 
@@ -205,10 +225,15 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
   }
 
   /// Restore the error routines.
-  void deactivate() => reset();
+  void deactivate() => _restoreErrorHandler();
 
   /// Return the original handlers.
   void dispose() {
+    // Ensure the handler is created all over again
+    _this = null;
+    // Reset allowances
+    _allowNewErrorHandlers = true;
+    _givenErrorHandler = false;
     // Ensure error routines are reset, but then set to null
     deactivate();
     // App's FlutterError.onError
@@ -295,7 +320,11 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
   }
 
   /// Reset the Error Handler and such.
-  bool reset() {
+  @Deprecated('No longer publicly available.')
+  bool reset() => _restoreErrorHandler();
+
+  /// Restore the Error Handler and such.
+  bool _restoreErrorHandler() {
     if (_oldBuilder != null) {
       ErrorWidget.builder = _oldBuilder!;
     }
@@ -321,6 +350,20 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
   static EdgeInsets? _padding;
   static double? _minimumWidth;
   static Color? _backgroundColor;
+
+  /// Log the error
+  @override
+  void logErrorDetails(FlutterErrorDetails details) {
+    // Won't log this time with this call.
+    if (logError) {
+      super.logErrorDetails(details);
+    } else {
+      logError = true; // Next time.
+    }
+  }
+
+  /// Flag whether to log error details or not
+  bool logError = true;
 
   /// Display the Error details in a widget.
   /// try..catch to ensure a widget is returned.

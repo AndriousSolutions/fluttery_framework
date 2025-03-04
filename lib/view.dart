@@ -36,7 +36,6 @@ export 'package:state_extended/state_extended.dart'
         ListenableWidgetBuilder,
         MaybeBuildWidgetType,
         RecordExceptionMixin,
-        RootState,
         SetState,
         StateXonErrorMixin,
         SetStateMixin,
@@ -76,7 +75,8 @@ export '/view/app_menu.dart';
 
 /// Extensions
 export '/view/app/app_appstate.dart';
-export '/view/app/app_navigator_mixin.dart';
+
+// export '/view/app/app_navigator_mixin.dart';
 export '/view/app/debug_paint_print_profile_options_mixin.dart'
     hide BooleanFunctionIndicatorCallback;
 

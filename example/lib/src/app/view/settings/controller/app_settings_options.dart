@@ -27,9 +27,6 @@ mixin AppOptionSettings on StateXController {
   /// Error right at the start
   late bool initAsyncError;
 
-  /// Display a Splash Screen
-  late bool splashScreen;
-
   /// Throw error with button press
   late bool buttonError;
 }

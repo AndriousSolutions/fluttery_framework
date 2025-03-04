@@ -34,9 +34,9 @@ Future<void> testAppState(WidgetTester tester) async {
 
   appState.onRouterConfig();
 
-  appState.onOnGenerateRoute(const RouteSettings());
+  appState.onGenerateRoute(const RouteSettings());
 
-  appState.onOnUnknownRoute(const RouteSettings());
+  appState.onUnknownRoute(const RouteSettings());
 
   appState.onOnNavigationNotification(
       const NavigationNotification(canHandlePop: false));

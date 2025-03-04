@@ -1,4 +1,16 @@
 
+## 5.17.0
+March 03, 2025
+- Introduce three more 'inline' function routines in app_statex.dart:   
+  inGenerateRoute, inUnknownRoute, and inScaffoldMessengerKey
+- Two parameters in app_statex.dart were changed with new 'inline' functions: 
+  onGeneratedRoute to generateRoute and onUnknownRoute to unknownRoute
+- Renamed reload() function to hotReload()
+- Revamped Fluttery's error routine in error_handler.dart making it more efficient
+- logErrorDetails(FlutterErrorDetails details) now in error_handler.dart
+- Stopped using the mixin, RouteNavigatorMethodsMixin. Proved ineffective.
+- An update of the example app
+
 ## 5.16.1+1
 February 23, 2025
 - themeData ??= ThemeData.fallback(); in app_statex.dart

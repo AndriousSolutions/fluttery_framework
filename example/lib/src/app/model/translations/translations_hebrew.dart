@@ -48,4 +48,18 @@ Map<String, String> heIL = {
   'App Navigation': 'ניווט באפליקציה',
   'Next Page': 'העמוד הבא',
   'Nowhere to go': 'אין לאן ללכת',
+  'Three-page example': 'דוגמה בת שלושה עמודים',
+  "You're on page:": 'אתה בעמוד:',
+  'Home': 'בַּיִת',
+  'Settings': 'הגדרות',
+  'Using built-in InheritedWidget': 'באמצעות InheritedWidget מובנה',
+  'Fake error to demonstrate error handling!':
+      'שגיאה מזויפת כדי להדגים טיפול בשגיאות!',
+  'Page 1': 'עמוד 1',
+  'Page 2': 'עמוד 2',
+  'Page 3': 'עמוד 3',
+  'Page 1 Counter': 'עמוד 1 מונה',
+  'Page 2 Counter': 'עמוד 2 מונה',
+  "Has a 'data source' to save the count":
+      "יש 'מקור נתונים' כדי לשמור את הספירה",
 };

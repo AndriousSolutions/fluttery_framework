@@ -45,10 +45,7 @@ Future<void> testAppObject(WidgetTester tester) async {
 
   final details = FlutterErrorDetails(exception: AssertionError('error'));
 
-  App.onError(details);
-
-  app.onAsyncError(
-      AsyncSnapshot.withError(ConnectionState.none, AssertionError('error')));
+  AppErrorHandler().flutteryExceptionHandler?.call(details);
 
   App.mainWindow;
 
@@ -121,7 +118,7 @@ Future<void> testAppObject(WidgetTester tester) async {
 
   ///==================== extension AppNavigationExtension
 
-  App.canPop();
+  // App.canPop();
 
   // App.maybePop<bool>();
   //

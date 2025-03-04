@@ -107,11 +107,8 @@ class _GridPageState extends StateX<GridPage> {
       navigationBar: navigationBar,
       tab01: (_) => column,
       tab02: (_) => SettingsScreen(
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [AppMenu()],
-        ),
+        title: 'Settings'.tr,
+        child: const SettingsPage(),
       ),
     );
   }

@@ -48,4 +48,18 @@ Map<String, String> esAR = {
   'App Navigation': 'Navegación de aplicaciones',
   'Next Page': 'Página siguiente',
   'Nowhere to go': 'Ningún lugar adonde ir',
+  'Three-page example': 'Ejemplo de tres páginas',
+  "You're on page:": 'Estás en la página:',
+  'Home': 'Hogar',
+  'Settings': 'Ajustes',
+  'Using built-in InheritedWidget': 'Uso del InheritedWidget integrado',
+  'Fake error to demonstrate error handling!':
+      '¡Error falso para demostrar el manejo de errores!',
+  'Page 1': 'Página 1',
+  'Page 2': 'Página 2',
+  'Page 3': 'Página 3',
+  'Page 1 Counter': 'Página 1 Contador',
+  'Page 2 Counter': 'Página 2 Contador',
+  "Has a 'data source' to save the count":
+      "Tiene una 'fuente de datos' para guardar el recuento",
 };

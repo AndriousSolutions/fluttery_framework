@@ -95,20 +95,22 @@ class Page2State extends StateX<Page2> {
           title: Text('Three-page example'.tr),
           actions: [AppMenu()],
         ),
+        navigationBar: CupertinoNavigationBar(
+          middle: Text('Three-page example'.tr),
+          trailing: AppMenu(),
+        ),
 
         /// Ignore BuildPage(). It's used only to highlight the other features in this page
         tab01: (_) => BuildPage(
           label: '2',
           count: con.count,
           counter: con.onPressed,
-          row: (context) => [
+          row: (_) => [
             Flexible(
               child: ElevatedButton(
                 key: const Key('Page 1'),
                 style: flatButtonStyle,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: context.pop,
                 child: L10n.t('Page 1'),
               ),
             ),
@@ -117,16 +119,12 @@ class Page2State extends StateX<Page2> {
                 key: const Key('Page 3'),
                 style: flatButtonStyle,
                 onPressed: () async {
-                  //
                   if (AppController().useRoutes) {
-                    await pushNamed('/Page3');
+                    // await App.context?.pushNamed('/Page3');
+                    await context.pushNamed('/Page3');
                   } else {
-                    final route = App.appState?.onGenerateRoute(
-                      const RouteSettings(name: '/Page3'),
-                    );
-                    if (route != null) {
-                      await App.push(route);
-                    }
+                    // await App.context?.push('/Page3');
+                    await context.push('/Page3');
                   }
 
                   /// A good habit to get into. Refresh the screen again.
@@ -138,8 +136,15 @@ class Page2State extends StateX<Page2> {
             ),
           ],
           column: (context) => [
-            const Flexible(
-                child: Text("Has a 'data source' to save the count")),
+            Flexible(child: Text("Has a 'data source' to save the count".tr)),
+            if (usingCupertino)
+              Padding(
+                padding: EdgeInsets.only(top: 1.h),
+                child: CupertinoButton.filled(
+                  onPressed: con.onPressed,
+                  child: Text('Add'.tr),
+                ),
+              ),
           ],
           persistentFooterButtons: <Widget>[
             ElevatedButton(

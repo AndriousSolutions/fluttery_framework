@@ -91,6 +91,10 @@ class Page1State extends StateX<Page1> {
           title: Text('Three-page example'.tr),
           actions: [AppMenu()],
         ),
+        navigationBar: CupertinoNavigationBar(
+          middle: Text('Three-page example'.tr),
+          trailing: AppMenu(),
+        ),
         tab01: (_) => BuildPage(
           label: '1',
           count: count,
@@ -103,27 +107,36 @@ class Page1State extends StateX<Page1> {
             // Comment out and the counter will appear not to work.
             controller?.setState(() {});
           },
-          row: (BuildContext context) => [
+          row: (_) => [
             const SizedBox(),
             Flexible(
               child: ElevatedButton(
                 key: const Key('Page 2'),
                 onPressed: () async {
-                  //
                   if (AppController().useRoutes) {
-                    await pushNamed('/Page2');
+                    // await App.context?.pushNamed('/Page2');
+                    await context.pushNamed('/Page2');
                   } else {
-                    final route = App.appState?.onGenerateRoute(
-                      const RouteSettings(name: '/Page2'),
-                    );
-                    if (route != null) {
-                      await App.push(route);
-                    }
+                    // await App.context?.push('/Page2');
+                    await context.push('/Page2');
                   }
                 },
                 child: L10n.t('Page 2'),
               ),
             ),
+          ],
+          column: (_) => [
+            if (usingCupertino)
+              Padding(
+                padding: EdgeInsets.only(top: 1.h),
+                child: CupertinoButton.filled(
+                  onPressed: () {
+                    count++;
+                    controller?.setState(() {});
+                  },
+                  child: Text('Add'.tr),
+                ),
+              ),
           ],
         ),
         tab02: (_) => SettingsScreen(
@@ -131,11 +144,6 @@ class Page1State extends StateX<Page1> {
           child: const SettingsPage(),
         ),
       );
-
-  // Cupertino interface is not implemented. See what's used instead.
-  @override
-  // ignore: unnecessary_overrides
-  Widget buildiOS(BuildContext context) => super.buildiOS(context);
 
   /// Place breakpoints and step through the functions below
   /// to see how this all works.

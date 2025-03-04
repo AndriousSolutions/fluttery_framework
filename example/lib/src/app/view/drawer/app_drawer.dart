@@ -13,7 +13,7 @@ class AppDrawer extends v.AppDrawer {
         key: const Key('Navigation'),
         subtitle: const Text('App Navigation'),
         onTap: () async {
-          await App.pushNamed('/Page01');
+          await App.context?.pushNamed('/Page01');
         },
       ));
     }

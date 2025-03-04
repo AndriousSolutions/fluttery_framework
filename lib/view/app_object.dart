@@ -23,7 +23,7 @@ import '/model.dart';
 
 import '/view.dart' as v;
 
-import '/controller.dart' show AppErrorHandler, DeviceInfo;
+import '/controller.dart' show DeviceInfo;
 
 /// Supply a 'high level' reference to the 'App object.'
 // ignore: non_constant_identifier_names
@@ -37,10 +37,11 @@ final App = AppObject();
 /// {@category App object}
 class AppObject
     with
-        ConnectivityListener,
         _AppPackageInfoMixin,
         _AppThemeDataMixin,
-        v.RouteNavigatorMethodsMixin {
+        ConnectivityListener,
+        v.StateXonErrorMixin {
+  // v.RouteNavigatorMethodsMixin {
   /// One single instance of the App object
   factory AppObject({
     @Deprecated("The 'error' parameter is deprecated.")
@@ -49,9 +50,7 @@ class AppObject
       _this ??= AppObject._();
 
   AppObject._() {
-    // Supply the Error Handler
-    _errorHandler = AppErrorHandler();
-
+    //
     _connectivity = Connectivity();
 
     // Monitor the device's connectivity to the Internet.
@@ -74,16 +73,12 @@ class AppObject
           WidgetsBinding.instance is! WidgetsFlutterBinding;
   bool? _inFlutterTest;
 
-  // Current Error Handler.
-  AppErrorHandler? _errorHandler;
-
   /// Dispose the App properties.
   @override
   void dispose() {
     _connectivitySubscriptionList?.cancel();
     _connectivitySubscriptionList = null;
     _appState = null; // Remove local reference
-    _errorHandler = null;
   }
 
   /// The App State object.
@@ -96,23 +91,21 @@ class AppObject
     }
   }
 
+  // Reference the App's State object
   static v.AppStateX? _appState;
 
-  /// App-level error handling.
-  void onError(FlutterErrorDetails details) =>
-      _errorHandler?.flutteryExceptionHandler?.call(details);
-
-  /// App-level error handling if async operation at start up fails
-  void onAsyncError(AsyncSnapshot<bool> snapshot) {
-    final dynamic exception = snapshot.error;
-    final details = FlutterErrorDetails(
-      exception: exception,
-      stack: exception is Error ? exception.stackTrace : null,
-      library: 'app_statefulwidget',
-      context: ErrorDescription('while getting ready with FutureBuilder Async'),
-    );
-    onError(details);
+  /// Log an Error
+  @override
+  void logErrorDetails(details) {
+    if (logError) {
+      super.logErrorDetails(details);
+    } else {
+      logError = true; // Log error next time
+    }
   }
+
+  /// Flag whether to log the next error
+  static bool logError = true;
 
   /// Collect the device's information.
   @override
@@ -233,7 +226,8 @@ class AppObject
   /// Display the SnackBar
   void snackBar({
     Key? key,
-    required Widget content,
+    Widget? content,
+    String? message,
     Color? backgroundColor,
     double? elevation,
     EdgeInsetsGeometry? margin,
@@ -247,31 +241,87 @@ class AppObject
     VoidCallback? onVisible,
     DismissDirection? dismissDirection,
     Clip? clipBehavior,
+    int? durationMillis,
+    int? animationDurationMillis,
   }) {
-    ScaffoldMessengerState? state;
+    //
     final context = this.context;
-    if (context != null) {
-      state = ScaffoldMessenger.maybeOf(context);
+
+    if (useMaterial) {
+      //
+      if (content == null) {
+        if (message != null) {
+          message = message.trim();
+          if (message.isNotEmpty) {
+            content = Text(message);
+          }
+        }
+        if (content == null) {
+          return; // Nothing to display
+        }
+      }
+
+      ScaffoldMessengerState? state;
+
+      if (context != null) {
+        state = ScaffoldMessenger.maybeOf(context);
+      }
+
+      state ??= appState?.scaffoldMessengerKey?.currentState;
+
+      state?.showSnackBar(
+        SnackBar(
+          key: key,
+          content: content,
+          backgroundColor: backgroundColor,
+          elevation: elevation,
+          margin: margin,
+          padding: padding,
+          width: width,
+          shape: shape,
+          behavior: behavior,
+          action: action,
+          duration: duration ?? const Duration(milliseconds: 4000),
+          animation: animation,
+          onVisible: onVisible,
+          dismissDirection: dismissDirection ?? DismissDirection.down,
+          clipBehavior: clipBehavior ?? Clip.hardEdge,
+        ),
+      );
+    } else {
+      //
+      if (context == null) {
+        return;
+      }
+
+      if (message == null) {
+        return; // Nothing to display
+      }
+
+      message = message.trim();
+
+      if (message.isEmpty) {
+        return; // Nothing to display
+      }
+
+      animationDurationMillis ??= 200;
+      durationMillis ??= 3000;
+
+      final overlayEntry = OverlayEntry(
+        builder: (context) => _CupertinoSnackBar(
+          key: key,
+          message: message!,
+          animationDurationMillis: animationDurationMillis!,
+          waitDurationMillis: durationMillis!,
+        ),
+      );
+
+      Future.delayed(
+        Duration(milliseconds: durationMillis + 2 * animationDurationMillis),
+        overlayEntry.remove,
+      );
+      Overlay.of(context).insert(overlayEntry);
     }
-    state?.showSnackBar(
-      SnackBar(
-        key: key,
-        content: content,
-        backgroundColor: backgroundColor,
-        elevation: elevation,
-        margin: margin,
-        padding: padding,
-        width: width,
-        shape: shape,
-        behavior: behavior,
-        action: action,
-        duration: duration ?? const Duration(milliseconds: 4000),
-        animation: animation,
-        onVisible: onVisible,
-        dismissDirection: dismissDirection ?? DismissDirection.down,
-        clipBehavior: clipBehavior ?? Clip.hardEdge,
-      ),
-    );
   }
 
   // /// Catch and explicitly handle the error.
@@ -487,6 +537,71 @@ class AppObject
       connectionStatus = 'Failed to determine connectivity';
     }
     return connectionStatus;
+  }
+}
+
+//
+class _CupertinoSnackBar extends StatefulWidget {
+  //
+  const _CupertinoSnackBar({
+    super.key,
+    required this.message,
+    required this.animationDurationMillis,
+    required this.waitDurationMillis,
+  });
+
+  final String message;
+  final int animationDurationMillis;
+  final int waitDurationMillis;
+
+  @override
+  State<_CupertinoSnackBar> createState() => _CupertinoSnackBarState();
+}
+
+class _CupertinoSnackBarState extends State<_CupertinoSnackBar> {
+  bool _show = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => setState(() => _show = true));
+    Future.delayed(
+      Duration(
+        milliseconds: widget.waitDurationMillis,
+      ),
+      () {
+        if (mounted) {
+          setState(() => _show = false);
+        }
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPositioned(
+      bottom: _show ? 8.0 : -50.0,
+      left: 8,
+      right: 8,
+      curve: _show ? Curves.linearToEaseOut : Curves.easeInToLinear,
+      duration: Duration(milliseconds: widget.animationDurationMillis),
+      child: CupertinoPopupSurface(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 8,
+          ),
+          child: Text(
+            widget.message,
+            style: const TextStyle(
+              fontSize: 14,
+              // color: CupertinoColors.secondaryLabel,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
   }
 }
 

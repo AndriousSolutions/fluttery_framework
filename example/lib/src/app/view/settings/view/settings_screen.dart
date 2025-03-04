@@ -46,11 +46,7 @@ class SettingsScreen extends StatelessWidget {
     //
     // final isPortrait = context.isPortrait;
 
-    Widget widget = child ??
-        CupertinoButton(
-          child: const Text('Press me'),
-          onPressed: () => Navigator.of(context).maybePop(),
-        );
+    Widget widget = child ?? const Text('-- Empty Content --');
 
     if (kIsWeb || UniversalPlatform.isWindows) {
       //
@@ -80,9 +76,11 @@ class SettingsScreen extends StatelessWidget {
     } else {
       //
       widget = Scaffold(
+        primary: false,
         appBar: AppBar(
-          leading: leading,
+          leading: leading ?? const Text(''),
           title: Text(title ?? ''),
+          centerTitle: true,
           actions: trailing == null ? null : [trailing!],
         ),
         body: SafeArea(

@@ -29,17 +29,17 @@ void integrationTestFlutteryFramework() {
     // Counter app testing
     await counterTest(tester);
 
-    // // Multi Counter Screens testing
-    // await multiCountersTest(tester);
+    // Multi Counter Screens testing
+    await multiCountersTest(tester);
 
-    // // Test Grid app
-    // await animalsTest(tester);
+    // Test Grid app
+    await animalsTest(tester);
 
-    // // Open About menu
-    // await openAboutMenu(tester);
-    //
-    // // Open the Locale window
-    // await openLocaleMenu(tester);
+    // Open About menu
+    await openAboutMenu(tester);
+
+    // Open the Locale window
+    await openLocaleMenu(tester);
 
     // Switch the Interface to Material
     await openInterfaceMenu(tester);
@@ -52,18 +52,18 @@ void integrationTestFlutteryFramework() {
     // Open Material menu
     await openMaterialVersionMenu(tester);
 
-    // // Hot Reload the app
-    // final binding = WidgetsFlutterBinding.ensureInitialized();
-    // await binding.reassembleApplication();
-    //
-    // /// Wait for the transition of the Interface
-    // await tester.pumpAndSettle(const Duration(seconds: 4));
-    //
-    // // Switch the Interface
-    // await openInterfaceMenu(tester);
-    //
-    // // Unit testing
-    // await unitTests(tester);
+    // Hot Reload the app
+    final binding = WidgetsFlutterBinding.ensureInitialized();
+    await binding.reassembleApplication();
+
+    /// Wait for the transition of the Interface
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+
+    // Switch the Interface
+    await openInterfaceMenu(tester);
+
+    // Unit testing
+    await unitTests(tester);
 
     reportTestErrors();
 

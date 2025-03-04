@@ -58,14 +58,21 @@ extension GoRouterExtension on BuildContext {
     Map<String, String> pathParameters = const <String, String>{},
     Map<String, dynamic> queryParameters = const <String, dynamic>{},
     Object? extra,
-  }) =>
-      App.goRouter?.pushNamed<T>(
+  }) async {
+    T? result;
+    final router = App.goRouter;
+    if (router == null) {
+      result = await Navigator.pushNamed<T>(this, name, arguments: extra);
+    } else {
+      result = await router.pushNamed<T>(
         name,
         pathParameters: pathParameters,
         queryParameters: queryParameters,
         extra: extra,
-      ) ??
-      Future.value();
+      );
+    }
+    return result;
+  }
 
   /// Returns `true` if there is more than 1 page on the stack.
   bool canPop() {

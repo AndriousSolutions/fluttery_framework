@@ -49,4 +49,18 @@ Map<String, String> ruRU = {
   'App Navigation': 'Навигация по приложениям',
   'Next Page': 'Следующая страница',
   'Nowhere to go': 'Некуда идти',
+  'Three-page example': 'Трехстраничный пример',
+  "You're on page:": 'Вы находитесь на странице:',
+  'Home': 'Дом',
+  'Settings': 'Настройки',
+  'Using built-in InheritedWidget': 'Использование встроенного InheritedWidget',
+  'Fake error to demonstrate error handling!':
+      'Поддельная ошибка для демонстрации обработки ошибок!',
+  'Page 1': 'Страница 1',
+  'Page 2': 'Страница 2',
+  'Page 3': 'Страница 3',
+  'Page 1 Counter': 'Страница 1 Счетчик',
+  'Page 2 Counter': 'Страница 2 Счетчик',
+  "Has a 'data source' to save the count":
+      'Имеет «источник данных» для сохранения подсчета',
 };

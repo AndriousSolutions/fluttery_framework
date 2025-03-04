@@ -1,4 +1,8 @@
-// Supply the dependencies for the example app
+library;
+
+/// Supply the dependencies for the example app
+///
+
 export 'package:fluttery_framework_example/src/controller.dart';
 
 export 'package:fluttery_framework_example/src/model.dart' hide StateSetter;
@@ -26,6 +30,6 @@ export 'drawer_dialog_tests.dart';
 
 export '../menu/open_drawer.dart';
 
-export '../unit/src/controller/_tests_unit_controller.dart';
+export 'src/controller/_tests_unit_controller.dart';
 
-export '../unit/src/view/_tests_unit_view.dart';
+export 'src/view/_tests_unit_view.dart';

@@ -39,7 +39,12 @@ class BuildPage extends StatelessWidget {
   final List<Widget>? persistentFooterButtons;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    Widget widget;
+
+    if (App.useMaterial) {
+      //
+      widget = Scaffold(
         persistentFooterButtons: persistentFooterButtons,
         floatingActionButton: FloatingActionButton(
           key: const Key('+'),
@@ -50,9 +55,9 @@ class BuildPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.only(top: 100),
-              child: Text("You're on page:"),
+            Padding(
+              padding: const EdgeInsets.only(top: 100),
+              child: Text("You're on page:".tr),
             ),
             Flexible(
               child: Text(
@@ -60,11 +65,11 @@ class BuildPage extends StatelessWidget {
                 style: const TextStyle(fontSize: 48),
               ),
             ),
-            const Flexible(
+            Flexible(
               child: Padding(
-                padding: EdgeInsets.only(top: 50),
+                padding: const EdgeInsets.only(top: 50),
                 child: Text(
-                  'You have pushed the button this many times:',
+                  'You have pushed the button this many times:'.tr,
                 ),
               ),
             ),
@@ -92,6 +97,97 @@ class BuildPage extends StatelessWidget {
           ],
         ),
       );
+    } else {
+      //
+      widget = CupertinoPageScaffold(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Flexible(
+                flex: 3,
+                fit: FlexFit.tight,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 100),
+                      child: Text("You're on page:".tr),
+                    ),
+                    Flexible(
+                      child: Text(
+                        label,
+                        style: const TextStyle(fontSize: 48),
+                      ),
+                    ),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Text(
+                          'You have pushed the button this many times:'.tr,
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Text(
+                        '$count',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 50),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: row(context),
+                      ),
+                    ),
+                    if (column == null)
+                      const Flexible(child: SizedBox())
+                    else
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: column!(context),
+                      ),
+                  ],
+                ),
+              ),
+              if (persistentFooterButtons != null)
+                // Container(
+                //   decoration: const BoxDecoration(
+                //     border: Border(
+                //       top: BorderSide(
+                //         color: Color(0xFFBCBBC1),
+                //         // width: 0,
+                //       ),
+                //     ),
+                //   ),
+                //   // child: SizedBox(
+                //   //   height: 44,
+                //   //   child: Row(
+                //   //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //   //     children: persistentFooterButtons!,
+                //   //   ),
+                //   // ),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: persistentFooterButtons!,
+                //   ),
+                // )
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: persistentFooterButtons!,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      );
+    }
+    return widget;
+  }
 }
 
 ///

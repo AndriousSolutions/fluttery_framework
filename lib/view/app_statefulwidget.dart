@@ -41,10 +41,7 @@ abstract class AppStatefulWidget extends StatefulWidget {
     this.splashScreen,
     this.inSplashScreen,
     this.circularProgressIndicator,
-  })  : _app = v.AppObject(),
-        super(key: key ?? GlobalKey<_AppStatefulWidgetState>());
-  //
-  final v.AppObject _app;
+  }) : super(key: key ?? GlobalKey<_AppStatefulWidgetState>());
 
   /// The app's Splash Screen if any (called in _futureBuilder() below)
   final Widget? splashScreen;
@@ -96,7 +93,7 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // defer displaying anything while starting up
       WidgetsFlutterBinding.ensureInitialized().deferFirstFrame();
     }
-
+    // Called by another app?
     _isAppInApp();
     // _appGlobalKey = GlobalKey<v.AppStateX>();
     _assets = Assets();
@@ -232,8 +229,6 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       Prefs.dispose();
       //
       _assets.dispose();
-      //
-      widget._app.dispose();
     }
     // Clean up memory
     _appWidget = null;
@@ -289,10 +284,10 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // The 'inline' version of the initAsync() error handler takes last precedence.
       _appState?.inAsyncError?.call(details);
 
-      // Have the framework handle the asynchronous error.
-      widget._app.onAsyncError(snapshot);
-
       final handler = AppErrorHandler();
+
+      // The Fluttery Framework's Error Handler
+      handler.flutteryExceptionHandler?.call(details);
 
       // Display an error screen
       appWidget = handler.displayError(details);
@@ -317,19 +312,28 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       // Clear memory of the Splash Screen if any
       splashScreen = null;
     } else {
-      //
       // In case the Splash Screen errors for some unknown reason.
+      AppErrorHandler? handler;
       try {
+        handler = AppErrorHandler();
         final widget = this.widget;
-        // final indicator = widget.onCircularProgressIndicator() ?? true;
-        // if (!indicator) {
+        final context = this.context;
         // Only create once!
         splashScreen ??= widget.splashScreen ??
             widget.onSplashScreen(context) ??
             _appState?.onSplashScreen(context);
-        // }
-      } catch (e) {
+      } catch (e, stack) {
+        //
         splashScreen = null;
+        // Record the error
+        final details = FlutterErrorDetails(
+          exception: e,
+          stack: stack, // e is Error ? e.stackTrace : null,
+          library: 'app_statefulwidget.dart',
+          context: ErrorDescription('Failed with SplashScreen!'),
+        );
+        // Log the error
+        handler?.logErrorDetails(details);
       }
 
       if (splashScreen == null) {
@@ -370,20 +374,13 @@ class _AppStatefulWidget extends StatefulWidget {
   const _AppStatefulWidget({
     super.key,
     required this.appState,
-    //required this.builder,
   });
 
   /// The framework's 'App' State object.
   final v.AppStateX appState;
 
-  //final v.AppStateX Function() builder;
-
   /// Programmatically creates the App's State object.
   @override
-  v.AppStateX createState() {
-    //ignore: no_logic_in_create_state
-    return appState;
-    //ignore: no_logic_in_create_state
-    //return builder();
-  }
+  //ignore: no_logic_in_create_state
+  v.AppStateX createState() => appState;
 }

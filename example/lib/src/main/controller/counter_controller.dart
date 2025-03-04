@@ -24,7 +24,7 @@ class CounterController extends AppStateXController {
   late final WordPairsTimer wordPairsTimer;
 
   /// The flag indicating if an InheritedWidget is to used.
-  bool useInherited = false;
+  bool get useInherited => AppController().useInheritedWidget;
 
   @override
   void initState() {

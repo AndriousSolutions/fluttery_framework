@@ -49,46 +49,10 @@ void testFlutteryFramework() {
 
   // Integration and unit tests
   group('Integration Tests', _testIntegrationGroup);
-
-  //
-  group('Builder Error Tests', _builderErrorTest);
-
-  //
-  group('Async Error Tests', _asyncErrorTest);
 }
 
 /// Calls a number of testWidgets() functions one after the other
 void _testIntegrationGroup() {
   // Run the Example app and perform some tests
   integrationTestFlutteryFramework();
-}
-
-/// Test for an Error occurring in the builder() function itself!
-void _builderErrorTest() {
-  ///
-  testWidgets('Error in Builder', (WidgetTester tester) async {
-    // Tells the tester to build a UI based on the widget tree passed to it
-    await tester.pumpWidget(FlutteryExampleApp(key: UniqueKey()));
-
-    // Now trip an error right at start up.
-    AppController().errorInBuilder = true;
-
-    // pumpAndSettle() waits for all animations to complete.
-    await tester.pumpAndSettle();
-  });
-}
-
-/// Test for an Error occurring at startup in the initAsync() function itself!
-void _asyncErrorTest() {
-  ///
-  testWidgets('Error in initAsync()', (WidgetTester tester) async {
-    // The Example app
-    await tester.pumpWidget(FlutteryExampleApp(key: UniqueKey()));
-
-    // Throw an error in the initAsync() function
-    AppController().initAsyncError = true;
-
-    // pumpAndSettle() waits for all animations to complete.
-    await tester.pumpAndSettle();
-  });
 }

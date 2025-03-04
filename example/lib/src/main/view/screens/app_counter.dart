@@ -95,15 +95,20 @@ class _CounterPageState extends StateX<CounterPage> {
                           key: const Key('Page 1'),
                           onPressed: () async {
                             //
+                            // if (AppController().useRoutes) {
+                            //   await pushNamed('/Page1');
+                            // } else {
+                            //   final route = App.appState?.onGenerateRoute(
+                            //     const RouteSettings(name: '/Page1'),
+                            //   );
+                            //   if (route != null) {
+                            //     await App.push(route);
+                            //   }
+                            // }
                             if (AppController().useRoutes) {
-                              await pushNamed('/Page1');
+                              await App.context?.pushNamed('/Page1');
                             } else {
-                              final route = App.appState?.onGenerateRoute(
-                                const RouteSettings(name: '/Page1'),
-                              );
-                              if (route != null) {
-                                await App.push(route);
-                              }
+                              await App.context?.push('/Page1');
                             }
                           },
                           child: L10n.t('Page 1'),
@@ -121,7 +126,7 @@ class _CounterPageState extends StateX<CounterPage> {
             // Don't interrupt any testing.
             if (App.inWidgetsFlutterBinding && AppController().buttonError) {
               // Deliberately throw an error to demonstrate error handling.
-              throw Exception('Fake error to demonstrate error handling!');
+              throw Exception('Fake error to demonstrate error handling!'.tr);
             }
             // ignore: dead_code
             setState(con.onPressed);
@@ -138,10 +143,10 @@ class _CounterPageState extends StateX<CounterPage> {
 
   // Display the Switch widget?
   bool _showSwitch() {
+    bool show = false;
     final appController = rootCon;
-    var show = appController != null && appController is AppController;
-    if (show) {
-      show = appController.useOnHome;
+    if (appController != null && appController is AppController) {
+      show = appController.useOnHome && appController.useInheritedWidget;
     }
     return show;
   }
@@ -209,22 +214,10 @@ class _CounterPageState extends StateX<CounterPage> {
                         child: ElevatedButton(
                           key: const Key('Page 1'),
                           onPressed: () async {
-                            // await Navigator.push(
-                            //   context,
-                            //   CupertinoPageRoute<void>(
-                            //     builder: (_) => Page1(key: UniqueKey()),
-                            //   ),
-                            // );
-                            //
                             if (AppController().useRoutes) {
-                              await pushNamed('/Page1');
+                              await App.context?.pushNamed('/Page1');
                             } else {
-                              final route = App.appState?.onGenerateRoute(
-                                const RouteSettings(name: '/Page1'),
-                              );
-                              if (route != null) {
-                                await App.push(route);
-                              }
+                              await App.context?.push('/Page1');
                             }
                           },
                           child: L10n.t('Page 1'),
@@ -242,13 +235,13 @@ class _CounterPageState extends StateX<CounterPage> {
                           AppController().buttonError) {
                         // Deliberately throw an error to demonstrate error handling.
                         throw Exception(
-                            'Fake error to demonstrate error handling!');
+                            'Fake error to demonstrate error handling!'.tr);
                       }
                       // This code is not reached unless in testing.
                       setState(con.onPressed);
                       //                       rxCounter.value++;
                     },
-                    child: const Text('Add'),
+                    child: Text('Add'.tr),
                   ),
                 ),
               ],
@@ -271,14 +264,9 @@ class _CounterPageState extends StateX<CounterPage> {
 
   @override
   void onError(FlutterErrorDetails details) {
-    super.onError(details);
     final stack = details.stack;
     if (stack != null && stack.toString().contains('handleTap')) {
-      // Notify the app this error was anticipated and handled.
-      rootState?.lastFlutterError(details);
-      // Always more than one way to 'skin a cat.'
-      App.appState?.lastFlutterError(details);
-
+      //
       setState(con.onPressed);
 //      rxCounter.value++;
     }

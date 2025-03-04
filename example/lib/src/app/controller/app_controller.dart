@@ -1,34 +1,26 @@
 //
-import '/src/app/view/settings/controller/app_settings_controller.dart';
-
 import '/src/controller.dart';
 
 import '/src/model.dart' show Settings;
 
 // You can see 'at a glance' this Controller also 'talks to' the interface (View).
-import '../../view.dart';
+import '/src/view.dart';
 
 ///
 class AppController extends AppStateXController with AppOptionSettings {
   ///
   factory AppController() => _this ??= AppController._();
+
   AppController._() {
+    // App's Settings
     _appSettings = AppSettingsController();
-    // Assign the appropriate value
-    CounterController().useInherited = _appSettings.useInheritedWidget;
   }
   static AppController? _this;
-
-  late AppSettingsController _appSettings;
-
-  /// Assign to the 'leading' widget on the interface.
-  void leading() => changeUI();
 
   /// Switch to the other User Interface.
   void changeUI() {
     //
-//    Navigator.popUntil(App.context!, ModalRoute.withName('/'));
-    App.popUntil(ModalRoute.withName('/'));
+    Navigator.popUntil(App.context!, ModalRoute.withName('/'));
 
     // This has to be called first.
     App.changeUI(App.useMaterial ? 'Cupertino' : 'Material');
@@ -48,9 +40,12 @@ class AppController extends AppStateXController with AppOptionSettings {
     } else {
       route = CupertinoPageRoute(builder: (_) => widget);
     }
-    _allowChangeApp = false;
-    await App.push(route);
-    _allowChangeApp = true;
+    final context = App.context;
+    if (context != null) {
+      _allowChangeApp = false;
+      await Navigator.push(context, route);
+      _allowChangeApp = true;
+    }
   }
 
   ///
@@ -172,32 +167,50 @@ class AppController extends AppStateXController with AppOptionSettings {
         },
       );
 
+  /// Supply the App's routes
+  Map<String, Widget> get routes => {
+        '/': const CounterPage(),
+        '/Page1': const Page1(),
+        '/Page2': const Page2(),
+        '/Page3': const Page3(),
+      };
+
+  ///
+  Route<dynamic>? onGenerateRoute(RouteSettings? settings) {
+    final routes = <String, WidgetBuilder>{};
+    this.routes.forEach((key, widget) => routes.addAll({key: (_) => widget}));
+    return appState?.routeGenerator(settings, routes);
+  }
+
   /// **************  App settings **************
+
+  AppSettingsController? _appSettings;
 
   /// Use the Router Configuration or not
   @override
-  bool get useRouterConfig => _appSettings.useRouterConfig;
+  bool get useRouterConfig => _appSettings?.useRouterConfig ?? false;
 
   @override
-  set useRouterConfig(bool? use) => _appSettings.useRouterConfig = use;
+  set useRouterConfig(bool? use) => _appSettings?.useRouterConfig = use;
 
   /// Use the provided Routes instead
   @override
-  bool get useRoutes => _appSettings.useRoutes;
+  bool get useRoutes => _appSettings?.useRoutes ?? false;
 
   @override
-  set useRoutes(bool? use) => _appSettings.useRoutes = use;
+  set useRoutes(bool? use) => _appSettings?.useRoutes = use;
 
   /// Use InheritedWidget
   @override
-  bool get useInheritedWidget => _appSettings.useInheritedWidget;
+  bool get useInheritedWidget => _appSettings?.useInheritedWidget ?? false;
 
   /// Use the home parameter
   @override
-  bool get useHome => _appSettings.useHome; //!useRoutes && !useInheritedWidget;
+  bool get useHome =>
+      _appSettings?.useHome ?? false; //!useRoutes && !useInheritedWidget;
 
   /// During testing, set app to use the home parameter
-  void setForHome() => _appSettings.setForOnHome();
+  void setForHome() => _appSettings?.setForOnHome();
 
   /// Allow to change app
   bool get allowChangeApp => useOnHome && _allowChangeApp;
@@ -205,27 +218,29 @@ class AppController extends AppStateXController with AppOptionSettings {
 
   /// Use the onHome() function
   @override
-  bool get useOnHome => _appSettings.useOnHome;
+  bool get useOnHome => _appSettings?.useOnHome ?? true;
 
   /// Error in builder()
   @override
-  bool get errorInBuilder => _appSettings.errorInBuilder;
+  bool get errorInBuilder => _appSettings?.errorInBuilder ?? false;
+
+  @override
+  set errorInBuilder(bool? error) => _appSettings?.errorInBuilder = error;
 
   /// Error right at the start
   @override
-  bool get initAsyncError => _appSettings.initAsyncError;
+  bool get initAsyncError => _appSettings?.initAsyncError ?? false;
+
+  @override
+  set initAsyncError(bool? error) => _appSettings?.initAsyncError = error;
 
   /// Delay the initAsync() for a time
   @override
-  bool get initAsyncDelay => _appSettings.initAsyncDelay;
-
-  /// Display a Splash Screen
-  @override
-  bool get splashScreen => _appSettings.splashScreen;
+  bool get initAsyncDelay => _appSettings?.initAsyncDelay ?? false;
 
   /// Throw button error
   @override
-  bool get buttonError => _appSettings.buttonError;
+  bool get buttonError => _appSettings?.buttonError ?? false;
 
   /// **************  Life cycle events ****************
 
@@ -233,9 +248,6 @@ class AppController extends AppStateXController with AppOptionSettings {
   /// In production, this is where databases are opened, logins attempted, etc.
   @override
   Future<bool> initAsync() async {
-    //
-    appState?.add(_appSettings);
-
     final init = await super.initAsync();
 
     // ignore: unused_local_variable
@@ -263,6 +275,16 @@ class AppController extends AppStateXController with AppOptionSettings {
     return init;
   }
 
+  // You can address any errors in initAsync() function
+  @override
+  void onAsyncError(FlutterErrorDetails details) {
+    // Identify a particular error and ensure it won't happen at restart
+    if (details.exceptionAsString().contains('Error in initAsync()!')) {
+      initAsyncError = false;
+      App.logErrorDetails(details);
+    }
+  }
+
   /// The framework calls this method when the [StateX] object removed from widget tree.
   /// i.e. The screen is closed.
   @override
@@ -270,6 +292,7 @@ class AppController extends AppStateXController with AppOptionSettings {
     if (inDebugMode) {
       debugPrint('############ Event: deactivate() in $this');
     }
+    _appSettings?.goOnHome();
   }
 
   /// Called when this State object was removed from widget tree for some reason

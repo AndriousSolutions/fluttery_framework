@@ -80,9 +80,6 @@ class _RunAppErrorHandler {
       // Handle the Flutter Error Details
       handleException(appHandler, details);
 
-      // Possibly a routine is available
-      appHandler.onError(details);
-
       // Call the supplied error handler
       onError?.call(details);
       //
