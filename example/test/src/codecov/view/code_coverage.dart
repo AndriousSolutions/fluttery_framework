@@ -80,7 +80,57 @@ void _coverCode(_TestBedState state) {
 
   statex.appState;
 
-  final pop = _PopupController();
+  PopupMenuFunctionsMixin<String> pop = _PopupController();
+
+  pop.setMenu();
+
+  pop.showButtonMenu();
+
+  pop.onItems();
+
+  pop.onMenuEntries();
+
+  pop.onItemBuilder();
+
+  pop.onOpened();
+
+  pop.onSelected('');
+
+  pop.onCanceled();
+
+  pop.onInitialValue();
+
+  pop.onTooltip();
+
+  pop.onElevation();
+
+  pop.onPadding();
+
+  pop.onSplashRadius();
+
+  pop.onChild();
+
+  pop.onIcon();
+
+  pop.onIconSize();
+
+  pop.onOffset();
+
+  pop.onEnabled();
+
+  pop.onShape();
+
+  pop.onColor();
+
+  pop.onEnableFeedback();
+
+  pop.onConstraints();
+
+  pop.onPosition();
+
+  pop.onClipBehavior();
+
+  pop = _PopupMenuFunctions();
 
   pop.setMenu();
 
@@ -137,3 +187,5 @@ class _TestStateXWidget extends StatefulWidget {
 }
 
 class _PopupController with PopupMenuControllerMixin<String> {}
+
+class _PopupMenuFunctions with PopupMenuFunctionsMixin<String> {}

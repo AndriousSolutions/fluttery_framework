@@ -10,10 +10,7 @@ import 'dart:async' show runZonedGuarded;
 import 'dart:isolate' show Isolate, RawReceivePort;
 
 import 'package:flutter/foundation.dart'
-    show
-        FlutterExceptionHandler,
-        kDebugMode,
-        kIsWeb;
+    show FlutterExceptionHandler, kDebugMode, kIsWeb;
 
 import 'package:flutter/material.dart' as m
     show FlutterError, FlutterErrorDetails, Widget, runApp;

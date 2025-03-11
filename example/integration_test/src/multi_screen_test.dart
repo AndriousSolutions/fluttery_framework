@@ -23,7 +23,7 @@ Future<void> multiScreenTest(WidgetTester tester) async {
 
   // Don't go to Page 3. It invokes an error.
 
-   // Back to Page 1
+  // Back to Page 1
   await tester.tap(find.byKey(const Key('Page 1')));
   await tester.pumpAndSettle();
 

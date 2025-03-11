@@ -1,5 +1,5 @@
 
-## 5.18.0
+## 5.18.0+1
 March 05, 2025
 - Removed deprecated app_settings.dart
 - Additional Tests to the example app:
@@ -11,6 +11,7 @@ March 05, 2025
 - static void errorHandler(FlutterErrorDetails details) in error_handler.dart
 - void activate() { and void deactivate() {  in app_statex.dart
   if (ignoreErrorInTesting) {  // Allow an error to be ignored. Once!
+- Testing PopupMenuFunctionsMixin and dart format .
 
 
 ## 5.17.1+3

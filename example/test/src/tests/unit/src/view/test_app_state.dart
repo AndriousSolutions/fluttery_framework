@@ -69,6 +69,8 @@ Future<void> testAppState(WidgetTester tester) async {
 
   final errorDetails = FlutterErrorDetails(exception: AssertionError('Error'));
 
+  appState.catchAsyncError(UnsupportedError('Error Test'));
+
   appState.onError(errorDetails);
 
   appState.onErrorScreen(errorDetails);
