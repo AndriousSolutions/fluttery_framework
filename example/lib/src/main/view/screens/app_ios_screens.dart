@@ -204,13 +204,17 @@ class _BottomBarScaffoldState extends State<_BottomBarScaffold> {
             tabBar: CupertinoTabBar(
               items: [
                 BottomNavigationBarItem(
-                    icon: tab01Label?.values.last ??
-                        const Icon(CupertinoIcons.home),
-                    label: tab01Label?.keys.last ?? 'Home'.tr),
+                  key: globalKeys![2]!,
+                  icon: tab01Label?.values.last ??
+                      const Icon(CupertinoIcons.home),
+                  label: tab01Label?.keys.last ?? 'Home'.tr,
+                ),
                 BottomNavigationBarItem(
-                    icon: tab02Label?.values.last ??
-                        const Icon(CupertinoIcons.settings),
-                    label: tab02Label?.keys.last ?? 'Settings'.tr),
+                  key: globalKeys![3]!,
+                  icon: tab02Label?.values.last ??
+                      const Icon(CupertinoIcons.settings),
+                  label: tab02Label?.keys.last ?? 'Settings'.tr,
+                ),
               ],
               currentIndex: currentIndex,
               onTap: (index) => currentIndex = index,

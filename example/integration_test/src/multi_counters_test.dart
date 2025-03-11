@@ -7,18 +7,15 @@ library;
 ///          Created 07 February, 2025
 ///
 
-import '../_test_imports.dart';
+import '../xport/_export_tests.dart';
 
 String _location = '========================== multi_counters_test.dart';
 
 /// Testing the counter app
 Future<void> multiCountersTest(WidgetTester tester) async {
-  // Utility function
-  // var test = await tapButtonTester(tester, key: 'Page 1');
-
   // tap button
   await tester.tap(find.byKey(const Key('Page 1')));
-  await tester.pumpAndSettle();
+  await tester.pumpAndSettle(const Duration(seconds: 1));
 
   // Verify that our counter starts at 0.
   expect(find.text('0'), findsOneWidget, reason: _location);
@@ -115,6 +112,12 @@ Future<void> multiCountersTest(WidgetTester tester) async {
   // Go to Page 3
   await tester.tap(find.byKey(const Key('Page 3')));
   await tester.pumpAndSettle();
+
+  // Fall back to the last screen
+  if (AppErrorHandler().errorMsg.contains('Error in _buildPage3')) {
+    AppController().appState?.lastContext?.pop();
+    await tester.pumpAndSettle();
+  }
 
   // Increase the count on Page 1
   var finder = find.byKey(const Key('Page 1 Counter'));

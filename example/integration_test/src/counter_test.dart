@@ -1,5 +1,5 @@
 //
-import '../_test_imports.dart';
+import '../xport/_export_tests.dart';
 
 String _location = '========================== counter_test.dart';
 

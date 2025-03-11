@@ -1,6 +1,6 @@
 //
 // Test files
-import '_test_imports.dart';
+import 'xport/_export_tests.dart';
 
 import 'package:integration_test/integration_test.dart'
     show IntegrationTestWidgetsFlutterBinding;
@@ -41,7 +41,10 @@ void integrationTestFlutteryFramework() {
     // Open the Locale window
     await openLocaleMenu(tester);
 
-    // Switch the Interface to Material
+    // Settings Screen
+    await testSettingsScreen(tester);
+
+    // Switch the Interface Design
     await openInterfaceMenu(tester);
 
     if (App.useCupertino) {
@@ -52,18 +55,20 @@ void integrationTestFlutteryFramework() {
     // Open Material menu
     await openMaterialVersionMenu(tester);
 
+    // Open the Settings Screen
+    await openSettingsScreen(tester);
+
+    await tapButton(tester, key: 'routes', skipOffstage: false);
+
+    // Unit testing
+    await unitTests(tester);
+
     // Hot Reload the app
     final binding = WidgetsFlutterBinding.ensureInitialized();
     await binding.reassembleApplication();
 
-    /// Wait for the transition of the Interface
+    // Wait the Interface animation to settle
     await tester.pumpAndSettle(const Duration(seconds: 4));
-
-    // Switch the Interface
-    await openInterfaceMenu(tester);
-
-    // Unit testing
-    await unitTests(tester);
 
     reportTestErrors();
 

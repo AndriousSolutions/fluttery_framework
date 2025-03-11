@@ -16,12 +16,7 @@ const _location = '========================== test_app_handler.dart';
 void testAppErrorHandler() {
   ///
   testWidgets('Test Error Handler', (WidgetTester tester) async {
-    // // Tells the tester to build a UI based on the widget tree passed to it
-    // await tester.pumpWidget(FlutteryExampleApp(key: UniqueKey()));
     //
-    // // pumpAndSettle() waits for all animations to complete.
-    // await tester.pumpAndSettle();
-
     final handler = AppErrorHandler();
 
     /// the Error Handler used in this test
@@ -53,12 +48,6 @@ void testAppErrorHandler() {
     // Successfully set
     expect(set, isTrue, reason: _location);
 
-    final errorHandler = handler.errorHandler;
-
-    expect(errorHandler, isA<FlutterExceptionHandler>(), reason: _location);
-
-    expect(errorHandler == errorFunction, isTrue, reason: _location);
-
     final details = FlutterErrorDetails(
       exception: Exception('Fake Exception!'),
       library: 'test_app_handler.dart',
@@ -67,13 +56,11 @@ void testAppErrorHandler() {
 
     handler.logErrorDetails(details);
 
-    final widget = AppErrorHandler.displayErrorWidget(details);
-
     handler.reset();
 
     handler.onError(details);
 
-    // Assign the handler
+    // Assign the 'old' handler
     AppErrorHandler.set(screen: handler.oldBuilder);
 
     // Disable the set() function from making changes again

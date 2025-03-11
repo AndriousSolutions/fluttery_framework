@@ -94,7 +94,9 @@ unused.txt
 google-services.json
 #/android/
 #!/android/app/build.gradle
+#!/android/app/build.gradle.kts
 #!/android/build.gradle
+#!/android/build.gradle.kts
 
 # iOS/XCode related
 GoogleService-Info.plist

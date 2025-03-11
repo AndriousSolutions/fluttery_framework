@@ -9,7 +9,8 @@ String _location = '========================== open_menu.dart';
 Future<bool> openPopupMenu(WidgetTester tester,
     {bool throwError = true}) async {
   //
-  final popup = find.byKey(const Key('appMenuButton'), skipOffstage: false);
+  final popup =
+      find.byKey(const Key('appMenuButton')); //, skipOffstage: false);
 
   final opened = popup.evaluate().isNotEmpty;
 

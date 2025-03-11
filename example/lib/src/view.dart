@@ -1,5 +1,5 @@
 // The fluttery framework.
-export 'package:fluttery_framework/view.dart' hide AppDrawer, AppSettings;
+export 'package:fluttery_framework/view.dart' hide AppDrawer;
 
 ///
 export 'package:more_extensions/context_extensions.dart';

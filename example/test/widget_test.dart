@@ -14,6 +14,9 @@ import '../integration_test/widget_test.dart';
 /// Flutter Test files
 import '../test/src/_tests_exports.dart';
 
+/// Test the App when using Routes
+import '../integration_test/src/routes_test.dart';
+
 void main() => testFlutteryFramework();
 
 //const _deskTopSize = Size(1920, 1040); // physical pixels
@@ -32,11 +35,6 @@ void testFlutteryFramework() {
 
   // Runs before EACH test or group
   setUp(() {
-    // Ensure TestWidgetsFlutterBinding is explicitly initialized
-    // ignore: unused_local_variable
-    final TestWidgetsFlutterBinding binding =
-        TestWidgetsFlutterBinding.ensureInitialized();
-
     // // (TODO: Tip # 4) Consider configuring your default screen size here.
     // // You can reset it to something else within a test
     // binding.window.physicalSizeTestValue = _deskTopSize;
@@ -47,15 +45,19 @@ void testFlutteryFramework() {
     // Code that clears caches can go here
   });
 
-  // Integration and unit tests
-  group('Integration Tests', _testIntegrationGroup);
+  /// Integration and unit tests
+  /// Calls a number of testWidgets() functions one after the other
+  group('Integration Tests', integrationTestFlutteryFramework);
 
-  //
+  /// Run test when the App is using Routes
+  group('routes_test.dart', testRoutesRoutine);
+
+  /// Test the built-in runApp() routine
+  group('run_app.dart Test', testRunAppRoutine);
+
+  ///
   group('error_handler.dart Tests', testAppErrorHandler);
-}
 
-/// Calls a number of testWidgets() functions one after the other
-void _testIntegrationGroup() {
-  // Run the Example app and perform some tests
-  integrationTestFlutteryFramework();
+  ///
+  group('Run Code Coverage Tests', codeCoverage);
 }

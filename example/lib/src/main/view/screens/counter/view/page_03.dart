@@ -112,7 +112,14 @@ class _Page3State extends StateX<Page3> {
   /// to see how this all works.
 
   @override
-  Widget build(BuildContext context) => super.build(context);
+  Widget build(BuildContext context) {
+    final app = AppController();
+    app.allowErrorOnce = true;
+    if (app.allowErrorOnce) {
+      throw UnsupportedError('Error in _buildPage3');
+    }
+    return super.build(context);
+  }
 
   @override
   // ignore: unnecessary_overrides

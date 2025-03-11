@@ -9,13 +9,10 @@ import '/src/view.dart';
 class DevSettingsDrawer extends v.AppDrawer {
   ///
   DevSettingsDrawer({super.key}) {
-    /// Don't offer these development tools if testing the app
-    if (!App.inFlutterTest) {
-      if (App.useMaterial) {
-        add(const DevToolsSettings.column());
-      } else {
-        add(const DevToolsSettings.disabled());
-      }
+    if (App.useMaterial) {
+      add(const DevToolsSettings.column(key: Key('DevToolsSettings')));
+    } else {
+      add(const DevToolsSettings.disabled(key: Key('DevToolsSettings')));
     }
   }
 }
@@ -87,6 +84,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
 
     final List<Widget> widgets = <Widget>[
       listTile(
+        key: const Key('overlay'),
         leading: isSmall ? null : const Icon(Icons.picture_in_picture),
         title: isSmall
             ? Text('Perform overlay'.tr)
@@ -102,6 +100,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
         },
       ),
       listTile(
+        key: const Key('accessibility'),
         leading: isSmall ? null : const Icon(Icons.accessibility),
         title: isSmall
             ? Text('Access'.tr)
@@ -117,6 +116,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
         },
       ),
       listTile(
+        key: const Key('banner'),
         leading: isSmall ? null : const Icon(Icons.bug_report),
         title: isSmall ? Text('DEBUG banner'.tr) : Text('Show DEBUG banner'.tr),
         onTap: () {
@@ -131,6 +131,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
       ),
       if (App.useMaterial)
         listTile(
+          key: const Key('material 3'),
           leading:
               isSmall ? null : const Icon(Icons.screen_lock_landscape_sharp),
           title: isSmall
@@ -147,6 +148,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
           },
         ),
       listTile(
+        key: const Key('grid'),
         leading: isSmall ? null : const Icon(Icons.border_clear),
         title:
             isSmall ? Text('Material grid'.tr) : Text('Show material grid'.tr),
@@ -194,6 +196,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
     // material grid and size construction lines are only available in checked mode
     widgets.addAll(<Widget>[
       listTile(
+          key: const Key('construction'),
           leading: isSmall ? null : const Icon(Icons.border_all),
           title: isSmall
               ? Text('Construct lines'.tr)
@@ -213,6 +216,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
                   setState(() {});
                 }),
       listTile(
+        key: const Key('baselines'),
         leading: isSmall ? null : const Icon(Icons.format_color_text),
         title: isSmall
             ? Text('Character baselines'.tr)
@@ -234,6 +238,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('taps'),
         leading: isSmall ? null : const Icon(Icons.mouse),
         title:
             isSmall ? Text('Flash taps'.tr) : Text('Flash interface taps'.tr),
@@ -253,6 +258,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('lines'),
         leading: isSmall ? null : const Icon(Icons.filter_none),
         title: isSmall
             ? Text('Boundary lines'.tr)
@@ -274,6 +280,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('layers'),
         leading: isSmall ? null : const Icon(Icons.gradient),
         title: isSmall
             ? Text('Highlight layers'.tr)
@@ -295,6 +302,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('colors'),
         leading: isSmall ? null : const Icon(Icons.vignette),
         title: isSmall
             ? Text('Color text'.tr)
@@ -316,6 +324,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('dirty'),
         leading: isSmall ? null : const Icon(Icons.dirty_lens),
         title: isSmall
             ? Text('Log dirty widgets'.tr)
@@ -337,6 +346,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('callback'),
         leading: isSmall ? null : const Icon(Icons.dirty_lens_rounded),
         title: isSmall
             ? Text('Callback for every rebuild'.tr)
@@ -357,6 +367,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('scope'),
         leading: isSmall ? null : const Icon(Icons.arrow_circle_right_outlined),
         title: isSmall
             ? Text('Log Scope'.tr)
@@ -377,6 +388,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('rebuilds'),
         leading: isSmall ? null : const Icon(Icons.update),
         title: isSmall
             ? Text('Log widget rebuilds'.tr)
@@ -398,6 +410,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('global'),
         leading: isSmall ? null : const Icon(Icons.language),
         title: isSmall
             ? Text("Log widget's global keys".tr)
@@ -421,6 +434,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('build'),
         leading: isSmall ? null : const Icon(Icons.location_history_outlined),
         title: isSmall
             ? Text("'Timeline' for every build".tr)
@@ -441,6 +455,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('timeline'),
         leading: isSmall ? null : const Icon(Icons.foundation),
         title: isSmall
             ? Text("'Timeline' for every user build".tr)
@@ -462,6 +477,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('debugging'),
         leading: isSmall ? null : const Icon(Icons.view_timeline),
         title: isSmall
             ? Text('Debug info.'.tr)
@@ -484,6 +500,7 @@ class _DevToolsSettingsState extends State<DevToolsSettings> {
               },
       ),
       listTile(
+        key: const Key('deprecated'),
         leading: isSmall ? null : const Icon(Icons.wrong_location),
         title: isSmall
             ? Text('Deprecate widgets'.tr)

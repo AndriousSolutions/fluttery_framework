@@ -43,9 +43,14 @@ Future<void> testAppObject(WidgetTester tester) async {
 
   await App.getInstallNum();
 
-  final details = FlutterErrorDetails(exception: AssertionError('error'));
+  final details = FlutterErrorDetails(
+    exception: Exception('Test logErrorDetails()!'),
+    library: 'test_app_object.dart',
+    context: ErrorDescription('Test logErrorDetails() in App object'),
+  );
 
-  AppErrorHandler().flutteryExceptionHandler?.call(details);
+  // AppErrorHandler().flutteryExceptionHandler?.call(details);
+  App.logErrorDetails(details);
 
   App.mainWindow;
 

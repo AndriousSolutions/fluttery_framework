@@ -1,4 +1,18 @@
 
+## 5.18.0
+March 05, 2025
+- Removed deprecated app_settings.dart
+- Additional Tests to the example app:
+  multi_screen_test.dart
+  routes_test.dart
+  settings_screen_test.dart
+  code_coverage.dart
+  test_runapp.dart
+- static void errorHandler(FlutterErrorDetails details) in error_handler.dart
+- void activate() { and void deactivate() {  in app_statex.dart
+  if (ignoreErrorInTesting) {  // Allow an error to be ignored. Once!
+
+
 ## 5.17.1+3
 March 03, 2025
 - Introduce three more 'inline' function routines in app_statex.dart:   

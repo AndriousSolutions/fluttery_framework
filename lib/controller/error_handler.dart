@@ -7,6 +7,9 @@
 //          Created  10 Feb 2020
 //
 //
+
+import 'dart:isolate' show Isolate, RawReceivePort, SendPort;
+
 import 'dart:ui' as i
     show ParagraphBuilder, ParagraphConstraints, ParagraphStyle, TextStyle;
 
@@ -38,6 +41,7 @@ import '/view.dart'
         FontWeight,
         Icons,
         InformationCollector,
+        kDebugMode,
         LeafRenderObjectWidget,
         Offset,
         Paint,
@@ -55,6 +59,7 @@ import 'package:flutter/rendering.dart'
         DiagnosticPropertiesBuilder,
         EdgeInsets,
         ErrorDescription,
+        ErrorHint,
         FlutterError,
         Key,
         Offset,
@@ -88,7 +93,7 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
     double? minimumWidth,
     Color? backgroundColor,
   }) {
-    //
+    // todo: Maybe make the Singleton Pattern optional
     _this ??= AppErrorHandler._();
 
     /// Allows you to set an error handler more than once.
@@ -209,8 +214,6 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
   ErrorWidgetBuilder? _flutteryErrorWidgetBuilder;
 
   /// The current Error Handler. Used in app_state.dart
-  @Deprecated('Use flutteryExceptionHandler instead.')
-  FlutterExceptionHandler? get errorHandler => _errorHandler;
   static FlutterExceptionHandler? _errorHandler;
 
   /// Return the Error Handling
@@ -330,7 +333,7 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
     if (_oldOnError != null) {
       FlutterError.onError = _oldOnError;
     }
-    return _oldBuilder != null && _oldOnError != null;
+    return _oldBuilder != null || _oldOnError != null;
   }
 
   /// Present error to user or not
@@ -353,10 +356,10 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
   /// Log the error
   @override
   void logErrorDetails(FlutterErrorDetails details) {
-    // Won't log this time with this call.
     if (logError) {
       super.logErrorDetails(details);
     } else {
+      // Won't log this time with this call.
       logError = true; // Next time.
     }
   }
@@ -434,6 +437,55 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
     ));
   }
 
+  /// Abandoned for now. RawReceivePort() is an asynchronous operation.
+  // ///
+  // bool addIsolateErrorListener() {
+  //   var add = true;
+  //   try {
+  //     currentIsolate ??= Isolate.current;
+  //     savedSendPort ??= RawReceivePort((dynamic pair) {
+  //       //
+  //       if (pair is List<dynamic>) {
+  //         final isolateError = pair;
+  //         this.isolateError(
+  //           isolateError.first.toString(),
+  //           StackTrace.fromString(isolateError.last.toString()),
+  //         );
+  //       }
+  //     }).sendPort;
+  //     currentIsolate!.addErrorListener(savedSendPort!);
+  //   } catch (e, stack) {
+  //     add = false;
+  //   }
+  //   return add;
+  // }
+  //
+  // /// Called in dispose()
+  // bool removeIsolateErrorListener() {
+  //   //
+  //   final remove = currentIsolate != null && savedSendPort != null;
+  //   if (remove) {
+  //     currentIsolate!.removeErrorListener(savedSendPort!);
+  //     savedSendPort = null; // Cleanup
+  //   }
+  //   return remove;
+  // }
+  //
+  // /// Current Isolate at the time
+  // Isolate? currentIsolate;
+  //
+  // /// Stored
+  // SendPort? get savedSendPort => _savedSendPort;
+  //
+  // /// Only ever set once
+  // set savedSendPort(SendPort? port) {
+  //   if (_savedSendPort != null) {
+  //     _savedSendPort = port;
+  //   }
+  // }
+  //
+  // SendPort? _savedSendPort;
+
   /// Supplies the error details to the designated error handler.
   // This is a copy used in the Flutter Framework.
   FlutterErrorDetails _debugReportException(
@@ -454,28 +506,56 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
     return details;
   }
 
-  ///
-  @Deprecated('Use displayErrorWidget instead.')
-  static Widget errorDisplayWidget(
-    FlutterErrorDetails details, {
-    Key? key,
-    i.ParagraphStyle? paragraphStyle,
-    i.TextStyle? textStyle,
-    EdgeInsets? padding,
-    double? minimumWidth,
-    Color? backgroundColor,
-    bool? stackTrace,
-  }) =>
-      displayErrorWidget(
-        details,
-        key: key,
-        paragraphStyle: paragraphStyle,
-        textStyle: textStyle,
-        padding: padding,
-        minimumWidth: minimumWidth,
-        backgroundColor: backgroundColor,
-        stackTrace: stackTrace,
-      );
+  /// Explicitly supply an Error Handler
+  static void errorHandler(FlutterErrorDetails details) {
+    // The Fluttery Framework's error handler
+    final appHandler = AppErrorHandler();
+
+    try {
+      // Record the error
+      appHandler.getError(details.exception);
+
+      // Handle the Flutter Error Details
+      appHandler.handleException(details);
+    } catch (e, stack) {
+      // Throw in DebugMode.
+      if (kDebugMode) {
+        // Set the original error routine. Allows the handler to throw errors.
+        FlutterError.onError = appHandler.oldOnError;
+        // Rethrow to be handled by the original routine.
+        rethrow;
+      } else {
+        // Record the error
+        appHandler.reportError(e, stack);
+      }
+    }
+  }
+
+  /// Handle the Exception
+  bool handleException(FlutterErrorDetails details) {
+    // ignore: prefer_final_locals
+    var handled = true;
+    final msg = details.exceptionAsString();
+    final name = msg.split('\n').first;
+    //
+    switch (name) {
+      case 'Zone mismatch.':
+        details = FlutterErrorDetails(
+          exception: details.exception,
+          stack: details.stack,
+          library: 'run_app.dart',
+          context: ErrorHint(
+            "with unnecessary call for binding.\nPlease remove call, WidgetsFlutterBinding.ensureInitialized();\nIf still required, please set the 'runZoneGuard' parameter to false: runApp(runZoneGuard: false)",
+          ),
+          informationCollector: details.informationCollector,
+        );
+      default:
+        handled = false;
+    }
+    // Log the error
+    logErrorDetails(details);
+    return handled;
+  }
 
   /// This function is intentionally doing things using the low-level
   /// primitives to avoid depending on any subsystems that may have ended

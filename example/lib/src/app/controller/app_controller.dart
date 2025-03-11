@@ -1,8 +1,6 @@
 //
 import '/src/controller.dart';
 
-import '/src/model.dart' show Settings;
-
 // You can see 'at a glance' this Controller also 'talks to' the interface (View).
 import '/src/view.dart';
 
@@ -81,7 +79,6 @@ class AppController extends AppStateXController with AppOptionSettings {
       body: [spinner],
       press01: () {},
       press02: () => App.changeLocale(appLocale),
-      switchButtons: Settings.getLeftHanded(),
     ).show();
   }
 
@@ -109,63 +106,63 @@ class AppController extends AppStateXController with AppOptionSettings {
         applicationVersion: 'version: ${App.version} build: ${App.buildNumber}',
       );
 
-  /// Supply the app's popupmenu
-  /// an immutable menu
-  Widget get menu => AppPopupMenu(
-        key: const Key('appMenuButton'),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        position: PopupMenuPosition.under,
-        menuEntries: [
-          PopupMenuItem(
-            key: const Key('interfaceMenuItem'),
-            value: 'interface',
-            child: Text(
-                '${'Interface:'.tr} ${App.useMaterial ? 'Material' : 'Cupertino'}'),
-          ),
-          PopupMenuItem(
-            key: const Key('applicationMenuItem'),
-            value: 'application',
-            child: Text('Application: Grid App'.tr),
-          ),
-          PopupMenuItem(
-            key: const Key('localeMenuItem'),
-            value: 'locale',
-            child: Text(
-                '${'Locale:'.tr} ${App.appState!.locale!.toLanguageTag()}'),
-          ),
-          if (App.useMaterial)
-            PopupMenuItem(
-              key: const Key('colorMenuItem'),
-              value: 'color',
-              child: L10n.t('Colour Theme'),
-            ),
-          PopupMenuItem(
-            key: const Key('aboutMenuItem'),
-            value: 'about',
-            child: L10n.t('About'),
-          ),
-        ],
-        inSelected: (String value) async {
-          switch (value) {
-            case 'interface':
-              changeUI();
-              break;
-            case 'application':
-              await changeApp();
-              break;
-            case 'locale':
-              await changeLocale();
-              break;
-            case 'color':
-              await changeColor();
-              break;
-            case 'about':
-              aboutApp();
-              break;
-            default:
-          }
-        },
-      );
+  // /// Supply the app's popupmenu
+  // /// an immutable menu
+  // Widget get menu => AppPopupMenu(
+  //       key: const Key('appMenuButton'),
+  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+  //       position: PopupMenuPosition.under,
+  //       menuEntries: [
+  //         PopupMenuItem(
+  //           key: const Key('interfaceMenuItem'),
+  //           value: 'interface',
+  //           child: Text(
+  //               '${'Interface:'.tr} ${App.useMaterial ? 'Material' : 'Cupertino'}'),
+  //         ),
+  //         PopupMenuItem(
+  //           key: const Key('applicationMenuItem'),
+  //           value: 'application',
+  //           child: Text('Application: Grid App'.tr),
+  //         ),
+  //         PopupMenuItem(
+  //           key: const Key('localeMenuItem'),
+  //           value: 'locale',
+  //           child: Text(
+  //               '${'Locale:'.tr} ${App.appState!.locale!.toLanguageTag()}'),
+  //         ),
+  //         if (App.useMaterial)
+  //           PopupMenuItem(
+  //             key: const Key('colorMenuItem'),
+  //             value: 'color',
+  //             child: L10n.t('Colour Theme'),
+  //           ),
+  //         PopupMenuItem(
+  //           key: const Key('aboutMenuItem'),
+  //           value: 'about',
+  //           child: L10n.t('About'),
+  //         ),
+  //       ],
+  //       inSelected: (String value) async {
+  //         switch (value) {
+  //           case 'interface':
+  //             changeUI();
+  //             break;
+  //           case 'application':
+  //             await changeApp();
+  //             break;
+  //           case 'locale':
+  //             await changeLocale();
+  //             break;
+  //           case 'color':
+  //             await changeColor();
+  //             break;
+  //           case 'about':
+  //             aboutApp();
+  //             break;
+  //           default:
+  //         }
+  //       },
+  //     );
 
   /// Supply the App's routes
   Map<String, Widget> get routes => {
@@ -209,8 +206,14 @@ class AppController extends AppStateXController with AppOptionSettings {
   bool get useHome =>
       _appSettings?.useHome ?? false; //!useRoutes && !useInheritedWidget;
 
-  /// During testing, set app to use the home parameter
+  /// During testing, set app to use the onHome function
   void setForHome() => _appSettings?.setForOnHome();
+
+  /// Test if no 'home' to start with has been set
+  bool hasNoHome() => _appSettings?.hasNoHome() ?? false;
+
+  /// Set the onHome function
+  void setForOnHome() => _appSettings?.setForOnHome();
 
   /// Allow to change app
   bool get allowChangeApp => useOnHome && _allowChangeApp;
@@ -241,6 +244,25 @@ class AppController extends AppStateXController with AppOptionSettings {
   /// Throw button error
   @override
   bool get buttonError => _appSettings?.buttonError ?? false;
+
+  /// Throw a specific Error
+  void throwErrorOnce(Error? error) {
+    // Allow for null parameter
+    if (error != null) {
+      // Allow one 'error' to occur
+      appState?.ignoreErrorInTesting = true;
+      // Note, this will only work during testing.
+      if (appState?.ignoreErrorInTesting ?? false) {
+        throw error;
+      }
+    }
+  }
+
+  /// A flag indicating whether an Error or Exception can occur
+  bool get allowErrorOnce => appState?.ignoreErrorInTesting ?? false;
+
+  /// Set a means to throw an error but only during testing.
+  set allowErrorOnce(bool? allow) => appState?.ignoreErrorInTesting = allow;
 
   /// **************  Life cycle events ****************
 

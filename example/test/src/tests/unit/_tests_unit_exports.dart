@@ -8,6 +8,9 @@ export 'package:fluttery_framework_example/src/controller.dart';
 export 'package:fluttery_framework_example/src/model.dart' hide StateSetter;
 
 export 'package:fluttery_framework_example/src/view.dart'
+    show AppSettingsDrawer;
+
+export 'package:fluttery_framework_example/src/view.dart'
     hide AppSettingsDrawer, AppSettings;
 
 /// Supply all the dependencies necessary to complete the testing.

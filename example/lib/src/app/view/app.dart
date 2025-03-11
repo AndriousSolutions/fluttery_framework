@@ -32,6 +32,7 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
       : super(
           title: 'Fluttery Demo App',
           controller: AppController(),
+          errorHandler: AppErrorHandler.errorHandler,
           errorScreen: AppErrorHandler.displayErrorWidget,
           inUnknownRoute: AppErrorHandler.onUnknownRoute,
           useRouterConfig: AppController().useRouterConfig,
@@ -67,12 +68,6 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
               dev.debugEnhanceBuildTimelineArguments,
           inDebugHighlightDeprecatedWidgets: () =>
               dev.debugHighlightDeprecatedWidgets,
-          onNavigationNotification: (notification) {
-            if (kDebugMode) {
-              debugPrint('############ Event: onNavigationNotification()');
-            }
-            return notification.canHandlePop;
-          },
           inSupportedLocales: () {
             /// The app's translations
             L10n.translations = {
@@ -156,7 +151,15 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
   @override
   Widget? onHome() {
     Widget? home;
-    if ((controller as AppController).useOnHome) {
+    final appController = controller as AppController;
+    // In case, during testing, the 'onHome' function setting is not on
+    if (App.inFlutterTest &&
+        !appController.useOnHome &&
+        !appController.useRoutes) {
+      appController.setForOnHome();
+    }
+
+    if (appController.useOnHome) {
       home = CounterPage(
         key: UniqueKey(), //  UniqueKey() for built-in InheritedWidget
       );
@@ -226,14 +229,6 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
   /// Place a breakpoint in your IDE and see what happens in there
   @override
   bool? onDebugShowCheckedModeBanner() => super.onDebugShowCheckedModeBanner();
-
-  @override
-  bool onOnNavigationNotification(notification) {
-    if (kDebugMode) {
-      debugPrint('############ Event: Navigation change.');
-    }
-    return notification.canHandlePop;
-  }
 
   @override
   void onErrorHandler(FlutterErrorDetails details) {

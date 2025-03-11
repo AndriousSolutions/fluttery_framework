@@ -12,8 +12,10 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Flexible(child: AppSettingsDrawer()),
-          Flexible(child: DevSettingsDrawer()),
+          Flexible(
+              child: AppSettingsDrawer(key: const Key('AppSettingsDrawer'))),
+          Flexible(
+              child: DevSettingsDrawer(key: const Key('DevSettingsDrawer'))),
         ],
       );
 }
@@ -94,6 +96,7 @@ class SettingsScreen extends StatelessWidget {
 
 /// Supply the appropriate ListTile widget
 Widget listTile({
+  Key? key,
   Widget? leading,
   Widget? title,
   GestureTapCallback? onTap,
@@ -102,6 +105,7 @@ Widget listTile({
   ValueChanged<bool>? onChanged,
 }) =>
     ListTile(
+      key: key,
       leading: leading,
       title: title,
       onTap: onTap,

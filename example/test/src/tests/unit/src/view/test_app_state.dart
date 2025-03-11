@@ -26,8 +26,6 @@ Future<void> testAppState(WidgetTester tester) async {
 
   await appState.didPopRoute();
 
-  appState.activate();
-
   appState.onRouteInformationProvider();
 
   appState.onBackButtonDispatcher();
@@ -40,6 +38,12 @@ Future<void> testAppState(WidgetTester tester) async {
 
   appState.onOnNavigationNotification(
       const NavigationNotification(canHandlePop: false));
+
+  bool noteCallback(Notification note) => true;
+
+  appState.addNavigationListener(noteCallback);
+
+  appState.removeNavigationListener(noteCallback);
 
   appState.oniOSTheme();
 

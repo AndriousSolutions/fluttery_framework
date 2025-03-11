@@ -11,8 +11,6 @@ import 'dart:isolate' show Isolate, RawReceivePort;
 
 import 'package:flutter/foundation.dart'
     show
-        ErrorHint,
-        FlutterErrorDetails,
         FlutterExceptionHandler,
         kDebugMode,
         kIsWeb;
@@ -28,11 +26,12 @@ void runApp(
   FlutterExceptionHandler? onError,
   bool? runZoneGuard,
 }) {
+  // Instantiate the Fluttery error handler.
+  // Records the current Error Handler
+  final handler = c.AppErrorHandler();
+
   // Assign an error handler (Will be replaced after)
   c.AppErrorHandler.set(handler: _RunAppErrorHandler(onError).handler);
-
-  // Instantiate the app's error handler.
-  final handler = c.AppErrorHandler();
 
   // Isolate is not available on the Web
   if (!kIsWeb) {
@@ -78,7 +77,7 @@ class _RunAppErrorHandler {
       appHandler.getError(details.exception);
 
       // Handle the Flutter Error Details
-      handleException(appHandler, details);
+      appHandler.handleException(details);
 
       // Call the supplied error handler
       onError?.call(details);
@@ -95,34 +94,5 @@ class _RunAppErrorHandler {
         appHandler.reportError(e, stack);
       }
     }
-  }
-
-  /// Handle the Exception
-  bool handleException(
-    c.AppErrorHandler handler,
-    m.FlutterErrorDetails details,
-  ) {
-    // ignore: prefer_final_locals
-    var handled = true;
-    final msg = details.exceptionAsString();
-    final name = msg.split('\n').first;
-    //
-    switch (name) {
-      case 'Zone mismatch.':
-        details = FlutterErrorDetails(
-          exception: details.exception,
-          stack: details.stack,
-          library: 'run_app.dart',
-          context: ErrorHint(
-            "with unnecessary call for binding.\nPlease remove call, WidgetsFlutterBinding.ensureInitialized();\nIf still required, please set the 'runZoneGuard' parameter to false: runApp(runZoneGuard: false)",
-          ),
-          informationCollector: details.informationCollector,
-        );
-      default:
-      // handled = false;
-    }
-    // Log the error
-    handler.logErrorDetails(details);
-    return handled;
   }
 }

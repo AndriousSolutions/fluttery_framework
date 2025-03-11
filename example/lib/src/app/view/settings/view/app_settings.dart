@@ -11,13 +11,10 @@ import '/src/view.dart';
 class AppSettingsDrawer extends v.AppDrawer {
   ///
   AppSettingsDrawer({super.key}) {
-    /// Don't offer these development tools if testing the app
-    if (!App.inFlutterTest) {
-      if (App.useMaterial) {
-        add(const AppSettings.column());
-      } else {
-        add(const AppSettings.disabled());
-      }
+    if (App.useMaterial) {
+      add(const AppSettings.column(key: Key('AppSettings')));
+    } else {
+      add(const AppSettings.disabled(key: Key('AppSettings')));
     }
   }
 }
@@ -95,7 +92,8 @@ class _AppSettingsState extends State<AppSettings> {
     //
     final List<Widget> widgets = <Widget>[
       listTile(
-        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        key: const Key('delay'),
+        leading: isSmall ? null : const Icon(Icons.dark_mode),
         title: isSmall ? Text('Delay'.tr) : Text('Delay Startup'.tr),
         onTap: () => disable ? null : onTapInitAsyncDelay(state: this),
         tip: disable ? tip : tipDelay,
@@ -104,7 +102,8 @@ class _AppSettingsState extends State<AppSettings> {
             disable ? null : onTapInitAsyncDelay(use: v, state: this),
       ),
       listTile(
-        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        key: const Key('home'),
+        leading: isSmall ? null : const Icon(Icons.home),
         title: isSmall
             ? Text('home parameter'.tr)
             : Text('Use the home parameter'.tr),
@@ -114,7 +113,8 @@ class _AppSettingsState extends State<AppSettings> {
         onChanged: (v) => disable ? null : onTapUseHome(use: v, state: this),
       ),
       listTile(
-        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        key: const Key('onHome'),
+        leading: isSmall ? null : const Icon(Icons.home_outlined),
         title: isSmall ? Text("'onHome'".tr) : Text("Use 'onHome' function".tr),
         onTap: () => disable ? null : onTapUseOnHome(state: this),
         tip: disable ? tip : tipOnHome,
@@ -122,7 +122,8 @@ class _AppSettingsState extends State<AppSettings> {
         onChanged: (v) => disable ? null : onTapUseOnHome(use: v, state: this),
       ),
       listTile(
-        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        key: const Key('routes'),
+        leading: isSmall ? null : const Icon(Icons.remove_road_sharp),
         title: isSmall ? Text('Routes'.tr) : Text('Use Routes instead'.tr),
         onTap: () => disable ? null : onTapUseRoutes(state: this),
         tip: disable ? tip : tipRoutes,
@@ -130,7 +131,8 @@ class _AppSettingsState extends State<AppSettings> {
         onChanged: (v) => disable ? null : onTapUseRoutes(use: v, state: this),
       ),
       listTile(
-        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        key: const Key('router'),
+        leading: isSmall ? null : const Icon(Icons.add_road),
         title: isSmall ? Text('Router'.tr) : Text('Use Router Config.'.tr),
         onTap: () => disable ? null : onTapUseRouterConfig(state: this),
         tip: disable ? tip : tipRouterConfig,
@@ -139,7 +141,8 @@ class _AppSettingsState extends State<AppSettings> {
             disable ? null : onTapUseRouterConfig(use: v, state: this),
       ),
       listTile(
-        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        key: const Key('inheritedWidget'),
+        leading: isSmall ? null : const Icon(Icons.live_help_rounded),
         title: isSmall
             ? Text('InheritedWidget'.tr)
             : Text('Use InheritedWidget'.tr),
@@ -149,7 +152,8 @@ class _AppSettingsState extends State<AppSettings> {
         onChanged: (v) => onTapInherited(use: v, state: this),
       ),
       listTile(
-        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        key: const Key('button error'),
+        leading: isSmall ? null : const Icon(Icons.radio_button_on_sharp),
         title: isSmall ? Text('Button Error'.tr) : Text('Error Push button'.tr),
         onTap: () {
           con.buttonError = !con.buttonError;
@@ -162,7 +166,8 @@ class _AppSettingsState extends State<AppSettings> {
         },
       ),
       listTile(
-        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        key: const Key('builder error'),
+        leading: isSmall ? null : const Icon(Icons.build),
         title: isSmall ? Text('Builder Error'.tr) : Text('Error in Builder'.tr),
         onTap: () {
           con.errorInBuilder = !con.errorInBuilder;
@@ -177,7 +182,8 @@ class _AppSettingsState extends State<AppSettings> {
         },
       ),
       listTile(
-        leading: isSmall ? null : const Icon(Icons.picture_in_picture),
+        key: const Key('initAsync error'),
+        leading: isSmall ? null : const Icon(Icons.insert_invitation_sharp),
         title: isSmall
             ? Text('initAsync Error'.tr)
             : Text('Error in initAsync'.tr),

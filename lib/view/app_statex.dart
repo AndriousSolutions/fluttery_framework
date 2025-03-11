@@ -1261,19 +1261,19 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   ScrollBehavior? _scrollBehavior;
   AnimationStyle? _themeAnimationStyle;
 
-  // @override
-  // void activate() {
-  //   // Return the Error Handler
-  //   _errorHandler?.activate();
-  //   super.activate(); // IMPORTANT to call last
-  // }
+  @override
+  void activate() {
+    // Return the Error Handler
+    _errorHandler?.activate();
+    super.activate(); // IMPORTANT to call last
+  }
 
-  // @override
-  // void deactivate() {
-  //   // Restore original Error Handler
-  //   _errorHandler?.deactivate();
-  //   super.deactivate(); // IMPORTANT to call last
-  // }
+  @override
+  void deactivate() {
+    // Restore original Error Handler
+    _errorHandler?.deactivate();
+    super.deactivate(); // IMPORTANT to call last
+  }
 
   @override
   void dispose() {
@@ -1847,13 +1847,41 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
 
     // If in testing, after the supplied handler, call its Error handler
     // An `Error` is a failure that the programmer should have avoided.
-    if ((details.exception is TestFailure || details.exception is Error) &&
-        WidgetsBinding.instance is! WidgetsFlutterBinding) {
-      _errorHandler?.oldOnError?.call(details);
+    if (WidgetsBinding.instance is! WidgetsFlutterBinding) {
+      if (details.exception is TestFailure || details.exception is Error) {
+        // Allow an error to be ignored. Once!
+        if (ignoreErrorInTesting) {
+          _ignoreErrorInTesting = false;
+        } else {
+          _errorHandler?.oldOnError?.call(details);
+        }
+      }
     }
-
     _inErrorRoutine = false;
   }
+
+  /// A flag testing the Error routine *INSIDE* the testing
+  /// It's set and reset *ONLY* when testing.
+  /// Allows a one-time even to ignore an error during testing.
+  bool get ignoreErrorInTesting => _ignoreErrorInTesting ?? false;
+
+  // Only set to true once and only in testing
+  set ignoreErrorInTesting(bool? ignore) {
+    // Assigns a value only in testing.
+    if (ignore != null && WidgetsBinding.instance is! WidgetsFlutterBinding) {
+      if (_ignoreErrorInTesting == null) {
+        _ignoreErrorInTesting = ignore;
+      } else {
+        // Once set false, it can't be changed again
+        if (_ignoreErrorInTesting!) {
+          _ignoreErrorInTesting = ignore;
+        }
+      }
+    }
+  }
+
+  //
+  bool? _ignoreErrorInTesting;
 
   // Notify the developer there's an error in the error handler.
   void _onErrorInHandler() {
@@ -1942,7 +1970,7 @@ class StateX<T extends StatefulWidget> extends s.StateX<T> {
   Widget buildiOS(BuildContext context) => buildAndroid(context);
 
   /// Returns the 'first' StateX object in the App
-  AppStateX? get appState => super.rootState as AppStateX;
+  AppStateX? get appState => super.rootState as AppStateX?;
 
   /// Provide the 'main' controller to this 'State View.'
   @override
