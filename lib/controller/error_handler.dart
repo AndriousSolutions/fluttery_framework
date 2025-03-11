@@ -8,8 +8,6 @@
 //
 //
 
-import 'dart:isolate' show Isolate, RawReceivePort, SendPort;
-
 import 'dart:ui' as i
     show ParagraphBuilder, ParagraphConstraints, ParagraphStyle, TextStyle;
 
