@@ -106,64 +106,6 @@ class AppController extends AppStateXController with AppOptionSettings {
         applicationVersion: 'version: ${App.version} build: ${App.buildNumber}',
       );
 
-  // /// Supply the app's popupmenu
-  // /// an immutable menu
-  // Widget get menu => AppPopupMenu(
-  //       key: const Key('appMenuButton'),
-  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-  //       position: PopupMenuPosition.under,
-  //       menuEntries: [
-  //         PopupMenuItem(
-  //           key: const Key('interfaceMenuItem'),
-  //           value: 'interface',
-  //           child: Text(
-  //               '${'Interface:'.tr} ${App.useMaterial ? 'Material' : 'Cupertino'}'),
-  //         ),
-  //         PopupMenuItem(
-  //           key: const Key('applicationMenuItem'),
-  //           value: 'application',
-  //           child: Text('Application: Grid App'.tr),
-  //         ),
-  //         PopupMenuItem(
-  //           key: const Key('localeMenuItem'),
-  //           value: 'locale',
-  //           child: Text(
-  //               '${'Locale:'.tr} ${App.appState!.locale!.toLanguageTag()}'),
-  //         ),
-  //         if (App.useMaterial)
-  //           PopupMenuItem(
-  //             key: const Key('colorMenuItem'),
-  //             value: 'color',
-  //             child: L10n.t('Colour Theme'),
-  //           ),
-  //         PopupMenuItem(
-  //           key: const Key('aboutMenuItem'),
-  //           value: 'about',
-  //           child: L10n.t('About'),
-  //         ),
-  //       ],
-  //       inSelected: (String value) async {
-  //         switch (value) {
-  //           case 'interface':
-  //             changeUI();
-  //             break;
-  //           case 'application':
-  //             await changeApp();
-  //             break;
-  //           case 'locale':
-  //             await changeLocale();
-  //             break;
-  //           case 'color':
-  //             await changeColor();
-  //             break;
-  //           case 'about':
-  //             aboutApp();
-  //             break;
-  //           default:
-  //         }
-  //       },
-  //     );
-
   /// Supply the App's routes
   Map<String, Widget> get routes => {
         '/': const CounterPage(),
@@ -265,6 +207,7 @@ class AppController extends AppStateXController with AppOptionSettings {
   set allowErrorOnce(bool? allow) => appState?.ignoreErrorInTesting = allow;
 
   /// **************  Life cycle events ****************
+  ///
 
   /// Called to complete any asynchronous operations.
   /// In production, this is where databases are opened, logins attempted, etc.
@@ -291,10 +234,25 @@ class AppController extends AppStateXController with AppOptionSettings {
       throw Exception('Error in initAsync()!');
     }
 
+    _thisController = toString().replaceFirst('Instance of ', '');
+
     if (inDebugMode) {
-      debugPrint('############ Event: initAsync() in $this');
+      debugPrint(
+          '############ Event: initAsync() in $_thisController in $appState');
     }
     return init;
+  }
+
+  // Provide the name of this class object during debugging
+  String _thisController = "'AppController'";
+
+  @override
+  void initState() {
+    super.initState();
+    if (inDebugMode) {
+      debugPrint(
+          '############ Event: initState() in $_thisController in $appState');
+    }
   }
 
   // You can address any errors in initAsync() function
@@ -312,7 +270,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void deactivate() {
     if (inDebugMode) {
-      debugPrint('############ Event: deactivate() in $this');
+      debugPrint(
+          '############ Event: deactivate() in $_thisController in $appState');
     }
     _appSettings?.goOnHome();
   }
@@ -322,7 +281,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void activate() {
     if (inDebugMode) {
-      debugPrint('############ Event: activate() in $this');
+      debugPrint(
+          '############ Event: activate() in $_thisController in $appState');
     }
   }
 
@@ -333,7 +293,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void dispose() {
     if (inDebugMode) {
-      debugPrint('############ Event: dispose() in $this');
+      debugPrint(
+          '############ Event: dispose() in $_thisController in $appState');
     }
     super.dispose();
   }
@@ -343,7 +304,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void pausedAppLifecycleState() {
     if (inDebugMode) {
-      debugPrint('############ Event: pausedAppLifecycleState() in $this');
+      debugPrint(
+          '############ Event: pausedAppLifecycleState() in $_thisController in $appState');
     }
   }
 
@@ -351,7 +313,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void resumedAppLifecycleState() {
     if (inDebugMode) {
-      debugPrint('############ Event: resumedAppLifecycleState() in $this');
+      debugPrint(
+          '############ Event: resumedAppLifecycleState() in $_thisController in $appState');
     }
   }
 
@@ -359,7 +322,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void inactiveAppLifecycleState() {
     if (inDebugMode) {
-      debugPrint('############ Event: inactiveAppLifecycleState() in $this');
+      debugPrint(
+          '############ Event: inactiveAppLifecycleState() in $_thisController in $appState');
     }
   }
 
@@ -368,7 +332,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void detachedAppLifecycleState() {
     if (inDebugMode) {
-      debugPrint('############ Event: detachedAppLifecycleState() in $this');
+      debugPrint(
+          '############ Event: detachedAppLifecycleState() in $_thisController in $appState');
     }
   }
 
@@ -376,7 +341,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void didUpdateWidget(StatefulWidget oldWidget) {
     if (inDebugMode) {
-      debugPrint('############ Event: didUpdateWidget() in $this');
+      debugPrint(
+          '############ Event: didUpdateWidget() in $_thisController in $appState');
     }
   }
 
@@ -386,7 +352,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void didChangeDependencies() {
     if (inDebugMode) {
-      debugPrint('############ Event: didChangeDependencies() in $this');
+      debugPrint(
+          '############ Event: didChangeDependencies() in $_thisController in $appState');
     }
   }
 
@@ -395,7 +362,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void reassemble() {
     if (inDebugMode) {
-      debugPrint('############ Event: reassemble() in $this');
+      debugPrint(
+          '############ Event: reassemble() in $_thisController in $appState');
     }
   }
 
@@ -405,7 +373,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   Future<bool> didPopRoute() async {
     if (inDebugMode) {
-      debugPrint('############ Event: didPopRoute() in $this');
+      debugPrint(
+          '############ Event: didPopRoute() in $_thisController in $appState');
     }
     return super.didPopRoute();
   }
@@ -415,7 +384,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
     if (inDebugMode) {
-      debugPrint('############ Event: didPushRouteInformation() in $this');
+      debugPrint(
+          '############ Event: didPushRouteInformation() in $_thisController in $appState');
     }
     return super.didPushRouteInformation(routeInformation);
   }
@@ -424,7 +394,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void didPush() {
     if (inDebugMode) {
-      debugPrint('############ Event: didPush() in $this');
+      debugPrint(
+          '############ Event: didPush() in $_thisController in $appState');
     }
     super.didPush();
   }
@@ -433,7 +404,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void didPushNext() {
     if (inDebugMode) {
-      debugPrint('############ Event: didPushNext() in $this');
+      debugPrint(
+          '############ Event: didPushNext() in $_thisController in $appState');
     }
     super.didPushNext();
   }
@@ -442,7 +414,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void didPop() {
     if (inDebugMode) {
-      debugPrint('############ Event: didPop() in $this');
+      debugPrint(
+          '############ Event: didPop() in $_thisController in $appState');
     }
     super.didPop();
   }
@@ -451,7 +424,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void didPopNext() {
     if (inDebugMode) {
-      debugPrint('############ Event: didPopNext() in $this');
+      debugPrint(
+          '############ Event: didPopNext() in $_thisController in $appState');
     }
     super.didPopNext();
   }
@@ -461,7 +435,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void didChangeMetrics() {
     if (inDebugMode) {
-      debugPrint('############ Event: didChangeMetrics() in $this');
+      debugPrint(
+          '############ Event: didChangeMetrics() in $_thisController in $appState');
     }
   }
 
@@ -469,7 +444,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void didChangeTextScaleFactor() {
     if (inDebugMode) {
-      debugPrint('############ Event: didChangeTextScaleFactor() in $this');
+      debugPrint(
+          '############ Event: didChangeTextScaleFactor() in $_thisController in $appState');
     }
   }
 
@@ -477,7 +453,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void didChangePlatformBrightness() {
     if (inDebugMode) {
-      debugPrint('############ Event: didChangePlatformBrightness() in $this');
+      debugPrint(
+          '############ Event: didChangePlatformBrightness() in $_thisController in $appState');
     }
   }
 
@@ -485,7 +462,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void didChangeLocales(List<Locale>? locales) {
     if (inDebugMode) {
-      debugPrint('############ Event: didChangeLocale() in $this');
+      debugPrint(
+          '############ Event: didChangeLocale() in $_thisController in $appState');
     }
   }
 
@@ -498,7 +476,7 @@ class AppController extends AppStateXController with AppOptionSettings {
     /// AppLifecycleState.resume
     if (inDebugMode) {
       debugPrint(
-          '############ Event: didChangeAppLifecycleState() in $appState for $this');
+          '############ Event: didChangeAppLifecycleState($state) in $_thisController in $appState');
     }
   }
 
@@ -506,7 +484,8 @@ class AppController extends AppStateXController with AppOptionSettings {
   @override
   void didHaveMemoryPressure() {
     if (inDebugMode) {
-      debugPrint('############ Event: didHaveMemoryPressure() in $this');
+      debugPrint(
+          '############ Event: didHaveMemoryPressure() in $_thisController in $appState');
     }
   }
 
@@ -515,7 +494,7 @@ class AppController extends AppStateXController with AppOptionSettings {
   void didChangeAccessibilityFeatures() {
     if (inDebugMode) {
       debugPrint(
-          '############ Event: didChangeAccessibilityFeatures() in $this');
+          '############ Event: didChangeAccessibilityFeatures() in $_thisController in $appState');
     }
   }
 }

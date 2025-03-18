@@ -2,7 +2,7 @@
 import 'package:fluttery_framework/view.dart' as v;
 
 //
-import '../controller/app_settings_controller.dart';
+import '/src/controller.dart';
 
 //
 import '/src/view.dart';

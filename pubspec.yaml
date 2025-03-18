@@ -26,6 +26,9 @@ dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_web_plugins:
+    sdk: flutter
+
   # https://pub.dev/packages/go_router/
   go_router: ^14.8.0
 
@@ -67,9 +70,6 @@ dependencies:
   url_launcher: ^6.3.1
 
   url_launcher_web: ^2.4.0
-
-  # https://pub.dev/packages/url_strategy
-  url_strategy: ^0.3.0
 
   # https://pub.dartlang.org/packages/uuid
   uuid: ^4.5.1

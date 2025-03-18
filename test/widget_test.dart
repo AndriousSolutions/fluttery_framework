@@ -8,6 +8,6 @@ library;
 ///
 
 /// Calls the example app's very own test
-import '../example/test/widget_test.dart';
+import 'package:fluttery_framework_example/test/widget_test.dart';
 
 void main() => testFlutteryFramework();

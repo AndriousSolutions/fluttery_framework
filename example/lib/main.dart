@@ -1,4 +1,6 @@
 //
-import 'src/view.dart';
+import '/src/view.dart';
 
-void main() => runApp(FlutteryExampleApp());
+void main() => runApp(
+      FlutteryExampleApp(),
+    );

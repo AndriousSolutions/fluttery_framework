@@ -43,6 +43,16 @@ class _CounterPageState extends StateX<CounterPage> {
 
   int counter = 0;
 
+  // Display the Switch widget?
+  bool _showSwitch() {
+    bool show = false;
+    final appController = rootCon;
+    if (appController != null && appController is AppController) {
+      show = appController.useOnHome && appController.useInheritedWidget;
+    }
+    return show;
+  }
+
   /// Place breakpoints and step through the functions below to see how this all works.
   @override
   //ignore: unnecessary_overrides
@@ -139,16 +149,6 @@ class _CounterPageState extends StateX<CounterPage> {
         child: const SettingsPage(),
       ),
     );
-  }
-
-  // Display the Switch widget?
-  bool _showSwitch() {
-    bool show = false;
-    final appController = rootCon;
-    if (appController != null && appController is AppController) {
-      show = appController.useOnHome && appController.useInheritedWidget;
-    }
-    return show;
   }
 
   /// Supply the 'Cupertino' Interface for the iOS platform.

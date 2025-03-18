@@ -26,17 +26,6 @@ class CounterController extends AppStateXController {
   /// The flag indicating if an InheritedWidget is to used.
   bool get useInherited => AppController().useInheritedWidget;
 
-  @override
-  void initState() {
-    // Add this controller to the State object's lifecycle.
-    wordPairsTimer.addState(state);
-    super.initState();
-    if (inDebugMode) {
-      //ignore: avoid_print
-      debugPrint('############ Event: initState in $this');
-    }
-  }
-
   /// the 'counter' value.
   String get data => _model.data;
 
@@ -60,11 +49,28 @@ class CounterController extends AppStateXController {
     //
     final init = await super.initAsync();
 
+    // Provide the name of this class object during debugging
+    _thisController = toString().replaceFirst('Instance of ', '');
+
     if (inDebugMode) {
       //ignore: avoid_print
-      debugPrint('############ Event: initAsync in $this');
+      debugPrint('############ Event: initAsync() in $_thisController in $state');
     }
     return init;
+  }
+
+  // Provide the name of this class object during debugging
+  String _thisController = "'CounterController'";
+
+  @override
+  void initState() {
+    // Add this controller to the State object's lifecycle.
+    wordPairsTimer.addState(state);
+    super.initState();
+    if (inDebugMode) {
+      //ignore: avoid_print
+      debugPrint('############ Event: initState() in $_thisController in $state');
+    }
   }
 
   /// The framework calls this method when the [StateX] object removed from widget tree.
@@ -73,7 +79,8 @@ class CounterController extends AppStateXController {
   void deactivate() {
     if (inDebugMode) {
       //ignore: avoid_print
-      debugPrint('############ Event: deactivate in $this');
+      debugPrint(
+          '############ Event: deactivate() in $_thisController in $state');
     }
   }
 
@@ -83,7 +90,7 @@ class CounterController extends AppStateXController {
   void activate() {
     if (inDebugMode) {
       //ignore: avoid_print
-      debugPrint('############ Event: activate in $this');
+      debugPrint('############ Event: activate() in $_thisController in $state');
     }
   }
 
@@ -94,7 +101,7 @@ class CounterController extends AppStateXController {
   @override
   void dispose() {
     if (inDebugMode) {
-      debugPrint('############ Event: dispose() in $this');
+      debugPrint('############ Event: dispose() in $_thisController in $state');
     }
     super.dispose();
   }
@@ -104,7 +111,8 @@ class CounterController extends AppStateXController {
   @override
   void pausedAppLifecycleState() {
     if (inDebugMode) {
-      debugPrint('############ Event: pausedLifecycleState in $this');
+      debugPrint(
+          '############ Event: pausedLifecycleState() in $_thisController in $state');
     }
   }
 
@@ -112,7 +120,8 @@ class CounterController extends AppStateXController {
   @override
   void resumedAppLifecycleState() {
     if (inDebugMode) {
-      debugPrint('############ Event: resumedLifecycleState in $this');
+      debugPrint(
+          '############ Event: resumedLifecycleState() in $_thisController in $state');
     }
   }
 
@@ -120,7 +129,8 @@ class CounterController extends AppStateXController {
   @override
   void inactiveAppLifecycleState() {
     if (inDebugMode) {
-      debugPrint('############ Event: inactiveLifecycleState in $this');
+      debugPrint(
+          '############ Event: inactiveLifecycleState() in $_thisController in $state');
     }
   }
 
@@ -129,7 +139,8 @@ class CounterController extends AppStateXController {
   @override
   void detachedAppLifecycleState() {
     if (inDebugMode) {
-      debugPrint('############ Event: detachedLifecycleState in $this');
+      debugPrint(
+          '############ Event: detachedLifecycleState() in $_thisController in $state');
     }
   }
 
@@ -137,7 +148,8 @@ class CounterController extends AppStateXController {
   @override
   void didUpdateWidget(CounterPage oldWidget) {
     if (inDebugMode) {
-      debugPrint('############ Event: didUpdateWidget in $this');
+      debugPrint(
+          '############ Event: didUpdateWidget() in $_thisController in $state');
     }
   }
 
@@ -147,7 +159,8 @@ class CounterController extends AppStateXController {
   @override
   void didChangeDependencies() {
     if (inDebugMode) {
-      debugPrint('############ Event: didChangeDependencies in $this');
+      debugPrint(
+          '############ Event: didChangeDependencies() in $_thisController in $state');
     }
   }
 
@@ -156,7 +169,8 @@ class CounterController extends AppStateXController {
   @override
   void reassemble() {
     if (inDebugMode) {
-      debugPrint('############ Event: reassemble in $this');
+      debugPrint(
+          '############ Event: reassemble() in $_thisController in $state');
     }
   }
 
@@ -166,7 +180,8 @@ class CounterController extends AppStateXController {
   @override
   Future<bool> didPopRoute() async {
     if (inDebugMode) {
-      debugPrint('############ Event: didPopRoute in $this');
+      debugPrint(
+          '############ Event: didPopRoute() in $_thisController in $state');
     }
     return super.didPopRoute();
   }
@@ -176,7 +191,8 @@ class CounterController extends AppStateXController {
   @override
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
     if (inDebugMode) {
-      debugPrint('############ Event: didPushRouteInformation in $this');
+      debugPrint(
+          '############ Event: didPushRouteInformation() in $_thisController in $state');
     }
     return super.didPushRouteInformation(routeInformation);
   }
@@ -185,7 +201,8 @@ class CounterController extends AppStateXController {
   @override
   void didPopNext() {
     if (inDebugMode) {
-      debugPrint('############ Event: didPopNext in $this');
+      debugPrint(
+          '############ Event: didPopNext() in $_thisController in $state');
     }
   }
 
@@ -193,7 +210,7 @@ class CounterController extends AppStateXController {
   @override
   void didPush() {
     if (inDebugMode) {
-      debugPrint('############ Event: didPush in $this');
+      debugPrint('############ Event: didPush() in $_thisController in $state');
     }
   }
 
@@ -201,7 +218,7 @@ class CounterController extends AppStateXController {
   @override
   void didPop() {
     if (inDebugMode) {
-      debugPrint('############ Event: didPop in $this');
+      debugPrint('############ Event: didPop() in $_thisController in $state');
     }
   }
 
@@ -209,7 +226,8 @@ class CounterController extends AppStateXController {
   @override
   void didPushNext() {
     if (inDebugMode) {
-      debugPrint('############ Event: didPushNext in $this');
+      debugPrint(
+          '############ Event: didPushNext() in $_thisController in $state');
     }
   }
 
@@ -218,7 +236,8 @@ class CounterController extends AppStateXController {
   @override
   void didChangeMetrics() {
     if (inDebugMode) {
-      debugPrint('############ Event: didChangeMetrics in $this');
+      debugPrint(
+          '############ Event: didChangeMetrics() in $_thisController in $state');
     }
   }
 
@@ -226,7 +245,8 @@ class CounterController extends AppStateXController {
   @override
   void didChangeTextScaleFactor() {
     if (inDebugMode) {
-      debugPrint('############ Event: didChangeTextScaleFactor in $this');
+      debugPrint(
+          '############ Event: didChangeTextScaleFactor() in $_thisController in $state');
     }
   }
 
@@ -234,7 +254,8 @@ class CounterController extends AppStateXController {
   @override
   void didChangePlatformBrightness() {
     if (inDebugMode) {
-      debugPrint('############ Event: didChangePlatformBrightness in $this');
+      debugPrint(
+          '############ Event: didChangePlatformBrightness() in $_thisController in $state');
     }
   }
 
@@ -243,7 +264,8 @@ class CounterController extends AppStateXController {
   void didChangeLocales(List<Locale>? locales) {
     if (inDebugMode) {
       //ignore: avoid_print
-      debugPrint('############ Event: didChangeLocale in $this');
+      debugPrint(
+          '############ Event: didChangeLocale() in $_thisController in $state');
     }
   }
 
@@ -257,7 +279,7 @@ class CounterController extends AppStateXController {
     if (inDebugMode) {
       //ignore: avoid_print
       print(
-          '############ Event: didChangeAppLifecycleState in ${this.state} for $this');
+          '############ Event: didChangeAppLifecycleState($state) in $_thisController in ${this.state}');
     }
   }
 
@@ -265,7 +287,8 @@ class CounterController extends AppStateXController {
   @override
   void didHaveMemoryPressure() {
     if (inDebugMode) {
-      debugPrint('############ Event: didHaveMemoryPressure in $this');
+      debugPrint(
+          '############ Event: didHaveMemoryPressure() in $_thisController in $state');
     }
   }
 
@@ -273,7 +296,8 @@ class CounterController extends AppStateXController {
   @override
   void didChangeAccessibilityFeatures() {
     if (inDebugMode) {
-      debugPrint('############ Event: didChangeAccessibilityFeatures in $this');
+      debugPrint(
+          '############ Event: didChangeAccessibilityFeatures() in $_thisController in $state');
     }
   }
 }

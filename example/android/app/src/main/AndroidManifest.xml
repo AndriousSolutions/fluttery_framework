@@ -2,7 +2,7 @@
     <application
         android:label="fluttery_framework_example"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/andrioussolutions">
         <activity
             android:name=".MainActivity"
             android:exported="true"

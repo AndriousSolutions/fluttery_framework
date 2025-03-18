@@ -1,25 +1,31 @@
 
+## 5.19.0
+March 17, 2025
+- Folder, test, moved to example/lib allowing testing on the Web
+- Added the parameter, super.printEvents, to AppStateX
+- _Page3State() : super(printEvents: true);
+- Set error handler in run_webapp.dart
+
 ## 5.18.0+1
 March 05, 2025
 - Removed deprecated app_settings.dart
 - Additional Tests to the example app:
-  multi_screen_test.dart
-  routes_test.dart
-  settings_screen_test.dart
-  code_coverage.dart
-  test_runapp.dart
+   multi_screen_test.dart
+   routes_test.dart
+   settings_screen_test.dart
+   code_coverage.dart
+   test_runapp.dart
 - static void errorHandler(FlutterErrorDetails details) in error_handler.dart
 - void activate() { and void deactivate() {  in app_statex.dart
   if (ignoreErrorInTesting) {  // Allow an error to be ignored. Once!
 - Testing PopupMenuFunctionsMixin and dart format .
 
-
 ## 5.17.1+3
 March 03, 2025
 - Introduce three more 'inline' function routines in app_statex.dart:   
-  inGenerateRoute, inUnknownRoute, and inScaffoldMessengerKey
+   inGenerateRoute, inUnknownRoute, and inScaffoldMessengerKey
 - Two parameters in app_statex.dart were changed with new 'inline' functions: 
-  onGeneratedRoute to generateRoute and onUnknownRoute to unknownRoute
+   onGeneratedRoute to generateRoute and onUnknownRoute to unknownRoute
 - Renamed reload() function to hotReload()
 - Renamed mixin, RootState, to RootStateMixin
 - Revamped Fluttery's error routine in error_handler.dart making it more efficient

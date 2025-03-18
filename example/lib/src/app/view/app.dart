@@ -91,6 +91,8 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           allowChangeUI: true,
           // Allow the app to change its design interface
           allowChangeTheme: true,
+          // While debugging, prints out event function calls
+          printEvents: true,
           // Allow the app to change general appearance
           inErrorHandler: (details) {
             // Retrieve the last Flutter Error that has occurred.

@@ -46,10 +46,10 @@ class MyApp extends AppStatefulWidget {
   MyApp({Key? key}) : super(key: key);
 
   @override
-  AppState createAppState() => _CounterAppState();
+  AppStateX createAppState() => _CounterAppState();
 }
 
-class _CounterAppState extends AppState {
+class _CounterAppState extends AppStateX {
   _CounterAppState()
       : super(
     title: 'Flutter Demo',
@@ -62,8 +62,7 @@ class _CounterAppState extends AppState {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, this.title = 'Flutter Demo Home Page'})
-      : super(key: key);
+  const MyHomePage({super.key, this.title = 'Flutter Demo Home Page'});
   // Fields in a StatefulWidget should always be "final".
   final String title;
   @override
@@ -149,7 +148,7 @@ class MyApp extends AppStatefulWidget {
 
 
 /// Defines the 'look and behavior' of the app.
-class _ThisAppState extends AppState {
+class _ThisAppState extends AppStateX {
   _ThisAppState()
       : super(
     controller: MainAppController(),

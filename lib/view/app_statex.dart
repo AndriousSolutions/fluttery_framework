@@ -79,6 +79,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     super.controllers,
     super.object,
     super.notifyClientsInBuild,
+    super.printEvents,
     super.materialApp,
     super.cupertinoApp,
     RouteInformationProvider? routeInformationProvider,

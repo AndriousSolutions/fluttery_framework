@@ -19,7 +19,8 @@ export 'package:connectivity_plus/connectivity_plus.dart'
 /// Responsive UI
 import 'package:sizer/sizer.dart' show Sizer;
 
-import 'package:universal_platform/universal_platform.dart';
+import 'package:universal_platform/universal_platform.dart'
+    show UniversalPlatform;
 
 /// Error Screen Builder if an error occurs.
 typedef ErrorWidgetBuilder = Widget Function(

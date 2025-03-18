@@ -1,5 +1,5 @@
 //
-import 'dart:async';
+import 'dart:async' show Timer;
 
 import '/src/model.dart';
 

@@ -31,7 +31,7 @@ mixin DebugPaintPrintProfileOptionsMixin {
   /// Returns 'to paint a line at each of its baselines' boolean indicator.
   BooleanFunctionIndicatorCallback? inDebugPaintBaselinesEnabled;
 
-  /// Causes objects like ['RenderPointerListener]' to flash when tapped.
+  /// Causes objects like 'RenderPointerListener' to flash when tapped.
   bool? debugPaintPointersEnabled;
 
   /// Returns 'to flash when tapped' boolean indicator.

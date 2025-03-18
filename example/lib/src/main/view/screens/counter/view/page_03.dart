@@ -19,6 +19,7 @@ class Page3 extends StatefulWidget {
 }
 
 class _Page3State extends StateX<Page3> {
+  _Page3State() : super(printEvents: true);
   //
   int count = 0;
 

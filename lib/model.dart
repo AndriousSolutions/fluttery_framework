@@ -15,11 +15,11 @@ export 'package:flutter/cupertino.dart' hide RefreshCallback, runApp;
 // Assets
 export 'model/assets.dart';
 
-// file utils              // Can't do this. Allow even if kIsWeb
-export 'model/files.dart'; // if (dart.library.html) 'model/assets.dart';
+// file utils
+export 'model/files.dart';
 
-// Install file                   // Can't do this. Allow even if kIsWeb
-export 'model/installfile.dart'; // if (dart.library.html) 'model/assets.dart';
+// Install file
+export 'model/installfile.dart';
 
 // Hash codes
 export 'model/hash.dart';
