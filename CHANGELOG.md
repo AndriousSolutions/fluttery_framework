@@ -1,6 +1,7 @@
 
-## 5.20.0
+## 5.20.1
 March 31, 2025
+- state_extended 5.11.0
 error_handler.dart
 - Flag when an error handler is explicitly passed into the app, _passedErrorHandler
 - Calls error handler when an unhandled error occurs in the root isolate.
