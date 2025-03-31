@@ -62,7 +62,6 @@ import 'package:flutter/rendering.dart'
     show
         Color,
         DiagnosticPropertiesBuilder,
-        DiagnosticsProperty,
         EdgeInsets,
         ErrorDescription,
         ErrorHint,
