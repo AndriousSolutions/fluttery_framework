@@ -109,14 +109,12 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
   Widget build(BuildContext context) {
     _assets.init(context);
     final future = initAsync(); // _appState is defined here!
+    var caughtAsyncError = false; // A flag to change snapshot!!
     future.catchError(
-      (Object e) {
-        _appState?.catchAsyncError(e);
-        // Always false. snapshot.data == false
-        // snapshot.hasError likely true so ErrorWidget.builder() displayed
-        return false;
-      },
-      // It's got to be handled, and so it's always true to call catchError()
+      // May possibly recover from the error or exception
+      (Object e) async =>
+          caughtAsyncError = await _appState?.catchAsyncError(e) ?? false,
+      // It's got to be handled, and so it's always true to call handler()
       test: (_) => true,
     );
     return FutureBuilder<bool>(
@@ -124,11 +122,18 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       future: future,
       initialData: false,
       // Orientation or Hot Reload now only occurs at this point. gp
-      builder: (_, snapshot) => Sizer(
-        builder: (_, __, ___) => _futureBuilder(snapshot),
-        maxMobileWidth: widget.onMaxMobileWidth() ?? 599,
-        maxTabletWidth: widget.onMaxTabletWidth(),
-      ),
+      builder: (_, snapshot) {
+        // we're ignoring an error or exception.Hope you know what you're doing!
+        if (caughtAsyncError) {
+          snapshot =
+              AsyncSnapshot<bool>.withData(snapshot.connectionState, true);
+        }
+        return Sizer(
+          builder: (_, __, ___) => _futureBuilder(snapshot),
+          maxMobileWidth: widget.onMaxMobileWidth() ?? 599,
+          maxTabletWidth: widget.onMaxTabletWidth(),
+        );
+      },
     );
   }
 
@@ -200,7 +205,6 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
       //
     } catch (e) {
       init = false;
-      v.App.isInit = false;
       // Rethrow to _futureBuilder()
       rethrow;
     }
@@ -252,10 +256,7 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
     Widget appWidget;
     Widget? splashScreen;
 
-    if (_appWidget != null &&
-        snapshot.hasData &&
-        snapshot.data! &&
-        v.App.isInit) {
+    if (_appWidget != null && snapshot.hasData && snapshot.data!) {
       //
       if (!(widget.onCircularProgressIndicator() ?? true)) {
         // Corresponding with its deferFirstFrame();

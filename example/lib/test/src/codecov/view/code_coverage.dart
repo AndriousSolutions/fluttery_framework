@@ -70,7 +70,7 @@ void _coverCode(_TestBedState state) {
     context: ErrorDescription('Test built-in AppStateX class'),
   );
 
-  appState.onErrorHandler(details);
+  // appState.onErrorHandler(details);
 
   final statex = StateX();
 

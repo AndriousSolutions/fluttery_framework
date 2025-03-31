@@ -53,8 +53,8 @@ dependencies:
   sizer: ^3.0.5
 
   # https://pub.dartlang.org/packages/state_extended
-  state_extended: ^5.10.0
-#      path: ../../packages/state_extended
+  state_extended: #^5.10.0
+      path: ../../packages/state_extended
 
   # https://pub.dev/packages/timezone
   timezone: ^0.10.0

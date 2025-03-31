@@ -9,7 +9,7 @@ import 'package:english_words/english_words.dart';
 class WordPairsModel extends StateXController {
   ///
   factory WordPairsModel([StateX? state]) => _this ??= WordPairsModel._(state);
-  WordPairsModel._(StateX? super.state) {
+  WordPairsModel._(super.state) {
     words = _EnglishWords();
     _counter = 0;
     onPressed();
@@ -25,6 +25,12 @@ class WordPairsModel extends StateXController {
 
   /// data for the name generator app.
   String get data => words.current.asPascalCase;
+
+  /// First of the pair
+  String get firstWord => words.current.first;
+
+  /// Second of the pair
+  String get secondWord => words.current.second;
 
   ///
   void onPressed() => words.build(_counter++);
@@ -98,6 +104,7 @@ class WordPairsModel extends StateXController {
   }
 }
 
+//
 class _EnglishWords {
   //
   List<WordPair> get suggestions => _suggestions;

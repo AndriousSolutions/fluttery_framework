@@ -97,42 +97,32 @@ class GridAppController extends StateXController {
   /// user input, and running in the background.
   @override
   void pausedAppLifecycleState() {
-    if (inDebugMode) {
-      debugPrint('############ Event: pausedLifecycleState in $this');
-    }
+    debugPrint('############ Event: pausedLifecycleState in $this');
   }
 
   /// Called when app returns from the background
   @override
   void resumedAppLifecycleState() {
-    if (inDebugMode) {
-      debugPrint('############ Event: resumedLifecycleState in $this');
-    }
+    debugPrint('############ Event: resumedLifecycleState in $this');
   }
 
   /// The application is in an inactive state and is not receiving user input.
   @override
   void inactiveAppLifecycleState() {
-    if (inDebugMode) {
-      debugPrint('############ Event: inactiveLifecycleState in $this');
-    }
+    debugPrint('############ Event: inactiveLifecycleState in $this');
   }
 
   /// Either be in the progress of attaching when the engine is first initializing
   /// or after the view being destroyed due to a Navigator pop.
   @override
   void detachedAppLifecycleState() {
-    if (inDebugMode) {
-      debugPrint('############ Event: detachedLifecycleState in $this');
-    }
+    debugPrint('############ Event: detachedLifecycleState in $this');
   }
 
   /// Override this method to respond when the [StatefulWidget] is recreated.
   @override
   void didUpdateWidget(StatefulWidget oldWidget) {
-    if (inDebugMode) {
-      debugPrint('############ Event: didUpdateWidget in $this');
-    }
+    debugPrint('############ Event: didUpdateWidget in $this');
   }
 
   /// Called when this [StateX] object is first created immediately after [initState].
@@ -140,18 +130,14 @@ class GridAppController extends StateXController {
   /// is a dependency of [InheritedWidget].
   @override
   void didChangeDependencies() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangeDependencies in $this');
-    }
+    debugPrint('############ Event: didChangeDependencies in $this');
   }
 
   /// Called whenever the application is reassembled during debugging, for
   /// example during hot reload.
   @override
   void reassemble() {
-    if (inDebugMode) {
-      debugPrint('############ Event: reassemble in $this');
-    }
+    debugPrint('############ Event: reassemble in $this');
   }
 
   /// Called when the system tells the app to pop the current route.
@@ -159,9 +145,7 @@ class GridAppController extends StateXController {
   /// the back button.
   @override
   Future<bool> didPopRoute() async {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPopRoute in $this');
-    }
+    debugPrint('############ Event: didPopRoute in $this');
     return super.didPopRoute();
   }
 
@@ -169,77 +153,59 @@ class GridAppController extends StateXController {
   /// [RouteInformation] and a restoration state onto the router.
   @override
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPushRouteInformation in $this');
-    }
+    debugPrint('############ Event: didPushRouteInformation in $this');
     return super.didPushRouteInformation(routeInformation);
   }
 
   /// The top route has been popped off, and this route shows up.
   @override
   void didPopNext() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPopNext in $this');
-    }
+    debugPrint('############ Event: didPopNext in $this');
     setState(() {});
   }
 
   /// Called when this route has been pushed.
   @override
   void didPush() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPush in $this');
-    }
+    debugPrint('############ Event: didPush in $this');
     setState(() {});
   }
 
   /// Called when this route has been popped off.
   @override
   void didPop() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPop in $this');
-    }
+    debugPrint('############ Event: didPop in $this');
   }
 
   /// New route has been pushed, and this route is no longer visible.
   @override
   void didPushNext() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPushNext in $this');
-    }
+    debugPrint('############ Event: didPushNext in $this');
   }
 
   /// Called when the application's dimensions change. For example,
   /// when a phone is rotated.
   @override
   void didChangeMetrics() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangeMetrics in $this');
-    }
+    debugPrint('############ Event: didChangeMetrics in $this');
   }
 
   /// Called when the platform's text scale factor changes.
   @override
   void didChangeTextScaleFactor() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangeTextScaleFactor in $this');
-    }
+    debugPrint('############ Event: didChangeTextScaleFactor in $this');
   }
 
   /// Brightness changed.
   @override
   void didChangePlatformBrightness() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangePlatformBrightness in $this');
-    }
+    debugPrint('############ Event: didChangePlatformBrightness in $this');
   }
 
   /// Called when the system tells the app that the user's locale has changed.
   @override
   void didChangeLocales(List<Locale>? locales) {
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangeLocale in $this');
-    }
+    debugPrint('############ Event: didChangeLocale in $this');
   }
 
   @override
@@ -249,25 +215,19 @@ class GridAppController extends StateXController {
     /// AppLifecycleState.paused (may enter the suspending state at any time)
     /// AppLifecycleState.detach
     /// AppLifecycleState.resume
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didChangeAppLifecycleState($state) in $this');
-    }
+    debugPrint(
+        '############ Event: didChangeAppLifecycleState($state) in $this');
   }
 
   /// Called when the system is running low on memory.
   @override
   void didHaveMemoryPressure() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didHaveMemoryPressure in $this');
-    }
+    debugPrint('############ Event: didHaveMemoryPressure in $this');
   }
 
   /// Called when the system changes the set of active accessibility features.
   @override
   void didChangeAccessibilityFeatures() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didChangeAccessibilityFeatures in $this');
-    }
+    debugPrint('############ Event: didChangeAccessibilityFeatures in $this');
   }
 }

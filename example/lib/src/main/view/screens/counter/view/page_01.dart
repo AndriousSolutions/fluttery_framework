@@ -82,6 +82,31 @@ class Page1State extends StateX<Page1> {
     super.dispose();
   }
 
+  /// Offer an error handler
+  @override
+  void onError(FlutterErrorDetails details) {
+    //
+    debugPrint('============ Event: onError() in $this');
+
+    final msg = details.exceptionAsString();
+
+    if (msg.contains('Fake error to demonstrate error handling!')) {
+      count++;
+      controller?.setState(() {});
+    }
+  }
+
+  /// initAsync() has failed and a 'error' widget instead will be displayed.
+  /// This takes in the snapshot.error details.
+  @override
+  void onAsyncError(FlutterErrorDetails details) {
+    //
+    debugPrint('============ Event: onAsyncError() in $this');
+  }
+
+  /// Invoke an error or not
+  bool get initAsyncError => AppSettingsController().initAsyncError;
+
   /// Ignore class, BuildPage
   /// BuildPage is just a 'generic' widget I made for each page to highlight
   /// the parameters it takes in for demonstration purposes.
@@ -99,6 +124,12 @@ class Page1State extends StateX<Page1> {
           label: '1',
           count: count,
           counter: () {
+            //
+            if (App.inWidgetsFlutterBinding && AppController().buttonError) {
+              // Deliberately throw an error to demonstrate error handling.
+              throw Exception('Fake error to demonstrate error handling!'.tr);
+            }
+            //
             count++;
             // Commented out since the controller has access to this State object.
 //          setState(() {});

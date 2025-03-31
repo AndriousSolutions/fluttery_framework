@@ -21,11 +21,14 @@ mixin AppOptionSettings on StateXController {
   /// Use the 'onHome' function
   late bool useOnHome;
 
-  /// Error in builder()
-  late bool errorInBuilder;
-
   /// Error right at the start
+  late bool initAppAsyncError;
+
+  /// Error in a initAsync()
   late bool initAsyncError;
+
+  /// Error in builder()
+  late bool errorInBuild;
 
   /// Throw error with button press
   late bool buttonError;

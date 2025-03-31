@@ -9,7 +9,12 @@
 //
 
 import 'dart:ui' as i
-    show ParagraphBuilder, ParagraphConstraints, ParagraphStyle, TextStyle;
+    show
+        ErrorCallback,
+        ParagraphBuilder,
+        ParagraphConstraints,
+        ParagraphStyle,
+        TextStyle;
 
 import '/controller.dart'
     show
@@ -39,22 +44,25 @@ import '/view.dart'
         FontWeight,
         Icons,
         InformationCollector,
-        kDebugMode,
         LeafRenderObjectWidget,
+        MessageProperty,
         Offset,
         Paint,
         PaintingContext,
         PaintingStyle,
+        PlatformDispatcher,
         Rect,
         StateXonErrorMixin,
         TextBaseline,
         TextDirection,
-        Widget;
+        Widget,
+        kDebugMode;
 
 import 'package:flutter/rendering.dart'
     show
         Color,
         DiagnosticPropertiesBuilder,
+        DiagnosticsProperty,
         EdgeInsets,
         ErrorDescription,
         ErrorHint,
@@ -94,6 +102,11 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
     // todo: Maybe make the Singleton Pattern optional
     _this ??= AppErrorHandler._();
 
+    // Recognize when a handler is passed
+    if (!_passedErrorHandler) {
+      _passedErrorHandler = handler != null;
+    }
+
     /// Allows you to set an error handler more than once.
     set(
       handler: handler,
@@ -115,6 +128,13 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
     // Record the current error handler.
     _oldOnError = FlutterError.onError;
 
+    // Called when an unhandled error occurs in the root isolate.
+    _platformOnError = PlatformDispatcher.instance.onError;
+
+    // Record the current 'Error Widget'
+    _oldBuilder = ErrorWidget.builder;
+
+    // Assign Error Handler to FlutterError.onError
     FlutterError.onError = (FlutterErrorDetails details) {
       // Prevent an infinite loop and fall back to the original handler.
       if (_inHandler) {
@@ -133,40 +153,67 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
       // If there's an error in the error handler, we want to know about it.
       _inHandler = true;
 
-      // Supply an custom 'Error Widget' to display the error.
-      if (_oldBuilder == null) {
-        // Record the current Widget builder when a widget fails to build.
-        _oldBuilder = ErrorWidget.builder;
-
-        // Define our own 'error building widget' widget if one is not provided.
-        ErrorWidget.builder =
-            (FlutterErrorDetails details) => displayErrorWidget(
-                  details,
-                  paragraphStyle: _paragraphStyle,
-                  textStyle: _textStyle,
-                  padding: _padding,
-                  minimumWidth: _minimumWidth,
-                  backgroundColor: _backgroundColor,
-                );
-      }
-
       final handler = _errorHandler ?? _oldOnError;
 
       if (handler != null) {
-        handler(details);
-        _inHandler = false;
+        try {
+          handler(details);
+          // This is a public function. ALWAYS catch an error or exception
+        } catch (e, stack) {
+          _inHandler = false;
+          // Throw in DebugMode.
+          if (kDebugMode) {
+            FlutterError.onError = _oldOnError;
+            // Rethrow to be handled by the original routine.
+            rethrow;
+          } else {
+            reportError(
+              e,
+              stack: stack,
+              message: "Error in App's Error handler",
+              library: 'error_handler.dart',
+            );
+          }
+        }
       }
+
+      // Out of the handler
+      _inHandler = false;
     };
+
+    // Called when an unhandled error occurs in the root isolate.
+    PlatformDispatcher.instance.onError = (error, stack) {
+      //
+      InformationCollector? collector;
+      assert(() {
+        collector = () => <DiagnosticsNode>[
+              MessageProperty('Root isolate error', error.toString()),
+              // DiagnosticsProperty<StateX<T>>(
+              //   'FutureBuildr',
+              //   this,
+              //   style: DiagnosticsTreeStyle.errorProperty,
+              // ),
+            ];
+        return true;
+      }());
+
+      final details = FlutterErrorDetails(
+        exception: error,
+        stack: stack,
+        library: 'Fluttery Framework package',
+        context: ErrorDescription('Root isolate error'),
+        informationCollector: collector,
+      );
+      // Call the 'current' error handler.
+      _flutteryExceptionHandler?.call(details);
+      return true;
+    };
+
     // Record the 'current' error handler.
     _flutteryExceptionHandler = FlutterError.onError;
     _flutteryErrorWidgetBuilder = ErrorWidget.builder;
   }
   static AppErrorHandler? _this;
-
-  /// Explicitly call the assigned Error routine.
-  @override
-  void onError(FlutterErrorDetails details) =>
-      flutteryExceptionHandler?.call(details);
 
   /// Allow new handlers in the future or not
   static bool get allowNewErrorHandlers => _allowNewErrorHandlers;
@@ -184,11 +231,20 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
   //
   static bool _allowNewErrorHandlers = true;
 
-  static bool _givenErrorHandler = false;
+  /// Passed a handler through their constructor
+  static bool get passedErrorHandler => _passedErrorHandler;
+  static bool _passedErrorHandler = false;
+
+  /// Explicitly set an Error Handler
+  static bool get setErrorHandler => _setErrorHandler;
+  static bool _setErrorHandler = false;
 
   /// The original Error Handler at start up.
   FlutterExceptionHandler? get oldOnError => _oldOnError;
   FlutterExceptionHandler? _oldOnError;
+
+  /// The original PlatformDispatcher ErrorCallback
+  static i.ErrorCallback? _platformOnError;
 
   /// The original Displayed Error Widget at start up.
   ErrorWidgetBuilder? get oldBuilder => _oldBuilder;
@@ -202,6 +258,11 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
   @Deprecated('A mutable static property is discouraged.')
   // Not certain why this is here in the first place.
   static bool ranApp = false;
+
+  /// Explicitly call the assigned Error routine.
+  @override
+  void onError(FlutterErrorDetails details) =>
+      flutteryExceptionHandler?.call(details);
 
   /// Return the App's Error Handler'
   FlutterExceptionHandler? get flutteryExceptionHandler =>
@@ -233,7 +294,7 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
     _this = null;
     // Reset allowances
     _allowNewErrorHandlers = true;
-    _givenErrorHandler = false;
+    _setErrorHandler = false;
     // Ensure error routines are reset, but then set to null
     deactivate();
     // App's FlutterError.onError
@@ -274,7 +335,7 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
     _backgroundColor ??= backgroundColor;
 
     // Once you're not allowed to set the handlers, they can't be changed.
-    if (_givenErrorHandler && !AppErrorHandler.allowNewErrorHandlers) {
+    if (_setErrorHandler && !AppErrorHandler.allowNewErrorHandlers) {
       return false;
     }
 
@@ -282,19 +343,12 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
     // Only if an item was passed to reset.
     var reset = false;
 
-    if (handler != null) {
-      _errorHandler = handler;
-      reset = true;
-    }
-
     if (report != null) {
       _errorReport = report;
       reset = true;
     }
 
     if (screen != null) {
-      // Record the current 'Error Widget'
-      _oldBuilder ??= ErrorWidget.builder;
       // if not already assigned
       if (ErrorWidget.builder != screen) {
         ErrorWidget.builder = screen;
@@ -302,17 +356,17 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
       }
     }
 
-    // Flag when something was assigned
-    if (!_givenErrorHandler && reset) {
-      // Set only once
-      _givenErrorHandler = true;
-    }
-
     /// Allow for a new Error handler in the future
     if (AppErrorHandler.allowNewErrorHandlers &&
         !(allowNewErrorHandlers ?? true)) {
       // Once set to false, it's unchangeable
       AppErrorHandler.allowNewErrorHandlers = false;
+    }
+
+    if (handler != null) {
+      _errorHandler = handler;
+      _setErrorHandler = true;
+      reset = true;
     }
 
     // Something was set;
@@ -325,13 +379,19 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
 
   /// Restore the Error Handler and such.
   bool _restoreErrorHandler() {
+    //
     if (_oldBuilder != null) {
       ErrorWidget.builder = _oldBuilder!;
+    }
+    if (_platformOnError != null) {
+      PlatformDispatcher.instance.onError = _platformOnError;
     }
     if (_oldOnError != null) {
       FlutterError.onError = _oldOnError;
     }
-    return _oldBuilder != null || _oldOnError != null;
+    return _oldBuilder != null ||
+        _platformOnError != null ||
+        _oldOnError != null;
   }
 
   /// Present error to user or not
@@ -353,8 +413,8 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
 
   /// Log the error
   @override
-  void logErrorDetails(FlutterErrorDetails details) {
-    if (logError) {
+  void logErrorDetails(FlutterErrorDetails details, {bool? force}) {
+    if (logError || (force ?? false)) {
       super.logErrorDetails(details);
     } else {
       // Won't log this time with this call.
@@ -388,24 +448,34 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
 
   /// Report the error in an isolate or in a run zone.
   Future<void> reportError(
-    dynamic ex,
-    StackTrace stack, {
+    dynamic ex, {
+    StackTrace? stack,
     String? message,
     String? library,
     InformationCollector? informationCollector,
   }) async {
-    if (_errorReport == null) {
-      message ??= 'while attempting to run your app';
-      library ??= 'Your app';
-      _debugReportException(
-        ErrorSummary(message),
-        ex,
-        stack,
-        library: library,
-        informationCollector: informationCollector,
+    //
+    message ??= 'while attempting to run your app';
+    library ??= 'Your app';
+    // Log on the console
+    _logErrorHandlerError(
+      ErrorSummary(message),
+      ex,
+      stack: stack,
+      library: library,
+      informationCollector: informationCollector,
+    );
+
+    try {
+      // Designated Reporting feature
+      await _errorReport?.call(ex, stack ?? StackTrace.empty);
+    } catch (e, stack) {
+      // Log on the console
+      _logErrorHandlerError(
+        ErrorSummary("Error in 'errorReport'"),
+        e,
+        stack: stack,
       );
-    } else {
-      await _errorReport!(ex, stack);
     }
   }
 
@@ -484,12 +554,11 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
   //
   // SendPort? _savedSendPort;
 
-  /// Supplies the error details to the designated error handler.
-  // This is a copy used in the Flutter Framework.
-  FlutterErrorDetails _debugReportException(
+  /// Log the error in thr Error Handler
+  FlutterErrorDetails _logErrorHandlerError(
     DiagnosticsNode context,
-    dynamic exception,
-    StackTrace stack, {
+    dynamic exception, {
+    StackTrace? stack,
     String library = 'Flutter framework',
     InformationCollector? informationCollector,
   }) {
@@ -500,7 +569,7 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
       context: context,
       informationCollector: informationCollector,
     );
-    FlutterError.reportError(details);
+    logErrorDetails(details, force: true);
     return details;
   }
 
@@ -512,9 +581,9 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
     try {
       // Record the error
       appHandler.getError(details.exception);
-
       // Handle the Flutter Error Details
       appHandler.handleException(details);
+      // This is a public function. ALWAYS catch an error or exception
     } catch (e, stack) {
       // Throw in DebugMode.
       if (kDebugMode) {
@@ -523,8 +592,13 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
         // Rethrow to be handled by the original routine.
         rethrow;
       } else {
-        // Record the error
-        appHandler.reportError(e, stack);
+        // Record the error in the handler
+        appHandler.reportError(
+          e,
+          stack: stack,
+          message: 'Error in errorHandler()',
+          library: 'error_handler.dart',
+        );
       }
     }
   }
@@ -532,23 +606,21 @@ class AppErrorHandler with HandleError, StateXonErrorMixin {
   /// Handle the Exception
   bool handleException(FlutterErrorDetails details) {
     // ignore: prefer_final_locals
-    var handled = true;
-    final msg = details.exceptionAsString();
-    final name = msg.split('\n').first;
+    var handled = false;
     //
-    switch (name) {
-      case 'Zone mismatch.':
-        details = FlutterErrorDetails(
-          exception: details.exception,
-          stack: details.stack,
-          library: 'run_app.dart',
-          context: ErrorHint(
-            "with unnecessary call for binding.\nPlease remove call, WidgetsFlutterBinding.ensureInitialized();\nIf still required, please set the 'runZoneGuard' parameter to false: runApp(runZoneGuard: false)",
-          ),
-          informationCollector: details.informationCollector,
-        );
-      default:
-        handled = false;
+    if (details.exceptionAsString().contains('Zone mismatch.')) {
+      //
+      handled = true;
+
+      details = FlutterErrorDetails(
+        exception: details.exception,
+        stack: details.stack,
+        library: 'run_app.dart',
+        context: ErrorHint(
+          "with unnecessary call for binding.\nPlease remove call, WidgetsFlutterBinding.ensureInitialized();\nIf still required, please set the 'runZoneGuard' parameter to false: runApp(runZoneGuard: false)",
+        ),
+        informationCollector: details.informationCollector,
+      );
     }
     // Log the error
     logErrorDetails(details);

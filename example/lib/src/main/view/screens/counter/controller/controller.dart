@@ -58,23 +58,26 @@ class Controller extends StateXController {
   /// Called to complete any asynchronous operations.
   @override
   Future<bool> initAsync() async {
-    // A controller can have many State objects 'registered' with it
-
+    //
     _thisController = toString().replaceFirst('Instance of ', '');
 
-    if (inDebugMode) {
-      debugPrint('############ Event: initAsync() in $_thisController in $state');
-    }
+    debugPrint('############ Event: initAsync() in $_thisController in $state');
 
-    // Return if the current State is Page2State
-    if (state is Page1State || state is Page2State) {
-      return true;
+    // Throw an error here and see how it's handled. Don't throw when testing
+    if (state is Page1State && initAsyncError && App.inWidgetsFlutterBinding) {
+      throw Exception('Error in initAsync()!');
     }
-    // Simply wait for 5 seconds at startup.
-    /// In production, this is where databases are opened, logins attempted, etc.
-    return Future.delayed(const Duration(seconds: 5), () {
-      return true;
-    });
+    return true;
+  }
+
+  /// Invoke an error or not
+  bool get initAsyncError => AppSettingsController().initAsyncError;
+
+  // initAsync() has failed
+  @override
+  void onAsyncError(FlutterErrorDetails details) {
+    /// You're controller may want to work on the details.
+    return;
   }
 
 // Provide the name of this class object during debugging
@@ -85,87 +88,80 @@ class Controller extends StateXController {
   @override
   void initState() {
     super.initState();
-    if (inDebugMode) {
-      debugPrint('############ Event: initState() in $_thisController in $state');
-    }
+    debugPrint('############ Event: initState() in $_thisController in $state');
   }
 
   /// The framework calls this method when the [StateX] object removed from widget tree.
   /// i.e. The screen is closed.
   @override
   void deactivate() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: deactivate() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: deactivate() in $_thisController in $state');
   }
 
   /// Called when this State object was removed from widget tree for some reason
   /// Undo what was done when [deactivate] was called.
   @override
   void activate() {
-    if (inDebugMode) {
-      debugPrint('############ Event: activate() in $_thisController in $state');
-    }
+    debugPrint('############ Event: activate() in $_thisController in $state');
   }
 
   /// The framework calls this method when this [StateX] object will never
   /// build again.
-  /// Note: YOU DON'T KNOW WHEN THIS WILL RUN in the Framework.
+  /// Note: YOU DON'T KNOW WHEN THIS WILL RUN in the Engine.
   /// PERFORM ANY TIME-CRITICAL OPERATION IN deactivate() INSTEAD!
   @override
   void dispose() {
-    if (inDebugMode) {
-      debugPrint('############ Event: dispose() in $_thisController in $state');
-    }
+    debugPrint(
+        '###### Event: dispose() in $_thisController ${state == null ? 'but now null' : 'but now in $state'}');
     super.dispose();
+  }
+
+  /// The application is in an inactive state and is not receiving user input.
+  @override
+  void inactiveAppLifecycleState() {
+    debugPrint(
+        '############ Event: inactiveLifecycleState() in $_thisController in $state');
+  }
+
+  /// All views of an application are hidden, either because the application is
+  /// about to be paused (on iOS and Android), or because it has been minimized
+  /// or placed on a desktop that is no longer visible (on non-web desktop), or
+  /// is running in a window or tab that is no longer visible (on the web).
+  @override
+  void hiddenAppLifecycleState() {
+    debugPrint(
+        '############ Event: hiddenAppLifecycleState() in $_thisController in $state');
   }
 
   /// The application is not currently visible to the user, not responding to
   /// user input, and running in the background.
   @override
   void pausedAppLifecycleState() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: pausedLifecycleState() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: pausedLifecycleState() in $_thisController in $state');
   }
 
   /// Called when app returns from the background
   @override
   void resumedAppLifecycleState() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: resumedLifecycleState() in $_thisController in $state');
-    }
-  }
-
-  /// The application is in an inactive state and is not receiving user input.
-  @override
-  void inactiveAppLifecycleState() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: inactiveLifecycleState() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: resumedLifecycleState() in $_thisController in $state');
   }
 
   /// Either be in the progress of attaching when the engine is first initializing
   /// or after the view being destroyed due to a Navigator pop.
   @override
   void detachedAppLifecycleState() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: detachedLifecycleState() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: detachedLifecycleState() in $_thisController in $state');
   }
 
   /// Override this method to respond when the [StatefulWidget] is recreated.
   @override
   void didUpdateWidget(StatefulWidget oldWidget) {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didUpdateWidget() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: didUpdateWidget() in $_thisController in $state');
   }
 
   /// Called when this [StateX] object is first created immediately after [initState].
@@ -173,20 +169,16 @@ class Controller extends StateXController {
   /// is a dependency of [InheritedWidget].
   @override
   void didChangeDependencies() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didChangeDependencies() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: didChangeDependencies() in $_thisController in $state');
   }
 
   /// Called whenever the application is reassembled during debugging, for
   /// example during hot reload.
   @override
   void reassemble() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: reassemble() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: reassemble() in $_thisController in $state');
   }
 
   /// Called when the system tells the app to pop the current route.
@@ -194,10 +186,8 @@ class Controller extends StateXController {
   /// the back button.
   @override
   Future<bool> didPopRoute() async {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didPopRoute() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: didPopRoute() in $_thisController in $state');
     return super.didPopRoute();
   }
 
@@ -205,84 +195,66 @@ class Controller extends StateXController {
   /// [RouteInformation] and a restoration state onto the router.
   @override
   Future<bool> didPushRouteInformation(RouteInformation routeInformation) {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didPushRouteInformation() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: didPushRouteInformation() in $_thisController in $state');
     return super.didPushRouteInformation(routeInformation);
   }
 
   /// The top route has been popped off, and this route shows up.
   @override
   void didPopNext() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didPopNext() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: didPopNext() in $_thisController in $state');
     setState(() {});
   }
 
   /// Called when this route has been pushed.
   @override
   void didPush() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPush() in $_thisController in $state');
-    }
+    debugPrint('############ Event: didPush() in $_thisController in $state');
     setState(() {});
   }
 
   /// Called when this route has been popped off.
   @override
   void didPop() {
-    if (inDebugMode) {
-      debugPrint('############ Event: didPop() in $_thisController in $state');
-    }
+    debugPrint('############ Event: didPop() in $_thisController in $state');
   }
 
   /// New route has been pushed, and this route is no longer visible.
   @override
   void didPushNext() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didPushNext() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: didPushNext() in $_thisController in $state');
   }
 
   /// Called when the application's dimensions change. For example,
   /// when a phone is rotated.
   @override
   void didChangeMetrics() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didChangeMetrics() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: didChangeMetrics() in $_thisController in $state');
   }
 
   /// Called when the platform's text scale factor changes.
   @override
   void didChangeTextScaleFactor() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didChangeTextScaleFactor() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: didChangeTextScaleFactor() in $_thisController in $state');
   }
 
   /// Brightness changed.
   @override
   void didChangePlatformBrightness() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didChangePlatformBrightness() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: didChangePlatformBrightness() in $_thisController in $state');
   }
 
   /// Called when the system tells the app that the user's locale has changed.
   @override
   void didChangeLocales(List<Locale>? locales) {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didChangeLocale() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: didChangeLocale() in $_thisController in $state');
   }
 
   @override
@@ -292,27 +264,22 @@ class Controller extends StateXController {
     /// AppLifecycleState.paused (may enter the suspending state at any time)
     /// AppLifecycleState.detach
     /// AppLifecycleState.resume
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didChangeAppLifecycleState($state) in $_thisController in ${this.state}');
-    }
+    // // Commented out for readability. Controllers have individual event handlers.
+    //   debugPrint(
+    //       '############ Event: didChangeAppLifecycleState($state) in $_thisController in state');
   }
 
   /// Called when the system is running low on memory.
   @override
   void didHaveMemoryPressure() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didHaveMemoryPressure() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: didHaveMemoryPressure() in $_thisController in $state');
   }
 
   /// Called when the system changes the set of active accessibility features.
   @override
   void didChangeAccessibilityFeatures() {
-    if (inDebugMode) {
-      debugPrint(
-          '############ Event: didChangeAccessibilityFeatures() in $_thisController in $state');
-    }
+    debugPrint(
+        '############ Event: didChangeAccessibilityFeatures() in $_thisController in $state');
   }
 }

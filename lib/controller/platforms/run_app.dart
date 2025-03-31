@@ -21,28 +21,39 @@ import '/controller.dart' as c show AppErrorHandler;
 void runApp(
   m.Widget app, {
   FlutterExceptionHandler? onError,
+  bool? setErrorHandler,
   bool? runZoneGuard,
 }) {
+  // By default, set the Error Handler
+  setErrorHandler ??= true;
+
+  if (!setErrorHandler) {
+    // No error handler, no Zone guard
+    runZoneGuard = false;
+  }
+
   // Instantiate the Fluttery error handler.
   // Records the current Error Handler
   final handler = c.AppErrorHandler();
 
-  // Assign an error handler (Will be replaced after)
-  c.AppErrorHandler.set(handler: _RunAppErrorHandler(onError).handler);
+  if (setErrorHandler) {
+    // Assign an error handler (Will be replaced after)
+    c.AppErrorHandler.set(handler: _RunAppErrorHandler(onError).handler);
 
-  // Isolate is not available on the Web
-  if (!kIsWeb) {
-    //
-    Isolate.current.addErrorListener(RawReceivePort((dynamic pair) {
+    // Isolate is not available on the Web
+    if (!kIsWeb) {
       //
-      if (pair is List<dynamic>) {
-        final isolateError = pair;
-        handler.isolateError(
-          isolateError.first.toString(),
-          StackTrace.fromString(isolateError.last.toString()),
-        );
-      }
-    }).sendPort);
+      Isolate.current.addErrorListener(RawReceivePort((dynamic pair) {
+        //
+        if (pair is List<dynamic>) {
+          final isolateError = pair;
+          handler.isolateError(
+            isolateError.first.toString(),
+            StackTrace.fromString(isolateError.last.toString()),
+          );
+        }
+      }).sendPort);
+    }
   }
 
   // Don't call WidgetsFlutterBinding.ensureInitialized()
@@ -73,8 +84,13 @@ class _RunAppErrorHandler {
       // Record the error
       appHandler.getError(details.exception);
 
-      // Handle the Flutter Error Details
-      appHandler.handleException(details);
+      if (c.AppErrorHandler.passedErrorHandler) {
+        // Handle the Flutter Error Details
+        appHandler.handleException(details);
+      } else {
+        // Run the original error handler.
+        appHandler.oldOnError?.call(details);
+      }
 
       // Call the supplied error handler
       onError?.call(details);
@@ -88,7 +104,7 @@ class _RunAppErrorHandler {
         rethrow;
       } else {
         // Record the error
-        appHandler.reportError(e, stack);
+        appHandler.reportError(e, stack: stack);
       }
     }
   }

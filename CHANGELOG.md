@@ -1,4 +1,19 @@
 
+## 5.20.0
+March 31, 2025
+error_handler.dart
+- Flag when an error handler is explicitly passed into the app, _passedErrorHandler
+- Calls error handler when an unhandled error occurs in the root isolate.
+  _platformOnError = PlatformDispatcher.instance.onError;
+- Call to error handler in try-catch construct
+app_statex.dart - New functions to catch Asynchronous errors
+- Future<bool> onCatchAsyncError(Object error) async => await rootState?.catchAsyncError(error) ?? false;
+- Future<bool> catchAsyncError(Object error)
+- Future<bool> Function(Object error)? inCatchAsyncError
+- Deprecated onErrorHandler(). Use onError() instead.
+app_statefulWidget.dart:
+- future.catchError( calls catchAsyncError()
+
 ## 5.19.0
 March 17, 2025
 - Folder, test, moved to example/lib allowing testing on the Web

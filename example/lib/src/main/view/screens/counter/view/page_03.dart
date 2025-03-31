@@ -36,6 +36,10 @@ class _Page3State extends StateX<Page3> {
         tab01: (_) => _buildPage3(
           count: count,
           counter: () {
+            if (App.inWidgetsFlutterBinding && AppController().buttonError) {
+              // Deliberately throw an error to demonstrate error handling.
+              throw Exception('Fake error to demonstrate error handling!'.tr);
+            }
             setState(() => count++);
           },
           page1counter: () {
@@ -125,4 +129,17 @@ class _Page3State extends StateX<Page3> {
   @override
   // ignore: unnecessary_overrides
   Widget buildF(BuildContext context) => super.buildF(context);
+
+  /// Offer an error handler
+  @override
+  void onError(FlutterErrorDetails details) {
+    //
+    debugPrint('============ Event: onError() in $this');
+
+    if (details
+        .exceptionAsString()
+        .contains('Fake error to demonstrate error handling!')) {
+      setState(() => count++);
+    }
+  }
 }

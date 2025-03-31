@@ -9,17 +9,17 @@ library;
 
 /// Calls the example app's very own test
 // import '../integration_test/widget_test.dart'
- //   if (dart.library.html) 'file:///C:/Programs/Tools/Projects/Flutter/packages/fluttery_framework/example/integration_test/widget_test.dart';
+//   if (dart.library.html) 'file:///C:/Programs/Tools/Projects/Flutter/packages/fluttery_framework/example/integration_test/widget_test.dart';
 import 'package:fluttery_framework_example/test/src/integration_test/widget_test.dart';
 
 /// Flutter Test files
 // import '../test/src/_tests_exports.dart'
- //   if (dart.library.html) 'file:///C:/Programs/Tools/Projects/Flutter/packages/fluttery_framework/example/test/src/_tests_exports.dart';
+//   if (dart.library.html) 'file:///C:/Programs/Tools/Projects/Flutter/packages/fluttery_framework/example/test/src/_tests_exports.dart';
 import 'package:fluttery_framework_example/test/src/_tests_xport.dart';
 
 /// Test the App when using Routes
 // import '../integration_test/src/routes_test.dart'
- //   if (dart.library.html) 'file:///C:/Programs/Tools/Projects/Flutter/packages/fluttery_framework/example/integration_test/src/routes_test.dart';
+//   if (dart.library.html) 'file:///C:/Programs/Tools/Projects/Flutter/packages/fluttery_framework/example/integration_test/src/routes_test.dart';
 
 void main() => testFlutteryFramework();
 

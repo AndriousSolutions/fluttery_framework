@@ -88,6 +88,25 @@ class Page2State extends StateX<Page2> {
     }
   }
 
+  /// Place a breakpoint in here and see how it works
+  @override
+  Widget builder(BuildContext context) {
+    /// 'More than one way to Skin a Cat! --- or get a Controller'
+    /// Singleton pattern
+    var con = AppController();
+
+    /// The 'root' controller
+    con = rootCon as AppController;
+
+    /// The 'root' State has the controller
+    con = rootState?.controller as AppController;
+    // Throw an error right here to test recovery code.
+    if (App.inWidgetsFlutterBinding && con.errorInBuild) {
+      throw Exception('Error in builder!');
+    }
+    return super.builder(context);
+  }
+
   /// Define the 'child' Widget that will be passed to the InheritedWidget above.
   @override
   Widget buildAndroid(BuildContext context) => TwoTabScaffold(
@@ -104,7 +123,14 @@ class Page2State extends StateX<Page2> {
         tab01: (_) => BuildPage(
           label: '2',
           count: con.count,
-          counter: con.onPressed,
+          counter: () {
+            //
+            if (App.inWidgetsFlutterBinding && AppController().buttonError) {
+              // Deliberately throw an error to demonstrate error handling.
+              throw Exception('Fake error to demonstrate error handling!'.tr);
+            }
+            con.onPressed();
+          },
           row: (_) => [
             Flexible(
               child: ElevatedButton(
@@ -171,5 +197,18 @@ class Page2State extends StateX<Page2> {
     state = con.stateOf<Page1>() as Page1State;
     state.count++;
     state.setState(() {});
+  }
+
+  /// Offer an error handler
+  @override
+  void onError(FlutterErrorDetails details) {
+    //
+    debugPrint('============ Event: onError() in $this');
+
+    if (details
+        .exceptionAsString()
+        .contains('Fake error to demonstrate error handling!')) {
+      con.onPressed();
+    }
   }
 }

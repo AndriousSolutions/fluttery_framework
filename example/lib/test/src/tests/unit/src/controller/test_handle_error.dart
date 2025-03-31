@@ -55,7 +55,7 @@ void testHandleError(WidgetTester tester) {
 
   final bool mode = AppErrorHandler.inDebugMode;
 
-  errorHandler.reportError(error, StackTrace.empty);
+  errorHandler.reportError(error);
 
   errorHandler.isolateError(error, StackTrace.empty);
 

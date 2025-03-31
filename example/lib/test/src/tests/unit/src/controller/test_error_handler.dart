@@ -37,7 +37,7 @@ void testAppErrorHandler() {
           rethrow;
         } else {
           // Record the error
-          handler.reportError(e, stack);
+          handler.reportError(e, stack: stack);
         }
       }
     };

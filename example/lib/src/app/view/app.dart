@@ -11,14 +11,14 @@ class FlutteryExampleApp extends AppStatefulWidget {
   ///
   FlutteryExampleApp({super.key});
 
-  /// Readily supply a Splash Screen to your app.
-  @override
-  Widget? onSplashScreen(BuildContext context) {
-    Widget? widget;
-    widget = const SplashScreen(); // Comment out and see what happens
-    // When testing, a Splash Screen will interfere and so is excluded.
-    return App.inFlutterTest ? null : widget;
-  }
+  // /// Readily supply a Splash Screen to your app.
+  // @override
+  // Widget? onSplashScreen(BuildContext context) {
+  //   Widget? widget;
+  //   widget = const SplashScreen(); // Comment out and see what happens
+  //   // When testing, a Splash Screen will interfere and so is excluded.
+  //   return App.inFlutterTest ? null : widget;
+  // }
 
   @override
   AppStateX<StatefulWidget> createAppState() => _ExampleAppState();
@@ -93,22 +93,23 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
           allowChangeTheme: true,
           // While debugging, prints out event function calls
           printEvents: true,
-          // Allow the app to change general appearance
+          // Supply an Error Handler right in the initialization
           inErrorHandler: (details) {
-            // Retrieve the last Flutter Error that has occurred.
-            // Note, the function retrieves and then 'clears' the last error from storage.
-            final lastErrorDetails =
-                AppController().appState?.lastFlutterError();
-
-            assert(() {
-              if (lastErrorDetails != null &&
-                  details.exception != lastErrorDetails.exception) {
-                //
-                debugPrint(
-                    '=========== inErrorHandler: ${details.exceptionAsString()}');
-              }
-              return true;
-            }());
+            //
+            debugPrint(
+                "============  Event: inErrorHandler() '${details.exceptionAsString()}' in instance of _ExampleAppState");
+          },
+          // Determine if the error in initAsync() is caught nor not
+          inCatchAsyncError: (error) async {
+            final message = error.toString().split(': ').last;
+            debugPrint(
+                "============  Event: inCatchAsyncError() '$message' in instance of _ExampleAppState");
+            return false;
+          },
+          inAsyncError: (error) async {
+            final message = error.toString().split(': ').last;
+            debugPrint(
+                "============  Event: inCatchAsyncError() '$message' in instance of _ExampleAppState");
           },
           // Programmatically determine the home page
           home: AppController().useHome ? const CounterPage() : null,
@@ -216,45 +217,65 @@ class _ExampleAppState extends AppStateX<FlutteryExampleApp> {
   @override
   Widget build(BuildContext context) => super.build(context);
 
-  /// Place a breakpoint in here and see how it works
-  @override
-  Widget builder(BuildContext context) {
-    final con = controller as AppController;
-    // Throw an error right here at the beginning to test recovery code.
-    if (con.errorInBuilder) {
-      throw Exception('Error in builder!');
-    }
-    return super.builder(context);
-  }
-
   /// Programmatically determine whether the banner is displayed or not.
   /// Place a breakpoint in your IDE and see what happens in there
   @override
   bool? onDebugShowCheckedModeBanner() => super.onDebugShowCheckedModeBanner();
 
+  /// Determine if initAsync() error or exception is caught or not
   @override
-  void onErrorHandler(FlutterErrorDetails details) {
-    // Look how you can catch a particular error and prevent it from happening again
-    if (details.exceptionAsString().contains('Error in builder!')) {
-      // Retrieve from the App the last Flutter Error that has occurred.
-      // It just happens to be the same provided to this function
-      final FlutterErrorDetails? sameDetails = lastFlutterErrorDetails;
-      if (sameDetails != null &&
-          sameDetails.exceptionAsString().contains('Error in builder!')) {
-        (controller as AppController).errorInBuilder = false;
-      }
+  Future<bool> onCatchAsyncError(Object error) async {
+    //
+    debugPrint('============ Event: onCatchAsyncError() in $this');
+
+    //
+    final message = error.toString().split(': ').last;
+
+    bool caught;
+
+    switch (message) {
+      case 'Fake error to demonstrate error handling!':
+        caught = true;
+        break;
+      case 'Error in initAsync()!':
+        caught = true;
+        break;
+      case 'Error in App initAsync()!':
+        caught = true;
+        break;
+      case 'Error in builder!':
+        caught = true;
+        break;
+      default:
+        caught = false;
+    }
+    return caught;
+  }
+
+  // Your App's State object's Error Routine
+  @override
+  void onError(FlutterErrorDetails details) {
+    super.onError(details);
+    //
+    debugPrint('============ Event: onError() in $this');
+
+    final name = details.exceptionAsString().split(': ').last;
+    //
+    switch (name) {
+      case 'Fake error to demonstrate error handling!': // Button pressed
+        break;
+      case 'Error in builder!':
+        //
+        // (controller as AppController).errorInBuild = false;
+        break;
     }
   }
 
-  /// initAsync() has failed and a 'error' widget instead will be displayed.
-  /// This takes in the snapshot.error details.
+  /// initAsync() has failed.
   @override
   void onAsyncError(FlutterErrorDetails details) {
-    // Look how you can catch a particular error and prevent it from happening again
-    // Identify a particular error and ensure it won't happen at restart
-    if (details.exceptionAsString().contains('Error in initAsync()!')) {
-      (controller as AppController).initAsyncError = false;
-    }
+    //
+    debugPrint('============ Event: onAsyncError() in $this');
   }
 
   @override

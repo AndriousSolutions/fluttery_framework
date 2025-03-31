@@ -157,28 +157,25 @@ class _AppSettingsState extends State<AppSettings> {
         title: isSmall ? Text('Button Error'.tr) : Text('Error Push button'.tr),
         onTap: () {
           con.buttonError = !con.buttonError;
+          if (con.buttonError) {
+            tipButtonError = 'Push button will error.'.tr;
+            _showSnackBar(tipButtonError);
+          } else {
+            tipButtonError = '';
+          }
           setState(() {});
         },
+        tip: tipButtonError,
         value: con.buttonError,
         onChanged: (bool value) {
           con.buttonError = value;
+          if (value) {
+            tipButtonError = 'Push button will error.'.tr;
+            _showSnackBar(tipButtonError);
+          } else {
+            tipButtonError = '';
+          }
           setState(() {});
-        },
-      ),
-      listTile(
-        key: const Key('builder error'),
-        leading: isSmall ? null : const Icon(Icons.build),
-        title: isSmall ? Text('Builder Error'.tr) : Text('Error in Builder'.tr),
-        onTap: () {
-          con.errorInBuilder = !con.errorInBuilder;
-          setState(() {});
-          con.setSettingState();
-        },
-        value: con.errorInBuilder,
-        onChanged: (bool value) {
-          con.errorInBuilder = value;
-          setState(() {});
-          con.setSettingState();
         },
       ),
       listTile(
@@ -189,16 +186,89 @@ class _AppSettingsState extends State<AppSettings> {
             : Text('Error in initAsync'.tr),
         onTap: () {
           con.initAsyncError = !con.initAsyncError;
-          // setState(() {});
-          // con.setSettingState();
-          App.appState?.hotReload();
+          if (con.initAsyncError) {
+            tipAsyncError = 'Page 1 will error.'.tr;
+            // Show snack bar when appropriate
+            _showSnackBar(tipAsyncError);
+          } else {
+            tipAsyncError = '';
+          }
+          setState(() {});
         },
         value: con.initAsyncError,
         onChanged: (bool value) {
           con.initAsyncError = value;
-          // setState(() {});
-          // con.setSettingState();
-          App.appState?.hotReload();
+          if (value) {
+            tipAsyncError = 'Page 1 will error.'.tr;
+            // Show snack bar when appropriate
+            _showSnackBar(tipAsyncError);
+          } else {
+            tipAsyncError = '';
+          }
+          setState(() {});
+        },
+      ),
+      listTile(
+        key: const Key('App initAsync error'),
+        leading: isSmall ? null : const Icon(Icons.insert_invitation_sharp),
+        title: isSmall
+            ? Text('App initAsync Error'.tr)
+            : Text('Error in initAsync'.tr),
+        onTap: () {
+          con.initAppAsyncError = !con.initAppAsyncError;
+          if (con.initAppAsyncError) {
+            tipAppAsyncError = 'Must restart app'.tr;
+            // Show snack bar when appropriate
+            _showSnackBar(tipAppAsyncError);
+          } else {
+            tipAppAsyncError = '';
+          }
+          // App.appState?.hotReload();
+          setState(() {});
+        },
+        value: con.initAppAsyncError,
+        onChanged: (bool value) {
+          con.initAppAsyncError = value;
+          if (value) {
+            tipAppAsyncError = 'Must restart app'.tr;
+            // Show snack bar when appropriate
+            _showSnackBar(tipAppAsyncError);
+          } else {
+            tipAppAsyncError = '';
+          }
+          // App.appState?.hotReload();
+          setState(() {});
+        },
+      ),
+      listTile(
+        key: const Key('builder error'),
+        leading: isSmall ? null : const Icon(Icons.build),
+        title: isSmall ? Text('Builder Error'.tr) : Text('Error in Builder'.tr),
+        onTap: () {
+          con.errorInBuild = !con.errorInBuild;
+          if (con.errorInBuild) {
+            tipBuilderError = 'Page 2 will error.'.tr;
+            // Show snack bar when appropriate
+            _showSnackBar(tipBuilderError);
+          } else {
+            tipBuilderError = '';
+          }
+          setState(() {});
+          // con.setSettingState(); // Don't invoke the error yet
+        },
+        tip: tipBuilderError,
+        value: con.errorInBuild,
+        onChanged: (bool value) {
+          con.errorInBuild = value;
+          if (value) {
+            tipBuilderError = 'Page 2 will error'.tr;
+            // Show snack bar when appropriate
+            _showSnackBar(tipBuilderError);
+          } else {
+            tipBuilderError = '';
+          }
+          setState(() {});
+          // con.setSettingState(); // Don't invoke the error yet
         },
       ),
     ];
@@ -369,6 +439,10 @@ class _AppSettingsState extends State<AppSettings> {
   var tipOnHome = '';
   var tipRouterConfig = '';
   var tipInherited = '';
+  var tipButtonError = '';
+  var tipBuilderError = '';
+  var tipAsyncError = '';
+  var tipAppAsyncError = '';
 
   /// Show a snack bar when appropriate
   void _showSnackBar([String? tip]) {

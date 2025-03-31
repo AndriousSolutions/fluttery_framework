@@ -92,12 +92,13 @@ class AppSettingsController extends StateXController with AppOptionSettings {
   @override
   set useInheritedWidget(bool? use) => Prefs.setBool('useInheritedWidget', use);
 
-  /// Error in builder()
+  /// Store the boolean allowing for errors or not.
   @override
-  bool get errorInBuilder => Prefs.getBool('errorInBuilder', false);
+  bool get initAppAsyncError => Prefs.getBool('initAppAsyncError');
 
   @override
-  set errorInBuilder(bool? error) => Prefs.setBool('errorInBuilder', error);
+  set initAppAsyncError(bool? error) =>
+      Prefs.setBool('initAppAsyncError', error);
 
   /// Store the boolean allowing for errors or not.
   @override
@@ -105,6 +106,13 @@ class AppSettingsController extends StateXController with AppOptionSettings {
 
   @override
   set initAsyncError(bool? error) => Prefs.setBool('initAsyncError', error);
+
+  /// Error in builder()
+  @override
+  bool get errorInBuild => Prefs.getBool('errorInBuild', false);
+
+  @override
+  set errorInBuild(bool? error) => Prefs.setBool('errorInBuild', error);
 
   /// Throw button error
   @override

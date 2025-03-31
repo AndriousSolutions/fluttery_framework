@@ -264,11 +264,16 @@ class _CounterPageState extends StateX<CounterPage> {
 
   @override
   void onError(FlutterErrorDetails details) {
-    final stack = details.stack;
-    if (stack != null && stack.toString().contains('handleTap')) {
-      //
-      setState(con.onPressed);
+    final stackObj = details.stack;
+    if (stackObj != null) {
+      final stack = stackObj.toString();
+      final msg = details.exceptionAsString();
+      if (stack.contains('handleTap') &&
+          msg.contains('Fake error to demonstrate error handling!')) {
+        //
+        setState(con.onPressed);
 //      rxCounter.value++;
+      }
     }
   }
 
@@ -395,11 +400,6 @@ class _CounterPageState extends StateX<CounterPage> {
     /// AppLifecycleState.paused (may enter the suspending state at any time)
   }
 
-  /// Either be in the progress of attaching when the  engine is first initializing
-  /// or after the view being destroyed due to a Navigator pop.
-  @override
-  void detachedAppLifecycleState() {}
-
   /// The application is visible and responding to user input.
   @override
   void resumedAppLifecycleState() {}
@@ -417,8 +417,15 @@ class _CounterPageState extends StateX<CounterPage> {
 
   /// The application is not currently visible to the user, not responding to
   /// user input, and running in the background.
+  /// Only iOS and Android
   @override
   void pausedAppLifecycleState() {}
+
+  /// Either be in the progress of attaching when the  engine is first initializing
+  /// or after the view being destroyed due to a Navigator pop.
+  /// Only iOS, Android and the Web
+  @override
+  void detachedAppLifecycleState() {}
 
   /// Called when the system is running low on memory.
   @override

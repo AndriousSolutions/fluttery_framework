@@ -9,6 +9,7 @@
 
 import 'dart:ui' as i show ParagraphStyle, TextStyle;
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart' show Future, TestFailure;
 
 import '/controller.dart'
@@ -23,7 +24,13 @@ import '/controller.dart'
 import 'package:flutter/cupertino.dart'
     show CupertinoApp, CupertinoPageRoute, CupertinoTheme, CupertinoThemeData;
 
-import 'package:flutter/foundation.dart' show FlutterExceptionHandler;
+import 'package:flutter/foundation.dart'
+    show
+        DiagnosticsProperty,
+        DiagnosticsTreeStyle,
+        FlutterExceptionHandler,
+        MessageProperty,
+        PlatformDispatcher;
 
 /// Translations
 import 'package:l10n_translator/l10n.dart';
@@ -1056,6 +1063,37 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
       presentError: presentError,
     );
 
+    // Record the Error Handler being used.
+    _currentFlutterOnError = FlutterError.onError;
+
+    // Called when an unhandled error occurs in the root isolate.
+    PlatformDispatcher.instance.onError = (error, stack) {
+      //
+      InformationCollector? collector;
+      assert(() {
+        collector = () => <DiagnosticsNode>[
+              MessageProperty('Root isolate error', error.toString()),
+              // DiagnosticsProperty<StateX<T>>(
+              //   'FutureBuildr',
+              //   this,
+              //   style: DiagnosticsTreeStyle.errorProperty,
+              // ),
+            ];
+        return true;
+      }());
+
+      final details = FlutterErrorDetails(
+        exception: error,
+        stack: stack,
+        library: 'Fluttery Framework package',
+        context: ErrorDescription('Root isolate error'),
+        informationCollector: collector,
+      );
+      // Call the 'current' error handler.
+      _currentFlutterOnError?.call(details);
+      return true;
+    };
+
     this.inDebugPaintSizeEnabled = inDebugPaintSizeEnabled;
     this.inDebugPaintBaselinesEnabled = inDebugPaintBaselinesEnabled;
     this.inDebugPaintPointersEnabled = inDebugPaintPointersEnabled;
@@ -1079,6 +1117,9 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
 
   // The App's error handler.
   AppErrorHandler? _errorHandler;
+
+  // Record current Error handler
+  void Function(FlutterErrorDetails details)? _currentFlutterOnError;
 
   /// The MaterialApp and CupertinoApp if provided.
   MaterialApp? materialApp;
@@ -1264,9 +1305,9 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
 
   @override
   void activate() {
+    super.activate(); // IMPORTANT to call first
     // Return the Error Handler
     _errorHandler?.activate();
-    super.activate(); // IMPORTANT to call last
   }
 
   @override
@@ -1289,40 +1330,85 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
 
   /// Catch it if the initAsync() throws an error
   /// The FutureBuilder will fail, but you can examine the error
-  void onCatchAsyncError(Object error) {}
+  Future<bool> onCatchAsyncError(Object error) async => false;
+
+  /// initAsync() has failed and a 'error' widget instead will be displayed.
+  /// This takes in the snapshot.error details.
+  @override
+  void onAsyncError(FlutterErrorDetails details) {}
 
   /// Catch it if the initAsync() throws an error
   /// The FutureBuilder will fail, but you can examine the error
   @override
-  void catchAsyncError(Object error) {
+  Future<bool> catchAsyncError(Object error) async {
+    //
+    final details = FlutterErrorDetails(
+      exception: error,
+      stack: error is Error ? error.stackTrace : null,
+      library: 'app_statex.dart',
+      context: ErrorDescription('While in initAsync()'),
+    );
+
+    //
     try {
-      onCatchAsyncError(error);
-    } catch (e) {
+      // App State's onError routine
+      _currentFlutterOnError?.call(details);
+      //
+      _caughtAsyncError = await onCatchAsyncError(error);
+    } catch (e, stack) {
+      _caughtAsyncError = false;
       final details = FlutterErrorDetails(
         exception: e,
-        stack: e is Error ? e.stackTrace : null,
+        stack: stack,
         library: 'app_state.dart',
         context: ErrorDescription('Exception in onCatchAsyncError()'),
       );
       logErrorDetails(details);
     }
     try {
-      inCatchAsyncError?.call(error);
-    } catch (e) {
+      // Ignored if already caught
+      if (!_caughtAsyncError) {
+        _caughtAsyncError = await inCatchAsyncError?.call(error) ?? false;
+      }
+    } catch (e, stack) {
       final details = FlutterErrorDetails(
         exception: e,
-        stack: e is Error ? e.stackTrace : null,
+        stack: stack,
         library: 'app_state.dart',
         context: ErrorDescription('Exception in inCatchAsyncError()'),
       );
       logErrorDetails(details);
     }
+
+    try {
+      // May have its own error handler for Asynchronous operations.
+      // So to possibly 'clean up' before falling out.
+      onAsyncError(details);
+
+      // The 'inline' version of the initAsync() error handler takes last precedence.
+      inAsyncError?.call(details);
+    } catch (e, stack) {
+      // Throw in DebugMode.
+      if (v.kDebugMode) {
+        // Rethrow to be handled by the original routine.
+        rethrow;
+      } else {
+        final details = FlutterErrorDetails(
+          exception: e,
+          stack: stack,
+          library: 'app_state.dart',
+          context: ErrorDescription('Exception in inCatchAsyncError()'),
+        );
+        logErrorDetails(details);
+      }
+    }
+    return _caughtAsyncError;
   }
 
-  /// initAsync() has failed and a 'error' widget instead will be displayed.
-  /// This takes in the snapshot.error details.
+  /// A flag noting an Async error was caught or not
   @override
-  void onAsyncError(FlutterErrorDetails details) {}
+  bool get caughtAsyncError => _caughtAsyncError;
+  bool _caughtAsyncError = false;
 
   /// Returns the App's ScaffoldMessenger Key.
   GlobalKey<ScaffoldMessengerState>? onScaffoldMessengerKey() =>
@@ -1611,7 +1697,7 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   final Future<bool> Function()? inInitAsync;
 
   /// Catch initAsync() error
-  final void Function(Object error)? inCatchAsyncError;
+  final Future<bool> Function(Object error)? inCatchAsyncError;
 
   /// Perform synchronous initialization
   final void Function()? inInitState;
@@ -1775,12 +1861,9 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
       inErrorReport;
 
   /// Override to provide an 'overall' Error Handler for your app.
-  void onErrorHandler(FlutterErrorDetails details) {
-    _errorHandlerOverridden = false;
-  }
-
-  // Flag indicating function was overridden and not directly called
-  bool _errorHandlerOverridden = true;
+  /// Called in onError(FlutterErrorDetails details)
+  @Deprecated('Use onError() instead.')
+  void onErrorHandler(FlutterErrorDetails details) {}
 
   /// The Widget to display when an app's widget fails to display.
   /// Override if you like.
@@ -1804,6 +1887,7 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
   // details.exception, details.stack
   /// Override if you like to customize error handling.
   @override
+  @mustCallSuper
   void onError(FlutterErrorDetails details) {
     // Don't call this routine within itself.
     if (_inErrorRoutine) {
@@ -1819,31 +1903,69 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
       // App's Error handler
       _errorHandler?.flutteryExceptionHandler?.call(details);
 
+      // 'inline function' error handler, takes last precedence.
+      // Catch any errors below
+      inErrorHandler?.call(details);
+
       // If App's Error handler was never defined
-      var callOriginal = _errorHandler?.flutteryExceptionHandler == null;
-
-      // Any 'on' Error handler in the AppStateX object
-      onErrorHandler(details);
-
-      // It would appear it was not overwritten
-      callOriginal = callOriginal && !_errorHandlerOverridden;
-
-      // No 'in-line' version
-      callOriginal = callOriginal && inErrorHandler == null;
+      final callOriginal = _errorHandler?.flutteryExceptionHandler == null;
 
       if (callOriginal) {
         _errorHandler?.oldOnError?.call(details);
-      } else {
-        // 'inline function' error handler, takes last precedence.
-        inErrorHandler?.call(details);
       }
+      // This is a public function. ALWAYS catch an error or exception
     } catch (e, stack) {
+      // Record the error
       recordException(e, stack);
     }
+
+    // In case there's errors in the two error handlers!!
+    Object? e;
+    StackTrace? stack;
+
     // Always test if there was an error in the error handler
     // Include it in the error reporting as well.
-    if (hasError) {
-      _onErrorInHandler();
+    if (recHasError) {
+      //
+      stack = recStackTrace;
+      e = recordException(); // Record and clear
+
+      // Call the original error routine if debugging and not testing
+      if (v.kDebugMode && (WidgetsBinding.instance is WidgetsFlutterBinding)) {
+        try {
+          _errorHandler?.oldOnError?.call(details);
+        } catch (e, stack) {
+          // Record the error
+          recordException(e, stack);
+        }
+      }
+    }
+
+    // Always test if there was an error in the error handler
+    // Include it in the error reporting as well.
+    if (recHasError) {
+      //
+      InformationCollector? collector;
+
+      assert(() {
+        collector = () => <DiagnosticsNode>[
+              DiagnosticsProperty<FlutterErrorDetails>(
+                'FlutterErrorDetails',
+                details,
+                style: DiagnosticsTreeStyle.errorProperty,
+              ),
+            ];
+        return true;
+      }());
+
+      /// Report the error in an isolate or in a run zone.
+      _errorHandler?.reportError(
+        e,
+        stack: stack,
+        message: 'Error in onError()',
+        library: 'app_statex.dart',
+        informationCollector: collector,
+      );
     }
 
     // If in testing, after the supplied handler, call its Error handler
@@ -1883,31 +2005,6 @@ abstract class _AppState<T extends StatefulWidget> extends s.AppStateX<T>
 
   //
   bool? _ignoreErrorInTesting;
-
-  // Notify the developer there's an error in the error handler.
-  void _onErrorInHandler() {
-    // Always test first that indeed an exception had occurred.
-    if (hasError) {
-      // Important to get the Stack Trace before it's cleared by recordException()
-      final stack = stackTrace;
-      final exception = recordException();
-      if (exception != null) {
-        final details = FlutterErrorDetails(
-          exception: exception,
-          stack: stack,
-          library: 'app_state.dart',
-          context: ErrorDescription('inside the Error Handler itself!'),
-        );
-        try {
-          // Call the App's 'current' error handler.
-          AppErrorHandler().flutteryExceptionHandler?.call(details);
-        } catch (e, stack) {
-          // Error in the error handler? That's a pickle.
-          recordException(e, stack);
-        }
-      }
-    }
-  }
 }
 
 ///
@@ -1992,4 +2089,67 @@ class StateX<T extends StatefulWidget> extends s.StateX<T> {
     }
     return con as StateXController;
   }
+
+  /// Catch it if the initAsync() throws an error
+  /// The FutureBuilder will fail, but you can examine the error
+  Future<bool> onCatchAsyncError(Object error) async =>
+      await rootState?.catchAsyncError(error) ?? false;
+
+  /// Catch it if the initAsync() throws an error
+  /// The FutureBuilder will fail, but you can examine the error
+  @override
+  Future<bool> catchAsyncError(Object error) async {
+    try {
+      //
+      InformationCollector? collector;
+      assert(() {
+        collector = () => <DiagnosticsNode>[
+              MessageProperty('initAsync', error.toString()),
+              DiagnosticsProperty<StateX<T>>(
+                'FutureBuilder',
+                this,
+                style: DiagnosticsTreeStyle.errorProperty,
+              ),
+            ];
+        return true;
+      }());
+
+      final details = FlutterErrorDetails(
+        exception: error,
+        stack: error is Error ? error.stackTrace : null,
+        library: 'app_state.dart',
+        context: ErrorDescription('While in FutureBuilder Async'),
+        informationCollector: collector,
+      );
+
+      // State object's error handler
+      // Before onCatchAsyncError()
+      onError(details);
+
+      // // App State's onError routine
+      // appState?._currentFlutterOnError?.call(details);
+
+      // Before onAsyncError()
+      _caughtAsyncError = await onCatchAsyncError(error);
+
+      // May have its own error handler for Asynchronous operations.
+      // So to possibly 'clean up' before falling out.
+      onAsyncError(details);
+    } catch (e) {
+      _caughtAsyncError = false;
+      final details = FlutterErrorDetails(
+        exception: e,
+        stack: e is Error ? e.stackTrace : null,
+        library: 'app_state.dart',
+        context: ErrorDescription('Error in onCatchAsyncError()'),
+      );
+      logErrorDetails(details);
+    }
+    return _caughtAsyncError;
+  }
+
+  /// A flag noting an Async error was caught or not
+  @override
+  bool get caughtAsyncError => _caughtAsyncError;
+  bool _caughtAsyncError = false;
 }

@@ -10,23 +10,23 @@ import 'package:fluttery_framework/controller.dart';
 import 'package:english_words/english_words.dart';
 
 ///
-class WordPairsTimer extends StateXController {
+class EnglishWordsTimer extends StateXController {
   /// Only one instance of the class is necessary and desired.
-  factory WordPairsTimer({
+  factory EnglishWordsTimer({
     int? seconds,
     Duration? duration,
     void Function()? callback,
     int? count,
     StateX? state,
   }) =>
-      _this ??= WordPairsTimer._(seconds, duration, callback, count, state);
+      _this ??= EnglishWordsTimer._(seconds, duration, callback, count, state);
 
-  WordPairsTimer._(
+  EnglishWordsTimer._(
       this.seconds, this.duration, this.callback, this.count, StateX? state)
       : model = WordPairsModel(),
         super(state);
 
-  static WordPairsTimer? _this;
+  static EnglishWordsTimer? _this;
 
   ///
   final int? seconds;
@@ -85,19 +85,36 @@ class WordPairsTimer extends StateXController {
 //  //   super.dispose();
   // }
 
-  /// Called when the system puts the app in the background or returns
-  /// the app to the foreground.
-  // Alternatively, use the function, pausedLifecycleState()
+  /// The application is in an inactive state and is not receiving user input.
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    //
-    if (state != AppLifecycleState.resumed) {
-      /// AppLifecycleState.paused (may enter the suspending state at any time)
-      /// AppLifecycleState.inactive (may be paused at any time)
-      /// AppLifecycleState.suspending (Android only)
-      _cancelTimer();
-    }
+  void inactiveAppLifecycleState() {
+    // Cancel the timer
+    _cancelTimer();
   }
+
+  /// All views of an application are hidden, either because the application is
+  /// about to be paused (on iOS and Android), or because it has been minimized
+  /// or placed on a desktop that is no longer visible (on non-web desktop), or
+  /// is running in a window or tab that is no longer visible (on the web).
+  @override
+  void hiddenAppLifecycleState() {
+    // Cancel the timer
+    _cancelTimer();
+  }
+
+  /// The application is running in the background.
+  /// Only iOS and Android
+  @override
+  void pausedAppLifecycleState() {
+    // Cancel the timer
+    _cancelTimer();
+  }
+
+  /// Either be in the progress of attaching when the  engine is first initializing
+  /// or after the view being destroyed due to a Navigator pop.
+  /// Only iOS, Android and the Web
+  @override
+  void detachedAppLifecycleState() {}
 
   /// Called when app returns from the background
   @override
@@ -106,9 +123,9 @@ class WordPairsTimer extends StateXController {
     _initTimer();
   }
 
-  /// The application is running in the background.
+  /// The next route has been pushed
   @override
-  void pausedAppLifecycleState() {
+  void didPushNext() {
     // Cancel the timer
     _cancelTimer();
   }
@@ -120,12 +137,23 @@ class WordPairsTimer extends StateXController {
     _initTimer();
   }
 
-  /// The next route has been pushed
-  @override
-  void didPushNext() {
-    // Cancel the timer
-    _cancelTimer();
-  }
+  /// If the value of the object, obj, changes, this builder() is called again
+  /// This allows spontaneous rebuilds here and there and not the whole screen.
+  Widget get word => SetState(builder: (context, obj) {
+        Widget widget;
+        if (obj is String) {
+          widget = Text(
+            obj,
+            style: TextStyle(
+              color: Colors.red,
+              fontSize: Theme.of(context).textTheme.headlineMedium!.fontSize,
+            ),
+          );
+        } else {
+          widget = SizedBox(height: 6.h);
+        }
+        return widget;
+      });
 
   /// If the value of the object, obj, changes, this builder() is called again
   /// This allows spontaneous rebuilds here and there and not the whole screen.
@@ -240,7 +268,7 @@ class WordPairsTimer extends StateXController {
 // ignore: unused_element
 class _WordPair extends StatelessWidget {
   const _WordPair(this.con);
-  final WordPairsTimer con;
+  final EnglishWordsTimer con;
   @override
   Widget build(BuildContext context) {
     /// This is where the magic happens.

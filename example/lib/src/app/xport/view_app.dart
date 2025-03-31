@@ -3,9 +3,6 @@
 // application's main app
 export '/src/app/view/app.dart';
 
-// App's RouterDelegate
-export '/src/app/view/app_navigator.dart';
-
 // App's Drawer
 export '/src/app/view/drawer/app_drawer.dart';
 

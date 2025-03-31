@@ -80,7 +80,7 @@ class _RunWebAppErrorHandler {
         rethrow;
       } else {
         // Record the error
-        appHandler.reportError(e, stack);
+        appHandler.reportError(e, stack: stack);
       }
     }
   }
