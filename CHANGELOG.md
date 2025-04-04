@@ -1,4 +1,10 @@
 
+## 5.20.2
+April 04, 2025
+- Include context in the line:
+  final themeData = _theme ?? onTheme(context) ?? v.App.themeData;
+- Update dartdoc_options.yaml
+
 ## 5.20.1+1
 March 31, 2025
 - state_extended 5.11.0

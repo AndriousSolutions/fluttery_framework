@@ -789,7 +789,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     // If not running in the Apple platform
     if (!UniversalPlatform.isApple) {
       // Possibly Material can provide
-      final themeData = _theme ?? onTheme() ?? v.App.themeData;
+      final themeData = _theme ?? onTheme(context) ?? v.App.themeData;
       if (themeData == null) {
         // Supply the default Cupertino theme if null
         v.App.iOSThemeData ??= CupertinoTheme.of(context).resolveFrom(context);

@@ -32,7 +32,7 @@ dartdoc:
     - "Testing"
     - "Extensions"
     - "Device Information"
-  nodoc: ['lib/*.dart']
+  no doc: ['lib/*.dart']
   showUndocumentedCategories: true
 #  ignore:
 #    - ambiguous-doc-reference

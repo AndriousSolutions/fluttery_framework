@@ -26,6 +26,8 @@ Future<void> testAppState(WidgetTester tester) async {
 
   doubleValue = appState.maxTabletWidth;
 
+  final nav = appState.navigator;
+
   await appState.didPopRoute();
 
   appState.onRouteInformationProvider();

@@ -6,7 +6,7 @@ There is a number of example apps that use the Fluttery Framework:
 - [Wonderous Example App](https://github.com/Andrious/wonderous)
 ###### (Download and try them out.)
 
-<img align="right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/f3ee5ec8-6ffe-4587-a06e-a1676413a4bc" alt="pubdev" width="445" height="228">
+<img style="float:right" src="https://github.com/AndriousSolutions/fluttery_framework/assets/32497443/f3ee5ec8-6ffe-4587-a06e-a1676413a4bc" alt="pubdev" width="445" height="228">
 
 ## _Fluttery Framework's Example App_
 An extensive example app accompanies the Fluttery Framework package itself. You'll find it under the 'pub.dev' 
