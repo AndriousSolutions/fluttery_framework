@@ -12,10 +12,6 @@ import '/model.dart';
 
 import '/view.dart' as v; //   show App, AppState, ReportErrorHandler;
 
-/// Export the classes needed to use this file.
-export 'package:connectivity_plus/connectivity_plus.dart'
-    show Connectivity, ConnectivityResult;
-
 /// Responsive UI
 import 'package:sizer/sizer.dart' show Sizer;
 
@@ -108,8 +104,8 @@ class _AppStatefulWidgetState extends State<AppStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     _assets.init(context);
-    final future = initAsync(); // _appState is defined here!
     var caughtAsyncError = false; // A flag to change snapshot!!
+    final future = initAsync(); // _appState is defined here!
     future.catchError(
       // May possibly recover from the error or exception
       (Object e) async =>

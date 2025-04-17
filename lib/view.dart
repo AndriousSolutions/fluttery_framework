@@ -14,6 +14,10 @@ export 'package:flutter/material.dart' hide runApp, StateSetter;
 export 'package:flutter/cupertino.dart'
     hide RefreshCallback, runApp, StateSetter;
 
+/// Export the classes needed to use this file.
+export 'package:connectivity_plus/connectivity_plus.dart'
+    show Connectivity, ConnectivityResult;
+
 /// Supply the custom runApp function
 export '/view/run_app.dart' show runApp;
 

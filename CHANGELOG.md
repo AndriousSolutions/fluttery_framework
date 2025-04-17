@@ -1,4 +1,8 @@
 
+## 5.20.3
+April 11, 2025
+- _useRouterConfig = useRouterConfig ?? true;
+
 ## 5.20.2
 April 04, 2025
 - Include context in the line:

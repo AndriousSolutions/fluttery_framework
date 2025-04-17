@@ -241,7 +241,7 @@ class AppStateX<T extends StatefulWidget> extends _AppState<T> {
     _routeInformationProvider = routeInformationProvider;
     _routeInformationParser = routeInformationParser;
     _routerDelegate = routerDelegate;
-    _useRouterConfig = useRouterConfig ?? false;
+    _useRouterConfig = useRouterConfig ?? true;
     _routerConfig = routerConfig;
     _backButtonDispatcher = backButtonDispatcher;
     _scaffoldMessengerKey = scaffoldMessengerKey;
